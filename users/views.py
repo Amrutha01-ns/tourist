@@ -37,8 +37,8 @@ def user_login(request):
         else:
             return render(
                 request,
-                "login.html",
+                "users/login.html",
                 {"error": "YOU have entered wrong username nd password,,plz enter valid"}
             )
 
-    return render(request, "login.html")
+    return render(request, "users/login.html")
