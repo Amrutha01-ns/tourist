@@ -52,9 +52,7 @@
                 </p>
                 <!-- LOCATION SEARCH -->
                 <form class="search-box" id="locationForm">
-
     <div class="search-icon">⌕</div>
-
     <input
         type="text"
         id="locationInput"
@@ -62,7 +60,6 @@
         placeholder="Where do you want to go?"
         required
     >
-
     <datalist id="districts">
         <option value="Mysore">
         <option value="Madikeri">
@@ -92,28 +89,19 @@
             </div>
 
         </section>
-
-
         <!-- POPULAR DESTINATIONS -->
         <section class="popular-section">
-
             <div class="section-top">
                 <div>
                     <p class="section-label">START EXPLORING</p>
                     <h2>Popular destinations</h2>
                 </div>
-
                 <a href="#" class="view-all">View all →</a>
             </div>
-
-
             <div class="destination-grid">
-
                 <a href="#" class="destination-card large-card">
                     <div class="card-bg mysore-bg"></div>
-
                     <div class="card-overlay"></div>
-
                     <div class="destination-content">
                         <span class="place-tag">ROYAL HERITAGE</span>
                         <h3>Mysore</h3>
@@ -121,20 +109,15 @@
                         <span class="explore-place">Explore →</span>
                     </div>
                 </a>
-
-
                 <a href="#" class="destination-card">
                     <div class="card-bg madikeri-bg"></div>
                     <div class="card-overlay"></div>
-
                     <div class="destination-content">
                         <span class="place-tag">COORG</span>
                         <h3>Madikeri</h3>
                         <p>Hills, coffee and mist</p>
                     </div>
                 </a>
-
-
                 <a href="#" class="destination-card">
                     <div class="card-bg chikmagalur-bg"></div>
                     <div class="card-overlay"></div>
@@ -145,8 +128,6 @@
                         <p>Mountains and coffee estates</p>
                     </div>
                 </a>
-
-
                 <a href="#" class="destination-card">
                     <div class="card-bg hampi-bg"></div>
                     <div class="card-overlay"></div>
@@ -157,8 +138,6 @@
                         <p>Ancient ruins and architecture</p>
                     </div>
                 </a>
-
-
                 <a href="#" class="destination-card wide-card">
                     <div class="card-bg udupi-bg"></div>
                     <div class="card-overlay"></div>
@@ -238,5 +217,7 @@
             </div>
         </section>
     </main>
+    {% load static %}
+<script src="{% static 'users/dashboard.js' %}"></script>
 </body>
 </html>

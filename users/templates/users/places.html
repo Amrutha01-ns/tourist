@@ -1,0 +1,7 @@
+<h1>Explore {{ district.name }}</h1>
+
+{% for place in places %}
+    <h2>{{ place.name }}</h2>
+{% empty %}
+    <p>No places available for this district yet.</p>
+{% endfor %}
