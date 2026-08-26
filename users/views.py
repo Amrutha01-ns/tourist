@@ -50,8 +50,14 @@ def places_by_district(request, district_name):
         District,
         name__iexact=district_name
     )
-    places = Place.objects.filter(district=district)
-    return render(request, "users/places.html", {
-        "district": district,
-        "places": places,
-    })
+    places = Place.objects.filter(
+        district=district
+    )
+    return render(
+        request,
+        "users/places.html",
+        {
+            "district": district,
+            "places": places,
+        }
+    )

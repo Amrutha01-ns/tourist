@@ -1,7 +1,204 @@
-<h1>Explore {{ district.name }}</h1>
+{% load static %}
 
-{% for place in places %}
-    <h2>{{ place.name }}</h2>
-{% empty %}
-    <p>No places available for this district yet.</p>
-{% endfor %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Explore {{ district.name }}</title>
+
+    <link rel="stylesheet"
+          href="{% static 'users/places.css' %}">
+</head>
+
+<body>
+
+
+    <!-- Background overlay -->
+    <div class="background-overlay"></div>
+
+
+    <!-- Main Container -->
+    <main class="places-page">
+
+
+        <!-- Welcome Section -->
+        <section class="hero-section">
+
+            <p class="district-label">
+                Explore Karnataka
+            </p>
+
+            <h1>
+                Welcome to
+                <span>{{ district.name }}</span>
+            </h1>
+
+            <p class="hero-description">
+                Discover beautiful destinations, rich history,
+                peaceful nature, spiritual places and unforgettable
+                experiences.
+            </p>
+
+        </section>
+
+
+        <!-- Filter Section -->
+        <section class="filter-section">
+
+            <div class="filter-heading">
+                <h2>Find Your Perfect Place</h2>
+                <p>Choose a category and explore {{ district.name }}</p>
+            </div>
+
+
+            <form method="GET"
+                  action="{% url 'places_by_district' district.name %}"
+                  class="category-form">
+
+                <select name="category">
+
+                    <option value="">
+                        All Categories
+                    </option>
+
+                    <option value="watery"
+                        {% if selected_category == "watery" %}
+                        selected
+                        {% endif %}>
+                        Watery
+                    </option>
+
+                    <option value="historical"
+                        {% if selected_category == "historical" %}
+                        selected
+                        {% endif %}>
+                        Historical
+                    </option>
+
+                    <option value="religious"
+                        {% if selected_category == "religious" %}
+                        selected
+                        {% endif %}>
+                        Religious / Temples
+                    </option>
+
+                    <option value="nature"
+                        {% if selected_category == "nature" %}
+                        selected
+                        {% endif %}>
+                        Nature
+                    </option>
+
+                </select>
+
+
+                <button type="submit">
+                    Explore
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- Places Section -->
+        <section class="places-section">
+
+            <div class="section-title">
+
+                <div>
+                    <p class="small-title">
+                        HANDPICKED DESTINATIONS
+                    </p>
+
+                    <h2>
+                        Top Places in {{ district.name }}
+                    </h2>
+                </div>
+
+            </div>
+
+
+            <!-- Cards Grid -->
+            <div class="places-grid">
+
+                {% for place in places %}
+
+                <article class="place-card">
+
+                    <!-- Image -->
+                    <div class="image-container">
+                    {% if place.image %}
+    <img src="{{ place.image.url }}" alt="{{ place.name }}">
+{% else %}
+    <div class="no-image">
+        No Image Available
+    </div>
+{% endif %}
+                        <span class="category-badge">
+                            {{ place.category }}
+                        </span>
+
+                    </div>
+
+
+                    <!-- Card Content -->
+                    <div class="card-content">
+
+                        <h3>
+                            {{ place.name }}
+                        </h3>
+
+
+                        <p class="speciality">
+                            {{ place.speciality }}
+                        </p>
+
+
+                        <div class="description">
+                            <p>
+                                {{ place.description }}
+                            </p>
+                        </div>
+
+
+                        <button class="see-more-btn">
+                            See More
+                            <span>→</span>
+                        </button>
+
+                    </div>
+
+                </article>
+
+                {% empty %}
+
+                    <div class="no-places">
+
+                        <h3>No places found</h3>
+
+                        <p>
+                            No places are currently available
+                            in this category.
+                        </p>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <script src="{% static 'users/places.js' %}"></script>
+
+</body>
+
+</html>

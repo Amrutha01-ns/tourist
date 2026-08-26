@@ -1,0 +1,543 @@
+/* =========================
+   RESET
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    min-height: 100vh;
+
+    font-family: Arial, sans-serif;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            rgba(7, 12, 25, 0.82),
+            rgba(7, 12, 25, 0.92)
+        ),
+        url("https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1800&q=80");
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+
+/* =========================
+   MAIN PAGE
+========================= */
+
+.places-page {
+    width: min(1400px, 92%);
+    margin: auto;
+    padding: 60px 0 100px;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero-section {
+    max-width: 750px;
+    padding: 60px 0;
+}
+
+
+.district-label {
+    color: #f3b84f;
+
+    font-size: 0.8rem;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 15px;
+
+    text-transform: uppercase;
+}
+
+
+.hero-section h1 {
+    font-family: Georgia, serif;
+
+    font-size: clamp(3rem, 7vw, 6rem);
+
+    margin-bottom: 20px;
+
+    line-height: 1;
+}
+
+
+.hero-section h1 span {
+    color: #f3b84f;
+}
+
+
+.hero-description {
+    max-width: 600px;
+
+    color: #d8d8d8;
+
+    font-size: 1.1rem;
+
+    line-height: 1.8;
+}
+
+
+/* =========================
+   FILTER GLASS BOX
+========================= */
+
+.filter-section {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 30px;
+
+    padding: 25px 30px;
+
+    margin-bottom: 70px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    backdrop-filter: blur(15px);
+
+    -webkit-backdrop-filter: blur(15px);
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.35);
+}
+
+
+.filter-heading h2 {
+    font-family: Georgia, serif;
+
+    font-size: 1.8rem;
+
+    margin-bottom: 8px;
+}
+
+
+.filter-heading p {
+    color: #c9c9c9;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.category-form {
+    display: flex;
+
+    gap: 12px;
+}
+
+
+.category-form select {
+
+    min-width: 230px;
+
+    padding: 15px 18px;
+
+    border-radius: 12px;
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    outline: none;
+
+    background: rgba(10, 15, 30, 0.75);
+
+    color: white;
+
+    font-size: 1rem;
+}
+
+
+.category-form button {
+
+    padding: 15px 28px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    font-size: 1rem;
+
+    font-weight: bold;
+
+    background: #f3b84f;
+
+    color: #161616;
+
+    transition:
+        transform 0.3s,
+        box-shadow 0.3s;
+}
+
+
+.category-form button:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 10px 25px rgba(243, 184, 79, 0.35);
+}
+
+
+/* =========================
+   SECTION TITLE
+========================= */
+
+.section-title {
+    margin-bottom: 30px;
+}
+
+
+.small-title {
+
+    color: #f3b84f;
+
+    letter-spacing: 3px;
+
+    font-size: 0.75rem;
+
+    margin-bottom: 10px;
+}
+
+
+.section-title h2 {
+
+    font-family: Georgia, serif;
+
+    font-size: 2.5rem;
+}
+
+
+/* =========================
+   GRID
+========================= */
+
+.places-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(260px, 1fr));
+
+    gap: 25px;
+}
+
+
+/* =========================
+   PLACE CARD
+========================= */
+
+.place-card {
+
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background: rgba(20, 25, 40, 0.75);
+
+    backdrop-filter: blur(12px);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.12);
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.3);
+
+    transition:
+        transform 0.4s ease,
+        box-shadow 0.4s ease;
+
+}
+
+
+.place-card:hover {
+
+    transform:
+        translateY(-10px)
+        scale(1.02);
+
+    box-shadow:
+        0 25px 55px rgba(0, 0, 0, 0.55);
+}
+
+
+/* =========================
+   IMAGE
+========================= */
+
+.image-container {
+
+    position: relative;
+
+    height: 220px;
+
+    overflow: hidden;
+}
+
+
+.image-container img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    transition:
+        transform 0.6s ease;
+}
+
+
+.place-card:hover .image-container img {
+
+    transform: scale(1.1);
+}
+
+
+.no-image {
+
+    height: 100%;
+
+    display: grid;
+
+    place-items: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2b344c,
+            #111827
+        );
+
+    color: #aaa;
+}
+
+
+/* =========================
+   CATEGORY BADGE
+========================= */
+
+.category-badge {
+
+    position: absolute;
+
+    top: 15px;
+
+    right: 15px;
+
+    padding: 8px 14px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(10, 10, 20, 0.75);
+
+    backdrop-filter: blur(8px);
+
+    color: #f3b84f;
+
+    font-size: 0.8rem;
+
+    text-transform: capitalize;
+}
+
+
+/* =========================
+   CARD CONTENT
+========================= */
+
+.card-content {
+
+    padding: 25px;
+}
+
+
+.card-content h3 {
+
+    font-family: Georgia, serif;
+
+    font-size: 1.8rem;
+
+    margin-bottom: 12px;
+
+    color: #ffffff;
+}
+
+
+.speciality {
+
+    color: #f3b84f;
+
+    line-height: 1.6;
+
+    margin-bottom: 15px;
+}
+
+
+/* Description initially hidden */
+
+.description {
+
+    max-height: 0;
+
+    overflow: hidden;
+
+    opacity: 0;
+
+    transition:
+        max-height 0.5s ease,
+        opacity 0.4s ease;
+
+    color: #d5d5d5;
+
+    line-height: 1.7;
+}
+
+
+/* Expanded card */
+
+.place-card.active {
+
+    transform:
+        scale(1.04);
+
+    z-index: 10;
+
+    box-shadow:
+        0 30px 70px rgba(0, 0, 0, 0.65);
+}
+
+
+.place-card.active .description {
+
+    max-height: 400px;
+
+    opacity: 1;
+
+    margin-bottom: 20px;
+}
+
+
+/* =========================
+   SEE MORE BUTTON
+========================= */
+
+.see-more-btn {
+
+    border: none;
+
+    background: transparent;
+
+    color: #f3b84f;
+
+    cursor: pointer;
+
+    font-size: 1rem;
+
+    font-weight: bold;
+
+    padding: 8px 0;
+}
+
+
+.see-more-btn span {
+
+    margin-left: 5px;
+
+    transition: margin-left 0.3s;
+}
+
+
+.see-more-btn:hover span {
+
+    margin-left: 12px;
+}
+
+
+/* =========================
+   NO PLACES
+========================= */
+
+.no-places {
+
+    grid-column: 1 / -1;
+
+    text-align: center;
+
+    padding: 80px 20px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(255, 255, 255, 0.07);
+
+    backdrop-filter: blur(10px);
+}
+
+
+.no-places h3 {
+
+    font-size: 2rem;
+
+    margin-bottom: 10px;
+}
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 850px) {
+
+    .filter-section {
+
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+    .category-form {
+
+        width: 100%;
+    }
+    .category-form select {
+
+        width: 100%;
+    }
+}
+@media (max-width: 600px) {
+    .places-page {
+        width: 90%;
+        padding-top: 30px;
+    }
+    .hero-section h1 {
+        font-size: 3.2rem;
+    }
+    .category-form {
+        flex-direction: column;
+    }
+    .section-title h2 {
+        font-size: 2rem;
+    }
+}
