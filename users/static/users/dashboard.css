@@ -1,5 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap");
 
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap");
 * {
     margin: 0;
     padding: 0;
@@ -20,6 +20,11 @@ body {
     font-family: "DM Sans", sans-serif;
     background:var(--light);
     color: var(--dark);
+
+}
+main {
+    display: block;
+    width: 100%;
 }
 /* top navigtn bar whch has logo,acnt nd more */
 .navbar {
@@ -304,46 +309,25 @@ body {
 .destination-card.wide-card {
     grid-column: span 2;
 }
-
 .card-bg {
     position: absolute;
     inset: 0;
-
-    background-size: cover;
-    background-position: center;
-
-    transition: transform 0.5s ease;
+    overflow: hidden;
 }
-
-.destination-card:hover .card-bg {
-    transform: scale(1.08);
-}
-
 /* Replace these image URLs later with your own images */
 
-.mysore-bg {
-    background-image:
-        url("https://images.unsplash.com/photo-1600100397608-f010e0e9c65f?auto=format&fit=crop&w=1200&q=80");
-}
+/* =================================
+   DESTINATION CARD IMAGES
+================================= */
 
-.madikeri-bg {
-    background-image:
-        url("https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=900&q=80");
-}
+.card-bg {
+    position: absolute;
 
-.chikmagalur-bg {
-    background-image:
-        url("https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=80");
-}
+    inset: 0;
 
-.hampi-bg {
-    background-image:
-        url("https://images.unsplash.com/photo-1606293926249-ed22b25e0c74?auto=format&fit=crop&w=900&q=80");
-}
+    overflow: hidden;
 
-.udupi-bg {
-    background-image:
-        url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80");
+    z-index: 0;
 }
 
 .card-overlay {
@@ -628,4 +612,606 @@ body {
     .thread-wrapper {
         margin-top: 50px;
     }
+}
+/* ================================
+   ACCOUNT BUTTON
+================================ */
+
+.account-wrapper {
+    position: relative;
+}
+
+.account-btn {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 7px 12px 7px 7px;
+
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.75);
+
+    color: #222;
+
+    font: inherit;
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+}
+
+.account-btn:hover {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.22);
+    transform: translateY(-1px);
+}
+
+
+/* PROFILE INITIAL */
+
+.account-icon {
+    width: 34px;
+    height: 34px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #222;
+    color: white;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+
+/* USERNAME */
+
+.account-name {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+/* ARROW */
+
+.account-arrow {
+    font-size: 10px;
+    margin-left: 2px;
+
+    transition: transform 0.25s ease;
+}
+
+.account-wrapper.active .account-arrow {
+    transform: rotate(180deg);
+}
+
+
+/* ================================
+   ACCOUNT DROPDOWN
+================================ */
+
+.account-menu {
+    position: absolute;
+
+    top: calc(100% + 10px);
+    right: 0;
+
+    width: 255px;
+
+    padding: 10px;
+
+    background: rgba(255, 255, 255, 0.97);
+
+    border: 1px solid rgba(0, 0, 0, 0.12);
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.12);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateY(-8px);
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0.2s ease;
+
+    z-index: 1000;
+}
+
+.account-wrapper.active .account-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+
+/* ================================
+   ACCOUNT HEADER
+================================ */
+
+.account-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 10px;
+}
+
+.account-avatar {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #222;
+    color: white;
+
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.account-header h3 {
+    margin: 0;
+
+    font-size: 15px;
+    color: #222;
+}
+
+.account-header p {
+    margin: 3px 0 0;
+
+    font-size: 12px;
+    color: #777;
+}
+
+
+/* ================================
+   DIVIDER
+================================ */
+
+.account-divider {
+    height: 1px;
+
+    margin: 7px 4px;
+
+    background: rgba(0, 0, 0, 0.10);
+}
+
+
+/* ================================
+   ACCOUNT OPTIONS
+================================ */
+
+.account-option {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 11px 12px;
+
+    border: 1px solid transparent;
+    border-radius: 10px;
+
+    background: transparent;
+
+    color: #333;
+
+    text-decoration: none;
+    font: inherit;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.account-option i {
+    width: 18px;
+
+    text-align: center;
+
+    color: #555;
+}
+
+
+/* HOVER */
+
+.account-option:hover {
+    background: #f5f5f5;
+
+    border-color: rgba(0, 0, 0, 0.08);
+
+    color: #111;
+
+    transform: translateX(2px);
+}
+
+.account-option:hover i {
+    color: #222;
+}
+
+
+/* DARK MODE OPTION */
+
+.theme-status {
+    margin-left: auto;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    color: #888;
+}
+
+
+/* LOGOUT */
+
+.logout-option {
+    color: #444;
+}
+
+.logout-option:hover {
+    background: #f6f6f6;
+}
+/* =================================
+   SETTINGS OVERLAY
+================================= */
+
+.settings-overlay {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(0, 0, 0, 0.45);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: 0.25s ease;
+
+    z-index: 2000;
+}
+
+.settings-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* =================================
+   SETTINGS PANEL
+================================= */
+
+.settings-panel {
+    width: min(500px, 90%);
+
+    max-height: 85vh;
+
+    overflow-y: auto;
+
+    padding: 25px;
+
+    background: white;
+
+    border: 1px solid rgba(0, 0, 0, 0.1);
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.2);
+
+    transform: translateY(15px) scale(0.98);
+
+    transition: 0.25s ease;
+}
+
+.settings-overlay.active .settings-panel {
+    transform: translateY(0) scale(1);
+}
+
+
+/* =================================
+   SETTINGS HEADER
+================================= */
+
+.settings-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    margin-bottom: 25px;
+}
+
+.settings-top h2 {
+    margin: 4px 0 0;
+
+    font-size: 26px;
+}
+
+.settings-close {
+    width: 36px;
+    height: 36px;
+
+    border: 1px solid rgba(0, 0, 0, 0.1);
+
+    border-radius: 10px;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    font-size: 16px;
+
+    transition: 0.2s ease;
+}
+
+.settings-close:hover {
+    background: #f2f2f2;
+}
+
+
+/* =================================
+   SETTINGS SECTION
+================================= */
+
+.settings-section {
+    margin-top: 20px;
+}
+
+.settings-section h3 {
+    margin-bottom: 10px;
+
+    font-size: 13px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+}
+
+
+/* =================================
+   SETTING ITEM
+================================= */
+
+.setting-item {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 15px;
+
+    border: 1px solid rgba(0, 0, 0, 0.1);
+
+    border-radius: 14px;
+
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.setting-info {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.setting-icon {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: rgba(0, 0, 0, 0.06);
+}
+
+.setting-info h4 {
+    margin: 0;
+
+    font-size: 14px;
+}
+
+.setting-info p {
+    margin: 4px 0 0;
+
+    font-size: 12px;
+
+    color: #777;
+}
+
+
+/* =================================
+   TOGGLE SWITCH
+================================= */
+
+.switch {
+    position: relative;
+
+    width: 48px;
+    height: 26px;
+}
+
+.switch input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+
+    inset: 0;
+
+    cursor: pointer;
+
+    background: #ccc;
+
+    border-radius: 30px;
+
+    transition: 0.25s ease;
+}
+
+.slider::before {
+    content: "";
+
+    position: absolute;
+
+    width: 20px;
+    height: 20px;
+
+    left: 3px;
+    top: 3px;
+
+    background: white;
+
+    border-radius: 50%;
+
+    transition: 0.25s ease;
+}
+
+.switch input:checked + .slider {
+    background: #222;
+}
+
+.switch input:checked + .slider::before {
+    transform: translateX(22px);
+}
+/* =================================
+   DARK MODE
+================================= */
+
+body.dark-mode {
+    background: #111;
+
+    color: #eee;
+}
+
+
+/* NAVBAR */
+
+body.dark-mode .navbar {
+    background: rgba(20, 20, 20, 0.92);
+}
+
+body.dark-mode .nav-item,
+body.dark-mode .account-name {
+    color: #eee;
+}
+
+
+/* ACCOUNT */
+
+body.dark-mode .account-btn {
+    background: #1d1d1d;
+
+    border-color: #333;
+
+    color: #eee;
+}
+
+body.dark-mode .account-btn:hover {
+    background: #252525;
+}
+
+
+/* ACCOUNT MENU */
+
+body.dark-mode .account-menu {
+    background: #1b1b1b;
+
+    border-color: #333;
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .account-header h3 {
+    color: #eee;
+}
+
+body.dark-mode .account-header p {
+    color: #999;
+}
+
+body.dark-mode .account-option {
+    color: #ddd;
+}
+
+body.dark-mode .account-option i {
+    color: #aaa;
+}
+
+body.dark-mode .account-option:hover {
+    background: #292929;
+
+    border-color: #3a3a3a;
+
+    color: white;
+}
+
+body.dark-mode .account-divider {
+    background: #333;
+}
+
+
+/* POPULAR SECTION */
+
+body.dark-mode .popular-section,
+body.dark-mode .recent-section {
+    color: #eee;
+}
+
+
+/* SETTINGS */
+
+body.dark-mode .settings-panel {
+    background: #1b1b1b;
+
+    border-color: #333;
+
+    color: #eee;
+}
+
+body.dark-mode .settings-close {
+    color: #eee;
+
+    border-color: #444;
+}
+
+body.dark-mode .settings-close:hover {
+    background: #292929;
+}
+
+body.dark-mode .setting-item {
+    background: #222;
+
+    border-color: #333;
+}
+
+body.dark-mode .setting-icon {
+    background: #2c2c2c;
+}
+
+body.dark-mode .setting-info p {
+    color: #999;
 }

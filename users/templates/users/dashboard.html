@@ -1,41 +1,257 @@
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Tourist | Plan Your Journey</title>
+
     <link rel="stylesheet" href="{% static 'users/dashboard.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
 </head>
 <body>
     <!-- NAVBAR -->
-    <header class="navbar">
-        <a href="#" class="brand">
-            <div class="brand-logo">T</div>
-            <span>Tourist</span>
+  <!-- NAVBAR -->
+<header class="navbar">
+
+    <a href="#" class="brand">
+        <div class="brand-logo">T</div>
+        <span>Tourist</span>
+    </a>
+
+    <nav class="nav-menu">
+
+        <a href="#" class="nav-item">
+            <span class="nav-icon">
+                <i class="fa-solid fa-house"></i>
+            </span>
+            Home
         </a>
-        <nav class="nav-menu">
-            <a href="#" class="nav-item">
-                <span class="nav-icon"><i class="fa-solid fa-house"></i></span>
-                Home
-            </a>
-            <a href="#" class="nav-item">
-                <span class="nav-icon"></i><i class="fa-solid fa-heart"></i></span>
-                Wishlist
-            </a>
-            <a href="#" class="nav-item">
-                <span class="nav-icon"><i class="fa-solid fa-gear"></i></span>
-                Settings
-            </a>
-            <a href="#" class="account-btn">
-                <span class="account-icon"><i class="fa-solid fa-user"></i></span>
-                <span>{{ request.user.username }}</span>
-            </a>
-        </nav>
-    </header>
+
+        <a href="#" class="nav-item">
+            <span class="nav-icon">
+                <i class="fa-solid fa-heart"></i>
+            </span>
+            Wishlist
+        </a>
+
+        <!-- ACCOUNT -->
+        <div class="account-wrapper">
+
+            <button
+                class="account-btn"
+                id="accountBtn"
+                type="button"
+            >
+                <span class="account-icon">
+                    {{ request.user.username|first|upper }}
+                </span>
+
+                <span class="account-name">
+                    {{ request.user.username }}
+                </span>
+
+                <i class="fa-solid fa-chevron-down account-arrow"></i>
+            </button>
+
+
+            <!-- ACCOUNT MENU -->
+            <div class="account-menu" id="accountMenu">
+
+                <div class="account-header">
+
+                    <div class="account-avatar">
+                        {{ request.user.username|first|upper }}
+                    </div>
+
+                    <div>
+                        <h3>{{ request.user.username }}</h3>
+                        <p>Tourist Explorer</p>
+                    </div>
+
+                </div>
+
+
+                <div class="account-divider"></div>
+
+
+                <!-- SETTINGS -->
+                <button
+                    class="account-option"
+                    id="settingsBtn"
+                    type="button"
+                >
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </button>
+
+
+                <!-- DARK MODE -->
+                <button
+                    class="account-option"
+                    id="darkModeBtn"
+                    type="button"
+                >
+                    <i class="fa-solid fa-moon"></i>
+                    <span>Dark Mode</span>
+
+                    <span
+                        class="theme-status"
+                        id="themeStatus"
+                    >
+                        OFF
+                    </span>
+                </button>
+
+
+                <div class="account-divider"></div>
+
+
+                <!-- LOGOUT -->
+                <a
+                    href="{% url 'logout' %}"
+                    class="account-option logout-option"
+                >
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </a>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+</header>
+
     <main>
-        <!-- HERO -->
+
+
+        <!-- SETTINGS PANEL -->
+
+        <div class="settings-overlay" id="settingsOverlay">
+
+            <div class="settings-panel">
+
+
+                <!-- SETTINGS HEADER -->
+                <div class="settings-top">
+
+                    <div>
+
+                        <p class="section-label">
+                            PREFERENCES
+                        </p>
+
+                        <h2>
+                            Settings
+                        </h2>
+
+                    </div>
+
+
+                    <button
+                        class="settings-close"
+                        id="settingsClose"
+                    >
+
+                        <i class="fa-solid fa-xmark"></i>
+
+                    </button>
+
+                </div>
+
+
+                <!-- APPEARANCE -->
+
+                <div class="settings-section">
+
+                    <h3>
+                        Appearance
+                    </h3>
+
+
+                    <div class="setting-item">
+
+
+                        <div class="setting-info">
+
+                            <div class="setting-icon">
+
+                                <i class="fa-solid fa-moon"></i>
+
+                            </div>
+
+
+                            <div>
+
+                                <h4>
+                                    Dark Mode
+                                </h4>
+
+                                <p>
+                                    Use a darker appearance across Tourist.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- TOGGLE -->
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="settingsDarkMode"
+                            >
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACCOUNT INFORMATION -->
+
+                <div class="settings-section">
+
+                    <h3>
+                        Account
+                    </h3>
+
+
+                    <div class="setting-item">
+
+
+                        <div class="setting-info">
+
+                            <div class="setting-icon">
+
+                                <i class="fa-solid fa-user"></i>
+
+                            </div>
+
+                            <div>
+                                <h4>
+                                    {{ request.user.username }}
+                                </h4>
+                                <p>
+                                    Your Tourist account
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <section class="hero">
             <div class="hero-content">
                 <p class="entry-tag">YOUR JOURNEY STARTS HERE</p>
@@ -81,77 +297,221 @@
                     Use My Current Location
                 </button>
             </div>
-            <div class="hero-decoration">
-                <div class="circle circle-one"></div>
-                <div class="circle circle-two"></div>
-                <div class="floating-card card-one">✦</div>
-                <div class="floating-card card-two">⌖</div>
-            </div>
+                   </div>
 
-        </section>
-        <!-- POPULAR DESTINATIONS -->
-        <section class="popular-section">
-            <div class="section-top">
-                <div>
-                    <p class="section-label">START EXPLORING</p>
-                    <h2>Popular destinations</h2>
-                </div>
-                <a href="#" class="view-all">View all →</a>
-            </div>
-            <div class="destination-grid">
-                <a href="#" class="destination-card large-card">
-                    <div class="card-bg mysore-bg"></div>
-                    <div class="card-overlay"></div>
-                    <div class="destination-content">
-                        <span class="place-tag">ROYAL HERITAGE</span>
-                        <h3>Mysore</h3>
-                        <p>Palaces, culture and timeless history</p>
-                        <span class="explore-place">Explore →</span>
-                    </div>
-                </a>
-                <a href="#" class="destination-card">
-                    <div class="card-bg madikeri-bg"></div>
-                    <div class="card-overlay"></div>
-                    <div class="destination-content">
-                        <span class="place-tag">COORG</span>
-                        <h3>Madikeri</h3>
-                        <p>Hills, coffee and mist</p>
-                    </div>
-                </a>
-                <a href="#" class="destination-card">
-                    <div class="card-bg chikmagalur-bg"></div>
-                    <div class="card-overlay"></div>
+        <div class="hero-decoration">
+            <div class="circle circle-one"></div>
+            <div class="circle circle-two"></div>
+            <div class="floating-card card-one">✦</div>
+            <div class="floating-card card-two">⌖</div>
+        </div>
 
-                    <div class="destination-content">
-                        <span class="place-tag">NATURE</span>
-                        <h3>Chikkamagaluru</h3>
-                        <p>Mountains and coffee estates</p>
-                    </div>
-                </a>
-                <a href="#" class="destination-card">
-                    <div class="card-bg hampi-bg"></div>
-                    <div class="card-overlay"></div>
+    </section>
 
-                    <div class="destination-content">
-                        <span class="place-tag">HISTORY</span>
-                        <h3>Hampi</h3>
-                        <p>Ancient ruins and architecture</p>
-                    </div>
-                </a>
-                <a href="#" class="destination-card wide-card">
-                    <div class="card-bg udupi-bg"></div>
-                    <div class="card-overlay"></div>
 
-                    <div class="destination-content">
-                        <span class="place-tag">COASTAL JOURNEY</span>
-                        <h3>Udupi</h3>
-                        <p>Beaches, temples and coastal beauty</p>
-                    </div>
-                </a>
+    <!-- POPULAR DESTINATIONS -->
+<!-- POPULAR DESTINATIONS -->
+
+<section class="popular-section">
+
+    <div class="section-top">
+
+        <div>
+            <p class="section-label">
+                START EXPLORING
+            </p>
+
+            <h2>
+                Popular destinations
+            </h2>
+        </div>
+
+        <a href="#" class="view-all">
+            View all →
+        </a>
+
+    </div>
+
+
+    <div class="destination-grid">
+
+
+        <!-- MYSORE -->
+
+        <a href="#" class="destination-card large-card">
+
+            <div class="card-bg">
+
+                <img
+                    src="{% static 'users/images/mysore.jpg' %}"
+                    alt="Mysore"
+                >
 
             </div>
 
-        </section>
+            <div class="card-overlay"></div>
+
+            <div class="destination-content">
+
+                <span class="place-tag">
+                    ROYAL HERITAGE
+                </span>
+
+                <h3>
+                    Mysore
+                </h3>
+
+                <p>
+                    Palaces, culture and timeless history
+                </p>
+
+                <span class="explore-place">
+                    Explore →
+                </span>
+
+            </div>
+
+        </a>
+
+
+
+        <!-- MADIKERI -->
+
+        <a href="#" class="destination-card">
+
+            <div class="card-bg">
+
+                <img
+                    src="{% static 'users/images/madikeri.jpg' %}"
+                    alt="Madikeri"
+                >
+
+            </div>
+
+            <div class="card-overlay"></div>
+
+            <div class="destination-content">
+
+                <span class="place-tag">
+                    COORG
+                </span>
+
+                <h3>
+                    Madikeri
+                </h3>
+
+                <p>
+                    Hills, coffee and mist
+                </p>
+
+            </div>
+
+        </a>
+
+
+
+        <!-- CHIKKAMAGALURU -->
+
+        <a href="#" class="destination-card">
+
+            <div class="card-bg">
+
+                <img
+                    src="{% static 'users/images/chikmagalur.jpg' %}"
+                    alt="Chikkamagaluru"
+                >
+
+            </div>
+
+            <div class="card-overlay"></div>
+
+            <div class="destination-content">
+
+                <span class="place-tag">
+                    NATURE
+                </span>
+
+                <h3>
+                    Chikkamagaluru
+                </h3>
+
+                <p>
+                    Mountains and coffee estates
+                </p>
+
+            </div>
+
+        </a>
+
+
+
+        <!-- HAMPI -->
+
+        <a href="#" class="destination-card">
+
+            <div class="card-bg">
+
+                <img
+                    src="{% static 'users/images/hampi.jpg' %}"
+                    alt="Hampi"
+                >
+
+            </div>
+
+            <div class="card-overlay"></div>
+
+            <div class="destination-content">
+
+                <span class="place-tag">
+                    HISTORY
+                </span>
+
+                <h3>
+                    Hampi
+                </h3>
+
+                <p>
+                    Ancient ruins and architecture
+                </p>
+
+            </div>
+
+        </a>
+
+
+
+        <!-- UDUPI -->
+
+        <a href="#" class="destination-card wide-card">
+
+            <div class="card-bg">
+
+                <img
+                    src="{% static 'users/images/udupi.jpg' %}"
+                    alt="Udupi"
+                >
+
+            </div>
+
+            <div class="card-overlay"></div>
+
+            <div class="destination-content">
+
+                <span class="place-tag">
+                    COASTAL JOURNEY
+                </span>
+
+                <h3>
+                    Udupi
+                </h3>
+                <p>
+                    Beaches, temples and coastal beauty
+                </p>
+            </div>
+        </a>
+    </div>
+</section>
+       
         <!-- RECENT SEARCHES -->
         <section class="recent-section">
 

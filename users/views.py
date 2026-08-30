@@ -3,9 +3,6 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth import authenticate,login,logout
 from places.models import District,Place
-
-
-
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -61,3 +58,6 @@ def places_by_district(request, district_name):
             "places": places,
         }
     )
+def logout_view(request):
+    logout(request)
+    return redirect("login")
