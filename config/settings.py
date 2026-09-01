@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'users',
     'places',
     'home',
+    'vehicle_reference',
+    'transport_finder',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [

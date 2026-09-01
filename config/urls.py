@@ -22,6 +22,10 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include("users.urls")),
+      path(
+        "api/transport/",
+        include("transport_finder.urls")
+    ),
 ]
 if settings.DEBUG:
     urlpatterns += static(
