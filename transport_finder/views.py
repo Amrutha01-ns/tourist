@@ -2,6 +2,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .services import search_direct_routes
 from .models import TransitStop
+from django.http import JsonResponse
+from .services import search_transport_stops
+
 @api_view(["GET"])
 def search_routes(request):
     source = request.GET.get("from")
@@ -36,4 +39,17 @@ def search_stops(request):
             }
             for stop in stops
         ]
+    })
+def transport_search(request):
+    query = request.GET.get("q", "").strip()
+
+    if not query:
+        return JsonResponse({
+            "results": []
+        })
+
+    results = search_transport_stops(query)
+
+    return JsonResponse({
+        "results": results
     })

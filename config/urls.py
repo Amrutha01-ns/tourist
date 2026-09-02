@@ -26,6 +26,7 @@ urlpatterns = [
         "api/transport/",
         include("transport_finder.urls")
     ),
+    path("transport/", include("transport_finder.urls")),
 ]
 if settings.DEBUG:
     urlpatterns += static(
