@@ -120,3 +120,167 @@ def search_direct_routes(source, destination, provider_code="BMTC"):
         })
 
     return results
+from .models import TransitStop, RouteStop
+def search_mysuru_routes(from_name, to_name):
+    from_stops = TransitStop.objects.filter(
+        provider__code="MITRA",
+        name__iexact=from_name
+    )
+
+    to_stops = TransitStop.objects.filter(
+        provider__code="MITRA",
+        name__iexact=to_name
+    )
+
+    results = []
+
+    for from_stop in from_stops:
+        starts = RouteStop.objects.filter(
+            stop=from_stop
+        ).select_related("route")
+
+        for start in starts:
+
+            ends = RouteStop.objects.filter(
+                route=start.route,
+                stop__in=to_stops,
+                stop_sequence__gt=start.stop_sequence
+            ).select_related("stop")
+
+            for end in ends:
+                results.append({
+                    "route": start.route.route_name,
+                    "from": from_stop.name,
+                    "to": end.stop.name,
+                    "from_sequence": start.stop_sequence,
+                    "to_sequence": end.stop_sequence,
+                })
+
+    return results
+def search_intercity_routes(from_name, to_name):
+    """
+    Search KSRTC routes between two intercity locations.
+    """
+
+    from_stops = TransitStop.objects.filter(
+        provider__code="KSRTC",
+        name__iexact=from_name
+    )
+
+    to_stops = TransitStop.objects.filter(
+        provider__code="KSRTC",
+        name__iexact=to_name
+    )
+
+    results = []
+
+    for from_stop in from_stops:
+        starts = RouteStop.objects.filter(
+            stop=from_stop
+        ).select_related("route")
+
+        for start in starts:
+
+            ends = RouteStop.objects.filter(
+                route=start.route,
+                stop__in=to_stops,
+                stop_sequence__gt=start.stop_sequence
+            ).select_related("stop")
+
+            for end in ends:
+                results.append({
+                    "provider": "KSRTC",
+                    "route": start.route.route_name,
+                    "from": from_stop.name,
+                    "to": end.stop.name,
+                    "from_sequence": start.stop_sequence,
+                    "to_sequence": end.stop_sequence,
+                })
+
+    return results
+def search_transport_routes(from_name, to_name):
+    """
+    Search across KSRTC and MITRA.
+    BMTC will be integrated separately for city-level journeys.
+    """
+
+    results = []
+
+    # KSRTC intercity
+    results.extend(
+        search_intercity_routes(from_name, to_name)
+    )
+
+    # MITRA city routes
+    results.extend(
+        search_mysuru_routes(from_name, to_name)
+    )
+
+    return results
+def search_transfer_routes(from_name, to_name):
+    results = []
+    seen = set()
+
+    # KSRTC first leg
+    first_legs = search_intercity_routes(from_name, "Mysuru")
+
+    # Real MITRA interchange stops
+    transfer_stops = TransitStop.objects.filter(
+        provider__code="MITRA",
+        name__in=["Palace Bus Stop", "Rural Bus Stand"]
+    )
+
+    # Destination in MITRA
+    destination_stops = TransitStop.objects.filter(
+        provider__code="MITRA",
+        name__iexact=to_name
+    )
+
+    for first in first_legs:
+
+        for transfer_stop in transfer_stops:
+
+            starts = RouteStop.objects.filter(
+                stop=transfer_stop
+            ).select_related("route")
+
+            for start in starts:
+
+                ends = RouteStop.objects.filter(
+                    route=start.route,
+                    stop__in=destination_stops,
+                    stop_sequence__gt=start.stop_sequence
+                ).select_related("stop")
+
+                for end in ends:
+
+                    key = (
+                        first["route"],
+                        start.route.route_id,
+                        end.stop.name
+                    )
+
+                    if key in seen:
+                        continue
+
+                    seen.add(key)
+
+                    results.append({
+                        "type": "1_transfer",
+                        "from": from_name,
+                        "to": to_name,
+                        "transfer_at": "Mysuru",
+
+                        "first_leg": first,
+
+                        "second_leg": {
+                            "provider": "MITRA",
+                            "route": start.route.route_name,
+                            "from": transfer_stop.name,
+                            "to": end.stop.name,
+                            "from_sequence": start.stop_sequence,
+                            "to_sequence": end.stop_sequence,
+                        }
+                    })
+
+    return results

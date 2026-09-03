@@ -73,3 +73,43 @@ class Fare(models.Model):
     currency = models.CharField(max_length=10, default="INR")
     def __str__(self):
         return f"{self.fare_id} - ₹{self.price}"
+class RouteStop(models.Model):
+    route = models.ForeignKey(
+        Route,
+        on_delete=models.CASCADE,
+        related_name="route_stops"
+    )
+    stop = models.ForeignKey(
+        TransitStop,
+        on_delete=models.CASCADE,
+        related_name="route_stops"
+    )
+    stop_sequence = models.PositiveIntegerField()
+
+    class Meta:
+        ordering = ["stop_sequence"]
+        unique_together = ("route", "stop")
+
+    def __str__(self):
+        return f"{self.route.route_name} - {self.stop.name}"
+class RouteStop(models.Model):
+    route = models.ForeignKey(
+        Route,
+        on_delete=models.CASCADE,
+        related_name="route_stops"
+    )
+
+    stop = models.ForeignKey(
+        TransitStop,
+        on_delete=models.CASCADE,
+        related_name="route_stops"
+    )
+
+    stop_sequence = models.PositiveIntegerField()
+
+    class Meta:
+        ordering = ["stop_sequence"]
+        unique_together = ("route", "stop")
+
+    def __str__(self):
+        return f"{self.route.route_name} - {self.stop.name}"
