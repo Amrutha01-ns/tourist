@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'home',
     'vehicle_reference',
     'transport_finder',
-    'rest_framework'
+    'rest_framework',
+    'explorer',
 ]
 
 MIDDLEWARE = [
@@ -60,7 +61,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR/'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

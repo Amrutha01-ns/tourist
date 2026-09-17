@@ -8,31 +8,25 @@ def register(request):
         username = request.POST["username"]
         email = request.POST["email"]
         password = request.POST["password"]
-
         User.objects.create_user(
             username=username,
             email=email,
             password=password
         )
-
         return redirect("login")
-
     return render(request, "users/register.html")
 def user_login(request):
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
-
         user = authenticate(
             request,
             username=username,
             password=password
         )
-
         if user is not None:
             login(request, user)
             return redirect("dashboard")
-
         else:
             return render(
                 request,
@@ -41,21 +35,31 @@ def user_login(request):
             )
     return render(request, "users/login.html")
 def dashboard(request):
-    return render(request, "users/dashboard.html")
+    districts = District.objects.all()
+    return render(request, "users/dashboard.html", {"districts": districts})
 def places_by_district(request, district_name):
     district = get_object_or_404(
         District,
         name__iexact=district_name
     )
+    # Get the category selected by the user
+    selected_category = request.GET.get("category", "")
+    # Get all places belonging to this district
     places = Place.objects.filter(
         district=district
     )
+    # If a category was selected, filter the places
+    if selected_category:
+        places = places.filter(
+            category=selected_category
+        )
     return render(
         request,
         "users/places.html",
         {
             "district": district,
             "places": places,
+            "selected_category": selected_category,
         }
     )
 def logout_view(request):

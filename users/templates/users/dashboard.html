@@ -276,17 +276,11 @@
         placeholder="Where do you want to go?"
         required
     >
-    <datalist id="districts">
-        <option value="Mysore">
-        <option value="Madikeri">
-        <option value="Chikkamagaluru">
-        <option value="Hampi">
-        <option value="Udupi">
-        <option value="Mangaluru">
-        <option value="Shivamogga">
-        <option value="Gokarna">
+       <datalist id="districts">
+        {% for d in districts %}
+        <option value="{{ d.name }}">
+        {% endfor %}
     </datalist>
-
     <button type="submit" class="search-btn">
         Explore
     </button>
@@ -298,7 +292,6 @@
                 </button>
             </div>
                    </div>
-
         <div class="hero-decoration">
             <div class="circle circle-one"></div>
             <div class="circle circle-two"></div>
@@ -335,7 +328,7 @@
 
         <!-- MYSORE -->
 
-        <a href="#" class="destination-card large-card">
+        <a href="{% url 'places_by_district' 'Mysore' %}" class="destination-card large-card">
 
             <div class="card-bg">
 
@@ -374,15 +367,12 @@
 
         <!-- MADIKERI -->
 
-        <a href="#" class="destination-card">
+        <a href="{% url 'places_by_district' 'Madikeri' %}" class="destination-card">
 
             <div class="card-bg">
 
                 <img
-                    src="{% static 'users/images/madikeri.jpg' %}"
-                    alt="Madikeri"
-                >
-
+                    src="{% static 'users/images/madikeri.jpg' %}">
             </div>
 
             <div class="card-overlay"></div>
@@ -409,16 +399,12 @@
 
         <!-- CHIKKAMAGALURU -->
 
-        <a href="#" class="destination-card">
+        <a href="{% url 'places_by_district' 'Chikkamagaluru' %}" class="destination-card">
 
             <div class="card-bg">
 
                 <img
-                    src="{% static 'users/images/chikmagalur.jpg' %}"
-                    alt="Chikkamagaluru"
-                >
-
-            </div>
+                    src="{% static 'users/images/chikmagalur.jpg' %}">
 
             <div class="card-overlay"></div>
 
@@ -444,15 +430,12 @@
 
         <!-- HAMPI -->
 
-        <a href="#" class="destination-card">
+        <a href="{% url 'places_by_district' 'Hampi' %}" class="destination-card">
 
             <div class="card-bg">
 
                 <img
-                    src="{% static 'users/images/hampi.jpg' %}"
-                    alt="Hampi"
-                >
-
+                    src="{% static 'users/images/hampi.jpg' %}">
             </div>
 
             <div class="card-overlay"></div>
@@ -574,7 +557,16 @@
             </div>
         </section>
     </main>
-    {% load static %}
+        {% load static %}
 <script src="{% static 'users/dashboard.js' %}"></script>
+<script>
+document.getElementById("locationForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const district = document.getElementById("locationInput").value.trim();
+    if (district) {
+        window.location.href = "/places/" + encodeURIComponent(district) + "/";
+    }
+});
+</script>
 </body>
 </html>

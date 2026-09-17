@@ -1,0 +1,117 @@
+
+{% load static %}
+
+<header class="navbar">
+
+    <!-- LOGO -->
+    <a href="#" class="brand">
+        <div class="brand-logo">T</div>
+        <span>Tourist</span>
+    </a>
+
+    <!-- NAVIGATION -->
+    <nav class="nav-menu">
+
+        <a href="#" class="nav-item">
+            <span class="nav-icon">
+                <i class="fa-solid fa-house"></i>
+            </span>
+            Home
+        </a>
+
+        <a href="#" class="nav-item">
+            <span class="nav-icon">
+                <i class="fa-solid fa-heart"></i>
+            </span>
+            Wishlist
+        </a>
+
+        <!-- ACCOUNT -->
+        <div class="account-wrapper">
+
+            <button
+                class="account-btn"
+                id="accountBtn"
+                type="button"
+            >
+                <span class="account-icon">
+                    {{ request.user.username|first|upper }}
+                </span>
+
+                <span class="account-name">
+                    {{ request.user.username }}
+                </span>
+
+                <i class="fa-solid fa-chevron-down account-arrow"></i>
+            </button>
+
+
+            <!-- ACCOUNT MENU -->
+            <div class="account-menu" id="accountMenu">
+
+                <div class="account-header">
+
+                    <div class="account-avatar">
+                        {{ request.user.username|first|upper }}
+                    </div>
+
+                    <div>
+                        <h3>{{ request.user.username }}</h3>
+                        <p>Tourist Explorer</p>
+                    </div>
+
+                </div>
+
+
+                <div class="account-divider"></div>
+
+
+                <!-- SETTINGS -->
+                <button
+                    class="account-option"
+                    id="settingsBtn"
+                    type="button"
+                >
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </button>
+
+
+                <!-- DARK MODE -->
+                <button
+                    class="account-option"
+                    id="darkModeBtn"
+                    type="button"
+                >
+                    <i class="fa-solid fa-moon"></i>
+                    <span>Dark Mode</span>
+
+                    <span
+                        class="theme-status"
+                        id="themeStatus"
+                    >
+                        OFF
+                    </span>
+                </button>
+
+
+                <div class="account-divider"></div>
+
+
+                <!-- LOGOUT -->
+                <a
+                    href="{% url 'logout' %}"
+                    class="account-option logout-option"
+                >
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </a>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+</header>
+```
