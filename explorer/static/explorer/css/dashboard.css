@@ -1,0 +1,246 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    min-height: 100vh;
+
+    font-family:
+        Inter,
+        "Segoe UI",
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(75, 131, 13, 0.12),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 85% 80%,
+            rgba(24, 150, 120, 0.10),
+            transparent 30%
+        ),
+        #f7f8f4;
+    color: #151815;
+}
+.explorer-dashboard {
+    min-height: 100vh;
+    padding: 70px 7%;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+/* HERO */
+.hero {
+    width: min(1200px, 100%);
+    margin: auto;
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr)
+        430px;
+    gap: 80px;
+    align-items: center;
+}
+.hero-content {
+    animation: heroIn 0.8s ease both;
+}
+@keyframes heroIn {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.eyebrow {
+    font-size: 12px;
+    letter-spacing: 3px;
+    font-weight: 700;
+    opacity: 0.5;
+}
+.hero h1 {
+    margin-top: 22px;
+    font-size:
+        clamp(48px, 7vw, 88px);
+    line-height: 0.95;
+    letter-spacing: -4px;
+}
+.hero h1 span {
+    display: block;
+    color: #4b830d;
+}
+.hero-description {
+    margin-top: 28px;
+    max-width: 550px;
+    font-size: 17px;
+    line-height: 1.7;
+    opacity: 0.62;
+}
+/* CONTROL PANEL */
+.control-panel {
+    padding: 28px;
+    border-radius: 30px;
+    background:
+        rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(25px);
+    border:
+        1px solid rgba(255, 255, 255, 0.9);
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.09);
+    animation: panelIn 0.9s ease both;
+}
+@keyframes panelIn {
+    from {
+        opacity: 0;
+        transform:
+            translateY(35px)
+            scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+/* LOCATION */
+.location-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.location-icon {
+    width: 50px;
+    height: 50px;
+    display: grid;
+    place-items: center;
+    border-radius: 16px;
+    background:
+        rgba(75, 131, 13, 0.10);
+    font-size: 24px;
+}
+.location-info {
+    flex: 1;
+}
+.label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    opacity: 0.45;
+}
+.location-info h2,
+.budget-top h2 {
+    margin-top: 5px;
+    font-size: 17px;
+}
+.location-info p:last-child {
+    margin-top: 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    opacity: 0.5;
+}
+.location-card button {
+    border: 0;
+    padding: 11px 17px;
+    border-radius: 12px;
+    background: #4b830d;
+    color: white;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+.location-card button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(75, 131, 13, 0.25);
+}
+.location-status {
+    min-height: 20px;
+    margin-top: 12px;
+    font-size: 12px;
+    opacity: 0.7;
+}
+/* BUDGET */
+.budget-card {
+    margin-top: 32px;
+}
+.budget-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+.budget-value {
+    font-size: 20px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+#budgetSlider {
+    width: 100%;
+    margin-top: 25px;
+    accent-color: #4b830d;
+    cursor: pointer;
+}
+.range-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 7px;
+    font-size: 11px;
+    opacity: 0.4;
+}
+/* EXPLORE BUTTON */
+.explore-button {
+    width: 100%;
+    margin-top: 30px;
+    padding: 16px;
+    border: 0;
+    border-radius: 16px;
+    background: #151815;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+.explore-button span {
+    margin-left: 10px;
+    transition:
+        transform 0.25s ease;
+}
+.explore-button:hover {
+    transform: translateY(-3px);
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.18);
+}
+.explore-button:hover span {
+    transform: translateX(5px);
+}
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .hero {
+        grid-template-columns: 1fr;
+        gap: 45px;
+    }
+}
+@media (max-width: 550px) {
+    .explorer-dashboard {
+        padding: 40px 20px;
+    }
+    .hero h1 {
+        font-size: 48px;
+        letter-spacing: -2px;
+    }
+    .control-panel {
+        padding: 22px;
+    }
+}
