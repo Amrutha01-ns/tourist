@@ -1,118 +1,85 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Tourist | Explore</title>
-
     <link
-        rel="stylesheet"
-        href="{% static 'explorer/css/dashboard.css' %}"
-    >
+    rel="stylesheet"
+    href="{% static 'explorer/css/dashboard.css' %}"
+>
+
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+>
 </head>
-
 <body>
-
     <main class="explorer-dashboard">
-
         <section class="hero">
-
             <div class="hero-content">
-
                 <p class="eyebrow">
-                    TOURIST · SMART EXPLORATION
+                    TOURIST · YOUR TRAVEL BUDDY
                 </p>
-
                 <h1>
-                    Your journey
-                    <span>starts here.</span>
+                    You picked the place.
+                    <span>Let's plan the rest.</span>
                 </h1>
-
                 <p class="hero-description">
-                    Tell us where you are, set your budget,
-                    and let Tourist shape your exploration.
+                    You're here to explore, and we're here to help you plan it.
+                    Tell us a little about your trip, and we'll help you make
+                    the most of your time and budget.
                 </p>
-
             </div>
-
-
             <!-- CENTRAL CONTROL PANEL -->
-
             <div class="control-panel">
-
                 <!-- LOCATION -->
-
                 <div class="location-card">
-
                     <div class="location-icon">
-                        ⌖
-                    </div>
-
+    <i class="fa-solid fa-location-dot"></i>
+</div>
                     <div class="location-info">
-
                         <p class="label">
-                            YOUR LOCATION
+                            WHERE ARE YOU STARTING FROM?
                         </p>
-
                         <h2>
-                            Discover around you
+                            Let's figure out what's around you
                         </h2>
-
                         <p>
-                            Enable location to find places
-                            near your current position.
+                            Share your location and we'll help you find
+                            nearby places that fit into your plan.
                         </p>
-
                     </div>
-
                     <button
                         type="button"
                         id="locationButton"
                     >
                         Enable
                     </button>
-
                 </div>
-
-
                 <div
                     id="locationStatus"
                     class="location-status"
                 ></div>
-
-
                 <!-- BUDGET -->
-
                 <div class="budget-card">
-
                     <div class="budget-top">
-
                         <div>
-
                             <p class="label">
-                                YOUR BUDGET
+                                WHAT'S THE BUDGET LOOKING LIKE?
                             </p>
-
                             <h2>
-                                How much are you planning to spend?
+                                Set a comfortable budget for your trip
                             </h2>
-
                         </div>
-
                         <div
                             id="budgetValue"
                             class="budget-value"
                         >
                             ₹2,500
                         </div>
-
                     </div>
-
-
                     <input
                         type="range"
                         id="budgetSlider"
@@ -121,32 +88,21 @@
                         step="500"
                         value="2500"
                     >
-
                     <div class="range-labels">
                         <span>₹500</span>
                         <span>₹10,000+</span>
                     </div>
-
                 </div>
-
-
                 <button
                     type="button"
                     class="explore-button"
                 >
-                    Start exploring
+                    Alright, let's plan it
                     <span>→</span>
                 </button>
-
             </div>
-
         </section>
-
     </main>
-
-
     <script src="{% static 'explorer/js/dashboard.js' %}"></script>
-
 </body>
-
 </html>

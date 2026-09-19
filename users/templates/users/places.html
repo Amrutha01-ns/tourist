@@ -15,14 +15,11 @@
 
 <body>
 
-
     <!-- Background overlay -->
     <div class="background-overlay"></div>
 
-
     <!-- Main Container -->
     <main class="places-page">
-
 
         <!-- Welcome Section -->
         <section class="hero-section">
@@ -49,8 +46,13 @@
         <section class="filter-section">
 
             <div class="filter-heading">
+
                 <h2>Find Your Perfect Place</h2>
-                <p>Choose a category and explore {{ district.name }}</p>
+
+                <p>
+                    Choose a category and explore {{ district.name }}
+                </p>
+
             </div>
 
 
@@ -110,13 +112,29 @@
             <div class="section-title">
 
                 <div>
+
                     <p class="small-title">
                         HANDPICKED DESTINATIONS
                     </p>
 
                     <h2>
-                        Top Places in {{ district.name }}
-                    </h2>
+    {% if selected_category == "watery" %}
+        Top Watery Places in {{ district.name }}
+
+    {% elif selected_category == "historical" %}
+        Top Historical Places in {{ district.name }}
+
+    {% elif selected_category == "religious" %}
+        Top Religious Places in {{ district.name }}
+
+    {% elif selected_category == "nature" %}
+        Top Nature Places in {{ district.name }}
+
+    {% else %}
+        Top Places in {{ district.name }}
+    {% endif %}
+</h2>
+
                 </div>
 
             </div>
@@ -131,14 +149,24 @@
 
                     <!-- Image -->
                     <div class="image-container">
-                    {% if place.image %}
-    <img src="{{ place.image.url }}" alt="{{ place.name }}">
-{% else %}
-    <div class="no-image">
-        No Image Available
-    </div>
-{% endif %}
-                                            <span class="category-badge">
+
+                        {% if place.image %}
+
+                            <a href="{% url 'explorer:place_detail' place.slug %}">
+                                <img src="{{ place.image.url }}"
+                                     alt="{{ place.name }}">
+                            </a>
+
+                        {% else %}
+
+                            <div class="no-image">
+                                No Image Available
+                            </div>
+
+                        {% endif %}
+
+
+                        <span class="category-badge">
                             {{ place.get_category_display }}
                         </span>
 
@@ -159,33 +187,43 @@
 
 
                         <div class="description">
+
                             <p>
                                 {{ place.description }}
                             </p>
+
                         </div>
 
 
                         <button class="see-more-btn">
+
                             See More
-                            <span>→</span>
+
+                            <span>
+                                →
+                            </span>
+
                         </button>
 
                     </div>
 
                 </article>
 
+
                 {% empty %}
 
-                    <div class="no-places">
+                <div class="no-places">
 
-                        <h3>No places found</h3>
+                    <h3>
+                        No places found
+                    </h3>
 
-                        <p>
-                            No places are currently available
-                            in this category.
-                        </p>
+                    <p>
+                        No places are currently available
+                        in this category.
+                    </p>
 
-                    </div>
+                </div>
 
                 {% endfor %}
 
