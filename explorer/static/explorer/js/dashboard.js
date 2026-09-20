@@ -1,3 +1,4 @@
+
 const locationButton =
     document.getElementById("locationButton");
 const locationStatus =
@@ -31,7 +32,9 @@ locationButton.addEventListener("click", () => {
         }
     );
 });
-/* BUDGET */
+/* ================================
+   BUDGET
+================================ */
 const budgetSlider =
     document.getElementById("budgetSlider");
 const budgetValue =
@@ -42,3 +45,65 @@ budgetSlider.addEventListener("input", () => {
     budgetValue.textContent =
         `₹${value.toLocaleString("en-IN")}`;
 });
+/* ================================
+   TRAVELLERS
+================================ */
+const travellersInput =
+    document.getElementById("travellersInput");
+const decreaseTravellers =
+    document.getElementById("decreaseTravellers");
+const increaseTravellers =
+    document.getElementById("increaseTravellers");
+if (
+    travellersInput &&
+    decreaseTravellers &&
+    increaseTravellers
+) {
+    decreaseTravellers.addEventListener("click", () => {
+        const value =
+            parseInt(travellersInput.value, 10);
+        if (value > 1) {
+            travellersInput.value =
+                value - 1;
+        }
+    });
+    increaseTravellers.addEventListener("click", () => {
+        const value =
+            parseInt(travellersInput.value, 10);
+        if (value < 50) {
+            travellersInput.value =
+                value + 1;
+        }
+    });
+}
+/* ================================
+   DAYS
+================================ */
+const daysInput =
+    document.getElementById("daysInput");
+const decreaseDays =
+    document.getElementById("decreaseDays");
+const increaseDays =
+    document.getElementById("increaseDays");
+if (
+    daysInput &&
+    decreaseDays &&
+    increaseDays
+) {
+    decreaseDays.addEventListener("click", () => {
+        const value =
+            parseInt(daysInput.value, 10);
+        if (value > 1) {
+            daysInput.value =
+                value - 1;
+        }
+    });
+    increaseDays.addEventListener("click", () => {
+        const value =
+            parseInt(daysInput.value, 10);
+        if (value < 30) {
+            daysInput.value =
+                value + 1;
+        }
+    });
+}

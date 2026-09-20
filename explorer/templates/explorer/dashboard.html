@@ -1,54 +1,78 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Tourist | Explore</title>
+
     <link
-    rel="stylesheet"
-    href="{% static 'explorer/css/dashboard.css' %}"
->
-<link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
->
+        rel="stylesheet"
+        href="{% static 'explorer/css/dashboard.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
 </head>
+
 <body>
+
     <main class="explorer-dashboard">
+
         <section class="hero">
+
             <div class="hero-content">
+
                 <p class="eyebrow">
                     TOURIST · YOUR TRAVEL BUDDY
                 </p>
+
                 <h1>
                     You picked the place.
                     <span>Let's plan the rest.</span>
                 </h1>
+
                 <p class="hero-description">
                     You're here to explore, and we're here to help you plan it.
                     Tell us a little about your trip, and we'll help you make
                     the most of your time and budget.
                 </p>
+
             </div>
+
+
             <!-- CENTRAL CONTROL PANEL -->
+
             <div class="control-panel">
+
+
                 <!-- LOCATION -->
+
                 <div class="location-card">
+
                     <div class="location-icon">
-    <i class="fa-solid fa-location-dot"></i>
-</div>
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+
                     <div class="location-info">
+
                         <p class="label">
                             WHERE ARE YOU STARTING FROM?
                         </p>
+
                         <h2>
                             Let's figure out what's around you
                         </h2>
+
                         <p>
                             Share your location and we'll help you find
                             nearby places that fit into your plan.
                         </p>
+
                     </div>
                     <button
                         type="button"
@@ -61,9 +85,97 @@
                     id="locationStatus"
                     class="location-status"
                 ></div>
+                <!-- TRIP DETAILS -->
+                <div class="trip-details">
+
+                    <!-- NUMBER OF TRAVELLERS -->
+
+                    <div class="trip-input-card">
+                        <div class="trip-input-icon">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <div class="trip-input-info">
+                            <p class="label">
+                                WHO'S TRAVELLING?
+                            </p>
+
+                            <h2>
+                                How many people are joining?
+                            </h2>
+                            <p>
+                                Tell us the number of travellers so we can
+                                plan the trip accordingly.
+                            </p>
+                        </div>
+                        <div class="number-control">
+                            <button
+                                type="button"
+                                id="decreaseTravellers"
+                            >
+                                −
+                            </button>
+                            <input
+                                type="number"
+                                id="travellersInput"
+                                value="2"
+                                min="1"
+                                max="50"
+                            >
+                            <button
+                                type="button"
+                                id="increaseTravellers"
+                            >
+                                +
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- NUMBER OF DAYS -->
+                    <div class="trip-input-card">
+
+                        <div class="trip-input-icon">
+                            <i class="fa-solid fa-calendar-days"></i>
+                        </div>
+                        <div class="trip-input-info">
+                            <p class="label">
+                                HOW LONG ARE YOU STAYING?
+                            </p>
+                            <h2>
+                                How many days do you have?
+                            </h2>
+                            <p>
+                                We'll use your trip duration to organise
+                                places across each day.
+                            </p>
+                        </div>
+
+                        <div class="number-control">
+                            <button
+                                type="button"
+                                id="decreaseDays"
+                            >
+                                −
+                            </button>
+                            <input
+                                type="number"
+                                id="daysInput"
+                                value="2"
+                                min="1"
+                                max="30"
+                            >
+                            <button
+                                type="button"
+                                id="increaseDays"
+                            >
+                                +
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 <!-- BUDGET -->
                 <div class="budget-card">
                     <div class="budget-top">
+
                         <div>
                             <p class="label">
                                 WHAT'S THE BUDGET LOOKING LIKE?
@@ -71,6 +183,7 @@
                             <h2>
                                 Set a comfortable budget for your trip
                             </h2>
+
                         </div>
                         <div
                             id="budgetValue"
@@ -92,6 +205,7 @@
                         <span>₹10,000+</span>
                     </div>
                 </div>
+                <!-- PLAN BUTTON -->
                 <button
                     type="button"
                     class="explore-button"
