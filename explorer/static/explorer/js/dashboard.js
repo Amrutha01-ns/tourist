@@ -1,4 +1,6 @@
-
+/* ================================
+   LOCATION
+================================ */
 const locationButton =
     document.getElementById("locationButton");
 const locationStatus =
@@ -107,3 +109,68 @@ if (
         }
     });
 }
+/* ================================
+   CSRF helper (Django)
+================================ */
+function getCookie(name) {
+    const match = document.cookie.match(
+        new RegExp("(^| )" + name + "=([^;]+)")
+    );
+    return match ? decodeURIComponent(match[2]) : null;
+}
+/* ================================
+   PLAN / ESTIMATE
+================================ */
+const exploreButton =
+    document.querySelector('.explore-button');
+const destinationInput =
+    document.getElementById('destinationInput');
+
+exploreButton.addEventListener('click', async () => {
+    const destination = destinationInput.value.trim();
+
+    if (!destination) {
+        destinationInput.focus();
+        destinationInput.placeholder = "Please tell us where you're headed";
+        return;
+    }
+
+    const payload = {
+        city: destination,
+        travellers: parseInt(travellersInput.value, 10),
+        days: parseInt(daysInput.value, 10),
+        budget: parseInt(budgetSlider.value, 10)
+    };
+
+    exploreButton.disabled = true;
+
+    try {
+        const response = await fetch('/engine/plan/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            const errBody = await response.json().catch(() => ({}));
+            throw new Error(errBody.error || `Request failed (${response.status})`);
+        }
+
+        const result = await response.json();
+
+        if (!result.valid) {
+            alert(`${result.message} You need ₹${result.estimated_total}, but entered ₹${result.entered_budget}. Short by ₹${result.shortfall}.`);
+            return;
+        }
+
+        alert(`Great! Estimated cost: ₹${result.estimated_total}. You have ₹${result.surplus} to spare.`);
+    } catch (err) {
+        alert("Something went wrong getting your estimate. Please try again.");
+        console.error(err);
+    } finally {
+        exploreButton.disabled = false;
+    }
+});

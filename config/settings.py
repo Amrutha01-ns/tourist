@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'transport_finder',
     'rest_framework',
     'explorer',
+    "engine",
 ]
 
 MIDDLEWARE = [

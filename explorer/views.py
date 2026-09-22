@@ -10,3 +10,7 @@ def place_detail(request, slug):
         "explorer/dashboard.html",
         {"place": place}
     )
+
+
+def dashboard(request):
+    return render(request, "explorer/dashboard.html")

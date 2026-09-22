@@ -10,6 +10,7 @@ urlpatterns = [
     path("places/<str:district_name>/", places_by_district, name="places_by_district"),
     path("transport/", include("transport_finder.urls")),
     path("explorer/", include("explorer.urls")),
+    path("engine/", include("engine.urls")),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
