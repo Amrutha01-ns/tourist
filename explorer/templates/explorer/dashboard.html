@@ -20,8 +20,6 @@
 
 <body>
 
-    {% csrf_token %}
-
     <main class="explorer-dashboard">
 
         <section class="hero">
@@ -48,22 +46,43 @@
 
             <!-- CENTRAL CONTROL PANEL -->
 
-            <div class="control-panel">
+            <form method="POST" class="control-panel">
+
+                {% csrf_token %}
+
+                <!-- DESTINATION -->
+
                 <div class="location-card">
+
                     <div class="location-icon">
                         <i class="fa-solid fa-map-pin"></i>
                     </div>
+
                     <div class="location-info">
-                        <p class="label">WHERE ARE YOU HEADING?</p>
-                        <h2>Tell us your destination</h2>
-                        <p>We'll estimate costs based on this city.</p>
+
+                        <p class="label">
+                            WHERE ARE YOU HEADING?
+                        </p>
+
+                        <h2>
+                            Tell us your destination
+                        </h2>
+
+                        <p>
+                            We'll estimate costs based on this city.
+                        </p>
+
                     </div>
+
                     <input
                         type="text"
                         id="destinationInput"
+                        name="destination"
                         placeholder="e.g. Goa, Jaipur, Mysuru"
                     >
+
                 </div>
+
 
                 <!-- LOCATION -->
 
@@ -89,27 +108,37 @@
                         </p>
 
                     </div>
+
                     <button
                         type="button"
                         id="locationButton"
                     >
                         Enable
                     </button>
+
                 </div>
+
+
                 <div
                     id="locationStatus"
                     class="location-status"
                 ></div>
+
+
                 <!-- TRIP DETAILS -->
+
                 <div class="trip-details">
 
                     <!-- NUMBER OF TRAVELLERS -->
 
                     <div class="trip-input-card">
+
                         <div class="trip-input-icon">
                             <i class="fa-solid fa-users"></i>
                         </div>
+
                         <div class="trip-input-info">
+
                             <p class="label">
                                 WHO'S TRAVELLING?
                             </p>
@@ -117,120 +146,211 @@
                             <h2>
                                 How many people are joining?
                             </h2>
+
                             <p>
                                 Tell us the number of travellers so we can
                                 plan the trip accordingly.
                             </p>
+
                         </div>
+
                         <div class="number-control">
+
                             <button
                                 type="button"
                                 id="decreaseTravellers"
                             >
                                 −
                             </button>
+
                             <input
                                 type="number"
                                 id="travellersInput"
+                                name="travellers"
                                 value="2"
                                 min="1"
                                 max="50"
                             >
+
                             <button
                                 type="button"
                                 id="increaseTravellers"
                             >
                                 +
                             </button>
+
                         </div>
+
                     </div>
 
+
                     <!-- NUMBER OF DAYS -->
+
                     <div class="trip-input-card">
 
                         <div class="trip-input-icon">
                             <i class="fa-solid fa-calendar-days"></i>
                         </div>
+
                         <div class="trip-input-info">
+
                             <p class="label">
                                 HOW LONG ARE YOU STAYING?
                             </p>
+
                             <h2>
                                 How many days do you have?
                             </h2>
+
                             <p>
                                 We'll use your trip duration to organise
                                 places across each day.
                             </p>
+
                         </div>
 
                         <div class="number-control">
+
                             <button
                                 type="button"
                                 id="decreaseDays"
                             >
                                 −
                             </button>
+
                             <input
                                 type="number"
                                 id="daysInput"
+                                name="days"
                                 value="2"
                                 min="1"
                                 max="30"
                             >
+
                             <button
                                 type="button"
                                 id="increaseDays"
                             >
                                 +
                             </button>
+
                         </div>
+
                     </div>
+
                 </div>
+
+
                 <!-- BUDGET -->
+
                 <div class="budget-card">
+
                     <div class="budget-top">
 
                         <div>
+
                             <p class="label">
                                 WHAT'S THE BUDGET LOOKING LIKE?
                             </p>
+
                             <h2>
                                 Set a comfortable budget for your trip
                             </h2>
 
                         </div>
+
                         <div
                             id="budgetValue"
                             class="budget-value"
                         >
                             ₹2,500
                         </div>
+
                     </div>
+
                     <input
                         type="range"
                         id="budgetSlider"
+                        name="budget"
                         min="500"
                         max="10000"
                         step="500"
                         value="2500"
                     >
+
                     <div class="range-labels">
                         <span>₹500</span>
                         <span>₹10,000+</span>
                     </div>
+
                 </div>
+
+
                 <!-- PLAN BUTTON -->
+
                 <button
-                    type="button"
+                    type="submit"
                     class="explore-button"
                 >
                     Alright, let's plan it
                     <span>→</span>
                 </button>
-            </div>
+
+
+                <!-- EXPENSE RESULT -->
+
+                {% if expense %}
+
+                <div class="expense-result">
+
+                    <h2>
+                        Your Estimated Trip Cost
+                    </h2>
+
+                    <p>
+                        Food:
+                        ₹{{ expense.food }}
+                    </p>
+
+                    <p>
+                        Stay:
+                        ₹{{ expense.stay }}
+                    </p>
+
+                    <p>
+                        Transport:
+                        ₹{{ expense.transport }}
+                    </p>
+
+                    <p>
+                        Activities:
+                        ₹{{ expense.activities }}
+                    </p>
+
+                    <hr>
+
+                    <p>
+                        Total:
+                        ₹{{ expense.total }}
+                    </p>
+
+                    <p>
+                        Remaining Budget:
+                        ₹{{ expense.remaining }}
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+            </form>
+
         </section>
+
     </main>
+
+
     <script src="{% static 'explorer/js/dashboard.js' %}"></script>
+
 </body>
 </html>
