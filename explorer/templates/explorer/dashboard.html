@@ -4,353 +4,336 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tourist | Plan Your Journey</title>
 
-    <title>Tourist | Explore</title>
-
-    <link
-        rel="stylesheet"
-        href="{% static 'explorer/css/dashboard.css' %}"
-    >
-
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-    >
+    <link rel="stylesheet" href="{% static 'users/dashboard.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-
 <body>
 
-    <main class="explorer-dashboard">
+<!-- NAVBAR -->
+<header class="navbar">
 
-        <section class="hero">
+    <a href="#" class="brand">
+        <div class="brand-logo">T</div>
+        <span>Tourist</span>
+    </a>
 
-            <div class="hero-content">
+    <nav class="nav-menu">
 
-                <p class="eyebrow">
-                    TOURIST · YOUR TRAVEL BUDDY
-                </p>
+        <a href="#" class="nav-item">
+            <span class="nav-icon"><i class="fa-solid fa-house"></i></span>
+            Home
+        </a>
 
-                <h1>
-                    You picked the place.
-                    <span>Let's plan the rest.</span>
-                </h1>
+        <a href="#" class="nav-item">
+            <span class="nav-icon"><i class="fa-solid fa-heart"></i></span>
+            Wishlist
+        </a>
 
-                <p class="hero-description">
-                    You're here to explore, and we're here to help you plan it.
-                    Tell us a little about your trip, and we'll help you make
-                    the most of your time and budget.
-                </p>
+        <!-- ACCOUNT -->
+        <div class="account-wrapper">
 
-            </div>
+            <button class="account-btn" id="accountBtn" type="button">
+                <span class="account-icon">{{ request.user.username|first|upper }}</span>
+                <span class="account-name">{{ request.user.username }}</span>
+                <i class="fa-solid fa-chevron-down account-arrow"></i>
+            </button>
 
+            <!-- ACCOUNT MENU -->
+            <div class="account-menu" id="accountMenu">
 
-            <!-- CENTRAL CONTROL PANEL -->
-
-            <form method="POST" class="control-panel">
-
-                {% csrf_token %}
-
-                <!-- DESTINATION -->
-
-                <div class="location-card">
-
-                    <div class="location-icon">
-                        <i class="fa-solid fa-map-pin"></i>
+                <div class="account-header">
+                    <div class="account-avatar">{{ request.user.username|first|upper }}</div>
+                    <div>
+                        <h3>{{ request.user.username }}</h3>
+                        <p>Tourist Explorer</p>
                     </div>
-
-                    <div class="location-info">
-
-                        <p class="label">
-                            WHERE ARE YOU HEADING?
-                        </p>
-
-                        <h2>
-                            Tell us your destination
-                        </h2>
-
-                        <p>
-                            We'll estimate costs based on this city.
-                        </p>
-
-                    </div>
-
-                    <input
-                        type="text"
-                        id="destinationInput"
-                        name="destination"
-                        placeholder="e.g. Goa, Jaipur, Mysuru"
-                    >
-
                 </div>
 
+                <div class="account-divider"></div>
 
-                <!-- LOCATION -->
-
-                <div class="location-card">
-
-                    <div class="location-icon">
-                        <i class="fa-solid fa-location-dot"></i>
-                    </div>
-
-                    <div class="location-info">
-
-                        <p class="label">
-                            WHERE ARE YOU STARTING FROM?
-                        </p>
-
-                        <h2>
-                            Let's figure out what's around you
-                        </h2>
-
-                        <p>
-                            Share your location and we'll help you find
-                            nearby places that fit into your plan.
-                        </p>
-
-                    </div>
-
-                    <button
-                        type="button"
-                        id="locationButton"
-                    >
-                        Enable
-                    </button>
-
-                </div>
-
-
-                <div
-                    id="locationStatus"
-                    class="location-status"
-                ></div>
-
-
-                <!-- TRIP DETAILS -->
-
-                <div class="trip-details">
-
-                    <!-- NUMBER OF TRAVELLERS -->
-
-                    <div class="trip-input-card">
-
-                        <div class="trip-input-icon">
-                            <i class="fa-solid fa-users"></i>
-                        </div>
-
-                        <div class="trip-input-info">
-
-                            <p class="label">
-                                WHO'S TRAVELLING?
-                            </p>
-
-                            <h2>
-                                How many people are joining?
-                            </h2>
-
-                            <p>
-                                Tell us the number of travellers so we can
-                                plan the trip accordingly.
-                            </p>
-
-                        </div>
-
-                        <div class="number-control">
-
-                            <button
-                                type="button"
-                                id="decreaseTravellers"
-                            >
-                                −
-                            </button>
-
-                            <input
-                                type="number"
-                                id="travellersInput"
-                                name="travellers"
-                                value="2"
-                                min="1"
-                                max="50"
-                            >
-
-                            <button
-                                type="button"
-                                id="increaseTravellers"
-                            >
-                                +
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- NUMBER OF DAYS -->
-
-                    <div class="trip-input-card">
-
-                        <div class="trip-input-icon">
-                            <i class="fa-solid fa-calendar-days"></i>
-                        </div>
-
-                        <div class="trip-input-info">
-
-                            <p class="label">
-                                HOW LONG ARE YOU STAYING?
-                            </p>
-
-                            <h2>
-                                How many days do you have?
-                            </h2>
-
-                            <p>
-                                We'll use your trip duration to organise
-                                places across each day.
-                            </p>
-
-                        </div>
-
-                        <div class="number-control">
-
-                            <button
-                                type="button"
-                                id="decreaseDays"
-                            >
-                                −
-                            </button>
-
-                            <input
-                                type="number"
-                                id="daysInput"
-                                name="days"
-                                value="2"
-                                min="1"
-                                max="30"
-                            >
-
-                            <button
-                                type="button"
-                                id="increaseDays"
-                            >
-                                +
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- BUDGET -->
-
-                <div class="budget-card">
-
-                    <div class="budget-top">
-
-                        <div>
-
-                            <p class="label">
-                                WHAT'S THE BUDGET LOOKING LIKE?
-                            </p>
-
-                            <h2>
-                                Set a comfortable budget for your trip
-                            </h2>
-
-                        </div>
-
-                        <div
-                            id="budgetValue"
-                            class="budget-value"
-                        >
-                            ₹2,500
-                        </div>
-
-                    </div>
-
-                    <input
-                        type="range"
-                        id="budgetSlider"
-                        name="budget"
-                        min="500"
-                        max="10000"
-                        step="500"
-                        value="2500"
-                    >
-
-                    <div class="range-labels">
-                        <span>₹500</span>
-                        <span>₹10,000+</span>
-                    </div>
-
-                </div>
-
-
-                <!-- PLAN BUTTON -->
-
-                <button
-                    type="submit"
-                    class="explore-button"
-                >
-                    Alright, let's plan it
-                    <span>→</span>
+                <button class="account-option" id="settingsBtn" type="button">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
                 </button>
 
+                <button class="account-option" id="darkModeBtn" type="button">
+                    <i class="fa-solid fa-moon"></i>
+                    <span>Dark Mode</span>
+                    <span class="theme-status" id="themeStatus">OFF</span>
+                </button>
 
-                <!-- EXPENSE RESULT -->
+                <div class="account-divider"></div>
 
-                {% if expense %}
+                <a href="{% url 'logout' %}" class="account-option logout-option">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </a>
 
-                <div class="expense-result">
+            </div>
+        </div>
 
-                    <h2>
-                        Your Estimated Trip Cost
-                    </h2>
+    </nav>
+</header>
 
-                    <p>
-                        Food:
-                        ₹{{ expense.food }}
-                    </p>
+<main>
 
-                    <p>
-                        Stay:
-                        ₹{{ expense.stay }}
-                    </p>
+    <!-- SETTINGS PANEL -->
+    <div class="settings-overlay" id="settingsOverlay">
+        <div class="settings-panel">
 
-                    <p>
-                        Transport:
-                        ₹{{ expense.transport }}
-                    </p>
-
-                    <p>
-                        Activities:
-                        ₹{{ expense.activities }}
-                    </p>
-
-                    <hr>
-
-                    <p>
-                        Total:
-                        ₹{{ expense.total }}
-                    </p>
-
-                    <p>
-                        Remaining Budget:
-                        ₹{{ expense.remaining }}
-                    </p>
-
+            <div class="settings-top">
+                <div>
+                    <p class="section-label">PREFERENCES</p>
+                    <h2>Settings</h2>
                 </div>
+                <button class="settings-close" id="settingsClose" type="button">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
 
-                {% endif %}
+            <!-- APPEARANCE -->
+            <div class="settings-section">
+                <h3>Appearance</h3>
 
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-icon"><i class="fa-solid fa-moon"></i></div>
+                        <div>
+                            <h4>Dark Mode</h4>
+                            <p>Use a darker appearance across Tourist.</p>
+                        </div>
+                    </div>
+
+                    <label class="switch">
+                        <input type="checkbox" id="settingsDarkMode">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- ACCOUNT -->
+            <div class="settings-section">
+                <h3>Account</h3>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-icon"><i class="fa-solid fa-user"></i></div>
+                        <div>
+                            <h4>{{ request.user.username }}</h4>
+                            <p>Your Tourist account</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero">
+
+        <div class="hero-content">
+            <p class="entry-tag">YOUR JOURNEY STARTS HERE</p>
+
+            <h1 class="forloc">
+                Welcome to
+                <span class="hero-brand">
+                    Tourist
+                    <span class="loc-icon"><i class="fa-solid fa-route"></i></span>
+                </span>
+            </h1>
+
+            <p class="hero-text">
+                Discover new places, build your journey and let us
+                plan the experience for you.
+            </p>
+
+            <!-- LOCATION SEARCH -->
+            <form class="search-box" id="locationForm">
+                <div class="search-icon">⌕</div>
+                <input
+                    type="text"
+                    id="locationInput"
+                    list="districts"
+                    placeholder="Where do you want to go?"
+                    required
+                >
+                <datalist id="districts">
+                    {% for d in districts %}
+                    <option value="{{ d.name }}">
+                    {% endfor %}
+                </datalist>
+                <button type="submit" class="search-btn">Explore</button>
             </form>
 
-        </section>
+            <button class="current-location-btn" id="currentLocationBtn" type="button">
+                <span>⌖</span>
+                Use My Current Location
+            </button>
+        </div>
 
-    </main>
+        <div class="hero-decoration">
+            <div class="circle circle-one"></div>
+            <div class="circle circle-two"></div>
+            <div class="floating-card card-one">✦</div>
+            <div class="floating-card card-two">⌖</div>
+        </div>
 
+    </section>
 
-    <script src="{% static 'explorer/js/dashboard.js' %}"></script>
+    <!-- POPULAR DESTINATIONS -->
+    <section class="popular-section">
 
+        <div class="section-top">
+            <div>
+                <p class="section-label">START EXPLORING</p>
+                <h2>Popular destinations</h2>
+            </div>
+            <a href="#" class="view-all">View all →</a>
+        </div>
+
+        <div class="destination-grid">
+
+            <!-- MYSORE -->
+            <a href="{% url 'places_by_district' 'Mysore' %}" class="destination-card large-card">
+                <div class="card-bg">
+                    <img src="{% get_media_prefix %}places/myspalace.jpg" alt="Mysore">
+                </div>
+                <div class="card-overlay"></div>
+                <div class="destination-content">
+                    <span class="place-tag">ROYAL HERITAGE</span>
+                    <h3>Mysore</h3>
+                    <p>Palaces, culture and timeless history</p>
+                    <span class="explore-place">Explore →</span>
+                </div>
+            </a>
+
+            <!-- MADIKERI -->
+            <a href="{% url 'places_by_district' 'Madikeri' %}" class="destination-card">
+                <div class="card-bg">
+                    <img src="{% get_media_prefix %}places/abb.jpg" alt="Madikeri">
+                </div>
+                <div class="card-overlay"></div>
+                <div class="destination-content">
+                    <span class="place-tag">COORG</span>
+                    <h3>Madikeri</h3>
+                    <p>Hills, coffee and mist</p>
+                </div>
+            </a>
+
+            <!-- CHIKKAMAGALURU -->
+            <a href="{% url 'places_by_district' 'Chikkamagaluru' %}" class="destination-card">
+                <div class="card-bg">
+                    <img src="{% get_media_prefix %}places/ch_hill.webp" alt="Chikkamagaluru">
+                </div>
+                <div class="card-overlay"></div>
+                <div class="destination-content">
+                    <span class="place-tag">NATURE</span>
+                    <h3>Chikkamagaluru</h3>
+                    <p>Mountains and coffee estates</p>
+                </div>
+            </a>
+
+            <!-- HAMPI: replace hampi.jpg with your real file name from media/places -->
+            <a href="{% url 'places_by_district' 'Hampi' %}" class="destination-card">
+                <div class="card-bg">
+                    <img src="{% get_media_prefix %}places/hampi.jpg" alt="Hampi">
+                </div>
+                <div class="card-overlay"></div>
+                <div class="destination-content">
+                    <span class="place-tag">HISTORY</span>
+                    <h3>Hampi</h3>
+                    <p>Ancient ruins and architecture</p>
+                </div>
+            </a>
+
+            <!-- UDUPI: replace udupi.jpg with your real file name from media/places -->
+            <a href="{% url 'places_by_district' 'Udupi' %}" class="destination-card wide-card">
+                <div class="card-bg">
+                    <img src="{% get_media_prefix %}places/udupi.jpg" alt="Udupi">
+                </div>
+                <div class="card-overlay"></div>
+                <div class="destination-content">
+                    <span class="place-tag">COASTAL JOURNEY</span>
+                    <h3>Udupi</h3>
+                    <p>Beaches, temples and coastal beauty</p>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- RECENT SEARCHES -->
+    <section class="recent-section">
+
+        <div class="recent-heading">
+            <p class="section-label">YOUR JOURNEY HISTORY</p>
+            <h2>Recent searches</h2>
+            <p>Pick up where you left off.</p>
+        </div>
+
+        <div class="thread-wrapper">
+            <div class="thread"></div>
+
+            <div class="hanging-list">
+
+                <div class="hanging-item">
+                    <div class="pin"></div>
+                    <div class="vertical-thread"></div>
+                    <div class="recent-card">
+                        <span class="recent-number">01</span>
+                        <div><h3>Mysore</h3><p>Last explored</p></div>
+                        <span class="arrow">→</span>
+                    </div>
+                </div>
+
+                <div class="hanging-item down">
+                    <div class="pin"></div>
+                    <div class="vertical-thread"></div>
+                    <div class="recent-card">
+                        <span class="recent-number">02</span>
+                        <div><h3>Madikeri</h3><p>Last explored</p></div>
+                        <span class="arrow">→</span>
+                    </div>
+                </div>
+
+                <div class="hanging-item">
+                    <div class="pin"></div>
+                    <div class="vertical-thread"></div>
+                    <div class="recent-card">
+                        <span class="recent-number">03</span>
+                        <div><h3>Hampi</h3><p>Last explored</p></div>
+                        <span class="arrow">→</span>
+                    </div>
+                </div>
+
+                <div class="hanging-item down">
+                    <div class="pin"></div>
+                    <div class="vertical-thread"></div>
+                    <div class="recent-card">
+                        <span class="recent-number">04</span>
+                        <div><h3>Udupi</h3><p>Last explored</p></div>
+                        <span class="arrow">→</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<script src="{% static 'users/dashboard.js' %}"></script>
+<script>
+    document.getElementById("locationForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const district = document.getElementById("locationInput").value.trim();
+        if (district) {
+            window.location.href = "/places/" + encodeURIComponent(district) + "/";
+        }
+    });
+</script>
 </body>
 </html>

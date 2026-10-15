@@ -1,20 +1,17 @@
 {% load static %}
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Tourist | Plan Your Journey</title>
 
     <link rel="stylesheet" href="{% static 'users/dashboard.css' %}">
-
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    >
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <!-- NAVBAR -->
-  <!-- NAVBAR -->
+
+<!-- NAVBAR -->
 <header class="navbar">
 
     <a href="#" class="brand">
@@ -25,273 +22,158 @@
     <nav class="nav-menu">
 
         <a href="#" class="nav-item">
-            <span class="nav-icon">
-                <i class="fa-solid fa-house"></i>
-            </span>
+            <span class="nav-icon"><i class="fa-solid fa-house"></i></span>
             Home
         </a>
 
         <a href="#" class="nav-item">
-            <span class="nav-icon">
-                <i class="fa-solid fa-heart"></i>
-            </span>
+            <span class="nav-icon"><i class="fa-solid fa-heart"></i></span>
             Wishlist
         </a>
 
         <!-- ACCOUNT -->
         <div class="account-wrapper">
 
-            <button
-                class="account-btn"
-                id="accountBtn"
-                type="button"
-            >
-                <span class="account-icon">
-                    {{ request.user.username|first|upper }}
-                </span>
-
-                <span class="account-name">
-                    {{ request.user.username }}
-                </span>
-
+            <button class="account-btn" id="accountBtn" type="button">
+                <span class="account-icon">{{ request.user.username|first|upper }}</span>
+                <span class="account-name">{{ request.user.username }}</span>
                 <i class="fa-solid fa-chevron-down account-arrow"></i>
             </button>
-
 
             <!-- ACCOUNT MENU -->
             <div class="account-menu" id="accountMenu">
 
                 <div class="account-header">
-
-                    <div class="account-avatar">
-                        {{ request.user.username|first|upper }}
-                    </div>
-
+                    <div class="account-avatar">{{ request.user.username|first|upper }}</div>
                     <div>
                         <h3>{{ request.user.username }}</h3>
                         <p>Tourist Explorer</p>
                     </div>
-
                 </div>
-
 
                 <div class="account-divider"></div>
 
-
-                <!-- SETTINGS -->
-                <button
-                    class="account-option"
-                    id="settingsBtn"
-                    type="button"
-                >
+                <button class="account-option" id="settingsBtn" type="button">
                     <i class="fa-solid fa-gear"></i>
                     <span>Settings</span>
                 </button>
 
-
-                <!-- DARK MODE -->
-                <button
-                    class="account-option"
-                    id="darkModeBtn"
-                    type="button"
-                >
+                <button class="account-option" id="darkModeBtn" type="button">
                     <i class="fa-solid fa-moon"></i>
                     <span>Dark Mode</span>
-
-                    <span
-                        class="theme-status"
-                        id="themeStatus"
-                    >
-                        OFF
-                    </span>
+                    <span class="theme-status" id="themeStatus">OFF</span>
                 </button>
-
 
                 <div class="account-divider"></div>
 
-
-                <!-- LOGOUT -->
-                <a
-                    href="{% url 'logout' %}"
-                    class="account-option logout-option"
-                >
+                <a href="{% url 'logout' %}" class="account-option logout-option">
                     <i class="fa-solid fa-right-from-bracket"></i>
                     <span>Logout</span>
                 </a>
 
             </div>
-
         </div>
 
     </nav>
-
 </header>
 
-    <main>
+<main>
 
+    <!-- SETTINGS PANEL -->
+    <div class="settings-overlay" id="settingsOverlay">
+        <div class="settings-panel">
 
-        <!-- SETTINGS PANEL -->
-
-        <div class="settings-overlay" id="settingsOverlay">
-
-            <div class="settings-panel">
-
-
-                <!-- SETTINGS HEADER -->
-                <div class="settings-top">
-
-                    <div>
-
-                        <p class="section-label">
-                            PREFERENCES
-                        </p>
-
-                        <h2>
-                            Settings
-                        </h2>
-
-                    </div>
-
-
-                    <button
-                        class="settings-close"
-                        id="settingsClose"
-                    >
-
-                        <i class="fa-solid fa-xmark"></i>
-
-                    </button>
-
+            <div class="settings-top">
+                <div>
+                    <p class="section-label">PREFERENCES</p>
+                    <h2>Settings</h2>
                 </div>
-
-
-                <!-- APPEARANCE -->
-
-                <div class="settings-section">
-
-                    <h3>
-                        Appearance
-                    </h3>
-
-
-                    <div class="setting-item">
-
-
-                        <div class="setting-info">
-
-                            <div class="setting-icon">
-
-                                <i class="fa-solid fa-moon"></i>
-
-                            </div>
-
-
-                            <div>
-
-                                <h4>
-                                    Dark Mode
-                                </h4>
-
-                                <p>
-                                    Use a darker appearance across Tourist.
-                                </p>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- TOGGLE -->
-
-                        <label class="switch">
-
-                            <input
-                                type="checkbox"
-                                id="settingsDarkMode"
-                            >
-
-                            <span class="slider"></span>
-
-                        </label>
-
-                    </div>
-
-                </div>
-
-
-                <!-- ACCOUNT INFORMATION -->
-
-                <div class="settings-section">
-
-                    <h3>
-                        Account
-                    </h3>
-
-
-                    <div class="setting-item">
-
-
-                        <div class="setting-info">
-
-                            <div class="setting-icon">
-
-                                <i class="fa-solid fa-user"></i>
-
-                            </div>
-
-                            <div>
-                                <h4>
-                                    {{ request.user.username }}
-                                </h4>
-                                <p>
-                                    Your Tourist account
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <section class="hero">
-            <div class="hero-content">
-                <p class="entry-tag">YOUR JOURNEY STARTS HERE</p>
-                <h1 class="forloc">
-                    Welcome to
-                    <span class="hero-brand">
-                        Tourist
-                        <span class="loc-icon"><i class="fa-solid fa-route"></i></span>
-                    </span>
-                </h1>
-                <p class="hero-text">
-                    Discover new places, build your journey and let us
-                    plan the experience for you.
-                </p>
-                <!-- LOCATION SEARCH -->
-                <form class="search-box" id="locationForm">
-    <div class="search-icon">⌕</div>
-    <input
-        type="text"
-        id="locationInput"
-        list="districts"
-        placeholder="Where do you want to go?"
-        required
-    >
-       <datalist id="districts">
-        {% for d in districts %}
-        <option value="{{ d.name }}">
-        {% endfor %}
-    </datalist>
-    <button type="submit" class="search-btn">
-        Explore
-    </button>
-
-</form>
-                <button class="current-location-btn" id="currentLocationBtn">
-                    <span>⌖</span>
-                    Use My Current Location
+                <button class="settings-close" id="settingsClose" type="button">
+                    <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-                   </div>
+
+            <!-- APPEARANCE -->
+            <div class="settings-section">
+                <h3>Appearance</h3>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-icon"><i class="fa-solid fa-moon"></i></div>
+                        <div>
+                            <h4>Dark Mode</h4>
+                            <p>Use a darker appearance across Tourist.</p>
+                        </div>
+                    </div>
+
+                    <label class="switch">
+                        <input type="checkbox" id="settingsDarkMode">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- ACCOUNT -->
+            <div class="settings-section">
+                <h3>Account</h3>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-icon"><i class="fa-solid fa-user"></i></div>
+                        <div>
+                            <h4>{{ request.user.username }}</h4>
+                            <p>Your Tourist account</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero">
+
+        <div class="hero-content">
+            <p class="entry-tag">YOUR JOURNEY STARTS HERE</p>
+
+            <h1 class="forloc">
+                Welcome to
+                <span class="hero-brand">
+                    Tourist
+                    <span class="loc-icon"><i class="fa-solid fa-route"></i></span>
+                </span>
+            </h1>
+
+            <p class="hero-text">
+                Discover new places, build your journey and let us
+                plan the experience for you.
+            </p>
+
+            <!-- LOCATION SEARCH -->
+            <form class="search-box" id="locationForm" onsubmit="return goToDistrict(event)">
+                <div class="search-icon">⌕</div>
+                <input
+                    type="text"
+                    id="locationInput"
+                    list="districts"
+                    placeholder="Where do you want to go?"
+                    required
+                >
+                <datalist id="districts">
+                    {% for d in districts %}
+                    <option value="{{ d.name }}">
+                    {% endfor %}
+                </datalist>
+                <button type="submit" class="search-btn">Explore</button>
+            </form>
+
+            <button class="current-location-btn" id="currentLocationBtn" type="button">
+                <span>⌖</span>
+                Use My Current Location
+            </button>
+        </div>
+
         <div class="hero-decoration">
             <div class="circle circle-one"></div>
             <div class="circle circle-two"></div>
@@ -300,273 +182,175 @@
         </div>
 
     </section>
-<!-- POPULAR DESTINATIONS -->
 
-<section class="popular-section">
+    <!-- POPULAR DESTINATIONS -->
+    <!--
+        Images and links come from the view's `featured_places`
+        (Place objects from the database), so filenames and district
+        names always match what is really stored.
+    -->
+    <section class="popular-section">
 
-    <div class="section-top">
-
-        <div>
-            <p class="section-label">
-                START EXPLORING
-            </p>
-
-            <h2>
-                Popular destinations
-            </h2>
+        <div class="section-top">
+            <div>
+                <p class="section-label">START EXPLORING</p>
+                <h2>Popular destinations</h2>
+            </div>
+            <a href="#" class="view-all">View all →</a>
         </div>
 
-        <a href="#" class="view-all">
-            View all →
-        </a>
-
-    </div>
-
-
-    <div class="destination-grid">
-
-
-        <!-- MYSORE -->
-
-        <a href="{% url 'places_by_district' 'Mysore' %}" class="destination-card large-card">
-
-            <div class="card-bg">
-
-                <img
-                    src="{% static 'users/images/mysore.jpg' %}"
-                    alt="Mysore"
-                >
-
-            </div>
-
-            <div class="card-overlay"></div>
-
-            <div class="destination-content">
-
-                <span class="place-tag">
-                    ROYAL HERITAGE
-                </span>
-
-                <h3>
-                    Mysore
-                </h3>
-
-                <p>
-                    Palaces, culture and timeless history
-                </p>
-
-                <span class="explore-place">
-                    Explore →
-                </span>
-
-            </div>
-
-        </a>
-
-
-
-        <!-- MADIKERI -->
-
-        <a href="{% url 'places_by_district' 'Madikeri' %}" class="destination-card">
-
-            <div class="card-bg">
-
-                <img
-                    src="{% static 'users/images/madikeri.jpg' %}">
-            </div>
-
-            <div class="card-overlay"></div>
-
-            <div class="destination-content">
-
-                <span class="place-tag">
-                    COORG
-                </span>
-
-                <h3>
-                    Madikeri
-                </h3>
-
-                <p>
-                    Hills, coffee and mist
-                </p>
-
-            </div>
-
-        </a>
-
-
-
-        <!-- CHIKKAMAGALURU -->
-
-        <a href="{% url 'places_by_district' 'Chikkamagaluru' %}" class="destination-card">
-
-            <div class="card-bg">
-
-                <img
-                    src="{% static 'users/images/chikmagalur.jpg' %}">
-
-            <div class="card-overlay"></div>
-
-            <div class="destination-content">
-
-                <span class="place-tag">
-                    NATURE
-                </span>
-
-                <h3>
-                    Chikkamagaluru
-                </h3>
-
-                <p>
-                    Mountains and coffee estates
-                </p>
-
-            </div>
-
-        </a>
-
-
-
-        <!-- HAMPI -->
-
-        <a href="{% url 'places_by_district' 'Hampi' %}" class="destination-card">
-
-            <div class="card-bg">
-
-                <img
-                    src="{% static 'users/images/hampi.jpg' %}">
-            </div>
-
-            <div class="card-overlay"></div>
-
-            <div class="destination-content">
-
-                <span class="place-tag">
-                    HISTORY
-                </span>
-
-                <h3>
-                    Hampi
-                </h3>
-
-                <p>
-                    Ancient ruins and architecture
-                </p>
-
-            </div>
-
-        </a>
-
-
-
-        <!-- UDUPI -->
-
-        <a href="#" class="destination-card wide-card">
-
-            <div class="card-bg">
-
-                <img
-                    src="{% static 'users/images/udupi.jpg' %}"
-                    alt="Udupi"
-                >
-
-            </div>
-
-            <div class="card-overlay"></div>
-
-            <div class="destination-content">
-
-                <span class="place-tag">
-                    COASTAL JOURNEY
-                </span>
-
-                <h3>
-                    Udupi
-                </h3>
-                <p>
-                    Beaches, temples and coastal beauty
-                </p>
-            </div>
-        </a>
-    </div>
-</section>
-       
-        <!-- RECENT SEARCHES -->
-        <section class="recent-section">
-
-            <div class="recent-heading">
-                <p class="section-label">YOUR JOURNEY HISTORY</p>
-                <h2>Recent searches</h2>
-                <p>Pick up where you left off.</p>
-            </div>
-            <div class="thread-wrapper">
-                <!-- Flowing thread -->
-                <div class="thread"></div>
-                <div class="hanging-list">
-                    <div class="hanging-item">
-                        <div class="pin"></div>
-                        <div class="vertical-thread"></div>
-                        <div class="recent-card">
-                            <span class="recent-number">01</span>
-                            <div>
-                                <h3>Mysore</h3>
-                                <p>Last explored</p>
-                            </div>
-                            <span class="arrow">→</span>
-                        </div>
-                    </div>
-                    <div class="hanging-item down">
-                        <div class="pin"></div>
-                        <div class="vertical-thread"></div>
-                        <div class="recent-card">
-                            <span class="recent-number">02</span>
-                            <div>
-                                <h3>Madikeri</h3>
-                                <p>Last explored</p>
-                            </div>
-                            <span class="arrow">→</span>
-                        </div>
-                    </div>
-                    <div class="hanging-item">
-                        <div class="pin"></div>
-                        <div class="vertical-thread"></div>
-
-                        <div class="recent-card">
-                            <span class="recent-number">03</span>
-                            <div>
-                                <h3>Hampi</h3>
-                                <p>Last explored</p>
-                            </div>
-                            <span class="arrow">→</span>
-                        </div>
-                    </div>
-                    <div class="hanging-item down">
-                        <div class="pin"></div>
-                        <div class="vertical-thread"></div>
-                        <div class="recent-card">
-                            <span class="recent-number">04</span>
-                            <div>
-                                <h3>Udupi</h3>
-                                <p>Last explored</p>
-                            </div>
-                            <span class="arrow">→</span>
-                        </div>
+        <div class="destination-grid">
+
+            <!-- MYSORE -->
+            {% with p=featured_places.mysore %}
+            <a href="{% if p %}{% url 'places_by_district' p.district.name %}{% else %}#{% endif %}" class="destination-card large-card">
+                <div class="card-bg">
+                    {% if p and p.image %}<img src="{{ p.image.url }}" alt="Mysore">{% endif %}
+                </div>
+                <div class="card-overlay"></div>
+                <div class="destination-content">
+                    <span class="place-tag">ROYAL HERITAGE</span>
+                    <h3>Mysore</h3>
+                    <p>Palaces, culture and timeless history</p>
+                    <span class="explore-place">Explore →</span>
+                </div>
+            </a>
+            {% endwith %}
+
+            <!-- MADIKERI -->
+            {% with p=featured_places.madikeri %}
+            <a href="{% if p %}{% url 'places_by_district' p.district.name %}{% else %}#{% endif %}" class="destination-card">
+                <div class="card-bg">
+                    {% if p and p.image %}<img src="{{ p.image.url }}" alt="Madikeri">{% endif %}
+                </div>
+                <div class="card-overlay"></div>
+                <div class="destination-content">
+                    <span class="place-tag">COORG</span>
+                    <h3>Madikeri</h3>
+                    <p>Hills, coffee and mist</p>
+                </div>
+            </a>
+            {% endwith %}
+
+            <!-- CHIKKAMAGALURU -->
+            {% with p=featured_places.chikmagalur %}
+            <a href="{% if p %}{% url 'places_by_district' p.district.name %}{% else %}#{% endif %}" class="destination-card">
+                <div class="card-bg">
+                    {% if p and p.image %}<img src="{{ p.image.url }}" alt="Chikkamagaluru">{% endif %}
+                </div>
+                <div class="card-overlay"></div>
+                <div class="destination-content">
+                    <span class="place-tag">NATURE</span>
+                    <h3>Chikkamagaluru</h3>
+                    <p>Mountains and coffee estates</p>
+                </div>
+            </a>
+            {% endwith %}
+
+            <!-- HAMPI -->
+            {% with p=featured_places.hampi %}
+            <a href="{% if p %}{% url 'places_by_district' p.district.name %}{% else %}#{% endif %}" class="destination-card">
+                <div class="card-bg">
+                    {% if p and p.image %}<img src="{{ p.image.url }}" alt="Hampi">{% endif %}
+                </div>
+                <div class="card-overlay"></div>
+                <div class="destination-content">
+                    <span class="place-tag">HISTORY</span>
+                    <h3>Hampi</h3>
+                    <p>Ancient ruins and architecture</p>
+                </div>
+            </a>
+            {% endwith %}
+
+            <!-- UDUPI -->
+            {% with p=featured_places.udupi %}
+            <a href="{% if p %}{% url 'places_by_district' p.district.name %}{% else %}#{% endif %}" class="destination-card wide-card">
+                <div class="card-bg">
+                    {% if p and p.image %}<img src="{{ p.image.url }}" alt="Udupi">{% endif %}
+                </div>
+                <div class="card-overlay"></div>
+                <div class="destination-content">
+                    <span class="place-tag">COASTAL JOURNEY</span>
+                    <h3>Udupi</h3>
+                    <p>Beaches, temples and coastal beauty</p>
+                </div>
+            </a>
+            {% endwith %}
+
+        </div>
+    </section>
+
+    <!-- RECENT SEARCHES -->
+    <section class="recent-section">
+
+        <div class="recent-heading">
+            <p class="section-label">YOUR JOURNEY HISTORY</p>
+            <h2>Recent searches</h2>
+            <p>Pick up where you left off.</p>
+        </div>
+
+        <div class="thread-wrapper">
+            <div class="thread"></div>
+
+            <div class="hanging-list">
+
+                <div class="hanging-item">
+                    <div class="pin"></div>
+                    <div class="vertical-thread"></div>
+                    <div class="recent-card">
+                        <span class="recent-number">01</span>
+                        <div><h3>Mysore</h3><p>Last explored</p></div>
+                        <span class="arrow">→</span>
                     </div>
                 </div>
+
+                <div class="hanging-item down">
+                    <div class="pin"></div>
+                    <div class="vertical-thread"></div>
+                    <div class="recent-card">
+                        <span class="recent-number">02</span>
+                        <div><h3>Madikeri</h3><p>Last explored</p></div>
+                        <span class="arrow">→</span>
+                    </div>
+                </div>
+
+                <div class="hanging-item">
+                    <div class="pin"></div>
+                    <div class="vertical-thread"></div>
+                    <div class="recent-card">
+                        <span class="recent-number">03</span>
+                        <div><h3>Hampi</h3><p>Last explored</p></div>
+                        <span class="arrow">→</span>
+                    </div>
+                </div>
+
+                <div class="hanging-item down">
+                    <div class="pin"></div>
+                    <div class="vertical-thread"></div>
+                    <div class="recent-card">
+                        <span class="recent-number">04</span>
+                        <div><h3>Udupi</h3><p>Last explored</p></div>
+                        <span class="arrow">→</span>
+                    </div>
+                </div>
+
             </div>
-        </section>
-    </main>
-        {% load static %}
-<script src="{% static 'users/dashboard.js' %}"></script>
+        </div>
+    </section>
+
+</main>
+
 <script>
-document.getElementById("locationForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-    const district = document.getElementById("locationInput").value.trim();
-    if (district) {
-        window.location.href = "/places/" + encodeURIComponent(district) + "/";
+    // Runs on submit (inline onsubmit), so Explore works even if dashboard.js fails.
+    function goToDistrict(e) {
+        e.preventDefault();
+        var district = document.getElementById("locationInput").value.trim();
+        if (district) {
+            window.location.href = "/places/" + encodeURIComponent(district) + "/";
+        }
+        return false;
     }
-});
 </script>
+<script src="{% static 'users/dashboard.js' %}"></script>
 </body>
 </html>
