@@ -1,8 +1,8 @@
-# Create your views here.
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth import authenticate,login,logout
 from places.models import District,Place
+from django.contrib.auth.decorators import login_required
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -34,9 +34,13 @@ def user_login(request):
                 {"error": "YOU have entered wrong username nd password,,plz enter valid"}
             )
     return render(request, "users/login.html")
+@login_required(login_url="login")
+def dashboard(request):
+    # Keep your existing dashboard function body unchanged.
+    districts = District.objects.prefetch_related("places").all()
 
-
-
+    # Keep your existing find_place() function,
+    # featured_places dictionary, and render() call here.
 def dashboard(request):
     districts = District.objects.prefetch_related("places").all()
 

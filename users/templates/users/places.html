@@ -1,3 +1,4 @@
+
 {% load static %}
 
 <!DOCTYPE html>
@@ -9,8 +10,7 @@
 
     <title>Explore {{ district.name }}</title>
 
-    <link rel="stylesheet"
-          href="{% static 'users/places.css' %}">
+    <link rel="stylesheet" href="{% static 'users/places.css' %}">
 </head>
 
 <body>
@@ -41,7 +41,6 @@
 
         </section>
 
-
         <!-- Filter Section -->
         <section class="filter-section">
 
@@ -55,47 +54,41 @@
 
             </div>
 
-
             <form method="GET"
                   action="{% url 'places_by_district' district.name %}"
-                  class="category-form">
+                  class="category-form"
+                  id="categoryForm">
 
-                <select name="category">
+                <select name="category"
+                        id="categorySelect"
+                        aria-label="Filter places by category">
 
-                    <option value="">
+                    <option value=""
+                        {% if not selected_category %}selected{% endif %}>
                         All Categories
                     </option>
 
                     <option value="watery"
-                        {% if selected_category == "watery" %}
-                        selected
-                        {% endif %}>
+                        {% if selected_category == "watery" %}selected{% endif %}>
                         Watery
                     </option>
 
                     <option value="historical"
-                        {% if selected_category == "historical" %}
-                        selected
-                        {% endif %}>
+                        {% if selected_category == "historical" %}selected{% endif %}>
                         Historical
                     </option>
 
                     <option value="religious"
-                        {% if selected_category == "religious" %}
-                        selected
-                        {% endif %}>
+                        {% if selected_category == "religious" %}selected{% endif %}>
                         Religious / Temples
                     </option>
 
                     <option value="nature"
-                        {% if selected_category == "nature" %}
-                        selected
-                        {% endif %}>
+                        {% if selected_category == "nature" %}selected{% endif %}>
                         Nature
                     </option>
 
                 </select>
-
 
                 <button type="submit">
                     Explore
@@ -104,7 +97,6 @@
             </form>
 
         </section>
-
 
         <!-- Places Section -->
         <section class="places-section">
@@ -118,112 +110,101 @@
                     </p>
 
                     <h2>
-    {% if selected_category == "watery" %}
-        Top Watery Places in {{ district.name }}
+                        {% if selected_category == "watery" %}
+                            Top Watery Places in {{ district.name }}
 
-    {% elif selected_category == "historical" %}
-        Top Historical Places in {{ district.name }}
+                        {% elif selected_category == "historical" %}
+                            Top Historical Places in {{ district.name }}
 
-    {% elif selected_category == "religious" %}
-        Top Religious Places in {{ district.name }}
+                        {% elif selected_category == "religious" %}
+                            Top Religious Places in {{ district.name }}
 
-    {% elif selected_category == "nature" %}
-        Top Nature Places in {{ district.name }}
+                        {% elif selected_category == "nature" %}
+                            Top Nature Places in {{ district.name }}
 
-    {% else %}
-        Top Places in {{ district.name }}
-    {% endif %}
-</h2>
+                        {% else %}
+                            Top Places in {{ district.name }}
+                        {% endif %}
+                    </h2>
 
                 </div>
 
             </div>
-
 
             <!-- Cards Grid -->
             <div class="places-grid">
 
                 {% for place in places %}
 
-                <article class="place-card">
+                    <article class="place-card">
 
-                    <!-- Image -->
-                    <div class="image-container">
+                        <!-- Image -->
+                        <div class="image-container">
 
-                        {% if place.image %}
+                            {% if place.image %}
 
-                            <a href="{% url 'explorer:place_detail' place.slug %}">
-                                <img src="{{ place.image.url }}"
-                                     alt="{{ place.name }}">
-                            </a>
+                                <a href="{% url 'explorer:place_detail' place.slug %}">
+                                    <img src="{{ place.image.url }}"
+                                         alt="{{ place.name }}">
+                                </a>
 
-                        {% else %}
+                            {% else %}
 
-                            <div class="no-image">
-                                No Image Available
-                            </div>
+                                <div class="no-image">
+                                    No Image Available
+                                </div>
 
-                        {% endif %}
+                            {% endif %}
 
-
-                        <span class="category-badge">
-                            {{ place.get_category_display }}
-                        </span>
-
-                    </div>
-
-
-                    <!-- Card Content -->
-                    <div class="card-content">
-
-                        <h3>
-                            {{ place.name }}
-                        </h3>
-
-
-                        <p class="speciality">
-                            {{ place.speciality }}
-                        </p>
-
-
-                        <div class="description">
-
-                            <p>
-                                {{ place.description }}
-                            </p>
+                            <span class="category-badge">
+                                {{ place.get_category_display }}
+                            </span>
 
                         </div>
 
+                        <!-- Card Content -->
+                        <div class="card-content">
 
-                        <button class="see-more-btn">
+                            <h3>
+                                {{ place.name }}
+                            </h3>
 
-                            See More
+                            <p class="speciality">
+                                {{ place.speciality }}
+                            </p>
 
-                            <span>
-                                →
-                            </span>
+                            <div class="description">
+                                <p>
+                                    {{ place.description }}
+                                </p>
+                            </div>
 
-                        </button>
+                            <button class="see-more-btn"
+                                    type="button"
+                                    onclick="window.location.href='{% url 'explorer:place_detail' place.slug %}'">
 
-                    </div>
+                                See More
 
-                </article>
+                                <span>→</span>
 
+                            </button>
+
+                        </div>
+
+                    </article>
 
                 {% empty %}
 
-                <div class="no-places">
+                    <div class="no-places">
 
-                    <h3>
-                        No places found
-                    </h3>
+                        <h3>No places found</h3>
 
-                    <p>
-                        No places are currently available
-                        in this category.
-                    </p>
+                        <p>
+                            No places are currently available
+                            in this category.
+                        </p>
 
-                </div>
+                    </div>
 
                 {% endfor %}
 
@@ -231,11 +212,24 @@
 
         </section>
 
-
     </main>
 
-
+    <!-- Existing JavaScript -->
     <script src="{% static 'users/places.js' %}"></script>
+
+    <!-- Automatically submit the category filter when changed -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const categoryForm = document.getElementById("categoryForm");
+            const categorySelect = document.getElementById("categorySelect");
+
+            if (categoryForm && categorySelect) {
+                categorySelect.addEventListener("change", function () {
+                    categoryForm.requestSubmit();
+                });
+            }
+        });
+    </script>
 
 </body>
 

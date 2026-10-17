@@ -1,339 +1,599 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tourist | Plan Your Journey</title>
 
-    <link rel="stylesheet" href="{% static 'users/dashboard.css' %}">
+    <title>
+        {% if place %}Plan your trip to {{ place.name }}{% else %}Tourist Expense Planner{% endif %}
+    </title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7f2;
+            color: #263326;
+        }
+
+        .navbar {
+            min-height: 70px;
+            padding: 16px 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+            border-bottom: 1px solid #e6e9e1;
+        }
+
+        .brand {
+            color: #4b830d;
+            font-size: 24px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .nav-links a {
+            color: #344332;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .page {
+            width: min(1100px, 92%);
+            margin: 35px auto 60px;
+        }
+
+        .eyebrow {
+            color: #4b830d;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .page-title {
+            margin: 8px 0;
+            font-size: clamp(28px, 4vw, 42px);
+        }
+
+        .subtitle {
+            color: #687467;
+            line-height: 1.7;
+        }
+
+        .place-card {
+            margin-top: 26px;
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            background: #fff;
+            border: 1px solid #e5e9df;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 8px 28px rgba(28, 47, 20, 0.06);
+        }
+
+        .place-image {
+            min-height: 280px;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: #e7eddf;
+        }
+
+        .place-info {
+            padding: 28px;
+        }
+
+        .place-info h2 {
+            margin: 0 0 12px;
+            font-size: 28px;
+        }
+
+        .place-info p {
+            color: #687467;
+            line-height: 1.8;
+        }
+
+        .place-meta {
+            margin-top: 18px;
+            color: #4b830d;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .planner {
+            margin-top: 28px;
+            padding: 30px;
+            background: #fff;
+            border: 1px solid #e5e9df;
+            border-radius: 18px;
+            box-shadow: 0 8px 28px rgba(28, 47, 20, 0.06);
+        }
+
+        .planner h2 {
+            margin: 0 0 8px;
+            font-size: 25px;
+        }
+
+        .planner-intro {
+            margin-bottom: 26px;
+            color: #687467;
+            line-height: 1.6;
+        }
+
+        .field {
+            margin-bottom: 25px;
+        }
+
+        .field-label {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .budget-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .budget-value {
+            color: #4b830d;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: #4b830d;
+            cursor: pointer;
+        }
+
+        .range-limits {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            color: #7a8575;
+            font-size: 12px;
+        }
+
+        .counter-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .counter {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 14px;
+            border: 1px solid #e0e6d9;
+            border-radius: 12px;
+        }
+
+        .counter button {
+            width: 36px;
+            height: 36px;
+            border: 0;
+            border-radius: 9px;
+            background: #edf4e5;
+            color: #426f13;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .counter input {
+            width: 45px;
+            border: 0;
+            outline: none;
+            background: transparent;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .location-panel {
+            margin-top: 25px;
+            padding: 17px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            background: #f6f9f2;
+            border: 1px solid #e0e9d8;
+            border-radius: 12px;
+        }
+
+        .location-panel p {
+            margin: 5px 0 0;
+            color: #687467;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .secondary-btn {
+            flex-shrink: 0;
+            padding: 11px 14px;
+            border: 1px solid #4b830d;
+            border-radius: 9px;
+            background: #fff;
+            color: #426f13;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .primary-btn {
+            width: 100%;
+            margin-top: 24px;
+            padding: 15px;
+            border: 0;
+            border-radius: 10px;
+            background: #4b830d;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .primary-btn:hover {
+            background: #3c6c08;
+        }
+
+        .results {
+            margin-top: 28px;
+            padding: 28px;
+            background: #fff;
+            border: 1px solid #dce7d1;
+            border-radius: 18px;
+        }
+
+        .results h2 {
+            margin-top: 0;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 20px;
+        }
+
+        .result-item {
+            padding: 17px;
+            background: #f6f9f2;
+            border-radius: 12px;
+        }
+
+        .result-item span {
+            display: block;
+            margin-bottom: 8px;
+            color: #687467;
+            font-size: 13px;
+        }
+
+        .result-item strong {
+            font-size: 21px;
+        }
+
+        .result-total {
+            background: #edf5e5;
+        }
+
+        .positive {
+            color: #34751b;
+        }
+
+        .negative {
+            color: #b42318;
+        }
+
+        .notice {
+            margin-top: 20px;
+            padding: 14px;
+            background: #fff8e6;
+            border-radius: 10px;
+            color: #795b14;
+            line-height: 1.6;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 22px;
+            color: #4b830d;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        @media (max-width: 700px) {
+            .navbar {
+                padding: 15px 5%;
+            }
+
+            .nav-links {
+                gap: 12px;
+            }
+
+            .place-card {
+                grid-template-columns: 1fr;
+            }
+
+            .place-image {
+                height: 230px;
+                min-height: 230px;
+            }
+
+            .planner,
+            .place-info,
+            .results {
+                padding: 20px;
+            }
+
+            .counter-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .location-panel {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .result-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-<!-- NAVBAR -->
 <header class="navbar">
-
-    <a href="#" class="brand">
-        <div class="brand-logo">T</div>
+    <a class="brand" href="/users/dashboard/" aria-label="Tourist home">
+        <span class="brand-mark">T</span>
         <span>Tourist</span>
     </a>
 
-    <nav class="nav-menu">
-
-        <a href="#" class="nav-item">
-            <span class="nav-icon"><i class="fa-solid fa-house"></i></span>
-            Home
+    <nav class="nav-links" aria-label="Main navigation">
+        <a class="home-nav-btn" href="/users/dashboard/">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
         </a>
 
-        <a href="#" class="nav-item">
-            <span class="nav-icon"><i class="fa-solid fa-heart"></i></span>
-            Wishlist
-        </a>
+        {% if request.user.is_authenticated %}
+            <span class="nav-username">
+                <i class="fa-solid fa-user"></i>
+                {{ request.user.username }}
+            </span>
 
-        <!-- ACCOUNT -->
-        <div class="account-wrapper">
-
-            <button class="account-btn" id="accountBtn" type="button">
-                <span class="account-icon">{{ request.user.username|first|upper }}</span>
-                <span class="account-name">{{ request.user.username }}</span>
-                <i class="fa-solid fa-chevron-down account-arrow"></i>
-            </button>
-
-            <!-- ACCOUNT MENU -->
-            <div class="account-menu" id="accountMenu">
-
-                <div class="account-header">
-                    <div class="account-avatar">{{ request.user.username|first|upper }}</div>
-                    <div>
-                        <h3>{{ request.user.username }}</h3>
-                        <p>Tourist Explorer</p>
-                    </div>
-                </div>
-
-                <div class="account-divider"></div>
-
-                <button class="account-option" id="settingsBtn" type="button">
-                    <i class="fa-solid fa-gear"></i>
-                    <span>Settings</span>
-                </button>
-
-                <button class="account-option" id="darkModeBtn" type="button">
-                    <i class="fa-solid fa-moon"></i>
-                    <span>Dark Mode</span>
-                    <span class="theme-status" id="themeStatus">OFF</span>
-                </button>
-
-                <div class="account-divider"></div>
-
-                <a href="{% url 'logout' %}" class="account-option logout-option">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    <span>Logout</span>
-                </a>
-
-            </div>
-        </div>
-
+            <a class="logout-nav-btn" href="{% url 'logout' %}">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+            </a>
+        {% else %}
+            <a class="home-nav-btn" href="{% url 'login' %}">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                Login
+            </a>
+        {% endif %}
     </nav>
 </header>
+<main class="page">
+    <p class="eyebrow">Your personal trip planner</p>
 
-<main>
+    {% if place %}
+        <h1 class="page-title">Plan your trip to {{ place.name }}</h1>
+        <p class="subtitle">
+            Adjust your budget and trip details to see an estimated travel cost.
+        </p>
 
-    <!-- SETTINGS PANEL -->
-    <div class="settings-overlay" id="settingsOverlay">
-        <div class="settings-panel">
+        <section class="place-card">
+            {% if place.image %}
+                <img class="place-image"
+                     src="{{ place.image.url }}"
+                     alt="{{ place.name }}">
+            {% else %}
+                <div class="place-image"></div>
+            {% endif %}
 
-            <div class="settings-top">
-                <div>
-                    <p class="section-label">PREFERENCES</p>
-                    <h2>Settings</h2>
-                </div>
-                <button class="settings-close" id="settingsClose" type="button">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
+            <div class="place-info">
+                <p class="eyebrow">{{ place.district.name }}</p>
+                <h2>{{ place.name }}</h2>
+                <p>{{ place.description|default:"Explore this destination and plan your visit." }}</p>
 
-            <!-- APPEARANCE -->
-            <div class="settings-section">
-                <h3>Appearance</h3>
-
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <div class="setting-icon"><i class="fa-solid fa-moon"></i></div>
-                        <div>
-                            <h4>Dark Mode</h4>
-                            <p>Use a darker appearance across Tourist.</p>
-                        </div>
+                {% if place.speciality %}
+                    <div class="place-meta">
+                        <i class="fa-solid fa-location-dot"></i>
+                        {{ place.speciality }}
                     </div>
-
-                    <label class="switch">
-                        <input type="checkbox" id="settingsDarkMode">
-                        <span class="slider"></span>
-                    </label>
-                </div>
+                {% endif %}
             </div>
+        </section>
 
-            <!-- ACCOUNT -->
-            <div class="settings-section">
-                <h3>Account</h3>
-
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <div class="setting-icon"><i class="fa-solid fa-user"></i></div>
-                        <div>
-                            <h4>{{ request.user.username }}</h4>
-                            <p>Your Tourist account</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- HERO -->
-    <section class="hero">
-
-        <div class="hero-content">
-            <p class="entry-tag">YOUR JOURNEY STARTS HERE</p>
-
-            <h1 class="forloc">
-                Welcome to
-                <span class="hero-brand">
-                    Tourist
-                    <span class="loc-icon"><i class="fa-solid fa-route"></i></span>
-                </span>
-            </h1>
-
-            <p class="hero-text">
-                Discover new places, build your journey and let us
-                plan the experience for you.
+        <section class="planner">
+            <h2>Estimate your expenses</h2>
+            <p class="planner-intro">
+                Tell us your budget, group size and trip duration.
             </p>
 
-            <!-- LOCATION SEARCH -->
-            <form class="search-box" id="locationForm">
-                <div class="search-icon">⌕</div>
-                <input
-                    type="text"
-                    id="locationInput"
-                    list="districts"
-                    placeholder="Where do you want to go?"
-                    required
-                >
-                <datalist id="districts">
-                    {% for d in districts %}
-                    <option value="{{ d.name }}">
-                    {% endfor %}
-                </datalist>
-                <button type="submit" class="search-btn">Explore</button>
+            <form method="post" id="expenseForm">
+                {% csrf_token %}
+
+                <div class="field">
+                    <div class="budget-line">
+                        <label class="field-label" for="budgetSlider">
+                            Total trip budget
+                        </label>
+                        <span class="budget-value" id="budgetValue">
+                            ₹10,000
+                        </span>
+                    </div>
+
+                    <input
+                        type="range"
+                        id="budgetSlider"
+                        name="budget"
+                        min="1000"
+                        max="100000"
+                        step="500"
+                        value="{{ request.POST.budget|default:'10000' }}"
+                    >
+
+                    <div class="range-limits">
+                        <span>₹1,000</span>
+                        <span>₹1,00,000</span>
+                    </div>
+                </div>
+
+                <div class="counter-grid">
+                    <div class="field">
+                        <label class="field-label" for="travellersInput">
+                            Number of travellers
+                        </label>
+                        <div class="counter">
+                            <button type="button" id="decreaseTravellers" aria-label="Decrease travellers">−</button>
+                            <input
+                                type="number"
+                                id="travellersInput"
+                                name="travellers"
+                                min="1"
+                                max="50"
+                                value="{{ request.POST.travellers|default:'1' }}"
+                                required
+                            >
+                            <button type="button" id="increaseTravellers" aria-label="Increase travellers">+</button>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="daysInput">
+                            Trip duration (days)
+                        </label>
+                        <div class="counter">
+                            <button type="button" id="decreaseDays" aria-label="Decrease days">−</button>
+                            <input
+                                type="number"
+                                id="daysInput"
+                                name="days"
+                                min="1"
+                                max="30"
+                                value="{{ request.POST.days|default:'1' }}"
+                                required
+                            >
+                            <button type="button" id="increaseDays" aria-label="Increase days">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="location-panel">
+                    <div>
+                        <strong><i class="fa-solid fa-location-crosshairs"></i> Your current location</strong>
+                        <p id="locationStatus">
+                            Enable location if you want to share your current coordinates with this page.
+                        </p>
+                    </div>
+
+                    <button type="button" class="secondary-btn" id="locationButton">
+                        Enable location
+                    </button>
+                </div>
+
+                <button type="submit" class="primary-btn">
+                    Calculate my trip expenses
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
             </form>
+        </section>
 
-            <button class="current-location-btn" id="currentLocationBtn" type="button">
-                <span>⌖</span>
-                Use My Current Location
-            </button>
-        </div>
+        {% if expense %}
+            <section class="results" id="expenseResults">
+                <p class="eyebrow">Your estimated trip budget</p>
+                <h2>Expense prediction for {{ place.name }}</h2>
 
-        <div class="hero-decoration">
-            <div class="circle circle-one"></div>
-            <div class="circle circle-two"></div>
-            <div class="floating-card card-one">✦</div>
-            <div class="floating-card card-two">⌖</div>
-        </div>
+                <div class="result-grid">
+                    <div class="result-item">
+                        <span>Food</span>
+                        <strong>₹{{ expense.food|floatformat:0 }}</strong>
+                    </div>
 
-    </section>
+                    <div class="result-item">
+                        <span>Stay</span>
+                        <strong>₹{{ expense.stay|floatformat:0 }}</strong>
+                    </div>
 
-    <!-- POPULAR DESTINATIONS -->
-    <section class="popular-section">
+                    <div class="result-item">
+                        <span>Transport</span>
+                        <strong>₹{{ expense.transport|floatformat:0 }}</strong>
+                    </div>
 
-        <div class="section-top">
-            <div>
-                <p class="section-label">START EXPLORING</p>
-                <h2>Popular destinations</h2>
-            </div>
-            <a href="#" class="view-all">View all →</a>
-        </div>
+                    <div class="result-item">
+                        <span>Activities</span>
+                        <strong>₹{{ expense.activities|floatformat:0 }}</strong>
+                    </div>
 
-        <div class="destination-grid">
+                    <div class="result-item result-total">
+                        <span>Estimated total</span>
+                        <strong>₹{{ expense.total|floatformat:0 }}</strong>
+                    </div>
 
-            <!-- MYSORE -->
-            <a href="{% url 'places_by_district' 'Mysore' %}" class="destination-card large-card">
-                <div class="card-bg">
-                    <img src="{% get_media_prefix %}places/myspalace.jpg" alt="Mysore">
-                </div>
-                <div class="card-overlay"></div>
-                <div class="destination-content">
-                    <span class="place-tag">ROYAL HERITAGE</span>
-                    <h3>Mysore</h3>
-                    <p>Palaces, culture and timeless history</p>
-                    <span class="explore-place">Explore →</span>
-                </div>
-            </a>
-
-            <!-- MADIKERI -->
-            <a href="{% url 'places_by_district' 'Madikeri' %}" class="destination-card">
-                <div class="card-bg">
-                    <img src="{% get_media_prefix %}places/abb.jpg" alt="Madikeri">
-                </div>
-                <div class="card-overlay"></div>
-                <div class="destination-content">
-                    <span class="place-tag">COORG</span>
-                    <h3>Madikeri</h3>
-                    <p>Hills, coffee and mist</p>
-                </div>
-            </a>
-
-            <!-- CHIKKAMAGALURU -->
-            <a href="{% url 'places_by_district' 'Chikkamagaluru' %}" class="destination-card">
-                <div class="card-bg">
-                    <img src="{% get_media_prefix %}places/ch_hill.webp" alt="Chikkamagaluru">
-                </div>
-                <div class="card-overlay"></div>
-                <div class="destination-content">
-                    <span class="place-tag">NATURE</span>
-                    <h3>Chikkamagaluru</h3>
-                    <p>Mountains and coffee estates</p>
-                </div>
-            </a>
-
-            <!-- HAMPI: replace hampi.jpg with your real file name from media/places -->
-            <a href="{% url 'places_by_district' 'Hampi' %}" class="destination-card">
-                <div class="card-bg">
-                    <img src="{% get_media_prefix %}places/hampi.jpg" alt="Hampi">
-                </div>
-                <div class="card-overlay"></div>
-                <div class="destination-content">
-                    <span class="place-tag">HISTORY</span>
-                    <h3>Hampi</h3>
-                    <p>Ancient ruins and architecture</p>
-                </div>
-            </a>
-
-            <!-- UDUPI: replace udupi.jpg with your real file name from media/places -->
-            <a href="{% url 'places_by_district' 'Udupi' %}" class="destination-card wide-card">
-                <div class="card-bg">
-                    <img src="{% get_media_prefix %}places/udupi.jpg" alt="Udupi">
-                </div>
-                <div class="card-overlay"></div>
-                <div class="destination-content">
-                    <span class="place-tag">COASTAL JOURNEY</span>
-                    <h3>Udupi</h3>
-                    <p>Beaches, temples and coastal beauty</p>
-                </div>
-            </a>
-
-        </div>
-    </section>
-
-    <!-- RECENT SEARCHES -->
-    <section class="recent-section">
-
-        <div class="recent-heading">
-            <p class="section-label">YOUR JOURNEY HISTORY</p>
-            <h2>Recent searches</h2>
-            <p>Pick up where you left off.</p>
-        </div>
-
-        <div class="thread-wrapper">
-            <div class="thread"></div>
-
-            <div class="hanging-list">
-
-                <div class="hanging-item">
-                    <div class="pin"></div>
-                    <div class="vertical-thread"></div>
-                    <div class="recent-card">
-                        <span class="recent-number">01</span>
-                        <div><h3>Mysore</h3><p>Last explored</p></div>
-                        <span class="arrow">→</span>
+                    <div class="result-item">
+                        <span>Remaining budget</span>
+                        <strong class="{% if expense.remaining < 0 %}negative{% else %}positive{% endif %}">
+                            ₹{{ expense.remaining|floatformat:0 }}
+                        </strong>
                     </div>
                 </div>
 
-                <div class="hanging-item down">
-                    <div class="pin"></div>
-                    <div class="vertical-thread"></div>
-                    <div class="recent-card">
-                        <span class="recent-number">02</span>
-                        <div><h3>Madikeri</h3><p>Last explored</p></div>
-                        <span class="arrow">→</span>
-                    </div>
-                </div>
+                {% if expense.remaining < 0 %}
+                    <p class="notice">
+                        Your estimated expenses exceed your budget by
+                        ₹{{ expense.remaining|stringformat:"d"|slice:"1:" }}.
+                        Consider increasing your budget or reducing your trip expenses.
+                    </p>
+                {% else %}
+                    <p class="notice">
+                        This is a rule-based estimate, not a live quotation.
+                        Actual costs may vary by season, distance, accommodation and activities.
+                    </p>
+                {% endif %}
+            </section>
+        {% endif %}
 
-                <div class="hanging-item">
-                    <div class="pin"></div>
-                    <div class="vertical-thread"></div>
-                    <div class="recent-card">
-                        <span class="recent-number">03</span>
-                        <div><h3>Hampi</h3><p>Last explored</p></div>
-                        <span class="arrow">→</span>
-                    </div>
-                </div>
+        <a class="back-link" href="{% url 'places_by_district' place.district.name %}">
+            <i class="fa-solid fa-arrow-left"></i> Back to {{ place.district.name }} destinations
+        </a>
 
-                <div class="hanging-item down">
-                    <div class="pin"></div>
-                    <div class="vertical-thread"></div>
-                    <div class="recent-card">
-                        <span class="recent-number">04</span>
-                        <div><h3>Udupi</h3><p>Last explored</p></div>
-                        <span class="arrow">→</span>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
+    {% else %}
+        <h1 class="page-title">Your trip expense planner</h1>
+        <p class="subtitle">
+            Select a destination from the Tourist home page first. Then you can enter your budget and trip details here.
+        </p>
+        <a class="primary-btn" style="display:block;text-align:center;text-decoration:none"
+           href="{% url 'users_dashboard' %}">
+            Choose a destination
+        </a>
+    {% endif %}
 </main>
 
-<script src="{% static 'users/dashboard.js' %}"></script>
-<script>
-    document.getElementById("locationForm").addEventListener("submit", function (e) {
-        e.preventDefault();
-        const district = document.getElementById("locationInput").value.trim();
-        if (district) {
-            window.location.href = "/places/" + encodeURIComponent(district) + "/";
-        }
-    });
-</script>
+<script src="{% static 'explorer/js/dashboard.js' %}"></script>
 </body>
 </html>
