@@ -1,17 +1,18 @@
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
+from .route_planner import find_direct_bus_routes
 from .models import TransitStop
-
 from .services import (
     search_transport_routes,
     search_transfer_routes,
     search_transport_stops,
     nearest_stop_name,
 )
-
-
+from .route_planner import (
+    find_direct_bus_routes,
+    nearest_served_stop,
+)
 @api_view(["GET"])
 def search_routes(request):
 
@@ -150,5 +151,83 @@ def search_by_location(request):
             "routes_found": bool(
                 direct_results or transfer_results
             ),
+        },
+    })
+@api_view(["GET"])
+def plan_bus_routes(request):
+    origin = request.query_params.get("from", "").strip()
+    destination = request.query_params.get("to", "").strip()
+
+    if not origin or not destination:
+        return Response(
+            {
+                "error": "Both 'from' and 'to' are required."
+            },
+            status=400,
+        )
+
+    if origin.casefold() == destination.casefold():
+        return Response(
+            {
+                "error": "Origin and destination must be different."
+            },
+            status=400,
+        )
+
+    routes = find_direct_bus_routes(origin, destination)
+
+    return Response({
+        "from": origin,
+        "to": destination,
+        "direct_routes": routes,
+        "summary": {
+            "direct_count": len(routes),
+            "routes_found": bool(routes),
+        },
+    })
+@api_view(["GET"])
+def plan_from_location(request):
+    try:
+        latitude = float(request.query_params.get("lat"))
+        longitude = float(request.query_params.get("lng"))
+    except (TypeError, ValueError):
+        return Response(
+            {"error": "Valid lat and lng coordinates are required."},
+            status=400,
+        )
+
+    destination = request.query_params.get("to", "").strip()
+
+    if not destination:
+        return Response(
+            {"error": "A destination bus stop is required."},
+            status=400,
+        )
+
+    origin_stop = nearest_served_stop(latitude, longitude)
+
+    if not origin_stop:
+        return Response(
+            {
+                "error": (
+                    "No nearby stop linked to a stored trip was found. "
+                    "Try a location within 5 km of a served stop."
+                )
+            },
+            status=404,
+        )
+
+    routes = find_direct_bus_routes(
+        origin_stop.name,
+        destination,
+    )
+
+    return Response({
+        "origin": origin_stop.name,
+        "destination": destination,
+        "direct_routes": routes,
+        "summary": {
+            "direct_count": len(routes),
+            "routes_found": bool(routes),
         },
     })
