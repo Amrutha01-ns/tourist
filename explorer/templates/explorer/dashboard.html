@@ -1,367 +1,179 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>
         {% if place %}Plan your trip to {{ place.name }}{% else %}Tourist Expense Planner{% endif %}
     </title>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-        * {
-            box-sizing: border-box;
+        :root {
+            --forest: #14452f; --leaf: #2f7d4f; --mint: #e3f1e7; --sand: #fbf6ea;
+            --sun: #f4b63f; --ink: #1b2a22; --muted: #66756c; --line: #e4e9df; --bad: #b42318;
         }
-
+        * { box-sizing: border-box; }
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f7f2;
-            color: #263326;
+            margin: 0; font-family: "DM Sans", Arial, sans-serif; color: var(--ink); line-height: 1.6;
+            background: radial-gradient(circle at 10% -10%, #dff0e3 0, transparent 40%), var(--sand);
         }
+        h1, h2, h3, .brand { font-family: "Bricolage Grotesque", "DM Sans", sans-serif; }
+        a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
 
+        /* Navbar */
         .navbar {
-            min-height: 70px;
-            padding: 16px 7%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #fff;
-            border-bottom: 1px solid #e6e9e1;
+            position: sticky; top: 0; z-index: 50; min-height: 70px; padding: 12px 7%;
+            display: flex; align-items: center; justify-content: space-between; gap: 16px;
+            background: rgba(251, 246, 234, .88); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--line);
         }
-
-        .brand {
-            color: #4b830d;
-            font-size: 24px;
-            font-weight: 800;
-            text-decoration: none;
+        .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--forest); font-size: 24px; font-weight: 800; text-decoration: none; }
+        .brand-mark {
+            width: 38px; height: 38px; display: grid; place-items: center; border-radius: 12px 12px 12px 4px;
+            background: var(--forest); color: var(--sun); transform: rotate(-6deg);
         }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 22px;
+        .nav-links { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .nav-links a, .nav-username {
+            display: inline-flex; align-items: center; gap: 8px; padding: 9px 15px; border-radius: 999px;
+            font-size: 14px; font-weight: 700; text-decoration: none; color: var(--forest);
         }
+        .home-nav-btn { background: var(--mint); }
+        .home-nav-btn:hover { background: #cfe7d6; }
+        .logout-nav-btn { background: var(--forest); color: #fff !important; }
+        .logout-nav-btn:hover { background: #0d3322; }
 
-        .nav-links a {
-            color: #344332;
-            text-decoration: none;
-            font-size: 14px;
-        }
+        .page { width: min(1100px, 92%); margin: 32px auto 70px; }
+        .eyebrow { margin: 0; color: var(--leaf); font-size: 13px; font-weight: 700; }
+        .page-title { margin: 6px 0; font-size: clamp(30px, 4.5vw, 48px); line-height: 1.1; letter-spacing: -1px; color: var(--forest); }
+        .subtitle { margin: 0 0 6px; color: var(--muted); max-width: 60ch; }
 
-        .page {
-            width: min(1100px, 92%);
-            margin: 35px auto 60px;
-        }
-
-        .eyebrow {
-            color: #4b830d;
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-        }
-
-        .page-title {
-            margin: 8px 0;
-            font-size: clamp(28px, 4vw, 42px);
-        }
-
-        .subtitle {
-            color: #687467;
-            line-height: 1.7;
-        }
-
+        /* Hero place card: the memorable moment */
         .place-card {
-            margin-top: 26px;
-            display: grid;
-            grid-template-columns: 1fr 1.1fr;
-            background: #fff;
-            border: 1px solid #e5e9df;
-            border-radius: 18px;
-            overflow: hidden;
-            box-shadow: 0 8px 28px rgba(28, 47, 20, 0.06);
+            position: relative; margin-top: 24px; min-height: 380px; display: flex; align-items: flex-end;
+            border-radius: 28px; overflow: hidden; background: var(--forest);
+            box-shadow: 0 24px 50px -20px rgba(20, 69, 47, .55);
         }
-
-        .place-image {
-            min-height: 280px;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            background: #e7eddf;
+        .place-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: linear-gradient(135deg, #2f7d4f, #14452f); }
+        .place-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(8, 28, 18, .88) 5%, rgba(8, 28, 18, .15) 65%); }
+        .place-info { position: relative; z-index: 2; padding: 34px; color: #fff; max-width: 680px; }
+        .place-info .eyebrow {
+            display: inline-block; padding: 4px 12px; border-radius: 999px; background: var(--sun); color: #3a2a00;
         }
-
-        .place-info {
-            padding: 28px;
-        }
-
-        .place-info h2 {
-            margin: 0 0 12px;
-            font-size: 28px;
-        }
-
-        .place-info p {
-            color: #687467;
-            line-height: 1.8;
-        }
-
+        .place-info h2 { margin: 12px 0 8px; font-size: clamp(30px, 5vw, 52px); line-height: 1.05; }
+        .place-info p { color: rgba(255, 255, 255, .88); margin: 0; }
         .place-meta {
-            margin-top: 18px;
-            color: #4b830d;
-            font-size: 13px;
-            font-weight: 700;
+            display: inline-flex; gap: 8px; align-items: center; margin-top: 16px; padding: 7px 14px;
+            border-radius: 999px; background: rgba(255, 255, 255, .16); backdrop-filter: blur(6px); font-size: 14px; font-weight: 700;
         }
 
+        /* Planner */
         .planner {
-            margin-top: 28px;
-            padding: 30px;
-            background: #fff;
-            border: 1px solid #e5e9df;
-            border-radius: 18px;
-            box-shadow: 0 8px 28px rgba(28, 47, 20, 0.06);
+            margin-top: 26px; padding: 32px; background: #fff; border: 1px solid var(--line);
+            border-radius: 24px; box-shadow: 0 12px 30px -18px rgba(20, 69, 47, .35);
         }
-
-        .planner h2 {
-            margin: 0 0 8px;
-            font-size: 25px;
-        }
-
-        .planner-intro {
-            margin-bottom: 26px;
-            color: #687467;
-            line-height: 1.6;
-        }
-
-        .field {
-            margin-bottom: 25px;
-        }
-
-        .field-label {
-            display: block;
-            margin-bottom: 12px;
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        .budget-line {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
+        .planner h2 { margin: 0 0 6px; font-size: 28px; color: var(--forest); }
+        .planner-intro { margin: 0 0 26px; color: var(--muted); }
+        .field { margin-bottom: 24px; }
+        .field-label { display: block; margin-bottom: 10px; font-size: 14px; font-weight: 700; }
+        .budget-line { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
         .budget-value {
-            color: #4b830d;
-            font-size: 24px;
-            font-weight: 800;
+            padding: 4px 16px; border-radius: 12px; background: var(--forest); color: var(--sun);
+            font-family: "Bricolage Grotesque", sans-serif; font-size: 26px; font-weight: 800;
         }
-
-        input[type="range"] {
-            width: 100%;
-            accent-color: #4b830d;
-            cursor: pointer;
-        }
-
-        .range-limits {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 8px;
-            color: #7a8575;
-            font-size: 12px;
-        }
-
-        .counter-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 22px;
-        }
-
+        input[type="range"] { width: 100%; margin: 14px 0 4px; accent-color: var(--leaf); cursor: pointer; height: 8px; }
+        .range-limits { display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; }
+        .counter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
         .counter {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            padding: 14px;
-            border: 1px solid #e0e6d9;
-            border-radius: 12px;
+            display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px;
+            border: 2px solid var(--line); border-radius: 16px; background: #fcfdfb;
         }
-
         .counter button {
-            width: 36px;
-            height: 36px;
-            border: 0;
-            border-radius: 9px;
-            background: #edf4e5;
-            color: #426f13;
-            font-size: 20px;
-            cursor: pointer;
+            width: 42px; height: 42px; border: 0; border-radius: 12px; background: var(--mint);
+            color: var(--forest); font-size: 22px; font-weight: 700; cursor: pointer; transition: transform .15s, background .15s;
         }
-
-        .counter input {
-            width: 45px;
-            border: 0;
-            outline: none;
-            background: transparent;
-            text-align: center;
-            font-size: 18px;
-            font-weight: 800;
-        }
-
+        .counter button:hover { background: var(--leaf); color: #fff; }
+        .counter button:active { transform: scale(.92); }
+        .counter input { width: 60px; border: 0; outline: none; background: transparent; text-align: center; font: 800 22px "Bricolage Grotesque", sans-serif; color: var(--ink); }
         .location-panel {
-            margin-top: 25px;
-            padding: 17px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            background: #f6f9f2;
-            border: 1px solid #e0e9d8;
-            border-radius: 12px;
+            margin-top: 8px; padding: 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+            background: var(--mint); border: 2px dashed #a9cdb4; border-radius: 16px;
         }
-
-        .location-panel p {
-            margin: 5px 0 0;
-            color: #687467;
-            font-size: 13px;
-            line-height: 1.5;
-        }
-
+        .location-panel p { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
         .secondary-btn {
-            flex-shrink: 0;
-            padding: 11px 14px;
-            border: 1px solid #4b830d;
-            border-radius: 9px;
-            background: #fff;
-            color: #426f13;
-            font-weight: 700;
-            cursor: pointer;
+            flex-shrink: 0; padding: 11px 18px; border: 2px solid var(--forest); border-radius: 999px;
+            background: #fff; color: var(--forest); font-weight: 700; cursor: pointer;
         }
-
+        .secondary-btn:hover { background: var(--forest); color: #fff; }
         .primary-btn {
-            width: 100%;
-            margin-top: 24px;
-            padding: 15px;
-            border: 0;
-            border-radius: 10px;
-            background: #4b830d;
-            color: #fff;
-            font-size: 16px;
-            font-weight: 800;
-            cursor: pointer;
+            width: 100%; margin-top: 24px; padding: 17px; border: 0; border-radius: 16px;
+            background: linear-gradient(135deg, var(--leaf), var(--forest)); color: #fff;
+            font: 700 17px "DM Sans", sans-serif; cursor: pointer; box-shadow: 0 12px 24px -12px var(--forest);
+            transition: transform .15s, box-shadow .15s;
         }
+        .primary-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 28px -12px var(--forest); }
+        .primary-btn i { margin-left: 8px; color: var(--sun); }
 
-        .primary-btn:hover {
-            background: #3c6c08;
-        }
-
+        /* Results styled like a trip ticket */
         .results {
-            margin-top: 28px;
-            padding: 28px;
-            background: #fff;
-            border: 1px solid #dce7d1;
-            border-radius: 18px;
+            position: relative; margin-top: 28px; padding: 32px; background: #fff;
+            border: 1px solid var(--line); border-top: 8px solid var(--sun); border-radius: 24px;
+            box-shadow: 0 16px 36px -20px rgba(20, 69, 47, .45);
         }
-
-        .results h2 {
-            margin-top: 0;
-        }
-
-        .result-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 14px;
-            margin-top: 20px;
-        }
-
-        .result-item {
-            padding: 17px;
-            background: #f6f9f2;
-            border-radius: 12px;
-        }
-
-        .result-item span {
-            display: block;
-            margin-bottom: 8px;
-            color: #687467;
-            font-size: 13px;
-        }
-
-        .result-item strong {
-            font-size: 21px;
-        }
-
-        .result-total {
-            background: #edf5e5;
-        }
-
-        .positive {
-            color: #34751b;
-        }
-
-        .negative {
-            color: #b42318;
-        }
-
-        .notice {
-            margin-top: 20px;
-            padding: 14px;
-            background: #fff8e6;
-            border-radius: 10px;
-            color: #795b14;
-            line-height: 1.6;
-        }
-
+        .results h2 { margin: 6px 0 0; font-size: 28px; color: var(--forest); }
+        .result-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 22px; }
+        .result-item { padding: 18px; background: var(--sand); border-radius: 16px; border-left: 5px solid var(--leaf); }
+        .result-item:nth-child(2) { border-left-color: #3b82a0; }
+        .result-item:nth-child(3) { border-left-color: var(--sun); }
+        .result-item:nth-child(4) { border-left-color: #c2603f; }
+        .result-item span { display: block; margin-bottom: 4px; color: var(--muted); font-size: 13px; font-weight: 500; }
+        .result-item strong { font: 800 26px "Bricolage Grotesque", sans-serif; }
+        .result-total { background: var(--forest); border-left-color: var(--sun); }
+        .result-total span { color: #b9d8c4; }
+        .result-total strong { color: var(--sun); }
+        .positive { color: #1f7a3d; }
+        .negative { color: var(--bad); }
+        .notice { margin: 20px 0 0; padding: 14px 16px; background: #fff6dc; border-radius: 14px; color: #6b4e0a; }
+        .notice[role="alert"] { background: #fff1f0; color: var(--bad); }
         .back-link {
-            display: inline-block;
-            margin-top: 22px;
-            color: #4b830d;
-            font-weight: 700;
-            text-decoration: none;
+            display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; padding: 10px 18px;
+            border-radius: 999px; background: var(--mint); color: var(--forest); font-weight: 700; text-decoration: none;
         }
+        .back-link:hover { background: #cfe7d6; }
 
+        /* Destination guide (used by _place_guide.html) */
+        .destination-guide { margin: 0 0 32px; padding: 0; border: 0; box-shadow: none; background: transparent; }
+        .guide-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+        .guide-intro { margin: 0; color: var(--muted); }
+        .guide-icon { width: 60px; height: 60px; display: grid; place-items: center; border-radius: 18px; background: var(--sun); color: var(--forest); font-size: 26px; transform: rotate(6deg); flex-shrink: 0; }
+        .guide-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 22px; }
+        .guide-item { padding: 18px; background: var(--sand); border: 1px solid var(--line); border-radius: 16px; }
+        .guide-item-wide { grid-column: 1 / -1; }
+        .guide-item-heading { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+        .guide-item-heading i { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; background: var(--forest); color: var(--sun); font-size: 14px; }
+        .guide-item h3 { margin: 0; font-size: 16px; color: var(--forest); }
+        .guide-item p { margin: 0; color: var(--muted); font-size: 14px; }
+        .guide-disclaimer { margin: 16px 0 0; color: var(--muted); font-size: 13px; }
+        .guide-empty { margin-top: 20px; padding: 30px; text-align: center; border: 2px dashed #cfd9c9; border-radius: 16px; color: var(--muted); }
+        .guide-empty i { font-size: 28px; color: var(--leaf); }
+        .guide-empty h3 { margin: 8px 0 4px; color: var(--forest); }
+        .guide-empty p { margin: 0; }
+
+        @media (max-width: 800px) { .guide-grid { grid-template-columns: 1fr 1fr; } }
         @media (max-width: 700px) {
-            .navbar {
-                padding: 15px 5%;
-            }
-
-            .nav-links {
-                gap: 12px;
-            }
-
-            .place-card {
-                grid-template-columns: 1fr;
-            }
-
-            .place-image {
-                height: 230px;
-                min-height: 230px;
-            }
-
-            .planner,
-            .place-info,
-            .results {
-                padding: 20px;
-            }
-
-            .counter-grid {
-                grid-template-columns: 1fr;
-                gap: 14px;
-            }
-
-            .location-panel {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-
-            .result-grid {
-                grid-template-columns: 1fr 1fr;
-            }
+            .navbar { padding: 12px 5%; }
+            .nav-links a span { display: none; }
+            .place-card { min-height: 320px; border-radius: 22px; }
+            .place-info, .planner, .results { padding: 22px; }
+            .counter-grid, .guide-grid { grid-template-columns: 1fr; gap: 14px; }
+            .location-panel { align-items: flex-start; flex-direction: column; }
+            .guide-icon { display: none; }
         }
+        @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
     </style>
 </head>
 
@@ -430,6 +242,7 @@
         </section>
 
         <section class="planner">
+            {% include "explorer/_place_guide.html" %}
             <h2>Estimate your expenses</h2>
             <p class="planner-intro">
                 Tell us your budget, group size and trip duration.
@@ -522,6 +335,9 @@
                     <i class="fa-solid fa-arrow-right"></i>
                 </button>
             </form>
+            {% if error %}
+                <p class="notice" role="alert">{{ error }}</p>
+            {% endif %}
         </section>
 
         {% if expense %}
@@ -531,22 +347,22 @@
 
                 <div class="result-grid">
                     <div class="result-item">
-                        <span>Food</span>
+                        <span><i class="fa-solid fa-utensils"></i> Food</span>
                         <strong>₹{{ expense.food|floatformat:0 }}</strong>
                     </div>
 
                     <div class="result-item">
-                        <span>Stay</span>
+                        <span><i class="fa-solid fa-bed"></i> Stay</span>
                         <strong>₹{{ expense.stay|floatformat:0 }}</strong>
                     </div>
 
                     <div class="result-item">
-                        <span>Transport</span>
+                        <span><i class="fa-solid fa-bus"></i> Transport</span>
                         <strong>₹{{ expense.transport|floatformat:0 }}</strong>
                     </div>
 
                     <div class="result-item">
-                        <span>Activities</span>
+                        <span><i class="fa-solid fa-person-hiking"></i> Activities</span>
                         <strong>₹{{ expense.activities|floatformat:0 }}</strong>
                     </div>
 
