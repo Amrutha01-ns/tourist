@@ -1,0 +1,392 @@
+[
+{
+  "model": "places.placedetails",
+  "pk": 1,
+  "fields": {
+    "place": 5,
+    "opening_hours": "9:00 AM–5:00 PM",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "Swimming is not allowed; limited parking is available.",
+    "facilities": "Confirm available visitor facilities locally.",
+    "source_url": "https://karnatakatourism.org/en/attractions/abbey-falls",
+    "last_verified": "2026-10-23"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 2,
+  "fields": {
+    "place": 26,
+    "opening_hours": "",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "Check forest access, authorised activities and seasonal restrictions before travelling.",
+    "facilities": "Protected forest area within the Kali Tiger Reserve; facilities depend on authorised access points.",
+    "source_url": "https://karnatakatourism.org/en/experiences/anshi-national-park",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 3,
+  "fields": {
+    "place": 6,
+    "opening_hours": "",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "Rafting is seasonal, generally best from July to October; check river conditions and book with an authorised operator.",
+    "facilities": "Rafting and other activities depend on operators and conditions.",
+    "source_url": "https://karnatakatourism.org/en/experiences/barapole-adventures",
+    "last_verified": "2026-10-23"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 4,
+  "fields": {
+    "place": 10,
+    "opening_hours": "",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "Expect more pilgrims during religious occasions. Check temple access locally.",
+    "facilities": "Bhagandeshwara Temple and the Triveni Sangama confluence.",
+    "source_url": "https://kodagu.nic.in/en/tourist-place/bhagamandala/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 5,
+  "fields": {
+    "place": 19,
+    "opening_hours": "",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "Check weather and road conditions before travelling; respect forest and wildlife restrictions.",
+    "facilities": "Forest viewpoint; confirm facilities locally.",
+    "source_url": "https://hassan.nic.in/en/tourist-place/bisle-ghat/",
+    "last_verified": "2026-10-23"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 6,
+  "fields": {
+    "place": 17,
+    "opening_hours": "7:30 AM–7:30 PM",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "Allow time to explore the temple carvings.",
+    "facilities": "Confirm available visitor facilities locally.",
+    "source_url": "https://karnatakatourism.org/en/attractions/chennakeshava-temple/",
+    "last_verified": "2026-10-23"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 7,
+  "fields": {
+    "place": 3,
+    "opening_hours": "",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "Water flow varies by season. Avoid entering the river or approaching slippery rocks, especially during high flow.",
+    "facilities": "Waterfall viewing area and nearby Kodandarama Temple; confirm current facilities locally.",
+    "source_url": "https://www.metrics.mysurutourism.in/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 8,
+  "fields": {
+    "place": 25,
+    "opening_hours": "",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "Rafting is seasonal. Confirm safari availability and river conditions before travelling.",
+    "facilities": "Safari, birdwatching and river activities depend on current permissions and operators.",
+    "source_url": "https://uttarakannada.nic.in/en/tourist-place/dandeli-wildlife-sanctuary/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 9,
+  "fields": {
+    "place": 15,
+    "opening_hours": "",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "Check current visitor sessions, access arrangements and animal-welfare rules before travelling.",
+    "facilities": "Facilities and activities depend on the current visitor programme.",
+    "source_url": "https://www.dubareelephantcamp.com/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 10,
+  "fields": {
+    "place": 20,
+    "opening_hours": "",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "The reservoir is especially scenic during the monsoon; stay outside restricted dam areas.",
+    "facilities": "A garden is described beside the dam; confirm current public access.",
+    "source_url": "https://hassan.nic.in/en/tourist-place/gorur-dam/",
+    "last_verified": "2026-10-23"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 11,
+  "fields": {
+    "place": 7,
+    "opening_hours": "",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "Check whether the visitor area is open; stay outside restricted dam areas.",
+    "facilities": "Confirm current public access and facilities locally.",
+    "source_url": "",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 12,
+  "fields": {
+    "place": 18,
+    "opening_hours": "6:30 AM–9:00 PM",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "Allow time to explore the historic temple carvings.",
+    "facilities": "An archaeological museum is located within the Halebidu temple complex; confirm current access.",
+    "source_url": "https://old.karnatakatourism.org/tour-item/halebeedu/",
+    "last_verified": "2026-10-23"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 13,
+  "fields": {
+    "place": 2,
+    "opening_hours": "",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "Check dam-area access before travelling. Brindavan Gardens nearby has separate opening hours and entry fees.",
+    "facilities": "Brindavan Gardens is located below the KRS Dam; garden facilities and visitor rules may differ from dam access.",
+    "source_url": "https://mandya.nic.in/en/tourist-place/brindavan-garden/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 14,
+  "fields": {
+    "place": 11,
+    "opening_hours": "",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "Weekends and holidays may be busier; allow time to explore the historic site.",
+    "facilities": "Confirm current opening arrangements and visitor facilities locally.",
+    "source_url": "",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 15,
+  "fields": {
+    "place": 24,
+    "opening_hours": "9:00 AM–5:00 PM",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "Free entry; donations accepted for maintenance.",
+    "crowd_guidance": "Use caution on slippery paths.",
+    "facilities": "Confirm available visitor facilities locally.",
+    "source_url": "https://karnatakatourism.org/en/attractions/mirjan-fort",
+    "last_verified": "2026-10-23"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 16,
+  "fields": {
+    "place": 1,
+    "opening_hours": "",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "This is a city-level destination. Select a specific attraction for accurate opening hours and ticket prices.",
+    "facilities": "Mysuru has multiple attractions; facilities depend on the selected location.",
+    "source_url": "https://karnatakatourism.org/en/destinations/mysuru/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 17,
+  "fields": {
+    "place": 14,
+    "opening_hours": "Safari schedule varies by gate; check official booking information.",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "Safari slots are limited; check availability before travelling.",
+    "facilities": "Confirm available visitor facilities locally.",
+    "source_url": "https://karnatakatourism.org/en/attractions/nagarahole-national-park",
+    "last_verified": "2026-10-23"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 18,
+  "fields": {
+    "place": 13,
+    "opening_hours": "Generally 9:00 AM–6:00 PM; confirm locally.",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "Check access before travelling and allow time to explore the historic palace.",
+    "facilities": "Historic palace with traditional woodwork and paintings; facilities are limited.",
+    "source_url": "https://karnatakatourism.org/en/experiences/nalknad-palace-kodagu/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 19,
+  "fields": {
+    "place": 16,
+    "opening_hours": "",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "Check seasonal access and weather conditions before travelling.",
+    "facilities": "Confirm current visitor facilities locally.",
+    "source_url": "",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 20,
+  "fields": {
+    "place": 22,
+    "opening_hours": "",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "Check sea conditions before swimming; use caution near rocks and strong waves.",
+    "facilities": "Beach access and nearby food or activity facilities may vary seasonally.",
+    "source_url": "https://karnatakatourism.org/en/destinations/gokarna",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 21,
+  "fields": {
+    "place": 9,
+    "opening_hours": "",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "Dress respectfully and expect larger crowds during religious festivals.",
+    "facilities": "Confirm temple visitor facilities and current timings locally.",
+    "source_url": "https://karnatakatourism.org/en/attractions/omkareshwara-temple",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 22,
+  "fields": {
+    "place": 12,
+    "opening_hours": "",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "Respect the heritage site and visit during daylight.",
+    "facilities": "Historic tomb complex near Madikeri; confirm visitor facilities locally.",
+    "source_url": "https://kodagu.nic.in/en/tourist-place/gaddige/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 23,
+  "fields": {
+    "place": 4,
+    "opening_hours": "7:30 AM–2:00 PM; 3:30 PM–6:00 PM; 7:30 PM–9:00 PM",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "Crowds and timings can vary on festival days.",
+    "facilities": "Confirm available visitor facilities locally.",
+    "source_url": "https://chamundeshwaritemple.in/BookTicket.aspx",
+    "last_verified": "2026-10-23"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 24,
+  "fields": {
+    "place": 8,
+    "opening_hours": "Usually 6:00 AM–6:00 PM; confirm before visiting.",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "The road may be difficult during heavy rain. Dress respectfully at the pilgrimage site.",
+    "facilities": "Temple, sacred spring and nearby Brahmagiri viewpoint.",
+    "source_url": "https://karnatakatourism.org/en/destinations/tala-kaveri/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 25,
+  "fields": {
+    "place": 23,
+    "opening_hours": "",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "Check local access and weather conditions. Use caution around slippery rocks and water.",
+    "facilities": "Waterfall near Achave in Ankola taluk; confirm facilities locally.",
+    "source_url": "https://uttarakannada.nic.in/en/tourist-place/vibhuthi-falls/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 26,
+  "fields": {
+    "place": 21,
+    "opening_hours": "Seasonal operation; typically late October–June, depending on water levels and weather.",
+    "weekly_holidays": "",
+    "holiday_notes": "",
+    "ticket_price": "",
+    "crowd_guidance": "Check operating conditions before travelling; use life jackets and follow operator safety instructions.",
+    "facilities": "Water sports include boating and other activities; availability varies by season.",
+    "source_url": "https://karnatakatourism.org/en/experiences/yagachi-dam-watersports",
+    "last_verified": "2026-10-23"
+  }
+}
+]

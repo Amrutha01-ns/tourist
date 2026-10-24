@@ -7,21 +7,23 @@
     <title>Tourist | Plan Your Journey</title>
 
     <link rel="stylesheet" href="{% static 'users/dashboard.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'users/account.css' %}">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
 <!-- NAVBAR -->
 <header class="navbar">
 
-    <a href="#" class="brand">
+    <a href="{% url 'dashboard' %}" class="brand">
         <div class="brand-logo">T</div>
         <span>Tourist</span>
     </a>
 
     <nav class="nav-menu">
 
-        <a href="#" class="nav-item">
+        <a href="{% url 'dashboard' %}" class="nav-item">
             <span class="nav-icon"><i class="fa-solid fa-house"></i></span>
             Home
         </a>
@@ -31,105 +33,13 @@
             Wishlist
         </a>
 
-        <!-- ACCOUNT -->
-        <div class="account-wrapper">
-
-            <button class="account-btn" id="accountBtn" type="button">
-                <span class="account-icon">{{ request.user.username|first|upper }}</span>
-                <span class="account-name">{{ request.user.username }}</span>
-                <i class="fa-solid fa-chevron-down account-arrow"></i>
-            </button>
-
-            <!-- ACCOUNT MENU -->
-            <div class="account-menu" id="accountMenu">
-
-                <div class="account-header">
-                    <div class="account-avatar">{{ request.user.username|first|upper }}</div>
-                    <div>
-                        <h3>{{ request.user.username }}</h3>
-                        <p>Tourist Explorer</p>
-                    </div>
-                </div>
-
-                <div class="account-divider"></div>
-
-                <button class="account-option" id="settingsBtn" type="button">
-                    <i class="fa-solid fa-gear"></i>
-                    <span>Settings</span>
-                </button>
-
-                <button class="account-option" id="darkModeBtn" type="button">
-                    <i class="fa-solid fa-moon"></i>
-                    <span>Dark Mode</span>
-                    <span class="theme-status" id="themeStatus">OFF</span>
-                </button>
-
-                <div class="account-divider"></div>
-
-                <a href="{% url 'logout' %}" class="account-option logout-option">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    <span>Logout</span>
-                </a>
-
-            </div>
-        </div>
+        <!-- Shared account menu -->
+        {% include "users/_account_menu.html" %}
 
     </nav>
 </header>
 
 <main>
-
-    <!-- SETTINGS PANEL -->
-    <div class="settings-overlay" id="settingsOverlay">
-        <div class="settings-panel">
-
-            <div class="settings-top">
-                <div>
-                    <p class="section-label">PREFERENCES</p>
-                    <h2>Settings</h2>
-                </div>
-                <button class="settings-close" id="settingsClose" type="button">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <!-- APPEARANCE -->
-            <div class="settings-section">
-                <h3>Appearance</h3>
-
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <div class="setting-icon"><i class="fa-solid fa-moon"></i></div>
-                        <div>
-                            <h4>Dark Mode</h4>
-                            <p>Use a darker appearance across Tourist.</p>
-                        </div>
-                    </div>
-
-                    <label class="switch">
-                        <input type="checkbox" id="settingsDarkMode">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-            </div>
-
-            <!-- ACCOUNT -->
-            <div class="settings-section">
-                <h3>Account</h3>
-
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <div class="setting-icon"><i class="fa-solid fa-user"></i></div>
-                        <div>
-                            <h4>{{ request.user.username }}</h4>
-                            <p>Your Tourist account</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
 
     <!-- HERO -->
     <section class="hero">
@@ -151,8 +61,12 @@
             </p>
 
             <!-- LOCATION SEARCH -->
-            <form class="search-box" id="locationForm" onsubmit="return goToDistrict(event)">
+            <form class="search-box"
+                  id="locationForm"
+                  onsubmit="return goToDistrict(event)">
+
                 <div class="search-icon">⌕</div>
+
                 <input
                     type="text"
                     id="locationInput"
@@ -160,15 +74,19 @@
                     placeholder="Where do you want to go?"
                     required
                 >
+
                 <datalist id="districts">
                     {% for d in districts %}
-                    <option value="{{ d.name }}">
+                        <option value="{{ d.name }}">
                     {% endfor %}
                 </datalist>
+
                 <button type="submit" class="search-btn">Explore</button>
             </form>
 
-            <button class="current-location-btn" id="currentLocationBtn" type="button">
+            <button class="current-location-btn"
+                    id="currentLocationBtn"
+                    type="button">
                 <span>⌖</span>
                 Use My Current Location
             </button>
@@ -184,11 +102,6 @@
     </section>
 
     <!-- POPULAR DESTINATIONS -->
-    <!--
-        Images and links come from the view's `featured_places`
-        (Place objects from the database), so filenames and district
-        names always match what is really stored.
-    -->
     <section class="popular-section">
 
         <div class="section-top">
@@ -203,9 +116,12 @@
 
             <!-- MYSORE -->
             {% with p=featured_places.mysore %}
-            <a href="{% if p %}{% url 'places_by_district' p.district.name %}{% else %}#{% endif %}" class="destination-card large-card">
+            <a href="{% if p %}{% url 'places_by_district' p.district.name %}{% else %}#{% endif %}"
+               class="destination-card large-card">
                 <div class="card-bg">
-                    {% if p and p.image %}<img src="{{ p.image.url }}" alt="Mysore">{% endif %}
+                    {% if p and p.image %}
+                        <img src="{{ p.image.url }}" alt="Mysore">
+                    {% endif %}
                 </div>
                 <div class="card-overlay"></div>
                 <div class="destination-content">
@@ -219,9 +135,12 @@
 
             <!-- MADIKERI -->
             {% with p=featured_places.madikeri %}
-            <a href="{% if p %}{% url 'places_by_district' p.district.name %}{% else %}#{% endif %}" class="destination-card">
+            <a href="{% if p %}{% url 'places_by_district' p.district.name %}{% else %}#{% endif %}"
+               class="destination-card">
                 <div class="card-bg">
-                    {% if p and p.image %}<img src="{{ p.image.url }}" alt="Madikeri">{% endif %}
+                    {% if p and p.image %}
+                        <img src="{{ p.image.url }}" alt="Madikeri">
+                    {% endif %}
                 </div>
                 <div class="card-overlay"></div>
                 <div class="destination-content">
@@ -234,9 +153,12 @@
 
             <!-- CHIKKAMAGALURU -->
             {% with p=featured_places.chikmagalur %}
-            <a href="{% if p %}{% url 'places_by_district' p.district.name %}{% else %}#{% endif %}" class="destination-card">
+            <a href="{% if p %}{% url 'places_by_district' p.district.name %}{% else %}#{% endif %}"
+               class="destination-card">
                 <div class="card-bg">
-                    {% if p and p.image %}<img src="{{ p.image.url }}" alt="Chikkamagaluru">{% endif %}
+                    {% if p and p.image %}
+                        <img src="{{ p.image.url }}" alt="Chikkamagaluru">
+                    {% endif %}
                 </div>
                 <div class="card-overlay"></div>
                 <div class="destination-content">
@@ -249,9 +171,12 @@
 
             <!-- HAMPI -->
             {% with p=featured_places.hampi %}
-            <a href="{% if p %}{% url 'places_by_district' p.district.name %}{% else %}#{% endif %}" class="destination-card">
+            <a href="{% if p %}{% url 'places_by_district' p.district.name %}{% else %}#{% endif %}"
+               class="destination-card">
                 <div class="card-bg">
-                    {% if p and p.image %}<img src="{{ p.image.url }}" alt="Hampi">{% endif %}
+                    {% if p and p.image %}
+                        <img src="{{ p.image.url }}" alt="Hampi">
+                    {% endif %}
                 </div>
                 <div class="card-overlay"></div>
                 <div class="destination-content">
@@ -264,9 +189,12 @@
 
             <!-- UDUPI -->
             {% with p=featured_places.udupi %}
-            <a href="{% if p %}{% url 'places_by_district' p.district.name %}{% else %}#{% endif %}" class="destination-card wide-card">
+            <a href="{% if p %}{% url 'places_by_district' p.district.name %}{% else %}#{% endif %}"
+               class="destination-card wide-card">
                 <div class="card-bg">
-                    {% if p and p.image %}<img src="{{ p.image.url }}" alt="Udupi">{% endif %}
+                    {% if p and p.image %}
+                        <img src="{{ p.image.url }}" alt="Udupi">
+                    {% endif %}
                 </div>
                 <div class="card-overlay"></div>
                 <div class="destination-content">
@@ -341,16 +269,25 @@
 </main>
 
 <script>
-    // Runs on submit (inline onsubmit), so Explore works even if dashboard.js fails.
     function goToDistrict(e) {
         e.preventDefault();
-        var district = document.getElementById("locationInput").value.trim();
+
+        const district = document.getElementById("locationInput").value.trim();
+
         if (district) {
-            window.location.href = "/places/" + encodeURIComponent(district) + "/";
+            window.location.href =
+                "/places/" + encodeURIComponent(district) + "/";
         }
+
         return false;
     }
 </script>
+
+<!-- Existing dashboard functionality -->
 <script src="{% static 'users/dashboard.js' %}"></script>
+
+<!-- Shared account menu functionality -->
+<script src="{% static 'users/account.js' %}"></script>
+
 </body>
 </html>

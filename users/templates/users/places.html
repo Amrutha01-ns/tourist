@@ -1,4 +1,4 @@
-
+```html
 {% load static %}
 
 <!DOCTYPE html>
@@ -11,12 +11,83 @@
     <title>Explore {{ district.name }}</title>
 
     <link rel="stylesheet" href="{% static 'users/places.css' %}">
+
+    <!-- Account menu styles -->
+    <link rel="stylesheet" href="{% static 'users/account.css' %}">
+
+    <!-- Font Awesome icons -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* Dynamic background for the selected district */
+        .background-overlay {
+            position: fixed;
+            inset: 0;
+
+            {% if background_place and background_place.image %}
+                background-image:
+                    linear-gradient(
+                        rgba(0, 0, 0, 0.48),
+                        rgba(0, 0, 0, 0.65)
+                    ),
+                    url("{{ background_place.image.url }}");
+            {% else %}
+                background-image:
+                    linear-gradient(
+                        rgba(0, 0, 0, 0.65),
+                        rgba(0, 0, 0, 0.75)
+                    );
+            {% endif %}
+
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -1;
+        }
+
+        /* Top navigation */
+        .places-navbar {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 5%;
+        }
+
+        .places-home-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .places-home-link:hover {
+            opacity: 0.8;
+        }
+    </style>
 </head>
 
 <body>
 
-    <!-- Background overlay -->
+    <!-- Dynamic district background -->
     <div class="background-overlay"></div>
+
+    <!-- Navigation with working account menu -->
+    <header class="places-navbar">
+
+        <a href="{% url 'dashboard' %}" class="places-home-link">
+            <i class="fa-solid fa-house"></i>
+            Home
+        </a>
+
+        {% include "users/_account_menu.html" %}
+
+    </header>
 
     <!-- Main Container -->
     <main class="places-page">
@@ -217,6 +288,9 @@
     <!-- Existing JavaScript -->
     <script src="{% static 'users/places.js' %}"></script>
 
+    <!-- Shared account menu functionality -->
+    <script src="{% static 'users/account.js' %}"></script>
+
     <!-- Automatically submit the category filter when changed -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -234,3 +308,4 @@
 </body>
 
 </html>
+```

@@ -38,12 +38,10 @@ def user_login(request):
 def dashboard(request):
     # Keep your existing dashboard function body unchanged.
     districts = District.objects.prefetch_related("places").all()
-
     # Keep your existing find_place() function,
     # featured_places dictionary, and render() call here.
 def dashboard(request):
     districts = District.objects.prefetch_related("places").all()
-
     def find_place(*keywords):
         for keyword in keywords:
             place = (
@@ -54,12 +52,9 @@ def dashboard(request):
                 .select_related("district")
                 .first()
             )
-
             if place:
                 return place
-
         return None
-
     featured_places = {
         "mysore": find_place("Mysore Palace", "Mysore"),
         "madikeri": find_place("Abbey Falls", "Madikeri"),
@@ -71,7 +66,6 @@ def dashboard(request):
         "hampi": find_place("Hampi"),
         "udupi": find_place("Udupi"),
     }
-
     for name, place in featured_places.items():
         print(
             name,
@@ -82,7 +76,6 @@ def dashboard(request):
                 else "NO IMAGE"
             )
         )
-
     return render(
         request,
         "users/dashboard.html",
@@ -91,32 +84,24 @@ def dashboard(request):
             "featured_places": featured_places,
         },
     )
-
+from django.shortcuts import get_object_or_404, render
+from places.models import District, Place
 def places_by_district(request, district_name):
     district = get_object_or_404(
         District,
         name__iexact=district_name
     )
-    # Get the category selected by the user
-    selected_category = request.GET.get("category", "")
-    # Get all places belonging to this district
-    places = Place.objects.filter(
-        district=district
-    )
-    # If a category was selected, filter the places
-    if selected_category:
-        places = places.filter(
-            category=selected_category
-        )
-    return render(
-        request,
-        "users/places.html",
-        {
-            "district": district,
-            "places": places,
-            "selected_category": selected_category,
-        }
-    )
+    places = Place.objects.filter(district=district)
+    # Select an image belonging to this district
+    background_place = places.exclude(
+        image=""
+    ).first()
+    context = {
+        "district": district,
+        "places": places,
+        "background_place": background_place,
+    }
+    return render(request, "users/places.html", context)
 def logout_view(request):
     logout(request)
     return redirect("login")
