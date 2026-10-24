@@ -1,0 +1,22 @@
+[33m42c9ce5[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m the more info of places got filtered nd clean
+[33m04ba69f[m finaly recentered all connection nd some small fixes
+[33m756e1e4[m unfixed images in home db
+[33me1c6163[m uff finaly frbugd
+[33m8394f1b[m dayfull from repo bmtc dataset is ready with partial stops
+[33mc775dc9[m added acount button with logout,modes nd tried nd stucked with error
+[33md1faf5b[m uff finaly with seeding tiny data + done places webpage 26-8
+[33m4e52109[m uff finaly with seeding tiny data + done places webpage 26-8
+[33m8b59fc0[m yeah connected the location of dist into url then to dist-->place models
+[33m61743e4[m yeah connected the location of dist into url then to dist-->place models
+[33mbfe42ec[m wtf finalyyy debug error nd ready with dbrd
+[33me544a2d[m wtf finalyyy debug error nd ready with dbrd
+[33maa65f3b[m created fine homw dashboard
+[33m4faed78[m created fine homw dashboard
+[33me8d87c6[m simple home db
+[33m635d188[m simple home db
+[33m9fe7ad8[m updated login page and view bug
+[33ma2c9243[m updated login page and view bug
+[33ma4b9614[m donw with auth for user loging in
+[33m43ca6c9[m donw with auth for user loging in
+[33mecfebf0[m yeahh done with user login using builtin auth
+[33m87fdd42[m yeahh done with user login using builtin auth

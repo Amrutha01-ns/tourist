@@ -1,11 +1,14 @@
+
 {% load static %}
 
 <div class="account-wrapper">
-    <button class="account-btn"
-            id="accountBtn"
-            type="button"
-            aria-expanded="false"
-            aria-controls="accountMenu">
+    <button
+        class="account-btn"
+        id="accountBtn"
+        type="button"
+        aria-expanded="false"
+        aria-controls="accountMenu"
+    >
         <span class="account-icon">
             {% if request.user.is_authenticated %}
                 {{ request.user.username|first|upper }}
@@ -25,10 +28,12 @@
 
     <div class="account-menu" id="accountMenu" hidden>
         {% if request.user.is_authenticated %}
+
             <div class="account-header">
                 <div class="account-avatar">
                     {{ request.user.username|first|upper }}
                 </div>
+
                 <div>
                     <h3>{{ request.user.username }}</h3>
                     <p>Tourist Explorer</p>
@@ -37,16 +42,30 @@
 
             <div class="account-divider"></div>
 
-            <button class="account-option"
-                    type="button"
-                    id="settingsBtn">
+            <!-- Dashboard navigation -->
+            <a href="{% url 'dashboard' %}" class="account-option">
+                <i class="fa-solid fa-house"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <div class="account-divider"></div>
+
+            <!-- Settings -->
+            <button
+                class="account-option"
+                type="button"
+                id="settingsBtn"
+            >
                 <i class="fa-solid fa-gear"></i>
                 <span>Settings</span>
             </button>
 
-            <button class="account-option"
-                    type="button"
-                    id="darkModeBtn">
+            <!-- Dark mode -->
+            <button
+                class="account-option"
+                type="button"
+                id="darkModeBtn"
+            >
                 <i class="fa-solid fa-moon"></i>
                 <span>Dark Mode</span>
                 <span class="theme-status" id="themeStatus">OFF</span>
@@ -54,12 +73,17 @@
 
             <div class="account-divider"></div>
 
-            <a href="{% url 'logout' %}"
-               class="account-option logout-option">
+            <!-- Logout -->
+            <a
+                href="{% url 'logout' %}"
+                class="account-option logout-option"
+            >
                 <i class="fa-solid fa-right-from-bracket"></i>
                 <span>Logout</span>
             </a>
+
         {% else %}
+
             <a href="{% url 'login' %}" class="account-option">
                 <i class="fa-solid fa-right-to-bracket"></i>
                 <span>Login</span>
@@ -69,23 +93,31 @@
                 <i class="fa-solid fa-user-plus"></i>
                 <span>Register</span>
             </a>
+
         {% endif %}
     </div>
 </div>
 
-<div class="account-settings-overlay"
-     id="settingsOverlay"
-     hidden>
-    <section class="account-settings-panel"
-             role="dialog"
-             aria-modal="true"
-             aria-labelledby="accountSettingsTitle">
-
+<!-- Settings overlay -->
+<div
+    class="account-settings-overlay"
+    id="settingsOverlay"
+    hidden
+>
+    <section
+        class="account-settings-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="accountSettingsTitle"
+    >
         <div class="account-settings-top">
             <h2 id="accountSettingsTitle">Settings</h2>
-            <button type="button"
-                    id="settingsClose"
-                    aria-label="Close settings">
+
+            <button
+                type="button"
+                id="settingsClose"
+                aria-label="Close settings"
+            >
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
@@ -104,5 +136,3 @@
     </section>
 </div>
 
-<link rel="stylesheet" href="{% static 'users/account.css' %}">
-<script src="{% static 'users/account.js' %}" defer></script>

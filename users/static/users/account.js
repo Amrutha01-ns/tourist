@@ -1,109 +1,135 @@
+
 document.addEventListener("DOMContentLoaded", function () {
     const accountBtn = document.getElementById("accountBtn");
+    const accountWrapper = document.querySelector(".account-wrapper");
     const accountMenu = document.getElementById("accountMenu");
+
     const settingsBtn = document.getElementById("settingsBtn");
     const settingsOverlay = document.getElementById("settingsOverlay");
     const settingsClose = document.getElementById("settingsClose");
+
     const darkModeBtn = document.getElementById("darkModeBtn");
-    const themeStatus = document.getElementById("themeStatus");
     const settingsDarkMode = document.getElementById("settingsDarkMode");
+    const themeStatus = document.getElementById("themeStatus");
 
-    // Apply the saved appearance preference.
-    let darkMode = false;
+    function closeAccountMenu() {
+        if (accountWrapper) {
+            accountWrapper.classList.remove("active");
+        }
 
-    try {
-        darkMode = localStorage.getItem("tourist-dark-mode") === "true";
-    } catch (error) {
-        // Continue with the default appearance if storage is unavailable.
+        if (accountBtn) {
+            accountBtn.setAttribute("aria-expanded", "false");
+        }
+    }
+
+    function closeSettings() {
+        if (settingsOverlay) {
+            settingsOverlay.classList.remove("active");
+        }
     }
 
     function applyDarkMode(enabled) {
-        darkMode = enabled;
-        document.body.classList.toggle("account-dark", enabled);
-
-        if (themeStatus) {
-            themeStatus.textContent = enabled ? "ON" : "OFF";
-        }
+        document.body.classList.toggle("dark-mode", enabled);
 
         if (settingsDarkMode) {
             settingsDarkMode.checked = enabled;
         }
 
+        if (themeStatus) {
+            themeStatus.textContent = enabled ? "ON" : "OFF";
+        }
+
         try {
-            localStorage.setItem("tourist-dark-mode", String(enabled));
+            localStorage.setItem("theme", enabled ? "dark" : "light");
         } catch (error) {
-            // Appearance still works for the current page.
+            // Continue working if browser storage is unavailable.
         }
     }
 
-    applyDarkMode(darkMode);
+    // ACCOUNT DROPDOWN
+    if (accountBtn && accountWrapper) {
+        accountBtn.setAttribute("aria-expanded", "false");
 
-    // Open or close the account dropdown.
-    if (accountBtn && accountMenu) {
         accountBtn.addEventListener("click", function (event) {
+            event.preventDefault();
             event.stopPropagation();
 
-            const isOpening = accountMenu.hidden;
-            accountMenu.hidden = !isOpening;
-            accountBtn.setAttribute("aria-expanded", String(isOpening));
+            const opening = !accountWrapper.classList.contains("active");
+
+            accountWrapper.classList.toggle("active", opening);
+            accountBtn.setAttribute("aria-expanded", String(opening));
         });
 
-        accountMenu.addEventListener("click", function (event) {
-            event.stopPropagation();
+        if (accountMenu) {
+            accountMenu.addEventListener("click", function (event) {
+                event.stopPropagation();
+            });
+        }
+
+        document.addEventListener("click", function (event) {
+            if (!accountWrapper.contains(event.target)) {
+                closeAccountMenu();
+            }
         });
 
-        document.addEventListener("click", function () {
-            accountMenu.hidden = true;
-            accountBtn.setAttribute("aria-expanded", "false");
-        });
+        window.addEventListener("scroll", closeAccountMenu);
 
         document.addEventListener("keydown", function (event) {
             if (event.key === "Escape") {
-                accountMenu.hidden = true;
-                accountBtn.setAttribute("aria-expanded", "false");
-
-                if (settingsOverlay) {
-                    settingsOverlay.hidden = true;
-                }
+                closeAccountMenu();
+                closeSettings();
             }
         });
     }
 
-    // Open Settings.
+    // SETTINGS PANEL
     if (settingsBtn && settingsOverlay) {
-        settingsBtn.addEventListener("click", function () {
-            settingsOverlay.hidden = false;
+        settingsBtn.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
 
-            if (accountMenu) {
-                accountMenu.hidden = true;
-                accountBtn.setAttribute("aria-expanded", "false");
-            }
+            closeAccountMenu();
+            settingsOverlay.classList.add("active");
         });
     }
 
-    // Close Settings.
-    if (settingsClose && settingsOverlay) {
-        settingsClose.addEventListener("click", function () {
-            settingsOverlay.hidden = true;
-        });
+    if (settingsClose) {
+        settingsClose.addEventListener("click", closeSettings);
+    }
 
+    if (settingsOverlay) {
         settingsOverlay.addEventListener("click", function (event) {
             if (event.target === settingsOverlay) {
-                settingsOverlay.hidden = true;
+                closeSettings();
             }
         });
     }
 
-    // Dark Mode works from either control.
+    // DARK MODE BUTTON
     if (darkModeBtn) {
-        darkModeBtn.addEventListener("click", function () {
-            applyDarkMode(!darkMode);
+        darkModeBtn.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            const enabled = !document.body.classList.contains("dark-mode");
+            applyDarkMode(enabled);
         });
     }
 
+    // SETTINGS DARK MODE SWITCH
     if (settingsDarkMode) {
         settingsDarkMode.addEventListener("change", function () {
             applyDarkMode(settingsDarkMode.checked);
         });
     }
+
+    // RESTORE THE SAVED THEME
+    let savedTheme = "light";
+
+    try {
+        savedTheme = localStorage.getItem("theme") || "light";
+    } catch (error) {
+        // Use light mode when browser storage is unavailable.
+    }
+
+    applyDarkMode(savedTheme === "dark");
 });
