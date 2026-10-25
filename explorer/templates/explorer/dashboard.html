@@ -179,36 +179,7 @@
 
 <body>
 
-<header class="navbar">
-    <a class="brand" href="/users/dashboard/" aria-label="Tourist home">
-        <span class="brand-mark">T</span>
-        <span>Tourist</span>
-    </a>
-
-    <nav class="nav-links" aria-label="Main navigation">
-        <a class="home-nav-btn" href="/users/dashboard/">
-            <i class="fa-solid fa-house"></i>
-            <span>Home</span>
-        </a>
-
-        {% if request.user.is_authenticated %}
-            <span class="nav-username">
-                <i class="fa-solid fa-user"></i>
-                {{ request.user.username }}
-            </span>
-
-            <a class="logout-nav-btn" href="{% url 'logout' %}">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                Logout
-            </a>
-        {% else %}
-            <a class="home-nav-btn" href="{% url 'login' %}">
-                <i class="fa-solid fa-right-to-bracket"></i>
-                Login
-            </a>
-        {% endif %}
-    </nav>
-</header>
+{% include "users/_topnav.html" with spacer=True %}
 <main class="page">
     <p class="eyebrow">Your personal trip planner</p>
 
@@ -404,7 +375,7 @@
             Select a destination from the Tourist home page first. Then you can enter your budget and trip details here.
         </p>
         <a class="primary-btn" style="display:block;text-align:center;text-decoration:none"
-           href="{% url 'users_dashboard' %}">
+           href="{% url 'dashboard' %}">
             Choose a destination
         </a>
     {% endif %}
