@@ -1,0 +1,69 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'users/topnav.css' %}">
+
+<header class="tnav" id="tnav">
+  <a class="tnav-brand" href="{% url 'dashboard' %}" aria-label="Tourist home">
+    <span class="tnav-logo">T</span>
+    <span class="tnav-brand-text">Tourist</span>
+  </a>
+
+  <button class="tnav-burger" id="tnavBurger" type="button"
+          aria-label="Menu" aria-expanded="false" aria-controls="tnavLinks">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="tnav-links" id="tnavLinks">
+    <nav class="tnav-menu" aria-label="Main navigation">
+      <span class="tnav-blob" aria-hidden="true"></span>
+
+      <a href="{% url 'dashboard' %}"
+         class="tnav-link{% if nav_active == 'home' %} is-active{% endif %}">Home</a>
+
+      <div class="tnav-drop">
+        <button type="button" id="tnavDistrictBtn"
+                class="tnav-link tnav-drop-btn{% if nav_active == 'districts' %} is-active{% endif %}"
+                aria-expanded="false" aria-controls="tnavDistricts">
+          Districts <span class="tnav-caret">▾</span>
+        </button>
+        <div class="tnav-panel" id="tnavDistricts">
+          {% for d in nav_districts %}
+            <a href="{% url 'places_by_district' d.name %}">{{ d.name }}</a>
+          {% empty %}
+            <span class="tnav-empty">No districts yet</span>
+          {% endfor %}
+        </div>
+      </div>
+
+      <a href="{% url 'explorer:dashboard' %}"
+         class="tnav-link{% if nav_active == 'plan' %} is-active{% endif %}">Trip Planner</a>
+    </nav>
+
+    <div class="tnav-actions">
+      {% if dark %}
+        <button class="tnav-icon-btn" id="tnavTheme" type="button" aria-label="Toggle dark mode">
+          <span class="tnav-moon">☾</span><span class="tnav-sun">☀</span>
+        </button>
+      {% endif %}
+
+      {% if request.user.is_authenticated %}
+        <div class="tnav-drop tnav-user">
+          <button type="button" class="tnav-avatar" id="tnavUserBtn"
+                  aria-expanded="false" aria-controls="tnavUserMenu"
+                  aria-label="Account menu">
+            {{ request.user.username|first|upper }}
+          </button>
+          <div class="tnav-panel tnav-panel-right" id="tnavUserMenu">
+            <p class="tnav-hello">Hi, <strong>{{ request.user.username }}</strong></p>
+            <a href="{% url 'logout' %}" class="tnav-logout">Logout</a>
+          </div>
+        </div>
+      {% else %}
+        <a class="tnav-pill-btn tnav-ghost" href="{% url 'login' %}">Login</a>
+        <a class="tnav-pill-btn" href="{% url 'register' %}">Register</a>
+      {% endif %}
+    </div>
+  </div>
+</header>
+{% if spacer %}<div class="tnav-spacer" aria-hidden="true"></div>{% endif %}
+
+<script src="{% static 'users/topnav.js' %}" defer></script>

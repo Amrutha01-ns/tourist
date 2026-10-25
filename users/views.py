@@ -106,10 +106,19 @@ def places_by_district(request, district_name):
         name__iexact=district_name
     )
 
-    places = Place.objects.filter(district=district)
+    all_places = Place.objects.filter(district=district)
+    places = all_places
+
+    # Category filter from the dropdown (?category=watery etc.)
+    selected_category = request.GET.get("category", "")
+    valid_categories = {key for key, _ in Place.CATEGORY_CHOICES}
+    if selected_category in valid_categories:
+        places = places.filter(category=selected_category)
+    else:
+        selected_category = ""
 
     # Select an image belonging to this district
-    background_place = places.exclude(
+    background_place = all_places.exclude(
         image=""
     ).first()
 
@@ -117,6 +126,7 @@ def places_by_district(request, district_name):
         "district": district,
         "places": places,
         "background_place": background_place,
+        "selected_category": selected_category,
     }
 
     return render(request, "users/places.html", context)

@@ -1,146 +1,41 @@
+// Dashboard page script.
+// Nav, account menu and dark mode now live in topnav.js (shared by all pages).
+
 const locationForm = document.getElementById("locationForm");
 const locationInput = document.getElementById("locationInput");
 
-locationForm.addEventListener("submit", function (event) {
-    event.preventDefault();
+if (locationForm && locationInput) {
+    locationForm.addEventListener("submit", function (event) {
+        event.preventDefault();
 
-    const district = locationInput.value.trim();
+        const district = locationInput.value.trim();
 
-    if (district) {
-        const districtName = district.toLowerCase();
+        if (district) {
+            window.location.href = `/places/${encodeURIComponent(district.toLowerCase())}/`;
+        }
+    });
+}
 
-        window.location.href = `/places/${districtName}/`;
-    }
-});
-const accountBtn = document.getElementById("accountBtn");
-const accountWrapper = document.querySelector(".account-wrapper");
-accountBtn.addEventListener("click", function (event) {
-    event.stopPropagation();
-    accountWrapper.classList.toggle("active");
-});
-document.addEventListener("click", function (event) {
-    if (!accountWrapper.contains(event.target)) {
-        accountWrapper.classList.remove("active");
-    }
-});
-/* CLOSE ACCOUNT MENU WHEN PAGE IS SCROLLED */
-window.addEventListener("scroll", function () {
-    accountWrapper.classList.remove("active");
-});
-/* =================================
-   SETTINGS
-================================= */
-
-const settingsBtn = document.getElementById("settingsBtn");
+/* Settings panel (optional - only if it is present on the page) */
 const settingsOverlay = document.getElementById("settingsOverlay");
 const settingsClose = document.getElementById("settingsClose");
-
-settingsBtn.addEventListener("click", function () {
-
-    settingsOverlay.classList.add("active");
-
-    accountWrapper.classList.remove("active");
-
-});
-
-
-/* CLOSE SETTINGS */
-
-settingsClose.addEventListener("click", function () {
-
-    settingsOverlay.classList.remove("active");
-
-});
-
-
-/* CLICK OUTSIDE SETTINGS */
-
-settingsOverlay.addEventListener("click", function (event) {
-
-    if (event.target === settingsOverlay) {
-
-        settingsOverlay.classList.remove("active");
-
-    }
-
-});
-
-
-/* =================================
-   DARK MODE
-================================= */
-
-const darkModeBtn = document.getElementById("darkModeBtn");
 const settingsDarkMode = document.getElementById("settingsDarkMode");
-const themeStatus = document.getElementById("themeStatus");
 
-
-function enableDarkMode() {
-
-    document.body.classList.add("dark-mode");
-
-    localStorage.setItem("theme", "dark");
-
-    settingsDarkMode.checked = true;
-
-    themeStatus.textContent = "ON";
-
+if (settingsClose && settingsOverlay) {
+    settingsClose.addEventListener("click", function () {
+        settingsOverlay.classList.remove("active");
+    });
+    settingsOverlay.addEventListener("click", function (event) {
+        if (event.target === settingsOverlay) {
+            settingsOverlay.classList.remove("active");
+        }
+    });
 }
 
-
-function disableDarkMode() {
-
-    document.body.classList.remove("dark-mode");
-
-    localStorage.setItem("theme", "light");
-
-    settingsDarkMode.checked = false;
-
-    themeStatus.textContent = "OFF";
-
-}
-
-
-/* ACCOUNT DARK MODE */
-
-darkModeBtn.addEventListener("click", function () {
-
-    if (document.body.classList.contains("dark-mode")) {
-
-        disableDarkMode();
-
-    } else {
-
-        enableDarkMode();
-
-    }
-
-});
-
-
-/* SETTINGS TOGGLE */
-
-settingsDarkMode.addEventListener("change", function () {
-
-    if (this.checked) {
-
-        enableDarkMode();
-
-    } else {
-
-        disableDarkMode();
-
-    }
-
-});
-
-
-/* =================================
-   LOAD SAVED THEME
-================================= */
-const savedTheme = localStorage.getItem("theme");
-if (savedTheme === "dark") {
-    enableDarkMode();
-} else {
-    disableDarkMode();
+if (settingsDarkMode) {
+    settingsDarkMode.checked = document.body.classList.contains("dark-mode");
+    settingsDarkMode.addEventListener("change", function () {
+        const themeBtn = document.getElementById("tnavTheme");
+        if (themeBtn) themeBtn.click();
+    });
 }
