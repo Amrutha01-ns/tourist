@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="place",
             name="slug",
-            field=models.SlugField(
+            field=models.CharField(
                 blank=True,
                 max_length=170,
                 null=True,

@@ -1,10 +1,9 @@
-
 {% load static %}
 
 <header class="navbar">
 
     <!-- LOGO -->
-    <a href="#" class="brand">
+    <a href="{% url 'dashboard' %}" class="brand">
         <div class="brand-logo">T</div>
         <span>Tourist</span>
     </a>
@@ -12,18 +11,18 @@
     <!-- NAVIGATION -->
     <nav class="nav-menu">
 
-        <a href="#" class="nav-item">
+        <a href="{% url 'dashboard' %}" class="nav-item">
             <span class="nav-icon">
                 <i class="fa-solid fa-house"></i>
             </span>
             Home
         </a>
 
-        <a href="#" class="nav-item">
+        <a href="{% url 'places_by_district' 'mysore' %}" class="nav-item">
             <span class="nav-icon">
-                <i class="fa-solid fa-heart"></i>
+                <i class="fa-solid fa-compass"></i>
             </span>
-            Wishlist
+            Explore
         </a>
 
         <!-- ACCOUNT -->
@@ -35,77 +34,82 @@
                 type="button"
             >
                 <span class="account-icon">
-                    {{ request.user.username|first|upper }}
+                    {% if request.user.is_authenticated %}
+                        {{ request.user.username|first|upper }}
+                    {% else %}
+                        <i class="fa-solid fa-user"></i>
+                    {% endif %}
                 </span>
 
                 <span class="account-name">
-                    {{ request.user.username }}
+                    {% if request.user.is_authenticated %}
+                        {{ request.user.username }}
+                    {% else %}
+                        Account
+                    {% endif %}
                 </span>
 
                 <i class="fa-solid fa-chevron-down account-arrow"></i>
             </button>
 
-
             <!-- ACCOUNT MENU -->
-            <div class="account-menu" id="accountMenu">
+            <div class="account-menu" id="accountMenu" hidden>
 
-                <div class="account-header">
-
-                    <div class="account-avatar">
-                        {{ request.user.username|first|upper }}
+                {% if request.user.is_authenticated %}
+                    <div class="account-header">
+                        <div class="account-avatar">
+                            {{ request.user.username|first|upper }}
+                        </div>
+                        <div>
+                            <h3>{{ request.user.username }}</h3>
+                            <p>Tourist Explorer</p>
+                        </div>
                     </div>
 
-                    <div>
-                        <h3>{{ request.user.username }}</h3>
-                        <p>Tourist Explorer</p>
-                    </div>
+                    <div class="account-divider"></div>
 
-                </div>
-
-
-                <div class="account-divider"></div>
-
-
-                <!-- SETTINGS -->
-                <button
-                    class="account-option"
-                    id="settingsBtn"
-                    type="button"
-                >
-                    <i class="fa-solid fa-gear"></i>
-                    <span>Settings</span>
-                </button>
-
-
-                <!-- DARK MODE -->
-                <button
-                    class="account-option"
-                    id="darkModeBtn"
-                    type="button"
-                >
-                    <i class="fa-solid fa-moon"></i>
-                    <span>Dark Mode</span>
-
-                    <span
-                        class="theme-status"
-                        id="themeStatus"
+                    <!-- SETTINGS -->
+                    <button
+                        class="account-option"
+                        id="settingsBtn"
+                        type="button"
                     >
-                        OFF
-                    </span>
-                </button>
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Settings</span>
+                    </button>
 
+                    <!-- DARK MODE -->
+                    <button
+                        class="account-option"
+                        id="darkModeBtn"
+                        type="button"
+                    >
+                        <i class="fa-solid fa-moon"></i>
+                        <span>Dark Mode</span>
+                        <span class="theme-status" id="themeStatus">OFF</span>
+                    </button>
 
-                <div class="account-divider"></div>
+                    <div class="account-divider"></div>
 
+                    <!-- LOGOUT -->
+                    <a
+                        href="{% url 'logout' %}"
+                        class="account-option logout-option"
+                    >
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Logout</span>
+                    </a>
 
-                <!-- LOGOUT -->
-                <a
-                    href="{% url 'logout' %}"
-                    class="account-option logout-option"
-                >
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    <span>Logout</span>
-                </a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="account-option">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <span>Login</span>
+                    </a>
+                    <a href="{% url 'register' %}" class="account-option">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span>Register</span>
+                    </a>
+                {% endif %}
 
             </div>
 
@@ -114,4 +118,3 @@
     </nav>
 
 </header>
-```

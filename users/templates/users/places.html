@@ -10,6 +10,8 @@
     <title>Explore {{ district.name }}</title>
 
     <link rel="stylesheet" href="{% static 'users/places.css' %}">
+    <link rel="stylesheet" href="{% static 'users/account.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
         /* Dynamic background for the selected district */
@@ -42,7 +44,7 @@
 
 <body>
 
-    {% include "users/_topnav.html" with spacer=True %}
+    {% include "basepanel.html" %}
 
     <!-- Dynamic district background -->
     <div class="background-overlay"></div>
@@ -244,6 +246,7 @@
     </main>
 
     <!-- Existing JavaScript -->
+    <script src="{% static 'users/account.js' %}"></script>
     <script src="{% static 'users/places.js' %}"></script>
 
     <!-- Automatically submit the category filter when changed -->

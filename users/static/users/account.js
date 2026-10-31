@@ -19,6 +19,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (accountBtn) {
             accountBtn.setAttribute("aria-expanded", "false");
+            if (accountMenu) {
+                accountMenu.setAttribute("hidden", "");
+            }
         }
     }
 
@@ -58,6 +61,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
             accountWrapper.classList.toggle("active", opening);
             accountBtn.setAttribute("aria-expanded", String(opening));
+            if (accountMenu) {
+                if (opening) {
+                    accountMenu.removeAttribute("hidden");
+                } else {
+                    accountMenu.setAttribute("hidden", "");
+                }
+            }
         });
 
         if (accountMenu) {

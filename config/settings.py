@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-i-v28*q@nfox%ah)oxfzqyhe-9i4wf%stqhjt)#^ts$)@wvwpl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'testserver', '*']
 
 
 # Application definition
@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'transport_finder',
     'rest_framework',
     'explorer',
-    "engine",
+    'engine',
 ]
 
 MIDDLEWARE = [
@@ -62,7 +62,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR/'templates'],
+        'DIRS': [BASE_DIR / 'config' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -83,13 +83,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-            "ENGINE":"django.db.backends.postgresql",
-            "NAME":"tourist_db",
-            "USER":'postgres',
-            "PASSWORD":"pg202905",
-            "HOST":"localhost",
-            "PORT":"5432"
-
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'tourist_db',
+        'USER': 'postgres',
+        'PASSWORD': 'pg202905',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -128,13 +127,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 STATIC_URL = '/static/'
+
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
-
 MAILERS = {
     'default': {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "config" / "media"
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'config' / 'media'

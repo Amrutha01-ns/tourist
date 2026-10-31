@@ -1,7 +1,8 @@
-
 from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
 
 from places.models import Place, PlaceDetails
+from transport_finder.services import resolve_destination_transit
 
 
 def calculate_expense(budget, travellers, days):
@@ -29,10 +30,27 @@ def place_detail(request, slug):
         slug=slug,
     )
 
-    # A guide may not exist yet for every destination.
     place_details = PlaceDetails.objects.filter(
         place=place
     ).first()
+
+    origin = (
+        request.POST.get("origin")
+        or request.GET.get("origin")
+        or "Bengaluru"
+    ).strip()
+    lat = request.GET.get("lat") or request.POST.get("lat")
+    lng = request.GET.get("lng") or request.POST.get("lng")
+
+    # AJAX endpoint for asynchronous transit origin updates
+    if request.headers.get("x-requested-with") == "XMLHttpRequest" and request.GET.get("action") == "transit":
+        transit_data = resolve_destination_transit(
+            place,
+            origin_name=origin,
+            origin_lat=lat,
+            origin_lng=lng
+        )
+        return JsonResponse(transit_data)
 
     expense = None
     error = None
@@ -45,13 +63,10 @@ def place_detail(request, slug):
 
             if not 1000 <= budget <= 100000:
                 error = "Budget must be between ₹1,000 and ₹1,00,000."
-
             elif not 1 <= travellers <= 50:
                 error = "Travellers must be between 1 and 50."
-
             elif not 1 <= days <= 30:
                 error = "Trip duration must be between 1 and 30 days."
-
             else:
                 expense = calculate_expense(
                     budget,
@@ -62,6 +77,14 @@ def place_detail(request, slug):
         except (ValueError, TypeError):
             error = "Please enter valid numbers for your trip."
 
+    # Resolve transit routes for the destination
+    transit = resolve_destination_transit(
+        place,
+        origin_name=origin,
+        origin_lat=lat,
+        origin_lng=lng
+    )
+
     return render(
         request,
         "explorer/dashboard.html",
@@ -70,6 +93,8 @@ def place_detail(request, slug):
             "place_details": place_details,
             "expense": expense,
             "error": error,
+            "transit": transit,
+            "origin": origin,
         },
     )
 
@@ -83,5 +108,7 @@ def dashboard(request):
             "place_details": None,
             "expense": None,
             "error": None,
+            "transit": None,
+            "origin": None,
         },
     )

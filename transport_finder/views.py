@@ -231,3 +231,27 @@ def plan_from_location(request):
             "routes_found": bool(routes),
         },
     })
+
+
+
+@api_view(["GET"])
+def destination_transit_view(request, slug):
+    from places.models import Place
+    from django.shortcuts import get_object_or_404
+    from .services import resolve_destination_transit
+
+    place = get_object_or_404(
+        Place.objects.select_related("district"),
+        slug=slug
+    )
+    origin = request.GET.get("origin", "").strip()
+    lat = request.GET.get("lat")
+    lng = request.GET.get("lng")
+
+    transit_data = resolve_destination_transit(
+        place,
+        origin_name=origin,
+        origin_lat=lat,
+        origin_lng=lng
+    )
+    return Response(transit_data)

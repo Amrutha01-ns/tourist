@@ -1,4 +1,6 @@
 {% load static %}
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -6,140 +8,68 @@
     <title>Tourist | Plan Your Journey</title>
 
     <link rel="stylesheet" href="{% static 'users/dashboard.css' %}">
-
+    <link rel="stylesheet" href="{% static 'users/account.css' %}">
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     >
 </head>
 <body>
-    {% include "users/_topnav.html" with dark=True spacer=True %}
+    {% include "basepanel.html" %}
 
     <main>
-
-
         <!-- SETTINGS PANEL -->
-
         <div class="settings-overlay" id="settingsOverlay">
-
             <div class="settings-panel">
-
-
-                <!-- SETTINGS HEADER -->
                 <div class="settings-top">
-
                     <div>
-
-                        <p class="section-label">
-                            PREFERENCES
-                        </p>
-
-                        <h2>
-                            Settings
-                        </h2>
-
+                        <p class="section-label">PREFERENCES</p>
+                        <h2>Settings</h2>
                     </div>
-
-
-                    <button
-                        class="settings-close"
-                        id="settingsClose"
-                    >
-
+                    <button class="settings-close" id="settingsClose">
                         <i class="fa-solid fa-xmark"></i>
-
                     </button>
-
                 </div>
-
 
                 <!-- APPEARANCE -->
-
                 <div class="settings-section">
-
-                    <h3>
-                        Appearance
-                    </h3>
-
-
+                    <h3>Appearance</h3>
                     <div class="setting-item">
-
-
                         <div class="setting-info">
-
                             <div class="setting-icon">
-
                                 <i class="fa-solid fa-moon"></i>
-
                             </div>
-
-
                             <div>
-
-                                <h4>
-                                    Dark Mode
-                                </h4>
-
-                                <p>
-                                    Use a darker appearance across Tourist.
-                                </p>
-
+                                <h4>Dark Mode</h4>
+                                <p>Use a darker appearance across Tourist.</p>
                             </div>
-
                         </div>
-
-
-                        <!-- TOGGLE -->
-
                         <label class="switch">
-
-                            <input
-                                type="checkbox"
-                                id="settingsDarkMode"
-                            >
-
+                            <input type="checkbox" id="settingsDarkMode">
                             <span class="slider"></span>
-
                         </label>
-
                     </div>
-
                 </div>
 
-
                 <!-- ACCOUNT INFORMATION -->
-
                 <div class="settings-section">
-
-                    <h3>
-                        Account
-                    </h3>
-
-
+                    <h3>Account</h3>
                     <div class="setting-item">
-
-
                         <div class="setting-info">
-
                             <div class="setting-icon">
-
                                 <i class="fa-solid fa-user"></i>
-
                             </div>
-
                             <div>
-                                <h4>
-                                    {{ request.user.username }}
-                                </h4>
-                                <p>
-                                    Your Tourist account
-                                </p>
+                                <h4>{{ request.user.username }}</h4>
+                                <p>Your Tourist account</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- HERO SECTION -->
         <section class="hero">
             <div class="hero-content">
                 <p class="entry-tag">YOUR JOURNEY STARTS HERE</p>
@@ -154,265 +84,139 @@
                     Discover new places, build your journey and let us
                     plan the experience for you.
                 </p>
+
                 <!-- LOCATION SEARCH -->
                 <form class="search-box" id="locationForm">
-    <div class="search-icon">⌕</div>
-    <input
-        type="text"
-        id="locationInput"
-        list="districts"
-        placeholder="Where do you want to go?"
-        required
-    >
-    <datalist id="districts">
-        <option value="Mysore">
-        <option value="Madikeri">
-        <option value="Chikkamagaluru">
-        <option value="Hampi">
-        <option value="Udupi">
-        <option value="Mangaluru">
-        <option value="Shivamogga">
-        <option value="Gokarna">
-    </datalist>
+                    <div class="search-icon">⌕</div>
+                    <input
+                        type="text"
+                        id="locationInput"
+                        list="districts"
+                        placeholder="Where do you want to go?"
+                        required
+                    >
+                    <datalist id="districts">
+                        <option value="Mysore">
+                        <option value="Madikeri">
+                        <option value="Chikkamagaluru">
+                        <option value="Hampi">
+                        <option value="Udupi">
+                        <option value="Mangaluru">
+                        <option value="Shivamogga">
+                        <option value="Gokarna">
+                    </datalist>
 
-    <button type="submit" class="search-btn">
-        Explore
-    </button>
+                    <button type="submit" class="search-btn">
+                        Explore
+                    </button>
+                </form>
 
-</form>
                 <button class="current-location-btn" id="currentLocationBtn">
                     <span>⌖</span>
                     Use My Current Location
                 </button>
             </div>
-                   </div>
 
-        <div class="hero-decoration">
-            <div class="circle circle-one"></div>
-            <div class="circle circle-two"></div>
-            <div class="floating-card card-one">✦</div>
-            <div class="floating-card card-two">⌖</div>
-        </div>
+            <div class="hero-decoration">
+                <div class="circle circle-one"></div>
+                <div class="circle circle-two"></div>
+                <div class="floating-card card-one">✦</div>
+                <div class="floating-card card-two">⌖</div>
+            </div>
+        </section>
 
-    </section>
-
-
-    <!-- POPULAR DESTINATIONS -->
-<!-- POPULAR DESTINATIONS -->
-
-<section class="popular-section">
-
-    <div class="section-top">
-
-        <div>
-            <p class="section-label">
-                START EXPLORING
-            </p>
-
-            <h2>
-                Popular destinations
-            </h2>
-        </div>
-
-        <a href="#" class="view-all">
-            View all →
-        </a>
-
-    </div>
-
-
-    <div class="destination-grid">
-
-
-        <!-- MYSORE -->
-
-        <a href="#" class="destination-card large-card">
-
-            <div class="card-bg">
-
-                <img
-                    src="{% static 'users/images/mysore.jpg' %}"
-                    alt="Mysore"
-                >
-
+        <!-- POPULAR DESTINATIONS -->
+        <section class="popular-section">
+            <div class="section-top">
+                <div>
+                    <p class="section-label">START EXPLORING</p>
+                    <h2>Popular destinations</h2>
+                </div>
+                <a href="{% url 'places_by_district' 'mysore' %}" class="view-all">
+                    View all →
+                </a>
             </div>
 
-            <div class="card-overlay"></div>
+            <div class="destination-grid">
+                <!-- MYSORE -->
+                <a href="{% url 'places_by_district' 'mysore' %}" class="destination-card large-card">
+                    <div class="card-bg">
+                        <img src="{% static 'users/images/mysore.jpg' %}" alt="Mysore">
+                    </div>
+                    <div class="card-overlay"></div>
+                    <div class="destination-content">
+                        <span class="place-tag">ROYAL HERITAGE</span>
+                        <h3>Mysore</h3>
+                        <p>Palaces, culture and timeless history</p>
+                        <span class="explore-place">Explore →</span>
+                    </div>
+                </a>
 
-            <div class="destination-content">
+                <!-- MADIKERI -->
+                <a href="{% url 'places_by_district' 'kodagu' %}" class="destination-card">
+                    <div class="card-bg">
+                        <img src="{% static 'users/images/madikeri.jpg' %}" alt="Madikeri">
+                    </div>
+                    <div class="card-overlay"></div>
+                    <div class="destination-content">
+                        <span class="place-tag">COORG</span>
+                        <h3>Madikeri</h3>
+                        <p>Hills, coffee and mist</p>
+                    </div>
+                </a>
 
-                <span class="place-tag">
-                    ROYAL HERITAGE
-                </span>
+                <!-- CHIKKAMAGALURU -->
+                <a href="{% url 'places_by_district' 'hassan' %}" class="destination-card">
+                    <div class="card-bg">
+                        <img src="{% static 'users/images/chikmagalur.jpg' %}" alt="Chikkamagaluru">
+                    </div>
+                    <div class="card-overlay"></div>
+                    <div class="destination-content">
+                        <span class="place-tag">NATURE</span>
+                        <h3>Chikkamagaluru</h3>
+                        <p>Mountains and coffee estates</p>
+                    </div>
+                </a>
 
-                <h3>
-                    Mysore
-                </h3>
+                <!-- HAMPI -->
+                <a href="{% url 'places_by_district' 'mysore' %}" class="destination-card">
+                    <div class="card-bg">
+                        <img src="{% static 'users/images/hampi.jpg' %}" alt="Hampi">
+                    </div>
+                    <div class="card-overlay"></div>
+                    <div class="destination-content">
+                        <span class="place-tag">HISTORY</span>
+                        <h3>Hampi</h3>
+                        <p>Ancient ruins and architecture</p>
+                    </div>
+                </a>
 
-                <p>
-                    Palaces, culture and timeless history
-                </p>
-
-                <span class="explore-place">
-                    Explore →
-                </span>
-
+                <!-- UDUPI -->
+                <a href="{% url 'places_by_district' 'uttara kannada' %}" class="destination-card wide-card">
+                    <div class="card-bg">
+                        <img src="{% static 'users/images/udupi.jpg' %}" alt="Udupi">
+                    </div>
+                    <div class="card-overlay"></div>
+                    <div class="destination-content">
+                        <span class="place-tag">COASTAL JOURNEY</span>
+                        <h3>Udupi</h3>
+                        <p>Beaches, temples and coastal beauty</p>
+                    </div>
+                </a>
             </div>
+        </section>
 
-        </a>
-
-
-
-        <!-- MADIKERI -->
-
-        <a href="#" class="destination-card">
-
-            <div class="card-bg">
-
-                <img
-                    src="{% static 'users/images/madikeri.jpg' %}"
-                    alt="Madikeri"
-                >
-
-            </div>
-
-            <div class="card-overlay"></div>
-
-            <div class="destination-content">
-
-                <span class="place-tag">
-                    COORG
-                </span>
-
-                <h3>
-                    Madikeri
-                </h3>
-
-                <p>
-                    Hills, coffee and mist
-                </p>
-
-            </div>
-
-        </a>
-
-
-
-        <!-- CHIKKAMAGALURU -->
-
-        <a href="#" class="destination-card">
-
-            <div class="card-bg">
-
-                <img
-                    src="{% static 'users/images/chikmagalur.jpg' %}"
-                    alt="Chikkamagaluru"
-                >
-
-            </div>
-
-            <div class="card-overlay"></div>
-
-            <div class="destination-content">
-
-                <span class="place-tag">
-                    NATURE
-                </span>
-
-                <h3>
-                    Chikkamagaluru
-                </h3>
-
-                <p>
-                    Mountains and coffee estates
-                </p>
-
-            </div>
-
-        </a>
-
-
-
-        <!-- HAMPI -->
-
-        <a href="#" class="destination-card">
-
-            <div class="card-bg">
-
-                <img
-                    src="{% static 'users/images/hampi.jpg' %}"
-                    alt="Hampi"
-                >
-
-            </div>
-
-            <div class="card-overlay"></div>
-
-            <div class="destination-content">
-
-                <span class="place-tag">
-                    HISTORY
-                </span>
-
-                <h3>
-                    Hampi
-                </h3>
-
-                <p>
-                    Ancient ruins and architecture
-                </p>
-
-            </div>
-
-        </a>
-
-
-
-        <!-- UDUPI -->
-
-        <a href="#" class="destination-card wide-card">
-
-            <div class="card-bg">
-
-                <img
-                    src="{% static 'users/images/udupi.jpg' %}"
-                    alt="Udupi"
-                >
-
-            </div>
-
-            <div class="card-overlay"></div>
-
-            <div class="destination-content">
-
-                <span class="place-tag">
-                    COASTAL JOURNEY
-                </span>
-
-                <h3>
-                    Udupi
-                </h3>
-                <p>
-                    Beaches, temples and coastal beauty
-                </p>
-            </div>
-        </a>
-    </div>
-</section>
-       
         <!-- RECENT SEARCHES -->
         <section class="recent-section">
-
             <div class="recent-heading">
                 <p class="section-label">YOUR JOURNEY HISTORY</p>
                 <h2>Recent searches</h2>
                 <p>Pick up where you left off.</p>
             </div>
             <div class="thread-wrapper">
-                <!-- Flowing thread -->
                 <div class="thread"></div>
                 <div class="hanging-list">
-                    <div class="hanging-item">
+                    <div class="hanging-item" onclick="window.location.href='{% url 'places_by_district' 'mysore' %}'" style="cursor: pointer;">
                         <div class="pin"></div>
                         <div class="vertical-thread"></div>
                         <div class="recent-card">
@@ -424,7 +228,7 @@
                             <span class="arrow">→</span>
                         </div>
                     </div>
-                    <div class="hanging-item down">
+                    <div class="hanging-item down" onclick="window.location.href='{% url 'places_by_district' 'kodagu' %}'" style="cursor: pointer;">
                         <div class="pin"></div>
                         <div class="vertical-thread"></div>
                         <div class="recent-card">
@@ -436,10 +240,9 @@
                             <span class="arrow">→</span>
                         </div>
                     </div>
-                    <div class="hanging-item">
+                    <div class="hanging-item" onclick="window.location.href='{% url 'places_by_district' 'hassan' %}'" style="cursor: pointer;">
                         <div class="pin"></div>
                         <div class="vertical-thread"></div>
-
                         <div class="recent-card">
                             <span class="recent-number">03</span>
                             <div>
@@ -449,7 +252,7 @@
                             <span class="arrow">→</span>
                         </div>
                     </div>
-                    <div class="hanging-item down">
+                    <div class="hanging-item down" onclick="window.location.href='{% url 'places_by_district' 'uttara kannada' %}'" style="cursor: pointer;">
                         <div class="pin"></div>
                         <div class="vertical-thread"></div>
                         <div class="recent-card">
@@ -465,7 +268,8 @@
             </div>
         </section>
     </main>
-    {% load static %}
-<script src="{% static 'users/dashboard.js' %}"></script>
+
+    <script src="{% static 'users/account.js' %}"></script>
+    <script src="{% static 'users/dashboard.js' %}"></script>
 </body>
 </html>

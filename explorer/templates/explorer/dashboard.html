@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'users/account.css' %}">
 
     <style>
         :root {
@@ -22,7 +23,7 @@
             margin: 0; font-family: "DM Sans", Arial, sans-serif; color: var(--ink); line-height: 1.6;
             background: radial-gradient(circle at 10% -10%, #dff0e3 0, transparent 40%), var(--sand);
         }
-        h1, h2, h3, .brand { font-family: "Bricolage Grotesque", "DM Sans", sans-serif; }
+        h1, h2, h3, h4, .brand { font-family: "Bricolage Grotesque", "DM Sans", sans-serif; }
         a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
 
         /* Navbar */
@@ -48,7 +49,7 @@
         .logout-nav-btn:hover { background: #0d3322; }
 
         .page { width: min(1100px, 92%); margin: 32px auto 70px; }
-        .eyebrow { margin: 0; color: var(--leaf); font-size: 13px; font-weight: 700; }
+        .eyebrow { margin: 0; color: var(--leaf); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
         .page-title { margin: 6px 0; font-size: clamp(30px, 4.5vw, 48px); line-height: 1.1; letter-spacing: -1px; color: var(--forest); }
         .subtitle { margin: 0 0 6px; color: var(--muted); max-width: 60ch; }
 
@@ -99,16 +100,7 @@
         .counter button:hover { background: var(--leaf); color: #fff; }
         .counter button:active { transform: scale(.92); }
         .counter input { width: 60px; border: 0; outline: none; background: transparent; text-align: center; font: 800 22px "Bricolage Grotesque", sans-serif; color: var(--ink); }
-        .location-panel {
-            margin-top: 8px; padding: 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
-            background: var(--mint); border: 2px dashed #a9cdb4; border-radius: 16px;
-        }
-        .location-panel p { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
-        .secondary-btn {
-            flex-shrink: 0; padding: 11px 18px; border: 2px solid var(--forest); border-radius: 999px;
-            background: #fff; color: var(--forest); font-weight: 700; cursor: pointer;
-        }
-        .secondary-btn:hover { background: var(--forest); color: #fff; }
+
         .primary-btn {
             width: 100%; margin-top: 24px; padding: 17px; border: 0; border-radius: 16px;
             background: linear-gradient(135deg, var(--leaf), var(--forest)); color: #fff;
@@ -157,20 +149,99 @@
         .guide-item-heading i { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; background: var(--forest); color: var(--sun); font-size: 14px; }
         .guide-item h3 { margin: 0; font-size: 16px; color: var(--forest); }
         .guide-item p { margin: 0; color: var(--muted); font-size: 14px; }
-        .guide-disclaimer { margin: 16px 0 0; color: var(--muted); font-size: 13px; }
-        .guide-empty { margin-top: 20px; padding: 30px; text-align: center; border: 2px dashed #cfd9c9; border-radius: 16px; color: var(--muted); }
-        .guide-empty i { font-size: 28px; color: var(--leaf); }
-        .guide-empty h3 { margin: 8px 0 4px; color: var(--forest); }
-        .guide-empty p { margin: 0; }
+
+        /* Public Transportation Section */
+        .transit-section {
+            margin-top: 28px; padding: 32px; background: #fff;
+            border: 1px solid var(--line); border-top: 8px solid var(--leaf); border-radius: 24px;
+            box-shadow: 0 16px 36px -20px rgba(20, 69, 47, .45);
+        }
+        .transit-header {
+            display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 16px; flex-wrap: wrap;
+        }
+        .transit-origin-bar {
+            display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; align-items: center;
+        }
+        .transit-input-wrap {
+            flex: 1; min-width: 250px;
+        }
+        .transit-input {
+            width: 100%; padding: 12px 16px; border: 2px solid var(--line); border-radius: 14px;
+            font-size: 15px; font-family: inherit; background: #fafcfa;
+        }
+        .transit-input:focus { border-color: var(--leaf); outline: none; }
+        .transit-btn {
+            padding: 12px 20px; border-radius: 14px; border: 0; background: var(--forest);
+            color: #fff; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+            transition: background .15s;
+        }
+        .transit-btn:hover { background: var(--leaf); }
+        .transit-geo-btn {
+            background: var(--mint); color: var(--forest); border: 2px solid #a9cdb4;
+        }
+        .transit-geo-btn:hover { background: #cfe7d6; }
+        .transit-badge {
+            display: inline-block; padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 700; text-transform: uppercase;
+        }
+        .badge-bmtc { background: #e0f2fe; color: #0369a1; }
+        .badge-mitra { background: #fef3c7; color: #b45309; }
+        .badge-ksrtc { background: #fee2e2; color: #b91c1c; }
+        .badge-covered { background: #dcfce7; color: #15803d; }
+        .badge-hub { background: #fef9c3; color: #854d0e; }
+        .badge-outside { background: #f3f4f6; color: #4b5563; }
+        
+        .transit-hub-info {
+            padding: 18px 20px; background: var(--sand); border-radius: 16px; border-left: 5px solid var(--leaf);
+            margin-bottom: 22px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
+        }
+        .transit-hub-info h4 { margin: 0 0 4px; font-size: 17px; color: var(--forest); }
+        .transit-hub-info p { margin: 0; font-size: 14px; color: var(--muted); }
+
+        .routes-group-title {
+            margin: 24px 0 12px; font-size: 18px; color: var(--forest); display: flex; align-items: center; gap: 10px;
+        }
+        .routes-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 16px; margin-top: 10px;
+        }
+        .route-card {
+            padding: 18px; border-radius: 16px; border: 1px solid var(--line); background: #fcfdfc;
+            display: flex; flex-direction: column; gap: 8px; transition: transform .15s, box-shadow .15s;
+        }
+        .route-card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px -10px rgba(20, 69, 47, .25); }
+        .route-top {
+            display: flex; justify-content: space-between; align-items: center; gap: 8px;
+        }
+        .route-name { font-weight: 700; font-size: 16px; color: var(--forest); margin: 0; }
+        .route-stops-flow {
+            display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--ink); margin: 6px 0; font-weight: 500;
+        }
+        .route-meta {
+            display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-top: auto; padding-top: 10px; border-top: 1px dashed var(--line);
+        }
+        .transfer-card {
+            padding: 18px; border-radius: 16px; border: 1px solid var(--line); background: #fffcf5;
+            border-left: 5px solid var(--sun); display: flex; flex-direction: column; gap: 10px;
+        }
+        .transfer-step {
+            padding: 10px 14px; background: #fff; border-radius: 12px; border: 1px solid var(--line);
+        }
+        .transfer-divider {
+            display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: #854d0e;
+            padding: 3px 10px; background: #fef3c7; border-radius: 999px; align-self: flex-start;
+        }
+        .disclaimer-box {
+            margin-top: 24px; padding: 14px 18px; background: #f8faf8; border-radius: 14px;
+            border: 1px dashed #cfd9c9; font-size: 13px; color: var(--muted); display: flex; gap: 12px; align-items: flex-start;
+        }
+        .disclaimer-box i { color: var(--leaf); font-size: 18px; margin-top: 2px; }
 
         @media (max-width: 800px) { .guide-grid { grid-template-columns: 1fr 1fr; } }
         @media (max-width: 700px) {
             .navbar { padding: 12px 5%; }
             .nav-links a span { display: none; }
             .place-card { min-height: 320px; border-radius: 22px; }
-            .place-info, .planner, .results { padding: 22px; }
+            .place-info, .planner, .results, .transit-section { padding: 22px; }
             .counter-grid, .guide-grid { grid-template-columns: 1fr; gap: 14px; }
-            .location-panel { align-items: flex-start; flex-direction: column; }
             .guide-icon { display: none; }
         }
         @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
@@ -179,16 +250,17 @@
 
 <body>
 
-{% include "users/_topnav.html" with spacer=True %}
+{% include "basepanel.html" %}
 <main class="page">
     <p class="eyebrow">Your personal trip planner</p>
 
     {% if place %}
         <h1 class="page-title">Plan your trip to {{ place.name }}</h1>
         <p class="subtitle">
-            Adjust your budget and trip details to see an estimated travel cost.
+            Explore destination details, adjust your group budget, and discover public transportation options.
         </p>
 
+        <!-- Destination Hero Card -->
         <section class="place-card">
             {% if place.image %}
                 <img class="place-image"
@@ -212,8 +284,10 @@
             </div>
         </section>
 
+        <!-- Destination Guide & Expense Estimator -->
         <section class="planner">
             {% include "explorer/_place_guide.html" %}
+
             <h2>Estimate your expenses</h2>
             <p class="planner-intro">
                 Tell us your budget, group size and trip duration.
@@ -221,6 +295,7 @@
 
             <form method="post" id="expenseForm">
                 {% csrf_token %}
+                <input type="hidden" name="origin" id="hiddenExpenseOrigin" value="{{ origin|default:'Bengaluru' }}">
 
                 <div class="field">
                     <div class="budget-line">
@@ -288,22 +363,9 @@
                     </div>
                 </div>
 
-                <div class="location-panel">
-                    <div>
-                        <strong><i class="fa-solid fa-location-crosshairs"></i> Your current location</strong>
-                        <p id="locationStatus">
-                            Enable location if you want to share your current coordinates with this page.
-                        </p>
-                    </div>
-
-                    <button type="button" class="secondary-btn" id="locationButton">
-                        Enable location
-                    </button>
-                </div>
-
                 <button type="submit" class="primary-btn">
                     Calculate my trip expenses
-                    <i class="fa-solid fa-arrow-right"></i>
+                    <i class="fa-solid fa-calculator"></i>
                 </button>
             </form>
             {% if error %}
@@ -311,6 +373,7 @@
             {% endif %}
         </section>
 
+        <!-- Expense Results Section -->
         {% if expense %}
             <section class="results" id="expenseResults">
                 <p class="eyebrow">Your estimated trip budget</p>
@@ -358,12 +421,237 @@
                     </p>
                 {% else %}
                     <p class="notice">
-                        This is a rule-based estimate, not a live quotation.
+                        This is an estimated budget calculated from standard baseline allowances.
                         Actual costs may vary by season, distance, accommodation and activities.
                     </p>
                 {% endif %}
             </section>
         {% endif %}
+
+        <!-- Public Transportation & Route Discovery Section -->
+        <section class="transit-section" id="transitSection">
+            <div class="transit-header">
+                <div>
+                    <p class="eyebrow">Public Transportation</p>
+                    <h2>How to reach {{ place.name }}</h2>
+                    <p class="subtitle" style="margin: 4px 0 0;">
+                        Public transit availability, transit hubs, and route connections from your starting point.
+                    </p>
+                </div>
+
+                <div>
+                    {% if transit.status == "covered" %}
+                        <span class="transit-badge badge-covered">
+                            <i class="fa-solid fa-circle-check"></i> Urban Transit Covered
+                        </span>
+                    {% elif transit.status == "hub_connected" %}
+                        <span class="transit-badge badge-hub">
+                            <i class="fa-solid fa-route"></i> Regional Hub Connected
+                        </span>
+                    {% else %}
+                        <span class="transit-badge badge-outside">
+                            <i class="fa-solid fa-circle-info"></i> Regional Advisory
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Transit Hub Summary -->
+            <div class="transit-hub-info">
+                <div>
+                    <h4>Transit Hub: <strong>{{ transit.transit_hub }}</strong></h4>
+                    <p>{{ transit.notes }}</p>
+                </div>
+                <div>
+                    <span style="font-size: 13px; font-weight: 700; color: var(--forest); background: #e3f1e7; padding: 6px 12px; border-radius: 999px;">
+                        <i class="fa-solid fa-location-arrow"></i> {{ transit.hub_distance }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Departure Origin Selector Form -->
+            <form id="transitOriginForm" class="transit-origin-bar">
+                <div class="transit-input-wrap">
+                    <input
+                        type="text"
+                        id="transitOriginInput"
+                        class="transit-input"
+                        placeholder="Enter starting location (e.g. Bengaluru, Mysuru Railway Station)..."
+                        value="{{ origin|default:'Bengaluru' }}"
+                        list="transitOriginList"
+                        required
+                    >
+                    <datalist id="transitOriginList">
+                        <option value="Bengaluru">
+                        <option value="Kempegowda Bus Station">
+                        <option value="Mysuru Railway Station">
+                        <option value="Palace Bus Stop">
+                        <option value="Rural Bus Stand">
+                        <option value="Hunsur">
+                        <option value="Madikeri">
+                    </datalist>
+                </div>
+
+                <button type="submit" class="transit-btn" id="findRoutesBtn">
+                    <i class="fa-solid fa-magnifying-glass"></i> Find Routes
+                </button>
+
+                <button type="button" class="transit-btn transit-geo-btn" id="transitGeoBtn">
+                    <i class="fa-solid fa-crosshairs"></i> Use My GPS Location
+                </button>
+            </form>
+            <p id="transitStatusMsg" style="font-size: 13px; color: var(--muted); margin: -10px 0 16px;"></p>
+
+                        <!-- Route Results Container -->
+            <div id="transitRoutesContainer">
+                {% if transit.travel_tip %}
+                    <div style="padding: 16px 20px; background: #fdfaf2; border-left: 5px solid var(--sun); border-radius: 14px; margin-bottom: 22px;">
+                        <h4 style="margin: 0 0 4px; color: var(--forest); font-size: 15px;">
+                            <i class="fa-solid fa-lightbulb" style="color: var(--sun);"></i> Boarding Advice & Direct Route Tips
+                        </h4>
+                        <p style="margin: 0; font-size: 14px; color: var(--ink);">{{ transit.travel_tip }}</p>
+                    </div>
+                {% endif %}
+
+                {% if transit.bus_routes %}
+                    <h3 class="routes-group-title">
+                        <i class="fa-solid fa-bus"></i> Direct Available Bus Numbers & Routes ({{ transit.bus_routes|length }})
+                    </h3>
+                    <div class="routes-grid">
+                        {% for r in transit.bus_routes %}
+                            <article class="route-card" style="border-top: 4px solid var(--leaf);">
+                                <div class="route-top">
+                                    <span class="transit-badge {% if r.provider_code == 'BMTC' %}badge-bmtc{% elif r.provider_code == 'MITRA' %}badge-mitra{% elif r.provider_code == 'NWKRTC' %}badge-hub{% else %}badge-ksrtc{% endif %}">
+                                        {{ r.provider_code|default:"BUS" }}
+                                    </span>
+                                    <span style="font-size: 13px; font-weight: 800; color: var(--forest); background: var(--mint); padding: 4px 12px; border-radius: 8px;">
+                                        <i class="fa-solid fa-bus-simple"></i> Bus {{ r.bus_number|default:r.route_id }}
+                                    </span>
+                                </div>
+                                <h4 class="route-name" style="margin: 8px 0 4px; font-size: 16px; color: var(--forest);">
+                                    {{ r.route_name|default:r.route }}
+                                </h4>
+                                <div class="route-stops-flow" style="font-size: 13px; color: #2a3d31;">
+                                    <span><strong>From:</strong> {{ r.boarding_point|default:r.from }}</span>
+                                    <i class="fa-solid fa-arrow-right" style="color: var(--leaf); font-size: 12px;"></i>
+                                    <span><strong>To:</strong> {{ r.drop_point|default:r.to }}</span>
+                                </div>
+                                {% if r.stops_via %}
+                                    <p style="font-size: 12px; color: var(--muted); margin: 4px 0 8px;">
+                                        <i class="fa-solid fa-route" style="color: var(--leaf);"></i> <em>{{ r.stops_via }}</em>
+                                    </p>
+                                {% endif %}
+                                <div class="route-meta" style="margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; align-items: center; font-size: 12px;">
+                                    <span>
+                                        <i class="fa-regular fa-clock"></i>
+                                        {{ r.frequency|default:"Frequent Schedule" }}
+                                        {% if r.operating_hours %} &bull; {{ r.operating_hours }}{% endif %}
+                                    </span>
+                                    <span style="font-size: 13px; font-weight: 700; color: var(--forest); background: #fdfaf2; padding: 2px 8px; border-radius: 6px;">
+                                        {{ r.fare|default:"Standard Tariff" }}
+                                    </span>
+                                </div>
+                            </article>
+                        {% endfor %}
+                    </div>
+                {% elif transit.direct_routes %}
+                    <h3 class="routes-group-title">
+                        <i class="fa-solid fa-bus"></i> Direct Routes ({{ transit.direct_routes|length }})
+                    </h3>
+                    <div class="routes-grid">
+                        {% for r in transit.direct_routes %}
+                            <article class="route-card">
+                                <div class="route-top">
+                                    <span class="transit-badge {% if r.provider_code == 'BMTC' %}badge-bmtc{% elif r.provider_code == 'MITRA' %}badge-mitra{% else %}badge-ksrtc{% endif %}">
+                                        {{ r.provider_code }}
+                                    </span>
+                                    <span style="font-size: 12px; font-weight: 700; color: var(--muted);">
+                                        Route: {{ r.route_id }}
+                                    </span>
+                                </div>
+                                <h4 class="route-name">{{ r.route|default:r.route_name }}</h4>
+                                <div class="route-stops-flow">
+                                    <span>{{ r.from|default:r.boarding_stop }}</span>
+                                    <i class="fa-solid fa-arrow-right" style="color: var(--leaf); font-size: 12px;"></i>
+                                    <span>{{ r.to|default:r.drop_stop }}</span>
+                                </div>
+                                <div class="route-meta">
+                                    <span>
+                                        <i class="fa-regular fa-clock"></i>
+                                        {% if r.departure_time %}
+                                            Depart: {{ r.departure_time }}
+                                        {% else %}
+                                            Scheduled Frequency
+                                        {% endif %}
+                                    </span>
+                                    <span>{{ r.provider }}</span>
+                                </div>
+                            </article>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if transit.transfer_routes %}
+                    <h3 class="routes-group-title" style="margin-top: 28px;">
+                        <i class="fa-solid fa-shuffle"></i> Connected Transfer Journeys ({{ transit.transfer_routes|length }})
+                    </h3>
+                    <div class="routes-grid">
+                        {% for t in transit.transfer_routes %}
+                            <article class="transfer-card">
+                                <div class="route-top">
+                                    <span class="transit-badge badge-ksrtc">1-Transfer Route</span>
+                                    <span class="transfer-divider">
+                                        <i class="fa-solid fa-arrows-split-up-and-left"></i> Transfer at {{ t.transfer_at }}
+                                    </span>
+                                </div>
+
+                                <!-- Step 1 -->
+                                <div class="transfer-step">
+                                    <span class="transit-badge badge-ksrtc" style="font-size: 10px;">Leg 1: {{ t.first_leg.provider_code }}</span>
+                                    <p style="margin: 4px 0; font-weight: 700; font-size: 14px;">{{ t.first_leg.route }}</p>
+                                    <div class="route-stops-flow" style="font-size: 13px;">
+                                        <span>{{ t.first_leg.from }}</span>
+                                        <i class="fa-solid fa-arrow-right" style="font-size: 11px;"></i>
+                                        <span>{{ t.first_leg.to }}</span>
+                                    </div>
+                                </div>
+
+                                <!-- Step 2 -->
+                                <div class="transfer-step">
+                                    <span class="transit-badge badge-mitra" style="font-size: 10px;">Leg 2: {{ t.second_leg.provider_code }}</span>
+                                    <p style="margin: 4px 0; font-weight: 700; font-size: 14px;">{{ t.second_leg.route }}</p>
+                                    <div class="route-stops-flow" style="font-size: 13px;">
+                                        <span>{{ t.second_leg.from }}</span>
+                                        <i class="fa-solid fa-arrow-right" style="font-size: 11px;"></i>
+                                        <span>{{ t.second_leg.to }}</span>
+                                    </div>
+                                </div>
+                            </article>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if not transit.bus_routes and not transit.direct_routes and not transit.transfer_routes and not transit.hub_routes %}
+                    <div style="padding: 24px; background: var(--sand); border-radius: 16px; text-align: center; color: var(--muted); margin-top: 14px;">
+                        <i class="fa-solid fa-compass" style="font-size: 26px; color: var(--leaf); margin-bottom: 8px;"></i>
+                        <h4 style="margin: 6px 0; color: var(--forest);">No Direct Routes from "{{ transit.origin }}"</h4>
+                        <p style="margin: 0; font-size: 14px;">
+                            {{ transit.notes }} Try entering a major transit terminal like <strong>Bengaluru</strong> or <strong>Mysuru</strong>.
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Disclaimer & Boundaries -->
+            <div class="disclaimer-box">
+                <i class="fa-solid fa-shield-halved"></i>
+                <div>
+                    <strong>Data Limitations & Schedule Notice:</strong>
+                    {{ transit.data_disclaimer }}
+                    Coverage is focused on Bengaluru (BMTC), Mysuru (MITRA), and verified KSRTC southern corridors.
+                </div>
+            </div>
+        </section>
 
         <a class="back-link" href="{% url 'places_by_district' place.district.name %}">
             <i class="fa-solid fa-arrow-left"></i> Back to {{ place.district.name }} destinations
@@ -381,6 +669,7 @@
     {% endif %}
 </main>
 
+<script src="{% static 'users/account.js' %}"></script>
 <script src="{% static 'explorer/js/dashboard.js' %}"></script>
 </body>
 </html>

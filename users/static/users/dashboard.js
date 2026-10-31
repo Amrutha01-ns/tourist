@@ -8,7 +8,9 @@ if (locationForm && locationInput) {
     locationForm.addEventListener("submit", function (event) {
         event.preventDefault();
 
-        const district = locationInput.value.trim();
+        const DISTRICT_MAP = {"chikkamagaluru": "hassan", "chikmagalur": "hassan", "madikeri": "kodagu", "coorg": "kodagu", "gokarna": "uttara kannada", "dandeli": "uttara kannada", "karwar": "uttara kannada", "udupi": "uttara kannada", "hampi": "hassan", "mysuru": "mysore"};
+        const raw = locationInput.value.trim().toLowerCase();
+        const district = DISTRICT_MAP[raw] || raw;
 
         if (district) {
             window.location.href = `/places/${encodeURIComponent(district.toLowerCase())}/`;
