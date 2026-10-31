@@ -182,7 +182,10 @@
                             {% else %}
 
                                 <div class="no-image">
-                                    No Image Available
+                                    <a href="{% url 'explorer:place_detail' place.slug %}" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; text-decoration:none; color:#f3b84f; gap:6px;">
+                                        <i class="fa-solid fa-mountain-sun" style="font-size: 26px;"></i>
+                                        <span style="font-size: 14px; font-weight: 600; color: #fff;">Explore Destination</span>
+                                    </a>
                                 </div>
 
                             {% endif %}

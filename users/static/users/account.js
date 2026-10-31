@@ -49,6 +49,50 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    // EXPLORE DROPDOWN
+    const exploreBtn = document.getElementById("exploreBtn");
+    const exploreWrapper = document.getElementById("exploreWrapper");
+    const exploreMenu = document.getElementById("exploreMenu");
+
+    function closeExploreMenu() {
+        if (exploreWrapper) {
+            exploreWrapper.classList.remove("active");
+        }
+        if (exploreBtn) {
+            exploreBtn.setAttribute("aria-expanded", "false");
+        }
+        if (exploreMenu) {
+            exploreMenu.setAttribute("hidden", "");
+        }
+    }
+
+    if (exploreBtn && exploreWrapper) {
+        exploreBtn.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            closeAccountMenu();
+
+            const opening = !exploreWrapper.classList.contains("active");
+            exploreWrapper.classList.toggle("active", opening);
+            exploreBtn.setAttribute("aria-expanded", String(opening));
+            if (exploreMenu) {
+                if (opening) {
+                    exploreMenu.removeAttribute("hidden");
+                } else {
+                    exploreMenu.setAttribute("hidden", "");
+                }
+            }
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!exploreWrapper.contains(event.target)) {
+                closeExploreMenu();
+            }
+        });
+
+        window.addEventListener("scroll", closeExploreMenu);
+    }
+
     // ACCOUNT DROPDOWN
     if (accountBtn && accountWrapper) {
         accountBtn.setAttribute("aria-expanded", "false");

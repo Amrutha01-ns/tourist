@@ -18,12 +18,49 @@
             Home
         </a>
 
-        <a href="{% url 'places_by_district' 'mysore' %}" class="nav-item">
-            <span class="nav-icon">
-                <i class="fa-solid fa-compass"></i>
-            </span>
-            Explore
-        </a>
+        <!-- EXPLORE DROPDOWN -->
+        <div class="explore-wrapper" id="exploreWrapper">
+            <button
+                class="nav-item explore-btn"
+                id="exploreBtn"
+                type="button"
+                aria-expanded="false"
+            >
+                <span class="nav-icon">
+                    <i class="fa-solid fa-compass"></i>
+                </span>
+                Explore
+                <i class="fa-solid fa-chevron-down" style="font-size: 10px; margin-left: 4px;"></i>
+            </button>
+
+            <div class="explore-menu" id="exploreMenu" hidden>
+                <div class="explore-menu-title">Select District</div>
+                <a href="{% url 'places_by_district' 'mysore' %}" class="explore-option">
+                    <i class="fa-solid fa-landmark"></i> Mysore (Mysuru)
+                </a>
+                <a href="{% url 'places_by_district' 'kodagu' %}" class="explore-option">
+                    <i class="fa-solid fa-mountain-sun"></i> Kodagu (Madikeri)
+                </a>
+                <a href="{% url 'places_by_district' 'hassan' %}" class="explore-option">
+                    <i class="fa-solid fa-monument"></i> Hassan
+                </a>
+                <a href="{% url 'places_by_district' 'uttara kannada' %}" class="explore-option">
+                    <i class="fa-solid fa-umbrella-beach"></i> Uttara Kannada (Gokarna)
+                </a>
+                <a href="{% url 'places_by_district' 'Chikkamagaluru' %}" class="explore-option">
+                    <i class="fa-solid fa-mug-hot"></i> Chikkamagaluru
+                </a>
+                <a href="{% url 'places_by_district' 'Hampi' %}" class="explore-option">
+                    <i class="fa-solid fa-chess-rook"></i> Hampi
+                </a>
+                <a href="{% url 'places_by_district' 'Udupi' %}" class="explore-option">
+                    <i class="fa-solid fa-water"></i> Udupi
+                </a>
+                <a href="{% url 'places_by_district' 'Shivamogga' %}" class="explore-option">
+                    <i class="fa-solid fa-cloud-showers-heavy"></i> Shivamogga (Jog Falls)
+                </a>
+            </div>
+        </div>
 
         <!-- ACCOUNT -->
         <div class="account-wrapper">

@@ -21,7 +21,7 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 from django.utils.text import slugify
 
-from places.models import District, Place
+from places.models import District, Place, PlaceDetails
 
 W, R, H, N = "watery", "religious", "historical", "nature"
 
@@ -238,10 +238,22 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.SUCCESS(f"   + add      {name}") +
                                   ("  [image]" if image else ""))
                 if not dry:
-                    Place.objects.create(
+                    new_place = Place.objects.create(
                         district=district, name=name, slug=slug, category=category,
                         speciality=speciality[:255], description=description,
                         image=image,
+                    )
+                    PlaceDetails.objects.get_or_create(
+                        place=new_place,
+                        defaults={
+                            "opening_hours": "06:00 AM – 06:30 PM",
+                            "weekly_holidays": "Open 7 days a week",
+                            "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+                            "ticket_price": "₹30 – ₹100 per visitor",
+                            "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+                            "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+                            "source_url": "https://karnatakatourism.org/",
+                        }
                     )
                 added += 1
 

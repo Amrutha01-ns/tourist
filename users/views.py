@@ -117,11 +117,13 @@ DISTRICT_ALIASES = {
 def places_by_district(request, district_name):
     clean_name = (district_name or "").strip().lower()
 
-    # Check alias dictionary (e.g. chikkamagaluru -> hassan, madikeri -> kodagu)
-    resolved_name = DISTRICT_ALIASES.get(clean_name, clean_name)
+    # 1. Try direct match with database districts
+    district = District.objects.filter(name__iexact=clean_name).first()
 
-    # Try exact match or case-insensitive match
-    district = District.objects.filter(name__iexact=resolved_name).first()
+    # 2. Check alias dictionary if direct match not found
+    if not district:
+        resolved_name = DISTRICT_ALIASES.get(clean_name, clean_name)
+        district = District.objects.filter(name__iexact=resolved_name).first()
 
     # If not found, try substring match (e.g. 'uttara' or 'kannada' -> 'uttara kannada')
     if not district:

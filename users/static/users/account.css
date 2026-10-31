@@ -63,6 +63,73 @@
     font-size: 18px;
 }
 
+/* Explore Dropdown */
+.explore-wrapper {
+    position: relative;
+    display: inline-flex;
+}
+
+.explore-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font: inherit;
+}
+
+.explore-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    z-index: 1000;
+    width: 230px;
+    padding: 8px;
+    border: 1px solid #dedbd5;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+.explore-menu[hidden] {
+    display: none !important;
+}
+
+.explore-wrapper.active .explore-menu {
+    display: block !important;
+}
+
+.explore-menu-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #888;
+    text-transform: uppercase;
+    padding: 6px 12px 4px;
+    letter-spacing: 0.5px;
+}
+
+.explore-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    color: #111;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.15s ease;
+}
+
+.explore-option:hover {
+    background: #f0f6f2;
+    color: #14452f;
+}
+
+.explore-option i {
+    width: 16px;
+    color: #2f7d4f;
+    font-size: 13px;
+}
+
 /* =========================================================
    ACCOUNT DROPDOWN & SETTINGS
    ========================================================= */

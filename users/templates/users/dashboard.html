@@ -85,36 +85,38 @@
                     plan the experience for you.
                 </p>
 
-                <!-- LOCATION SEARCH -->
+                                <!-- LOCATION SEARCH -->
                 <form class="search-box" id="locationForm">
-                    <div class="search-icon">⌕</div>
-                    <input
-                        type="text"
-                        id="locationInput"
-                        list="districts"
-                        placeholder="Where do you want to go?"
+                    <div class="search-icon"><i class="fa-solid fa-compass" style="color: #666; font-size: 19px;"></i></div>
+                    <select
+                        id="locationSelect"
+                        name="district"
+                        class="search-select"
                         required
                     >
-                    <datalist id="districts">
-                        <option value="Mysore">
-                        <option value="Madikeri">
-                        <option value="Chikkamagaluru">
-                        <option value="Hampi">
-                        <option value="Udupi">
-                        <option value="Mangaluru">
-                        <option value="Shivamogga">
-                        <option value="Gokarna">
-                    </datalist>
+                        <option value="" disabled selected>Select District to explore...</option>
+                        <option value="mysore">Mysore / Mysuru (Palace, KRS Dam, Zoo, Chamundi)</option>
+                        <option value="kodagu">Kodagu / Madikeri (Abbey Falls, Raja's Seat, Talakaveri)</option>
+                        <option value="hassan">Hassan (Belur, Halebidu, Shravanabelagola, Gorur)</option>
+                        <option value="uttara kannada">Uttara Kannada (Gokarna, Murudeshwara, Dandeli, Yana)</option>
+                        <option value="Chikkamagaluru">Chikkamagaluru (Mullayanagiri, Baba Budangiri, Hebbe)</option>
+                        <option value="Hampi">Hampi (Virupaksha, Vittala Stone Chariot, Lotus Mahal)</option>
+                        <option value="Udupi">Udupi (Krishna Temple, Malpe Beach, St. Mary's Island)</option>
+                        <option value="Mangaluru">Mangaluru (Panambur Beach, Kadri Manjunath, Pilikula)</option>
+                        <option value="Shivamogga">Shivamogga (Jog Falls, Agumbe, Kodachadri)</option>
+                        <option value="Mandya">Mandya (Ranganathittu Bird Sanctuary, Shivanasamudra)</option>
+                    </select>
 
-                    <button type="submit" class="search-btn">
+                    <button type="submit" class="search-btn" id="exploreSearchBtn">
                         Explore
                     </button>
                 </form>
 
-                <button class="current-location-btn" id="currentLocationBtn">
-                    <span>⌖</span>
+                <button type="button" class="current-location-btn" id="currentLocationBtn">
+                    <span><i class="fa-solid fa-crosshairs" style="color: #2f7d4f; margin-right: 6px;"></i></span>
                     Use My Current Location
                 </button>
+                <div id="gpsStatusMessage" style="font-size: 13px; color: #555; margin-top: 8px; min-height: 18px;"></div>
             </div>
 
             <div class="hero-decoration">

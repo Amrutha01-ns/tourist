@@ -1,43 +1,172 @@
-// Dashboard page script.
-// Nav, account menu and dark mode now live in topnav.js (shared by all pages).
+// Dashboard page script: District selection & GPS Location resolver
+document.addEventListener("DOMContentLoaded", function () {
+    const locationForm = document.getElementById("locationForm");
+    const locationSelect = document.getElementById("locationSelect");
+    const locationInput = document.getElementById("locationInput");
+    const currentLocationBtn = document.getElementById("currentLocationBtn");
+    const gpsStatusMessage = document.getElementById("gpsStatusMessage");
 
-const locationForm = document.getElementById("locationForm");
-const locationInput = document.getElementById("locationInput");
+    const DISTRICT_MAP = {
+        "chikkamagaluru": "hassan",
+        "chikmagalur": "hassan",
+        "madikeri": "kodagu",
+        "coorg": "kodagu",
+        "gokarna": "uttara kannada",
+        "dandeli": "uttara kannada",
+        "karwar": "uttara kannada",
+        "udupi": "uttara kannada",
+        "hampi": "hassan",
+        "mysuru": "mysore",
+        "mysore": "mysore",
+        "kodagu": "kodagu",
+        "hassan": "hassan",
+        "uttara kannada": "uttara kannada"
+    };
 
-if (locationForm && locationInput) {
-    locationForm.addEventListener("submit", function (event) {
-        event.preventDefault();
+    // 1. Handle Form Submit (Dropdown or text input)
+    if (locationForm) {
+        locationForm.addEventListener("submit", function (event) {
+            event.preventDefault();
 
-        const DISTRICT_MAP = {"chikkamagaluru": "hassan", "chikmagalur": "hassan", "madikeri": "kodagu", "coorg": "kodagu", "gokarna": "uttara kannada", "dandeli": "uttara kannada", "karwar": "uttara kannada", "udupi": "uttara kannada", "hampi": "hassan", "mysuru": "mysore"};
-        const raw = locationInput.value.trim().toLowerCase();
-        const district = DISTRICT_MAP[raw] || raw;
+            let chosen = "";
+            if (locationSelect && locationSelect.value) {
+                chosen = locationSelect.value.trim();
+            } else if (locationInput && locationInput.value) {
+                chosen = locationInput.value.trim();
+            }
 
-        if (district) {
-            window.location.href = `/places/${encodeURIComponent(district.toLowerCase())}/`;
-        }
-    });
-}
+            if (!chosen) {
+                if (gpsStatusMessage) {
+                    gpsStatusMessage.textContent = "Please select a destination district first.";
+                    gpsStatusMessage.style.color = "#b42318";
+                }
+                return;
+            }
 
-/* Settings panel (optional - only if it is present on the page) */
-const settingsOverlay = document.getElementById("settingsOverlay");
-const settingsClose = document.getElementById("settingsClose");
-const settingsDarkMode = document.getElementById("settingsDarkMode");
+            const raw = chosen.toLowerCase();
+            const district = DISTRICT_MAP[raw] || raw;
+            window.location.href = `/places/${encodeURIComponent(district)}/`;
+        });
+    }
 
-if (settingsClose && settingsOverlay) {
-    settingsClose.addEventListener("click", function () {
-        settingsOverlay.classList.remove("active");
-    });
-    settingsOverlay.addEventListener("click", function (event) {
-        if (event.target === settingsOverlay) {
+    // 2. Handle GPS Location Detection
+    if (currentLocationBtn) {
+        currentLocationBtn.addEventListener("click", function () {
+            if (!navigator.geolocation) {
+                if (gpsStatusMessage) {
+                    gpsStatusMessage.textContent = "GPS is not supported by your browser. Please select a district above.";
+                    gpsStatusMessage.style.color = "#b42318";
+                } else {
+                    alert("GPS is not supported by your browser.");
+                }
+                return;
+            }
+
+            const originalBtnHtml = currentLocationBtn.innerHTML;
+            currentLocationBtn.disabled = true;
+            currentLocationBtn.innerHTML = '<span><i class="fa-solid fa-spinner fa-spin" style="color: #2f7d4f;"></i></span> Locating nearest tourist district...';
+            if (gpsStatusMessage) {
+                gpsStatusMessage.textContent = "Requesting device GPS position...";
+                gpsStatusMessage.style.color = "#555";
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    const userLat = position.coords.latitude;
+                    const userLng = position.coords.longitude;
+
+                    // Central coordinates of tourist districts in Karnataka
+                    const hubDistricts = [
+                        { name: "mysore", title: "Mysore (Mysuru)", lat: 12.2958, lng: 76.6394 },
+                        { name: "kodagu", title: "Kodagu (Madikeri / Coorg)", lat: 12.4244, lng: 75.7382 },
+                        { name: "hassan", title: "Hassan (Belur / Halebidu)", lat: 13.0033, lng: 76.1004 },
+                        { name: "uttara kannada", title: "Uttara Kannada (Gokarna / Dandeli)", lat: 14.8136, lng: 74.1298 }
+                    ];
+
+                    function haversine(lat1, lon1, lat2, lon2) {
+                        const R = 6371; // Earth's radius in km
+                        const dLat = (lat2 - lat1) * Math.PI / 180;
+                        const dLon = (lon2 - lon1) * Math.PI / 180;
+                        const a =
+                            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                    }
+
+                    let nearest = hubDistricts[0];
+                    let minDistance = Infinity;
+
+                    for (const d of hubDistricts) {
+                        const dist = haversine(userLat, userLng, d.lat, d.lng);
+                        if (dist < minDistance) {
+                            minDistance = dist;
+                            nearest = d;
+                        }
+                    }
+
+                    // Update UI dropdown
+                    if (locationSelect) {
+                        locationSelect.value = nearest.name;
+                    }
+
+                    if (gpsStatusMessage) {
+                        gpsStatusMessage.innerHTML = `<strong>Nearest district found:</strong> ${nearest.title} (~${Math.round(minDistance)} km away). Opening destinations...`;
+                        gpsStatusMessage.style.color = "#15803d";
+                    }
+
+                    currentLocationBtn.innerHTML = `<span><i class="fa-solid fa-circle-check" style="color: #15803d;"></i></span> Located: ${nearest.title}!`;
+
+                    setTimeout(function () {
+                        window.location.href = `/places/${encodeURIComponent(nearest.name)}/`;
+                    }, 800);
+                },
+                function (err) {
+                    currentLocationBtn.disabled = false;
+                    currentLocationBtn.innerHTML = originalBtnHtml;
+
+                    let errorMsg = "Could not retrieve your location. Please choose a district from the dropdown.";
+                    if (err.code === 1) {
+                        errorMsg = "Location access was denied. Please allow GPS permission in your browser or choose a district.";
+                    } else if (err.code === 2) {
+                        errorMsg = "GPS location unavailable on this device. Please select a district.";
+                    } else if (err.code === 3) {
+                        errorMsg = "GPS request timed out. Please try again or select a district.";
+                    }
+
+                    if (gpsStatusMessage) {
+                        gpsStatusMessage.textContent = errorMsg;
+                        gpsStatusMessage.style.color = "#b42318";
+                    } else {
+                        alert(errorMsg);
+                    }
+                },
+                { timeout: 10000, enableHighAccuracy: true }
+            );
+        });
+    }
+
+    // 3. Settings panel toggles
+    const settingsOverlay = document.getElementById("settingsOverlay");
+    const settingsClose = document.getElementById("settingsClose");
+    const settingsDarkMode = document.getElementById("settingsDarkMode");
+
+    if (settingsClose && settingsOverlay) {
+        settingsClose.addEventListener("click", function () {
             settingsOverlay.classList.remove("active");
-        }
-    });
-}
+        });
+        settingsOverlay.addEventListener("click", function (event) {
+            if (event.target === settingsOverlay) {
+                settingsOverlay.classList.remove("active");
+            }
+        });
+    }
 
-if (settingsDarkMode) {
-    settingsDarkMode.checked = document.body.classList.contains("dark-mode");
-    settingsDarkMode.addEventListener("change", function () {
-        const themeBtn = document.getElementById("tnavTheme");
-        if (themeBtn) themeBtn.click();
-    });
-}
+    if (settingsDarkMode) {
+        settingsDarkMode.checked = document.body.classList.contains("dark-mode");
+        settingsDarkMode.addEventListener("change", function () {
+            const themeBtn = document.getElementById("tnavTheme");
+            if (themeBtn) themeBtn.click();
+        });
+    }
+});
