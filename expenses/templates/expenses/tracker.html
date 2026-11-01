@@ -35,12 +35,15 @@
             line-height: 1.6;
             background: radial-gradient(circle at 10% -10%, #dff0e3 0, transparent 40%), var(--sand);
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         h1, h2, h3, h4, .brand { font-family: "Bricolage Grotesque", "DM Sans", sans-serif; }
 
         .tracker-page {
-            width: min(1180px, 94%);
-            margin: 28px auto 80px;
+            width: min(1200px, 94%);
+            margin: 28px auto 60px;
+            flex: 1;
         }
 
         /* Hero Destination Banner */
@@ -190,7 +193,7 @@
             transition: width .5s ease;
         }
 
-        /* Tabs and Controls */
+        /* Multi-Day Tabs Bar */
         .day-tabs-bar {
             display: flex;
             gap: 8px;
@@ -227,25 +230,85 @@
         }
         .day-tab.active .day-tab-sub { color: var(--sun); }
 
-        /* Two Column Content Area */
+        /* FAST 1-TAP CATEGORY LOGGING BAR */
+        .quick-log-section {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 24px -14px rgba(20, 69, 47, 0.2);
+        }
+        .quick-log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .quick-log-title {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--forest);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .quick-chips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 10px;
+        }
+        .quick-chip-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 14px;
+            border: 1.5px solid var(--line);
+            background: #fbfdfb;
+            color: var(--ink);
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all .15s ease;
+            text-align: left;
+        }
+        .quick-chip-btn:hover {
+            border-color: var(--leaf);
+            background: var(--mint);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px -6px rgba(20, 69, 47, 0.25);
+        }
+        .quick-chip-btn i {
+            font-size: 16px;
+            color: var(--leaf);
+            flex-shrink: 0;
+        }
+
+        /* Two Column Content Area - Balanced Layout */
         .content-layout {
             display: grid;
-            grid-template-columns: 2fr 1fr;
+            grid-template-columns: 1.4fr 1fr;
             gap: 24px;
-            align-items: start;
+            align-items: stretch;
         }
         @media (max-width: 900px) {
             .content-layout { grid-template-columns: 1fr; }
         }
 
-        /* Transaction List */
+        /* Cards */
         .section-card {
             background: #fff;
             border: 1px solid var(--line);
             border-radius: 22px;
-            padding: 26px;
+            padding: 24px;
             box-shadow: 0 10px 24px -14px rgba(20, 69, 47, 0.25);
             margin-bottom: 24px;
+            display: flex;
+            flex-direction: column;
         }
         .section-header {
             display: flex;
@@ -255,16 +318,16 @@
             flex-wrap: wrap;
             gap: 12px;
         }
-        .section-title { margin: 0; font-size: 20px; color: var(--forest); }
+        .section-title { margin: 0; font-size: 19px; color: var(--forest); }
 
         .expense-card {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 18px;
+            padding: 15px 18px;
             border: 1px solid var(--line);
             border-radius: 16px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             background: #fafcfa;
             gap: 14px;
             transition: transform .15s, box-shadow .15s;
@@ -292,7 +355,7 @@
         }
         .expense-details h4 {
             margin: 0 0 3px;
-            font-size: 16px;
+            font-size: 15.5px;
             color: var(--forest);
         }
         .expense-sub {
@@ -318,7 +381,7 @@
         }
         .expense-actions-bar {
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
         .btn-icon-sm {
             background: transparent;
@@ -343,15 +406,15 @@
             justify-content: space-between;
             padding: 8px 0;
             border-bottom: 1px dashed var(--line);
-            font-size: 14px;
+            font-size: 13.5px;
         }
         .transport-metric-row:last-child { border-bottom: none; }
 
-        /* Modal Styles */
+        /* Modals */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(10, 30, 20, 0.6);
+            background: rgba(10, 30, 20, 0.65);
             backdrop-filter: blur(4px);
             display: none;
             place-items: center;
@@ -363,7 +426,7 @@
             border-radius: 24px;
             max-width: 520px;
             width: 100%;
-            padding: 30px;
+            padding: 28px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
             max-height: 90vh;
             overflow-y: auto;
@@ -372,12 +435,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
         .modal-close {
             background: none;
             border: none;
-            font-size: 20px;
+            font-size: 22px;
             cursor: pointer;
             color: var(--muted);
         }
@@ -392,7 +455,7 @@
         }
         .form-input, .form-select, .form-textarea {
             width: 100%;
-            padding: 12px 14px;
+            padding: 11px 14px;
             border: 2px solid var(--line);
             border-radius: 12px;
             font-family: inherit;
@@ -458,7 +521,7 @@
         <div class="trip-header-actions">
             {% if session.status != "completed" %}
                 <button type="button" class="btn-action btn-gold" onclick="openAddExpenseModal()">
-                    <i class="fa-solid fa-plus"></i> Add Expense
+                    <i class="fa-solid fa-plus"></i> Add Full Expense
                 </button>
                 <button type="button" class="btn-action btn-light" onclick="openEndTripModal()">
                     <i class="fa-solid fa-flag-checkered"></i> End Trip Early
@@ -549,11 +612,73 @@
         {% endfor %}
     </nav>
 
-    <!-- Main Content Layout -->
+    <!-- FAST 1-TAP CATEGORY EXPENSE LOGGER FOR BUSY TRAVELLERS -->
+    <section class="quick-log-section">
+        <div class="quick-log-header">
+            <div>
+                <h3 class="quick-log-title">
+                    <i class="fa-solid fa-bolt" style="color: var(--sun);"></i> Quick 1-Tap Expense Logger
+                </h3>
+                <span style="font-size: 12.5px; color: var(--muted);">
+                    Busy on the road? Tap any category below &rarr; enter money &rarr; recorded in 2 seconds!
+                </span>
+            </div>
+            <div>
+                <span style="font-size: 11px; font-weight: 700; color: var(--forest); background: var(--mint); padding: 3px 8px; border-radius: 6px;">
+                    Fast Logging Active
+                </span>
+            </div>
+        </div>
+
+        <div class="quick-chips-grid">
+            <button type="button" class="quick-chip-btn" onclick="openFastLogModal('food', 'Food & Dining', 'Breakfast / Lunch / Dinner', 'utensils')">
+                <i class="fa-solid fa-utensils"></i>
+                <span>Food / Meals</span>
+            </button>
+
+            <button type="button" class="quick-chip-btn" onclick="openFastLogModal('bus_local', 'Bus & Local Transit', 'Bus ticket / Local commute', 'bus')">
+                <i class="fa-solid fa-bus"></i>
+                <span>Bus & Transit</span>
+            </button>
+
+            <button type="button" class="quick-chip-btn" onclick="openFastLogModal('hotel', 'Hotel & Stay', 'Room stay / Homestay', 'bed')">
+                <i class="fa-solid fa-bed"></i>
+                <span>Hotel / Stay</span>
+            </button>
+
+            <button type="button" class="quick-chip-btn" onclick="openFastLogModal('sightseeing', 'Sightseeing & Entry', 'Monument ticket / Entry pass', 'ticket')">
+                <i class="fa-solid fa-ticket"></i>
+                <span>Sightseeing</span>
+            </button>
+
+            <button type="button" class="quick-chip-btn" onclick="openFastLogModal('taxi_auto', 'Taxi & Auto', 'Auto ride / Cab fare', 'taxi')">
+                <i class="fa-solid fa-taxi"></i>
+                <span>Auto / Taxi</span>
+            </button>
+
+            <button type="button" class="quick-chip-btn" onclick="openFastLogModal('shopping', 'Shopping & Souvenirs', 'Souvenirs / Spices / Handicrafts', 'bag-shopping')">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <span>Shopping</span>
+            </button>
+
+            <button type="button" class="quick-chip-btn" onclick="openFastLogModal('food', 'Tea & Refreshments', 'Tea, coffee & roadside snacks', 'mug-hot')">
+                <i class="fa-solid fa-mug-hot"></i>
+                <span>Tea & Snacks</span>
+            </button>
+
+            <button type="button" class="quick-chip-btn" onclick="openFastLogModal('parking_tolls', 'Parking & Tolls', 'Vehicle parking / Highway toll', 'square-parking')">
+                <i class="fa-solid fa-square-parking"></i>
+                <span>Parking / Toll</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- Balanced Content Layout -->
     <div class="content-layout">
 
-        <!-- Left: Transactions & Entry -->
+        <!-- Left Column: Transactions & Destination Insights -->
         <div>
+            <!-- Transactions Card -->
             <div class="section-card">
                 <div class="section-header">
                     <div>
@@ -561,17 +686,17 @@
                             {% if filter_date %}
                                 Transactions for {{ filter_date }}
                             {% else %}
-                                Recorded Trip Transactions ({{ filtered_expenses|length }})
+                                Recorded Transactions ({{ filtered_expenses|length }})
                             {% endif %}
                         </h2>
                         <p style="margin: 4px 0 0; font-size: 13px; color: var(--muted);">
-                            Record items multiple times a day. Edit or adjust at any point.
+                            All expenses logged during this trip. Edit or remove items anytime.
                         </p>
                     </div>
 
                     <!-- Category filter -->
                     <div>
-                        <select class="form-select" style="padding: 8px 12px; font-size: 13px;" onchange="location = this.value;">
+                        <select class="form-select" style="padding: 7px 12px; font-size: 13px;" onchange="location = this.value;">
                             <option value="{% url 'expenses:tracker_dashboard' session.id %}{% if filter_date %}?day={{ filter_date }}{% endif %}">All Categories</option>
                             {% for c_code, c_label in categories_list %}
                                 <option value="{% url 'expenses:tracker_dashboard' session.id %}?category={{ c_code }}{% if filter_date %}&day={{ filter_date }}{% endif %}" {% if filter_category == c_code %}selected{% endif %}>
@@ -633,36 +758,78 @@
                         </article>
                     {% endfor %}
                 {% else %}
-                    <div style="text-align: center; padding: 40px 20px; color: var(--muted);">
-                        <i class="fa-solid fa-receipt" style="font-size: 36px; color: var(--leaf); opacity: 0.5; margin-bottom: 12px;"></i>
-                        <h4 style="margin: 4px 0; color: var(--forest);">No Expenses Recorded Yet</h4>
-                        <p style="margin: 0; font-size: 14px;">
-                            Click "+ Add Expense" above to start logging your expenses during this trip.
+                    <!-- Beautiful Balanced Empty State -->
+                    <div style="text-align: center; padding: 44px 20px; background: #fafcfa; border-radius: 18px; border: 1px dashed var(--line); margin: 6px 0;">
+                        <div style="width: 58px; height: 58px; border-radius: 18px; background: var(--mint); color: var(--forest); display: grid; place-items: center; font-size: 24px; margin: 0 auto 14px;">
+                            <i class="fa-solid fa-receipt"></i>
+                        </div>
+                        <h4 style="margin: 0 0 6px; font-size: 18px; color: var(--forest);">No Expenses Logged Yet</h4>
+                        <p style="margin: 0 0 16px; font-size: 14px; color: var(--muted); max-width: 40ch; margin-inline: auto;">
+                            Tap any category in the <strong>Quick 1-Tap Logger</strong> above to record your first meal, bus ticket, or stay!
                         </p>
+                        <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+                            <button type="button" class="btn-action btn-gold" style="padding: 9px 18px; font-size: 13px;" onclick="openFastLogModal('food', 'Food & Dining', 'Breakfast / Meal', 'utensils')">
+                                <i class="fa-solid fa-utensils"></i> Log First Meal (₹)
+                            </button>
+                            <button type="button" class="btn-action btn-light" style="padding: 9px 18px; font-size: 13px; color: var(--forest); background: #e3f1e7;" onclick="openFastLogModal('bus_local', 'Bus & Local Transit', 'Bus Ticket', 'bus')">
+                                <i class="fa-solid fa-bus"></i> Log Bus Fare (₹)
+                            </button>
+                        </div>
                     </div>
+                {% endif %}
+            </div>
+
+            <!-- Destination Community Insights Card (Fills Left Side Elegantly) -->
+            <div class="section-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <h3 style="margin: 0; font-size: 18px; color: var(--forest);">
+                        <i class="fa-solid fa-globe" style="color: var(--leaf);"></i> Destination Travel Insights
+                    </h3>
+                    <span style="font-size: 11px; font-weight: 700; color: var(--leaf); background: var(--mint); padding: 3px 8px; border-radius: 6px;">
+                        {{ place.name }}
+                    </span>
+                </div>
+                {% if community_insights.available %}
+                    <p style="margin: 0 0 12px; font-size: 14px; color: var(--ink);">
+                        {{ community_insights.message }}
+                    </p>
+                    <div style="font-size: 12px; color: var(--muted); background: #fdfdfd; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line); display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-shield-halved" style="color: var(--leaf);"></i>
+                        <span>Anonymized aggregate benchmark from {{ community_insights.sample_size }} verified travellers.</span>
+                    </div>
+                {% else %}
+                    <p style="margin: 0; font-size: 13.5px; color: var(--muted);">
+                        <i class="fa-solid fa-compass" style="color: var(--sun);"></i> {{ community_insights.message }}
+                    </p>
                 {% endif %}
             </div>
         </div>
 
-        <!-- Right Side: Category Breakdown & Transport Analytics -->
+        <!-- Right Column: Category Breakdown & Transport Analysis -->
         <div>
             <!-- Category Breakdown Card -->
             <div class="section-card">
-                <h3 style="margin: 0 0 14px; font-size: 18px; color: var(--forest);">Spending by Category</h3>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                    <h3 style="margin: 0; font-size: 18px; color: var(--forest);">Spending by Category</h3>
+                    <span style="font-size: 12px; color: var(--muted);">{{ active_categories|length }} Categories Active</span>
+                </div>
                 {% if active_categories %}
                     {% for c in active_categories %}
-                        <div style="margin-bottom: 12px;">
-                            <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 700;">
+                        <div style="margin-bottom: 14px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 13.5px; font-weight: 700;">
                                 <span>{{ c.label }}</span>
                                 <span>₹{{ c.total|floatformat:0 }} ({{ c.percentage }}%)</span>
                             </div>
-                            <div class="progress-bar-bg" style="height: 8px; margin-top: 4px;">
+                            <div class="progress-bar-bg" style="height: 8px; margin-top: 5px;">
                                 <div class="progress-bar-fill" style="width: {{ c.percentage }}%; background: var(--leaf);"></div>
                             </div>
                         </div>
                     {% endfor %}
                 {% else %}
-                    <p style="font-size: 13px; color: var(--muted); margin: 0;">Categories will appear as soon as you record expenses.</p>
+                    <div style="padding: 24px 10px; text-align: center; color: var(--muted); font-size: 13px;">
+                        <i class="fa-solid fa-chart-pie" style="font-size: 28px; color: var(--leaf); opacity: 0.4; margin-bottom: 8px;"></i>
+                        <p style="margin: 0;">Categories will update automatically as soon as you record expenses.</p>
+                    </div>
                 {% endif %}
             </div>
 
@@ -678,7 +845,7 @@
                 </div>
 
                 <p style="margin: 0 0 14px; font-size: 13px; color: var(--muted);">
-                    Comparison between estimated route baseline and verified transportation entries recorded.
+                    Comparison between planned route baseline and verified transportation entries recorded.
                 </p>
 
                 <div class="transport-metric-row">
@@ -728,38 +895,93 @@
                     </div>
                 {% endif %}
             </div>
-
-            <!-- Destination Community Insights Card -->
-            <div class="section-card">
-                <h3 style="margin: 0 0 10px; font-size: 18px; color: var(--forest);">
-                    <i class="fa-solid fa-globe" style="color: var(--leaf);"></i> Destination Insights
-                </h3>
-                {% if community_insights.available %}
-                    <p style="margin: 0 0 10px; font-size: 13px; color: var(--ink);">
-                        {{ community_insights.message }}
-                    </p>
-                    <div style="font-size: 12px; color: var(--muted); background: #fdfdfd; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--line);">
-                        <i class="fa-solid fa-shield-halved"></i> Anonymized aggregate from {{ community_insights.sample_size }} verified travellers.
-                    </div>
-                {% else %}
-                    <p style="margin: 0; font-size: 13px; color: var(--muted);">
-                        <i class="fa-solid fa-lock" style="color: var(--sun);"></i> {{ community_insights.message }}
-                    </p>
-                {% endif %}
-            </div>
-
         </div>
 
     </div>
 
 </main>
 
-<!-- ADD EXPENSE MODAL -->
+<!-- INSTANT 1-TAP FAST LOG MODAL (ENTER AMOUNT ONLY) -->
+<div class="modal-overlay" id="fastLogModal" style="display: none;">
+    <div class="modal-box" style="max-width: 440px;">
+        <div class="modal-header">
+            <h3 style="margin: 0; font-size: 20px; color: var(--forest); display: flex; align-items: center; gap: 10px;">
+                <span id="fastLogIconBox" style="font-size: 22px;">🍽️</span>
+                <span id="fastLogTitle">Log Food Expense</span>
+            </h3>
+            <button type="button" class="modal-close" onclick="closeModal('fastLogModal')">&times;</button>
+        </div>
+
+        <form method="post" action="{% url 'expenses:add_expense' session.id %}" id="fastLogForm">
+            {% csrf_token %}
+            <input type="hidden" name="category" id="fastLogCategory" value="food">
+            <input type="hidden" name="expense_date" value="{{ today|date:'Y-m-d' }}">
+            <input type="hidden" name="location" value="{{ place.name }}">
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label class="form-label" for="fastLogAmount" style="font-size: 14px;">How much did you spend? (₹) *</label>
+                <div style="position: relative;">
+                    <span style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 26px; font-weight: 800; color: var(--forest);">₹</span>
+                    <input
+                        type="number"
+                        step="0.01"
+                        min="0.01"
+                        name="amount"
+                        id="fastLogAmount"
+                        class="form-input"
+                        placeholder="0"
+                        style="padding-left: 42px; font-size: 28px; font-weight: 800; font-family: 'Bricolage Grotesque', sans-serif; color: var(--forest);"
+                        required
+                        autofocus
+                    >
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 16px;">
+                <label class="form-label" for="fastLogDesc">Item / Description</label>
+                <input type="text" name="description" id="fastLogDesc" class="form-input" value="Food & Dining">
+            </div>
+
+            <!-- Optional Extra Details Toggle -->
+            <div style="margin-bottom: 18px;">
+                <button type="button" onclick="toggleFastLogDetails()" style="background: none; border: none; font-size: 12.5px; color: var(--leaf); font-weight: 700; cursor: pointer; padding: 0;">
+                    <i class="fa-solid fa-sliders"></i> <span id="fastLogToggleText">+ Change payment method / notes</span>
+                </button>
+            </div>
+
+            <div id="fastLogExtraFields" style="display: none; background: #fafcfa; padding: 14px; border-radius: 12px; border: 1px solid var(--line); margin-bottom: 18px;">
+                <div class="form-group">
+                    <label class="form-label" for="fastLogPayment">Payment Method</label>
+                    <select name="payment_method" id="fastLogPayment" class="form-select">
+                        {% for code, label in payment_choices %}
+                            <option value="{{ code }}" {% if code == 'upi' %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" for="fastLogNotes">Quick Note (Optional)</label>
+                    <input type="text" name="notes" id="fastLogNotes" class="form-input" placeholder="e.g. Split with friends">
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <button type="button" class="btn-action btn-light" style="color: var(--ink); background: #eef2ef;" onclick="closeModal('fastLogModal')">
+                    Cancel
+                </button>
+                <button type="submit" class="btn-action btn-gold" style="flex: 1; justify-content: center; font-size: 16px;">
+                    <i class="fa-solid fa-check"></i> Record Expense
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- FULL DETAILED ADD EXPENSE MODAL -->
 <div class="modal-overlay" id="addExpenseModal">
     <div class="modal-box">
         <div class="modal-header">
             <h3 style="margin: 0; font-size: 20px; color: var(--forest);">
-                <i class="fa-solid fa-plus-circle" style="color: var(--leaf);"></i> Record New Expense
+                <i class="fa-solid fa-plus-circle" style="color: var(--leaf);"></i> Record Detailed Expense
             </h3>
             <button type="button" class="modal-close" onclick="closeModal('addExpenseModal')">&times;</button>
         </div>
@@ -767,7 +989,7 @@
             {% csrf_token %}
             <div class="form-group">
                 <label class="form-label" for="addAmount">Expense Amount (₹) *</label>
-                <input type="number" step="0.01" min="0.01" name="amount" id="addAmount" class="form-input" placeholder="e.g. 250" required autofocus>
+                <input type="number" step="0.01" min="0.01" name="amount" id="addAmount" class="form-input" placeholder="e.g. 250" required>
             </div>
 
             <div class="form-group">
@@ -996,6 +1218,9 @@
     </div>
 </div>
 
+<!-- STANDARD BOTTOM NAVBAR / FOOTER -->
+{% include "footer.html" %}
+
 <script src="{% static 'users/account.js' %}"></script>
 <script>
     function openModal(id) {
@@ -1009,6 +1234,35 @@
     function openAddExpenseModal() { openModal('addExpenseModal'); }
     function openEndTripModal() { openModal('endTripModal'); }
     function openLateEntryModal() { openModal('lateEntryModal'); }
+
+    // Fast 1-Tap Category Logger
+    function openFastLogModal(category, title, defaultDesc, iconName) {
+        const modal = document.getElementById('fastLogModal');
+        document.getElementById('fastLogCategory').value = category;
+        document.getElementById('fastLogTitle').textContent = 'Log ' + title;
+        document.getElementById('fastLogDesc').value = defaultDesc;
+        document.getElementById('fastLogIconBox').innerHTML = '<i class="fa-solid fa-' + iconName + '" style="color: var(--leaf);"></i>';
+        document.getElementById('fastLogAmount').value = '';
+        document.getElementById('fastLogExtraFields').style.display = 'none';
+        document.getElementById('fastLogToggleText').textContent = '+ Change payment method / notes';
+        openModal('fastLogModal');
+        setTimeout(() => {
+            const input = document.getElementById('fastLogAmount');
+            if (input) input.focus();
+        }, 100);
+    }
+
+    function toggleFastLogDetails() {
+        const el = document.getElementById('fastLogExtraFields');
+        const text = document.getElementById('fastLogToggleText');
+        if (el.style.display === 'none') {
+            el.style.display = 'block';
+            text.textContent = '- Hide extra options';
+        } else {
+            el.style.display = 'none';
+            text.textContent = '+ Change payment method / notes';
+        }
+    }
 
     function openEditExpenseModal(id, amount, category, desc, date, payment, location, notes) {
         const form = document.getElementById('editExpenseForm');

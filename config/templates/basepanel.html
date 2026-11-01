@@ -2,20 +2,26 @@
 
 <header class="navbar">
 
-    <!-- LOGO -->
-    <a href="{% url 'dashboard' %}" class="brand">
-        <div class="brand-logo">T</div>
-        <span>Tourist</span>
+    <!-- CREATIVE TOURISM LOGO -->
+    <a href="{% url 'dashboard' %}" class="brand" title="Tourist: Karnataka Travel Planner">
+        <div class="brand-logo">
+            <i class="fa-solid fa-compass"></i>
+        </div>
+        <div class="brand-text-wrap">
+            <span class="brand-title">Tourist</span>
+            <span class="brand-sub">Karnataka Journeys</span>
+        </div>
     </a>
 
-    <!-- NAVIGATION -->
+    <!-- NAVIGATION MENU -->
     <nav class="nav-menu">
 
+        <!-- HOME -->
         <a href="{% url 'dashboard' %}" class="nav-item">
             <span class="nav-icon">
                 <i class="fa-solid fa-house"></i>
             </span>
-            Home
+            <span>Home</span>
         </a>
 
         <!-- EXPLORE DROPDOWN -->
@@ -27,48 +33,54 @@
                 aria-expanded="false"
             >
                 <span class="nav-icon">
-                    <i class="fa-solid fa-compass"></i>
+                    <i class="fa-solid fa-earth-asia"></i>
                 </span>
-                Explore
-                <i class="fa-solid fa-chevron-down" style="font-size: 10px; margin-left: 4px;"></i>
+                <span>Explore</span>
+                <i class="fa-solid fa-chevron-down" style="font-size: 10px; margin-left: 2px;"></i>
             </button>
 
             <div class="explore-menu" id="exploreMenu" hidden>
-                <div class="explore-menu-title">Select District</div>
-                <a href="{% url 'places_by_district' 'mysore' %}" class="explore-option">
-                    <i class="fa-solid fa-landmark"></i> Mysore (Mysuru)
-                </a>
-                <a href="{% url 'places_by_district' 'kodagu' %}" class="explore-option">
-                    <i class="fa-solid fa-mountain-sun"></i> Kodagu (Madikeri)
-                </a>
-                <a href="{% url 'places_by_district' 'hassan' %}" class="explore-option">
-                    <i class="fa-solid fa-monument"></i> Hassan
-                </a>
-                <a href="{% url 'places_by_district' 'uttara kannada' %}" class="explore-option">
-                    <i class="fa-solid fa-umbrella-beach"></i> Uttara Kannada (Gokarna)
-                </a>
-                <a href="{% url 'places_by_district' 'Chikkamagaluru' %}" class="explore-option">
-                    <i class="fa-solid fa-mug-hot"></i> Chikkamagaluru
-                </a>
-                <a href="{% url 'places_by_district' 'Hampi' %}" class="explore-option">
-                    <i class="fa-solid fa-chess-rook"></i> Hampi
-                </a>
-                <a href="{% url 'places_by_district' 'Udupi' %}" class="explore-option">
-                    <i class="fa-solid fa-water"></i> Udupi
-                </a>
-                <a href="{% url 'places_by_district' 'Shivamogga' %}" class="explore-option">
-                    <i class="fa-solid fa-cloud-showers-heavy"></i> Shivamogga (Jog Falls)
-                </a>
+                <div class="explore-menu-title">
+                    <span>Karnataka Districts</span>
+                    <span style="font-size: 10px; color: #f4b63f; background: #14452f; padding: 2px 7px; border-radius: 999px;">10 Regions</span>
+                </div>
+                <div class="explore-options-list">
+                    <a href="{% url 'places_by_district' 'mysore' %}" class="explore-option">
+                        <i class="fa-solid fa-landmark"></i> Mysore (Mysuru)
+                    </a>
+                    <a href="{% url 'places_by_district' 'kodagu' %}" class="explore-option">
+                        <i class="fa-solid fa-mountain-sun"></i> Kodagu (Madikeri)
+                    </a>
+                    <a href="{% url 'places_by_district' 'hassan' %}" class="explore-option">
+                        <i class="fa-solid fa-monument"></i> Hassan
+                    </a>
+                    <a href="{% url 'places_by_district' 'uttara kannada' %}" class="explore-option">
+                        <i class="fa-solid fa-umbrella-beach"></i> Uttara Kannada (Gokarna)
+                    </a>
+                    <a href="{% url 'places_by_district' 'Chikkamagaluru' %}" class="explore-option">
+                        <i class="fa-solid fa-mug-hot"></i> Chikkamagaluru
+                    </a>
+                    <a href="{% url 'places_by_district' 'Hampi' %}" class="explore-option">
+                        <i class="fa-solid fa-chess-rook"></i> Hampi
+                    </a>
+                    <a href="{% url 'places_by_district' 'Udupi' %}" class="explore-option">
+                        <i class="fa-solid fa-water"></i> Udupi
+                    </a>
+                    <a href="{% url 'places_by_district' 'Shivamogga' %}" class="explore-option">
+                        <i class="fa-solid fa-cloud-showers-heavy"></i> Shivamogga (Jog Falls)
+                    </a>
+                </div>
             </div>
         </div>
 
-        <!-- ACCOUNT -->
+        <!-- ACCOUNT PROFILE -->
         <div class="account-wrapper">
 
             <button
                 class="account-btn"
                 id="accountBtn"
                 type="button"
+                aria-expanded="false"
             >
                 <span class="account-icon">
                     {% if request.user.is_authenticated %}
@@ -86,7 +98,7 @@
                     {% endif %}
                 </span>
 
-                <i class="fa-solid fa-chevron-down account-arrow"></i>
+                <i class="fa-solid fa-chevron-down account-arrow" style="font-size: 11px;"></i>
             </button>
 
             <!-- ACCOUNT MENU -->
@@ -98,8 +110,10 @@
                             {{ request.user.username|first|upper }}
                         </div>
                         <div>
-                            <h3>{{ request.user.username }}</h3>
-                            <p>Tourist Explorer</p>
+                            <h3 style="font-size: 15px; font-weight: 700; color: #14452f; margin: 0;">{{ request.user.username }}</h3>
+                            <p style="font-size: 12px; color: #2f7d4f; font-weight: 600; margin: 2px 0 0;">
+                                <i class="fa-solid fa-compass" style="color: #f4b63f;"></i> Karnataka Explorer
+                            </p>
                         </div>
                     </div>
 
@@ -111,7 +125,7 @@
                         id="settingsBtn"
                         type="button"
                     >
-                        <i class="fa-solid fa-gear"></i>
+                        <i class="fa-solid fa-gear" style="color: #2f7d4f;"></i>
                         <span>Settings</span>
                     </button>
 
@@ -121,7 +135,7 @@
                         id="darkModeBtn"
                         type="button"
                     >
-                        <i class="fa-solid fa-moon"></i>
+                        <i class="fa-solid fa-moon" style="color: #2f7d4f;"></i>
                         <span>Dark Mode</span>
                         <span class="theme-status" id="themeStatus">OFF</span>
                     </button>
@@ -139,11 +153,11 @@
 
                 {% else %}
                     <a href="{% url 'login' %}" class="account-option">
-                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <i class="fa-solid fa-right-to-bracket" style="color: #2f7d4f;"></i>
                         <span>Login</span>
                     </a>
                     <a href="{% url 'register' %}" class="account-option">
-                        <i class="fa-solid fa-user-plus"></i>
+                        <i class="fa-solid fa-user-plus" style="color: #2f7d4f;"></i>
                         <span>Register</span>
                     </a>
                 {% endif %}
@@ -155,3 +169,28 @@
     </nav>
 
 </header>
+
+<!-- SETTINGS MODAL OVERLAY -->
+<div class="account-settings-overlay" id="settingsOverlay" hidden>
+    <div class="account-settings-panel">
+        <div class="account-settings-top">
+            <h2 style="font-size: 20px; color: #14452f; margin: 0; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-sliders" style="color: #f4b63f;"></i> App Preferences
+            </h2>
+            <button type="button" id="settingsClose" style="background: transparent; border: none; font-size: 20px; cursor: pointer; color: #66756c;">
+                &times;
+            </button>
+        </div>
+
+        <div class="account-settings-item">
+            <div>
+                <strong style="color: #14452f; font-size: 15px;">Dark Mode Theme</strong>
+                <p style="margin: 3px 0 0; font-size: 13px; color: #66756c;">Reduce eye strain during night travel planning.</p>
+            </div>
+            <label style="position: relative; display: inline-block; width: 44px; height: 24px;">
+                <input type="checkbox" id="settingsDarkMode" style="opacity: 0; width: 0; height: 0;">
+                <span style="position: absolute; cursor: pointer; inset: 0; background-color: #ccc; transition: .4s; border-radius: 34px;"></span>
+            </label>
+        </div>
+    </div>
+</div>

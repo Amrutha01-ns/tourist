@@ -271,7 +271,9 @@
         </section>
     </main>
 
-    <script src="{% static 'users/account.js' %}"></script>
+    {% include "footer.html" %}
+
+<script src="{% static 'users/account.js' %}"></script>
     <script src="{% static 'users/dashboard.js' %}"></script>
 </body>
 </html>

@@ -1,0 +1,171 @@
+{% load static %}
+<footer class="tourist-footer" id="touristFooter">
+    <div class="footer-container">
+        <!-- Brand & About Column -->
+        <div class="footer-col footer-col-main">
+            <div class="footer-brand">
+                <div class="footer-brand-logo">
+                    <i class="fa-solid fa-compass"></i>
+                </div>
+                <div>
+                    <span class="footer-brand-name">Tourist</span>
+                    <span class="footer-brand-sub">Karnataka Travel & Transit Guide</span>
+                </div>
+            </div>
+            <p class="footer-desc">
+                Your intelligent companion for exploring Karnataka. Discover 85+ verified destinations, real bus numbers (BMTC, MITRA, KSRTC), trip expense estimation, and multi-day travel budgeting.
+            </p>
+            <div class="footer-badges">
+                <span class="f-badge"><i class="fa-solid fa-shield-halved"></i> Verified Fares</span>
+                <span class="f-badge"><i class="fa-solid fa-bus"></i> Official Bus Numbers</span>
+                <span class="f-badge"><i class="fa-solid fa-wallet"></i> Smart Tracking</span>
+            </div>
+        </div>
+
+        <!-- Top Karnataka Districts -->
+        <div class="footer-col">
+            <h4 class="footer-title"><i class="fa-solid fa-map-location-dot"></i> Top Districts</h4>
+            <ul class="footer-links">
+                <li><a href="{% url 'places_by_district' 'mysore' %}">Mysuru Palace & Heritage</a></li>
+                <li><a href="{% url 'places_by_district' 'kodagu' %}">Kodagu (Coorg) Hills</a></li>
+                <li><a href="{% url 'places_by_district' 'Hampi' %}">Hampi UNESCO Ruins</a></li>
+                <li><a href="{% url 'places_by_district' 'uttara kannada' %}">Gokarna Coastal Trails</a></li>
+                <li><a href="{% url 'places_by_district' 'Chikkamagaluru' %}">Chikkamagaluru Peaks</a></li>
+            </ul>
+        </div>
+
+        <!-- Features -->
+        <div class="footer-col">
+            <h4 class="footer-title"><i class="fa-solid fa-compass"></i> Trip Planner</h4>
+            <ul class="footer-links">
+                <li><a href="{% url 'dashboard' %}">All Karnataka Places</a></li>
+                <li><a href="{% url 'places_by_district' 'mysore' %}">Transit Bus Numbers</a></li>
+                <li><a href="{% url 'explorer:dashboard' %}">Expense Budget Calculator</a></li>
+                <li><a href="{% url 'dashboard' %}">GPS Nearest District Finder</a></li>
+            </ul>
+        </div>
+
+        <!-- Feedback & Support Column -->
+        <div class="footer-col">
+            <h4 class="footer-title"><i class="fa-solid fa-comments"></i> Traveller Voice</h4>
+            <p style="font-size: 13px; color: #a3b8aa; margin: 0 0 14px; line-height: 1.5;">
+                Notice a new bus schedule or want to share feedback? We value every suggestion from travellers on the road.
+            </p>
+            <button type="button" class="footer-feedback-btn" onclick="openTouristFeedbackModal()">
+                <i class="fa-solid fa-heart" style="color: #f4b63f;"></i> Give Trip Feedback
+            </button>
+            <div style="margin-top: 14px; font-size: 12px; color: #88a391;">
+                <i class="fa-solid fa-location-dot"></i> Karnataka Tourism Community
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Legal Bar -->
+    <div class="footer-bottom-bar">
+        <div class="footer-bottom-inner">
+            <p style="margin: 0;">
+                &copy; 2026 Tourist Travel Planner &bull; Handcrafted for Karnataka Tourism &bull; Travel Safe
+            </p>
+            <div class="footer-legal-links">
+                <span>Public Transit Data</span> &bull;
+                <span>Privacy Protection</span> &bull;
+                <span>Traveller Guidelines</span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Traveller Feedback Modal -->
+<div class="modal-overlay" id="touristFeedbackModal" style="display: none;">
+    <div class="modal-box" style="max-width: 480px;">
+        <div class="modal-header">
+            <h3 style="margin: 0; font-size: 20px; color: #14452f; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-comment-dots" style="color: #f4b63f;"></i> Traveller Feedback
+            </h3>
+            <button type="button" class="modal-close" onclick="closeTouristFeedbackModal()">&times;</button>
+        </div>
+
+        <div id="feedbackFormArea">
+            <p style="margin: 0 0 16px; font-size: 14px; color: #66756c;">
+                How was your experience planning or tracking your trip with Tourist?
+            </p>
+
+            <form id="publicFeedbackForm" onsubmit="submitTouristFeedback(event)">
+                <div class="form-group">
+                    <label class="form-label">How would you rate your experience?</label>
+                    <div style="display: flex; gap: 8px; font-size: 24px; color: #f4b63f; cursor: pointer; margin-bottom: 4px;" id="starRatingRow">
+                        <i class="fa-solid fa-star star-rate" data-val="1" onclick="setFeedbackRating(1)"></i>
+                        <i class="fa-solid fa-star star-rate" data-val="2" onclick="setFeedbackRating(2)"></i>
+                        <i class="fa-solid fa-star star-rate" data-val="3" onclick="setFeedbackRating(3)"></i>
+                        <i class="fa-solid fa-star star-rate" data-val="4" onclick="setFeedbackRating(4)"></i>
+                        <i class="fa-solid fa-star star-rate" data-val="5" onclick="setFeedbackRating(5)"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="feedbackTopic">Feedback Topic</label>
+                    <select id="feedbackTopic" class="form-select">
+                        <option value="general">General Experience</option>
+                        <option value="expenses">Trip Expense Tracker</option>
+                        <option value="bus_routes">Bus & Transit Schedules</option>
+                        <option value="places">New Place Suggestion</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="feedbackMsg">Your Thoughts or Suggestions</label>
+                    <textarea id="feedbackMsg" class="form-textarea" rows="3" placeholder="Tell us what you loved or how we can improve..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-action btn-gold" style="width: 100%; justify-content: center; padding: 12px; font-size: 15px;">
+                    <i class="fa-solid fa-paper-plane"></i> Submit Feedback
+                </button>
+            </form>
+        </div>
+
+        <div id="feedbackSuccessArea" style="display: none; text-align: center; padding: 20px 10px;">
+            <div style="width: 56px; height: 56px; border-radius: 50%; background: #dcfce7; color: #166534; display: grid; place-items: center; font-size: 26px; margin: 0 auto 14px;">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h4 style="margin: 0 0 8px; font-size: 20px; color: #14452f;">Dhanyavadagalu! Thank You!</h4>
+            <p style="margin: 0 0 20px; font-size: 14px; color: #66756c;">
+                Your feedback helps us continuously improve the travel experience for thousands of Karnataka explorers.
+            </p>
+            <button type="button" class="btn-action btn-gold" style="margin: 0 auto;" onclick="closeTouristFeedbackModal()">
+                Close
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentRating = 5;
+    function setFeedbackRating(val) {
+        currentRating = val;
+        const stars = document.querySelectorAll('.star-rate');
+        stars.forEach((s, idx) => {
+            if (idx < val) {
+                s.className = 'fa-solid fa-star star-rate';
+            } else {
+                s.className = 'fa-regular fa-star star-rate';
+            }
+        });
+    }
+    function openTouristFeedbackModal() {
+        const m = document.getElementById('touristFeedbackModal');
+        if (m) {
+            m.style.display = 'grid';
+            document.getElementById('feedbackFormArea').style.display = 'block';
+            document.getElementById('feedbackSuccessArea').style.display = 'none';
+        }
+    }
+    function closeTouristFeedbackModal() {
+        const m = document.getElementById('touristFeedbackModal');
+        if (m) m.style.display = 'none';
+    }
+    function submitTouristFeedback(e) {
+        e.preventDefault();
+        document.getElementById('feedbackFormArea').style.display = 'none';
+        document.getElementById('feedbackSuccessArea').style.display = 'block';
+    }
+</script>

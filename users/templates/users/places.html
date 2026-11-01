@@ -249,7 +249,9 @@
     </main>
 
     <!-- Existing JavaScript -->
-    <script src="{% static 'users/account.js' %}"></script>
+    {% include "footer.html" %}
+
+<script src="{% static 'users/account.js' %}"></script>
     <script src="{% static 'users/places.js' %}"></script>
 
     <!-- Automatically submit the category filter when changed -->
