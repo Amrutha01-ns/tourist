@@ -99,3 +99,42 @@ class TransportFinderTestCase(TestCase):
         data = response.json()
         self.assertEqual(data["place_slug"], "mysore")
         self.assertEqual(data["transit_hub"], "Mysuru")
+
+
+    def test_curated_destinations_transit_hampi_and_coastal(self):
+        district_hampi = District.objects.create(name="vijayanagara")
+        place_virupaksha = Place.objects.create(
+            district=district_hampi,
+            name="Virupaksha Temple",
+            slug="virupaksha-temple",
+            category="historical",
+        )
+        result = resolve_destination_transit(place_virupaksha)
+        self.assertEqual(result["place_slug"], "virupaksha-temple")
+        self.assertIn("Hospet", result["transit_hub"])
+        self.assertTrue(len(result["bus_routes"]) > 0)
+        self.assertEqual(result["bus_routes"][0]["bus_number"], "HMP-01")
+
+    def test_curated_destinations_transit_bylakuppe_and_yana(self):
+        place_bylakuppe = Place.objects.create(
+            district=self.district_mys,
+            name="Namdroling Monastery",
+            slug="namdroling-monastery-golden-temple",
+            category="historical",
+        )
+        result = resolve_destination_transit(place_bylakuppe)
+        self.assertEqual(result["place_slug"], "namdroling-monastery-golden-temple")
+        self.assertTrue(len(result["bus_routes"]) > 0)
+        self.assertEqual(result["bus_routes"][0]["bus_number"], "MYS-KSH")
+
+    def test_graceful_transit_for_unknown_slug_fallback(self):
+        place_unknown = Place.objects.create(
+            district=self.district_mys,
+            name="Hidden Gem Waterfall",
+            slug="hidden-gem-waterfall",
+            category="watery",
+        )
+        result = resolve_destination_transit(place_unknown)
+        self.assertIsNotNone(result)
+        self.assertEqual(result["place_slug"], "hidden-gem-waterfall")
+        self.assertTrue(len(result["bus_routes"]) > 0)

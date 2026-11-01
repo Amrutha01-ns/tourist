@@ -176,7 +176,9 @@
 
                                 <a href="{% url 'explorer:place_detail' place.slug %}">
                                     <img src="{{ place.image.url }}"
-                                         alt="{{ place.name }}">
+                                         alt="{{ place.name }}"
+                                         loading="lazy"
+                                         onerror="this.onerror=null; this.src='{% static 'users/images/mysore.jpg' %}';">
                                 </a>
 
                             {% else %}

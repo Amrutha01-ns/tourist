@@ -55,12 +55,77 @@
 
         /* Hero place card: the memorable moment */
         .place-card {
-            position: relative; margin-top: 24px; min-height: 380px; display: flex; align-items: flex-end;
+            position: relative; margin-top: 24px; min-height: 420px; display: flex; align-items: flex-end;
             border-radius: 28px; overflow: hidden; background: var(--forest);
-            box-shadow: 0 24px 50px -20px rgba(20, 69, 47, .55);
+            box-shadow: 0 20px 45px -18px rgba(20, 69, 47, .45);
+            transition: box-shadow 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            isolation: isolate;
         }
-        .place-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: linear-gradient(135deg, #2f7d4f, #14452f); }
-        .place-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(8, 28, 18, .88) 5%, rgba(8, 28, 18, .15) 65%); }
+        .place-card:hover {
+            box-shadow: 0 28px 65px -20px rgba(12, 45, 30, .6);
+            transform: translateY(-2px);
+        }
+        .place-image {
+            position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+            background: linear-gradient(135deg, #2f7d4f, #14452f);
+            filter: contrast(105%) saturate(107%) brightness(98%);
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 1.0s ease;
+            animation: heroGentleReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+            will-change: transform, filter;
+        }
+        .place-card:hover .place-image {
+            transform: scale(1.035);
+            filter: contrast(108%) saturate(112%) brightness(102%);
+        }
+        @keyframes heroGentleReveal {
+            0% {
+                opacity: 0.65;
+                transform: scale(1.045);
+                filter: contrast(98%) brightness(0.92);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1.0);
+                filter: contrast(105%) saturate(107%) brightness(98%);
+            }
+        }
+        .place-card::after {
+            content: ""; position: absolute; inset: 0;
+            background: linear-gradient(
+                to top,
+                rgba(6, 22, 14, 0.92) 0%,
+                rgba(6, 22, 14, 0.52) 35%,
+                rgba(6, 22, 14, 0.15) 65%,
+                rgba(0, 0, 0, 0.04) 100%
+            );
+            transition: opacity 0.6s ease;
+        }
+        .place-card:hover::after {
+            opacity: 0.95;
+        }
+        .hero-badge-container {
+            position: absolute; top: 20px; right: 20px; z-index: 3;
+            display: flex; gap: 8px; align-items: center;
+        }
+        .hero-verified-pill {
+            display: inline-flex; align-items: center; gap: 7px;
+            padding: 6px 14px; border-radius: 999px;
+            background: rgba(12, 38, 25, 0.65);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            color: #fff; font-size: 12px; font-weight: 700; letter-spacing: 0.3px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        .hero-verified-pill i {
+            color: var(--sun);
+            font-size: 11px;
+        }
+        .place-card:hover .hero-verified-pill {
+            background: rgba(12, 38, 25, 0.82);
+            border-color: rgba(244, 182, 63, 0.45);
+            transform: translateY(-1px);
+        }
         .place-info { position: relative; z-index: 2; padding: 34px; color: #fff; max-width: 680px; }
         .place-info .eyebrow {
             display: inline-block; padding: 4px 12px; border-radius: 999px; background: var(--sun); color: #3a2a00;
@@ -265,10 +330,19 @@
             {% if place.image %}
                 <img class="place-image"
                      src="{{ place.image.url }}"
-                     alt="{{ place.name }}">
+                     alt="{{ place.name }}"
+                     loading="eager"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="place-image" style="display:none;"></div>
             {% else %}
                 <div class="place-image"></div>
             {% endif %}
+
+            <div class="hero-badge-container">
+                <span class="hero-verified-pill">
+                    <i class="fa-solid fa-camera"></i> Verified Destination Visual
+                </span>
+            </div>
 
             <div class="place-info">
                 <p class="eyebrow">{{ place.district.name }}</p>

@@ -1575,6 +1575,18 @@ DESTINATION_TRANSIT_PROFILES = {
 
 
 
+# Merge curated destination profiles covering all regional Karnataka destinations
+try:
+    from .curated_destinations_transit import CURATED_DESTINATION_PROFILES
+    DESTINATION_TRANSIT_PROFILES.update(CURATED_DESTINATION_PROFILES)
+except Exception:
+    pass
+
+# Ensure common slug aliases
+if "om-beach-gokarna" in DESTINATION_TRANSIT_PROFILES and "om-beach" not in DESTINATION_TRANSIT_PROFILES:
+    DESTINATION_TRANSIT_PROFILES["om-beach"] = DESTINATION_TRANSIT_PROFILES["om-beach-gokarna"]
+
+
 def resolve_destination_transit(place, origin_name=None, origin_lat=None, origin_lng=None):
     """
     Identifies relevant public transportation options (BMTC, MITRA, KSRTC, NWKRTC)
