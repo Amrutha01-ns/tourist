@@ -13,6 +13,7 @@ urlpatterns = [
     path("transport/", include("transport_finder.urls")),
     path("explorer/", include("explorer.urls")),
     path("engine/", include("engine.urls")),
+    path("expenses/", include("expenses.urls")),
 ]
 
 if settings.DEBUG:

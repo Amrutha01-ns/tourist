@@ -1,0 +1,1051 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Expenses: {{ place.name }} | Tourist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'users/account.css' %}">
+
+    <style>
+        :root {
+            --forest: #14452f;
+            --leaf: #2f7d4f;
+            --mint: #e3f1e7;
+            --sand: #fbf6ea;
+            --sun: #f4b63f;
+            --ink: #1b2a22;
+            --muted: #66756c;
+            --line: #e4e9df;
+            --bad: #b42318;
+            --bad-bg: #fff1f0;
+            --good: #15803d;
+            --good-bg: #dcfce7;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: "DM Sans", Arial, sans-serif;
+            color: var(--ink);
+            line-height: 1.6;
+            background: radial-gradient(circle at 10% -10%, #dff0e3 0, transparent 40%), var(--sand);
+            min-height: 100vh;
+        }
+        h1, h2, h3, h4, .brand { font-family: "Bricolage Grotesque", "DM Sans", sans-serif; }
+
+        .tracker-page {
+            width: min(1180px, 94%);
+            margin: 28px auto 80px;
+        }
+
+        /* Hero Destination Banner */
+        .trip-header-card {
+            background: linear-gradient(135deg, var(--forest), #1d573c);
+            color: #fff;
+            border-radius: 24px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px -20px rgba(20, 69, 47, 0.45);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .trip-header-card::before {
+            content: "";
+            position: absolute;
+            right: -80px;
+            top: -80px;
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(244, 182, 63, 0.15) 0, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .trip-title-area h1 {
+            margin: 8px 0 6px;
+            font-size: clamp(26px, 4vw, 38px);
+            line-height: 1.1;
+        }
+        .trip-meta-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+        .meta-tag {
+            padding: 5px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(4px);
+            font-weight: 500;
+        }
+        .badge-status {
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .badge-active { background: #dcfce7; color: #166534; }
+        .badge-upcoming { background: #fef3c7; color: #92400e; }
+        .badge-completed { background: #e0f2fe; color: #075985; }
+
+        .trip-header-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
+        }
+        .btn-action {
+            padding: 12px 20px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: transform .15s, opacity .15s;
+        }
+        .btn-action:hover { transform: translateY(-2px); }
+        .btn-gold { background: var(--sun); color: var(--forest); }
+        .btn-light { background: rgba(255, 255, 255, 0.16); color: #fff; }
+        .btn-danger { background: #fee2e2; color: #b91c1c; }
+
+        /* Top Metrics Strip */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+        .metric-card {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            padding: 22px;
+            box-shadow: 0 10px 24px -14px rgba(20, 69, 47, 0.25);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .metric-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .metric-value {
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: clamp(26px, 3vw, 34px);
+            font-weight: 800;
+            margin: 10px 0 4px;
+            color: var(--forest);
+        }
+        .metric-sub {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        /* Budget Progress */
+        .budget-progress-container {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 18px 24px;
+            margin-top: 18px;
+        }
+        .progress-bar-bg {
+            height: 12px;
+            background: #edf2ed;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 999px;
+            transition: width .5s ease;
+        }
+
+        /* Tabs and Controls */
+        .day-tabs-bar {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 6px 2px;
+            margin: 28px 0 16px;
+            scrollbar-width: thin;
+        }
+        .day-tab {
+            padding: 10px 18px;
+            border-radius: 14px;
+            background: #fff;
+            border: 1px solid var(--line);
+            color: var(--ink);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            white-space: nowrap;
+            display: inline-flex;
+            flex-direction: column;
+            gap: 2px;
+            transition: all .15s;
+        }
+        .day-tab.active {
+            background: var(--forest);
+            color: #fff;
+            border-color: var(--forest);
+            box-shadow: 0 8px 18px -8px var(--forest);
+        }
+        .day-tab-sub {
+            font-size: 11px;
+            font-weight: 500;
+            opacity: 0.8;
+        }
+        .day-tab.active .day-tab-sub { color: var(--sun); }
+
+        /* Two Column Content Area */
+        .content-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+        @media (max-width: 900px) {
+            .content-layout { grid-template-columns: 1fr; }
+        }
+
+        /* Transaction List */
+        .section-card {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            padding: 26px;
+            box-shadow: 0 10px 24px -14px rgba(20, 69, 47, 0.25);
+            margin-bottom: 24px;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .section-title { margin: 0; font-size: 20px; color: var(--forest); }
+
+        .expense-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 18px;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            margin-bottom: 12px;
+            background: #fafcfa;
+            gap: 14px;
+            transition: transform .15s, box-shadow .15s;
+        }
+        .expense-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px -8px rgba(0,0,0,0.12);
+        }
+        .expense-main {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+        }
+        .category-icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            font-size: 18px;
+            background: var(--mint);
+            color: var(--forest);
+            flex-shrink: 0;
+        }
+        .expense-details h4 {
+            margin: 0 0 3px;
+            font-size: 16px;
+            color: var(--forest);
+        }
+        .expense-sub {
+            margin: 0;
+            font-size: 12px;
+            color: var(--muted);
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .expense-right {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+        }
+        .expense-amount {
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--forest);
+        }
+        .expense-actions-bar {
+            display: flex;
+            gap: 8px;
+        }
+        .btn-icon-sm {
+            background: transparent;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            padding: 4px 6px;
+            font-size: 13px;
+            border-radius: 6px;
+            transition: color .15s, background .15s;
+        }
+        .btn-icon-sm:hover { color: var(--forest); background: #f0f4f1; }
+        .btn-icon-danger:hover { color: var(--bad); background: var(--bad-bg); }
+
+        /* Transport Comparison Panel */
+        .transport-panel {
+            background: #fffcf5;
+            border-left: 5px solid var(--sun);
+        }
+        .transport-metric-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--line);
+            font-size: 14px;
+        }
+        .transport-metric-row:last-child { border-bottom: none; }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 30, 20, 0.6);
+            backdrop-filter: blur(4px);
+            display: none;
+            place-items: center;
+            z-index: 1000;
+            padding: 16px;
+        }
+        .modal-box {
+            background: #fff;
+            border-radius: 24px;
+            max-width: 520px;
+            width: 100%;
+            padding: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--muted);
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 700;
+            font-size: 13px;
+        }
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid var(--line);
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 14px;
+            background: #fafcfa;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--leaf);
+        }
+
+        .alert-bar {
+            padding: 12px 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .alert-success { background: #dcfce7; color: #166534; }
+        .alert-danger { background: #fee2e2; color: #b91c1c; }
+    </style>
+</head>
+<body>
+
+{% include "basepanel.html" %}
+
+<main class="tracker-page">
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert-bar {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}">
+                <i class="fa-solid {% if message.tags == 'error' %}fa-triangle-exclamation{% else %}fa-circle-check{% endif %}"></i>
+                <span>{{ message }}</span>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Trip Header Card -->
+    <header class="trip-header-card">
+        <div class="trip-title-area">
+            <div>
+                {% if session.status == "completed" %}
+                    <span class="badge-status badge-completed"><i class="fa-solid fa-flag-checkered"></i> Trip Completed</span>
+                {% elif session.status == "upcoming" %}
+                    <span class="badge-status badge-upcoming"><i class="fa-regular fa-clock"></i> Upcoming Journey</span>
+                {% else %}
+                    <span class="badge-status badge-active"><i class="fa-solid fa-circle-dot fa-fade"></i> Active Trip Tracking</span>
+                {% endif %}
+            </div>
+            <h1>{{ place.name }} Travel Expenses</h1>
+            <p style="margin: 0; color: rgba(255,255,255,0.85); font-size: 15px;">
+                {{ place.district.name }} District &bull; {{ session.total_days }}-Day Journey ({{ session.start_date|date:"d M Y" }} to {{ session.end_date|date:"d M Y" }})
+            </p>
+            <div class="trip-meta-tags">
+                <span class="meta-tag"><i class="fa-solid fa-users"></i> {{ session.travellers }} Traveller{{ session.travellers|pluralize }}</span>
+                <span class="meta-tag"><i class="fa-solid fa-hourglass-half"></i> {{ days_remaining_label }}</span>
+                <span class="meta-tag"><i class="fa-solid fa-receipt"></i> {{ all_expenses|length }} Recorded Expense{{ all_expenses|length|pluralize }}</span>
+            </div>
+        </div>
+
+        <div class="trip-header-actions">
+            {% if session.status != "completed" %}
+                <button type="button" class="btn-action btn-gold" onclick="openAddExpenseModal()">
+                    <i class="fa-solid fa-plus"></i> Add Expense
+                </button>
+                <button type="button" class="btn-action btn-light" onclick="openEndTripModal()">
+                    <i class="fa-solid fa-flag-checkered"></i> End Trip Early
+                </button>
+            {% else %}
+                <a href="{% url 'expenses:trip_report' session.id %}" class="btn-action btn-gold">
+                    <i class="fa-solid fa-chart-pie"></i> View Trip Feedback Report
+                </a>
+                <button type="button" class="btn-action btn-light" onclick="openLateEntryModal()">
+                    <i class="fa-solid fa-pen-to-square"></i> Log Late Adjustment
+                </button>
+            {% endif %}
+            <a href="{% url 'explorer:place_detail' place.slug %}" class="btn-action btn-light">
+                <i class="fa-solid fa-arrow-left"></i> Destination Guide
+            </a>
+        </div>
+    </header>
+
+    <!-- Core Metrics Strip -->
+    <section class="metrics-grid">
+        <div class="metric-card">
+            <span class="metric-label">
+                <span>Planned Budget</span>
+                <i class="fa-solid fa-wallet" style="color: var(--leaf);"></i>
+            </span>
+            <div class="metric-value">₹{{ session.expected_budget|floatformat:0 }}</div>
+            <div class="metric-sub">Allocated for {{ session.total_days }} day{{ session.total_days|pluralize }}</div>
+        </div>
+
+        <div class="metric-card">
+            <span class="metric-label">
+                <span>Total Actual Spent</span>
+                <i class="fa-solid fa-receipt" style="color: #0284c7;"></i>
+            </span>
+            <div class="metric-value">₹{{ total_actual|floatformat:0 }}</div>
+            <div class="metric-sub">Avg ₹{{ avg_daily_spending|floatformat:0 }} / day</div>
+        </div>
+
+        <div class="metric-card">
+            <span class="metric-label">
+                <span>Remaining Balance</span>
+                <i class="fa-solid {% if is_overbudget %}fa-circle-exclamation{% else %}fa-circle-check{% endif %}" style="color: {% if is_overbudget %}var(--bad){% else %}var(--good){% endif %};"></i>
+            </span>
+            <div class="metric-value" style="color: {% if is_overbudget %}var(--bad){% else %}var(--good){% endif %};">
+                {% if is_overbudget %}-₹{{ overbudget_amount|floatformat:0 }}{% else %}₹{{ remaining_budget|floatformat:0 }}{% endif %}
+            </div>
+            <div class="metric-sub">
+                {% if is_overbudget %}Over budget by ₹{{ overbudget_amount|floatformat:0 }}{% else %}Surplus available{% endif %}
+            </div>
+        </div>
+
+        <div class="metric-card">
+            <span class="metric-label">
+                <span>Budget Consumed</span>
+                <i class="fa-solid fa-chart-line" style="color: var(--sun);"></i>
+            </span>
+            <div class="metric-value">{{ budget_consumed_pct }}%</div>
+            <div class="metric-sub">
+                {% if top_category %}Top: {{ top_category.label }}{% else %}No entries yet{% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Budget Gauge -->
+    <div class="budget-progress-container">
+        <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 700;">
+            <span>Budget Utilization</span>
+            <span>{{ budget_consumed_pct }}% of ₹{{ session.expected_budget|floatformat:0 }}</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" style="width: min({{ budget_consumed_pct }}%, 100%); background: {% if is_overbudget %}var(--bad){% elif budget_consumed_pct > 80 %}var(--sun){% else %}var(--leaf){% endif %};"></div>
+        </div>
+    </div>
+
+    <!-- Multi-Day Tabs -->
+    <nav class="day-tabs-bar" aria-label="Trip Days Navigation">
+        <a href="{% url 'expenses:tracker_dashboard' session.id %}{% if filter_category %}?category={{ filter_category }}{% endif %}"
+           class="day-tab {% if not filter_date %}active{% endif %}">
+            <span>All Days</span>
+            <span class="day-tab-sub">₹{{ total_actual|floatformat:0 }} &bull; {{ all_expenses|length }} items</span>
+        </a>
+        {% for td in trip_days %}
+            <a href="{% url 'expenses:tracker_dashboard' session.id %}?day={{ td.date_str }}{% if filter_category %}&category={{ filter_category }}{% endif %}"
+               class="day-tab {% if filter_date == td.date_str %}active{% endif %}">
+                <span>Day {{ td.day_num }} ({{ td.display_date }})</span>
+                <span class="day-tab-sub">₹{{ td.total|floatformat:0 }} &bull; {{ td.count }} item{{ td.count|pluralize }}</span>
+            </a>
+        {% endfor %}
+    </nav>
+
+    <!-- Main Content Layout -->
+    <div class="content-layout">
+
+        <!-- Left: Transactions & Entry -->
+        <div>
+            <div class="section-card">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title">
+                            {% if filter_date %}
+                                Transactions for {{ filter_date }}
+                            {% else %}
+                                Recorded Trip Transactions ({{ filtered_expenses|length }})
+                            {% endif %}
+                        </h2>
+                        <p style="margin: 4px 0 0; font-size: 13px; color: var(--muted);">
+                            Record items multiple times a day. Edit or adjust at any point.
+                        </p>
+                    </div>
+
+                    <!-- Category filter -->
+                    <div>
+                        <select class="form-select" style="padding: 8px 12px; font-size: 13px;" onchange="location = this.value;">
+                            <option value="{% url 'expenses:tracker_dashboard' session.id %}{% if filter_date %}?day={{ filter_date }}{% endif %}">All Categories</option>
+                            {% for c_code, c_label in categories_list %}
+                                <option value="{% url 'expenses:tracker_dashboard' session.id %}?category={{ c_code }}{% if filter_date %}&day={{ filter_date }}{% endif %}" {% if filter_category == c_code %}selected{% endif %}>
+                                    {{ c_label }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                {% if filtered_expenses %}
+                    {% for exp in filtered_expenses %}
+                        <article class="expense-card">
+                            <div class="expense-main">
+                                <div class="category-icon-box">
+                                    {% if exp.category == "food" %}<i class="fa-solid fa-utensils"></i>
+                                    {% elif exp.category == "bus_local" %}<i class="fa-solid fa-bus"></i>
+                                    {% elif exp.category == "train" %}<i class="fa-solid fa-train"></i>
+                                    {% elif exp.category == "taxi_auto" %}<i class="fa-solid fa-taxi"></i>
+                                    {% elif exp.category == "hotel" %}<i class="fa-solid fa-bed"></i>
+                                    {% elif exp.category == "sightseeing" %}<i class="fa-solid fa-ticket"></i>
+                                    {% elif exp.category == "shopping" %}<i class="fa-solid fa-bag-shopping"></i>
+                                    {% elif exp.category == "activities" %}<i class="fa-solid fa-person-hiking"></i>
+                                    {% elif exp.category == "parking_tolls" %}<i class="fa-solid fa-square-parking"></i>
+                                    {% else %}<i class="fa-solid fa-receipt"></i>{% endif %}
+                                </div>
+                                <div class="expense-details">
+                                    <h4>{{ exp.description }}</h4>
+                                    <p class="expense-sub">
+                                        <span><i class="fa-regular fa-calendar"></i> Day {{ exp.day_number }} ({{ exp.expense_date|date:"d M" }}) &bull; {{ exp.expense_time|time:"H:i" }}</span>
+                                        <span><i class="fa-solid fa-tag"></i> {{ exp.display_category }}</span>
+                                        <span><i class="fa-solid fa-credit-card"></i> {{ exp.get_payment_method_display }}</span>
+                                        {% if exp.location %}<span><i class="fa-solid fa-location-dot"></i> {{ exp.location }}</span>{% endif %}
+                                        {% if exp.is_late_entry %}
+                                            <span style="background: #fef3c7; color: #92400e; padding: 1px 6px; border-radius: 4px; font-weight: 700;">Audited Late Entry</span>
+                                        {% endif %}
+                                    </p>
+                                    {% if exp.notes %}
+                                        <p style="margin: 4px 0 0; font-size: 12px; color: var(--muted); font-style: italic;">
+                                            Note: {{ exp.notes }}
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="expense-right">
+                                <div class="expense-amount">₹{{ exp.amount|floatformat:0 }}</div>
+                                <div class="expense-actions-bar">
+                                    <button type="button" class="btn-icon-sm" title="Edit entry"
+                                            onclick="openEditExpenseModal('{{ exp.id }}', '{{ exp.amount }}', '{{ exp.category }}', '{{ exp.description|escapejs }}', '{{ exp.expense_date|date:'Y-m-d' }}', '{{ exp.payment_method }}', '{{ exp.location|escapejs }}', '{{ exp.notes|escapejs }}')">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                    <button type="button" class="btn-icon-sm btn-icon-danger" title="Delete entry"
+                                            onclick="openDeleteExpenseModal('{{ exp.id }}', '{{ exp.description|escapejs }}', '{{ exp.amount }}')">
+                                        <i class="fa-regular fa-trash-can"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </article>
+                    {% endfor %}
+                {% else %}
+                    <div style="text-align: center; padding: 40px 20px; color: var(--muted);">
+                        <i class="fa-solid fa-receipt" style="font-size: 36px; color: var(--leaf); opacity: 0.5; margin-bottom: 12px;"></i>
+                        <h4 style="margin: 4px 0; color: var(--forest);">No Expenses Recorded Yet</h4>
+                        <p style="margin: 0; font-size: 14px;">
+                            Click "+ Add Expense" above to start logging your expenses during this trip.
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Right Side: Category Breakdown & Transport Analytics -->
+        <div>
+            <!-- Category Breakdown Card -->
+            <div class="section-card">
+                <h3 style="margin: 0 0 14px; font-size: 18px; color: var(--forest);">Spending by Category</h3>
+                {% if active_categories %}
+                    {% for c in active_categories %}
+                        <div style="margin-bottom: 12px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 700;">
+                                <span>{{ c.label }}</span>
+                                <span>₹{{ c.total|floatformat:0 }} ({{ c.percentage }}%)</span>
+                            </div>
+                            <div class="progress-bar-bg" style="height: 8px; margin-top: 4px;">
+                                <div class="progress-bar-fill" style="width: {{ c.percentage }}%; background: var(--leaf);"></div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p style="font-size: 13px; color: var(--muted); margin: 0;">Categories will appear as soon as you record expenses.</p>
+                {% endif %}
+            </div>
+
+            <!-- Transport Expected vs Actual Card -->
+            <div class="section-card transport-panel">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <h3 style="margin: 0; font-size: 18px; color: var(--forest);">
+                        <i class="fa-solid fa-route" style="color: var(--sun);"></i> Transportation Analysis
+                    </h3>
+                    <span style="font-size: 12px; font-weight: 800; background: var(--mint); color: var(--forest); padding: 3px 8px; border-radius: 6px;">
+                        Transit Verified
+                    </span>
+                </div>
+
+                <p style="margin: 0 0 14px; font-size: 13px; color: var(--muted);">
+                    Comparison between estimated route baseline and verified transportation entries recorded.
+                </p>
+
+                <div class="transport-metric-row">
+                    <span>Expected Transport Budget:</span>
+                    <strong>₹{{ transport_analysis.expected_transport|floatformat:0 }}</strong>
+                </div>
+                <div class="transport-metric-row">
+                    <span>Actual Bus & Local Transit:</span>
+                    <strong>₹{{ transport_analysis.bus_actual|floatformat:0 }}</strong>
+                </div>
+                <div class="transport-metric-row">
+                    <span>Actual Train Spending:</span>
+                    <strong>₹{{ transport_analysis.train_actual|floatformat:0 }}</strong>
+                </div>
+                <div class="transport-metric-row">
+                    <span>Actual Taxi & Auto:</span>
+                    <strong>₹{{ transport_analysis.taxi_actual|floatformat:0 }}</strong>
+                </div>
+                <div class="transport-metric-row" style="border-top: 2px solid var(--forest); font-weight: 700;">
+                    <span>Total Actual Transport:</span>
+                    <strong style="color: var(--forest); font-size: 16px;">₹{{ transport_analysis.total_transport_actual|floatformat:0 }}</strong>
+                </div>
+
+                <div style="margin-top: 14px; padding: 10px 14px; border-radius: 12px; font-size: 13px; background: {% if transport_analysis.is_higher %}#fff1f0; color: #b42318;{% else %}#e3f1e7; color: #14452f;{% endif %}">
+                    {% if transport_analysis.is_higher %}
+                        <i class="fa-solid fa-arrow-trend-up"></i> Transit spent is <strong>₹{{ transport_analysis.diff_abs|floatformat:0 }} higher</strong> than initial estimates.
+                    {% elif transport_analysis.is_lower %}
+                        <i class="fa-solid fa-arrow-trend-down"></i> Transit spent is <strong>₹{{ transport_analysis.diff_abs|floatformat:0 }} under</strong> budget.
+                    {% else %}
+                        <i class="fa-solid fa-check"></i> Transit expenses align with initial estimates.
+                    {% endif %}
+                </div>
+
+                <!-- Verified Bus Numbers from transport_finder -->
+                {% if transit_data.bus_routes %}
+                    <div style="margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--line);">
+                        <span style="font-size: 12px; font-weight: 700; color: var(--forest);">
+                            <i class="fa-solid fa-bus"></i> Official Bus Numbers for {{ place.name }}:
+                        </span>
+                        <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px;">
+                            {% for b in transit_data.bus_routes|slice:":4" %}
+                                <span style="font-size: 12px; background: #fff; border: 1px solid var(--line); padding: 3px 8px; border-radius: 6px; font-weight: 700; color: var(--forest);">
+                                    Bus {{ b.bus_number|default:b.route_id }}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Destination Community Insights Card -->
+            <div class="section-card">
+                <h3 style="margin: 0 0 10px; font-size: 18px; color: var(--forest);">
+                    <i class="fa-solid fa-globe" style="color: var(--leaf);"></i> Destination Insights
+                </h3>
+                {% if community_insights.available %}
+                    <p style="margin: 0 0 10px; font-size: 13px; color: var(--ink);">
+                        {{ community_insights.message }}
+                    </p>
+                    <div style="font-size: 12px; color: var(--muted); background: #fdfdfd; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--line);">
+                        <i class="fa-solid fa-shield-halved"></i> Anonymized aggregate from {{ community_insights.sample_size }} verified travellers.
+                    </div>
+                {% else %}
+                    <p style="margin: 0; font-size: 13px; color: var(--muted);">
+                        <i class="fa-solid fa-lock" style="color: var(--sun);"></i> {{ community_insights.message }}
+                    </p>
+                {% endif %}
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+<!-- ADD EXPENSE MODAL -->
+<div class="modal-overlay" id="addExpenseModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 style="margin: 0; font-size: 20px; color: var(--forest);">
+                <i class="fa-solid fa-plus-circle" style="color: var(--leaf);"></i> Record New Expense
+            </h3>
+            <button type="button" class="modal-close" onclick="closeModal('addExpenseModal')">&times;</button>
+        </div>
+        <form method="post" action="{% url 'expenses:add_expense' session.id %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="form-label" for="addAmount">Expense Amount (₹) *</label>
+                <input type="number" step="0.01" min="0.01" name="amount" id="addAmount" class="form-input" placeholder="e.g. 250" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="addCategory">Category *</label>
+                <select name="category" id="addCategory" class="form-select" onchange="toggleCustomCategory(this, 'addCustomCategoryGroup')" required>
+                    {% for code, label in categories_list %}
+                        <option value="{{ code }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group" id="addCustomCategoryGroup" style="display: none;">
+                <label class="form-label" for="addCustomName">Custom Category Name</label>
+                <input type="text" name="custom_category_name" id="addCustomName" class="form-input" placeholder="e.g. Souvenirs, Guide fee">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="addDesc">Description *</label>
+                <input type="text" name="description" id="addDesc" class="form-input" placeholder="e.g. Lunch at Mayura Hotel" required>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div class="form-group">
+                    <label class="form-label" for="addDate">Date *</label>
+                    <input type="date" name="expense_date" id="addDate" class="form-input" value="{{ today|date:'Y-m-d' }}" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="addPayment">Payment Method</label>
+                    <select name="payment_method" id="addPayment" class="form-select">
+                        {% for code, label in payment_choices %}
+                            <option value="{{ code }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="addLocation">Location / Landmark</label>
+                <input type="text" name="location" id="addLocation" class="form-input" value="{{ place.name }}">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="addNotes">Notes (Optional)</label>
+                <textarea name="notes" id="addNotes" class="form-textarea" rows="2" placeholder="e.g. Shared split with group"></textarea>
+            </div>
+
+            <button type="submit" class="btn-action btn-gold" style="width: 100%; justify-content: center; padding: 14px; font-size: 16px;">
+                <i class="fa-solid fa-check"></i> Save Expense Entry
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- EDIT EXPENSE MODAL -->
+<div class="modal-overlay" id="editExpenseModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 style="margin: 0; font-size: 20px; color: var(--forest);">
+                <i class="fa-solid fa-pen-to-square" style="color: var(--leaf);"></i> Edit Expense
+            </h3>
+            <button type="button" class="modal-close" onclick="closeModal('editExpenseModal')">&times;</button>
+        </div>
+        <form method="post" id="editExpenseForm" action="">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="form-label" for="editAmount">Expense Amount (₹) *</label>
+                <input type="number" step="0.01" min="0.01" name="amount" id="editAmount" class="form-input" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="editCategory">Category *</label>
+                <select name="category" id="editCategory" class="form-select" required>
+                    {% for code, label in categories_list %}
+                        <option value="{{ code }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="editDesc">Description *</label>
+                <input type="text" name="description" id="editDesc" class="form-input" required>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div class="form-group">
+                    <label class="form-label" for="editDate">Date *</label>
+                    <input type="date" name="expense_date" id="editDate" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="editPayment">Payment Method</label>
+                    <select name="payment_method" id="editPayment" class="form-select">
+                        {% for code, label in payment_choices %}
+                            <option value="{{ code }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="editLocation">Location</label>
+                <input type="text" name="location" id="editLocation" class="form-input">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="editNotes">Notes</label>
+                <textarea name="notes" id="editNotes" class="form-textarea" rows="2"></textarea>
+            </div>
+
+            {% if session.status == "completed" %}
+                <div class="form-group" style="background: #fffcf5; padding: 12px; border-radius: 10px; border: 1px solid var(--sun);">
+                    <label class="form-label" for="editReason">Audit Justification (Required for Completed Trips) *</label>
+                    <input type="text" name="edit_reason" id="editReason" class="form-input" placeholder="e.g. Bill amount corrected from receipt" required>
+                </div>
+            {% endif %}
+
+            <button type="submit" class="btn-action btn-gold" style="width: 100%; justify-content: center; padding: 14px; font-size: 16px;">
+                <i class="fa-solid fa-check"></i> Update Expense
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- DELETE CONFIRMATION MODAL -->
+<div class="modal-overlay" id="deleteExpenseModal">
+    <div class="modal-box" style="max-width: 440px;">
+        <div class="modal-header">
+            <h3 style="margin: 0; font-size: 20px; color: var(--bad);">
+                <i class="fa-solid fa-trash-can"></i> Delete Expense
+            </h3>
+            <button type="button" class="modal-close" onclick="closeModal('deleteExpenseModal')">&times;</button>
+        </div>
+        <p style="margin: 0 0 16px; font-size: 14px; color: var(--ink);">
+            Are you sure you want to remove <strong id="deleteDescDisplay"></strong> (<strong id="deleteAmountDisplay"></strong>)? This transaction will be permanently deleted.
+        </p>
+        <form method="post" id="deleteExpenseForm" action="">
+            {% csrf_token %}
+            {% if session.status == "completed" %}
+                <div class="form-group">
+                    <label class="form-label" for="deleteReason">Audit Reason *</label>
+                    <input type="text" name="delete_reason" id="deleteReason" class="form-input" placeholder="e.g. Duplicate entry removed" required>
+                </div>
+            {% endif %}
+            <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                <button type="button" class="btn-action btn-light" style="color: var(--ink); background: #eef2ef;" onclick="closeModal('deleteExpenseModal')">
+                    Cancel
+                </button>
+                <button type="submit" class="btn-action btn-danger">
+                    <i class="fa-solid fa-trash"></i> Delete Entry
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- END TRIP EARLY MODAL -->
+<div class="modal-overlay" id="endTripModal">
+    <div class="modal-box" style="max-width: 460px;">
+        <div class="modal-header">
+            <h3 style="margin: 0; font-size: 20px; color: var(--forest);">
+                <i class="fa-solid fa-flag-checkered" style="color: var(--sun);"></i> End Trip Early?
+            </h3>
+            <button type="button" class="modal-close" onclick="closeModal('endTripModal')">&times;</button>
+        </div>
+        <p style="margin: 0 0 16px; font-size: 14px; color: var(--ink);">
+            Ending your trip will finalize your {{ place.name }} expense tracking and immediately generate your <strong>Intelligent Trip Feedback Report</strong>.
+        </p>
+        <p style="margin: 0 0 20px; font-size: 13px; color: var(--muted); background: var(--mint); padding: 10px 14px; border-radius: 10px;">
+            <i class="fa-solid fa-circle-info"></i> All previously recorded expenses are safely preserved. Any forgotten late receipts can still be recorded with an audit note.
+        </p>
+        <form method="post" action="{% url 'expenses:complete_session' session.id %}">
+            {% csrf_token %}
+            <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                <button type="button" class="btn-action btn-light" style="color: var(--ink); background: #eef2ef;" onclick="closeModal('endTripModal')">
+                    Keep Tracking
+                </button>
+                <button type="submit" class="btn-action btn-gold">
+                    <i class="fa-solid fa-check"></i> Complete & View Report
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- LATE ENTRY AUDIT MODAL -->
+<div class="modal-overlay" id="lateEntryModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 style="margin: 0; font-size: 20px; color: var(--forest);">
+                <i class="fa-solid fa-pen-nib" style="color: var(--sun);"></i> Log Audited Late Expense
+            </h3>
+            <button type="button" class="modal-close" onclick="closeModal('lateEntryModal')">&times;</button>
+        </div>
+        <p style="margin: 0 0 16px; font-size: 13px; color: var(--muted);">
+            This trip has concluded. To ensure statistical integrity, late entries require an audit justification.
+        </p>
+        <form method="post" action="{% url 'expenses:add_late_entry' session.id %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="form-label" for="lateAmount">Expense Amount (₹) *</label>
+                <input type="number" step="0.01" min="0.01" name="amount" id="lateAmount" class="form-input" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="lateCategory">Category *</label>
+                <select name="category" id="lateCategory" class="form-select" required>
+                    {% for code, label in categories_list %}
+                        <option value="{{ code }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="lateDesc">Description *</label>
+                <input type="text" name="description" id="lateDesc" class="form-input" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="lateReason">Audit Justification *</label>
+                <input type="text" name="reason" id="lateReason" class="form-input" placeholder="e.g. Forgot to log parking slip from day 2" required>
+            </div>
+
+            <button type="submit" class="btn-action btn-gold" style="width: 100%; justify-content: center; padding: 14px; font-size: 16px;">
+                <i class="fa-solid fa-shield-check"></i> Record Audited Late Entry
+            </button>
+        </form>
+    </div>
+</div>
+
+<script src="{% static 'users/account.js' %}"></script>
+<script>
+    function openModal(id) {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'grid';
+    }
+    function closeModal(id) {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    }
+    function openAddExpenseModal() { openModal('addExpenseModal'); }
+    function openEndTripModal() { openModal('endTripModal'); }
+    function openLateEntryModal() { openModal('lateEntryModal'); }
+
+    function openEditExpenseModal(id, amount, category, desc, date, payment, location, notes) {
+        const form = document.getElementById('editExpenseForm');
+        form.action = "{% url 'expenses:tracker_dashboard' session.id %}edit/" + id + "/";
+        document.getElementById('editAmount').value = amount;
+        document.getElementById('editCategory').value = category;
+        document.getElementById('editDesc').value = desc;
+        document.getElementById('editDate').value = date;
+        document.getElementById('editPayment').value = payment;
+        document.getElementById('editLocation').value = location;
+        document.getElementById('editNotes').value = notes;
+        openModal('editExpenseModal');
+    }
+
+    function openDeleteExpenseModal(id, desc, amount) {
+        const form = document.getElementById('deleteExpenseForm');
+        form.action = "{% url 'expenses:tracker_dashboard' session.id %}delete/" + id + "/";
+        document.getElementById('deleteDescDisplay').textContent = desc;
+        document.getElementById('deleteAmountDisplay').textContent = '₹' + Number(amount).toLocaleString('en-IN');
+        openModal('deleteExpenseModal');
+    }
+
+    function toggleCustomCategory(selectEl, customGroupId) {
+        const customGroup = document.getElementById(customGroupId);
+        if (selectEl.value === 'custom') {
+            customGroup.style.display = 'block';
+        } else {
+            customGroup.style.display = 'none';
+        }
+    }
+
+    // Close modal on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.modal-overlay').forEach(el => el.style.display = 'none');
+        }
+    });
+</script>
+</body>
+</html>

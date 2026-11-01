@@ -138,6 +138,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         expenseForm.addEventListener("submit", async function (event) {
+            if (event.submitter && event.submitter.getAttribute("formaction")) {
+                return; // Allow Track Your Expenses button to submit normally
+            }
             event.preventDefault();
             clearMessage();
 

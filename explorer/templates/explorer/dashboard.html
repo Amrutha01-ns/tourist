@@ -363,10 +363,16 @@
                     </div>
                 </div>
 
-                <button type="submit" class="primary-btn">
-                    Calculate my trip expenses
-                    <i class="fa-solid fa-calculator"></i>
-                </button>
+                <div style="display: flex; gap: 14px; margin-top: 24px; flex-wrap: wrap;">
+                    <button type="submit" class="primary-btn" style="flex: 1; min-width: 220px; margin-top: 0;">
+                        Calculate my trip expenses
+                        <i class="fa-solid fa-calculator"></i>
+                    </button>
+                    <button type="submit" formaction="{% url 'expenses:start_session' place.slug %}" class="primary-btn" style="flex: 1.2; min-width: 260px; margin-top: 0; background: linear-gradient(135deg, var(--sun), #e5a42a); color: var(--forest); font-weight: 800; box-shadow: 0 12px 24px -12px rgba(244, 182, 63, 0.65);">
+                        Track Your Expenses for This Place
+                        <i class="fa-solid fa-wallet" style="color: var(--forest);"></i>
+                    </button>
+                </div>
             </form>
             {% if error %}
                 <p class="notice" role="alert">{{ error }}</p>
@@ -427,6 +433,25 @@
                 {% endif %}
             </section>
         {% endif %}
+
+        <!-- Track Your Expenses Feature Callout -->
+        <section style="margin-top: 28px; padding: 26px 32px; background: linear-gradient(135deg, var(--forest), #1d573c); border-radius: 24px; color: #fff; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; box-shadow: 0 16px 36px -18px rgba(20, 69, 47, 0.45);">
+            <div style="flex: 1; min-width: 280px;">
+                <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 800; background: var(--sun); color: var(--forest); padding: 4px 10px; border-radius: 999px;">
+                    Smart Travel Manager
+                </span>
+                <h3 style="margin: 10px 0 6px; font-size: 22px; color: #fff;">Track Your Expenses for {{ place.name }}</h3>
+                <p style="margin: 0; color: rgba(255, 255, 255, 0.88); font-size: 14px;">
+                    Log daily food, stay, sightseeing, and contrast your actual travel expenses with verified local bus numbers and tariffs.
+                </p>
+            </div>
+            <div>
+                <a href="{% url 'expenses:start_session' place.slug %}?budget={{ request.POST.budget|default:'10000' }}&days={{ request.POST.days|default:'3' }}&travellers={{ request.POST.travellers|default:'1' }}"
+                   class="primary-btn" style="width: auto; padding: 14px 26px; margin: 0; background: var(--sun); color: var(--forest); font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 10px 20px -8px rgba(0,0,0,0.3);">
+                    <i class="fa-solid fa-wallet"></i> Track Your Expenses for This Place
+                </a>
+            </div>
+        </section>
 
         <!-- Public Transportation & Route Discovery Section -->
         <section class="transit-section" id="transitSection">

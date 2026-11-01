@@ -1,0 +1,392 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Feedback Report: {{ place.name }} | Tourist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'users/account.css' %}">
+
+    <style>
+        :root {
+            --forest: #14452f;
+            --leaf: #2f7d4f;
+            --mint: #e3f1e7;
+            --sand: #fbf6ea;
+            --sun: #f4b63f;
+            --ink: #1b2a22;
+            --muted: #66756c;
+            --line: #e4e9df;
+            --bad: #b42318;
+            --good: #15803d;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: "DM Sans", Arial, sans-serif;
+            color: var(--ink);
+            line-height: 1.6;
+            background: radial-gradient(circle at 10% -10%, #dff0e3 0, transparent 40%), var(--sand);
+            min-height: 100vh;
+        }
+        h1, h2, h3, h4, .brand { font-family: "Bricolage Grotesque", "DM Sans", sans-serif; }
+
+        .report-page {
+            width: min(980px, 94%);
+            margin: 32px auto 80px;
+        }
+
+        .report-card {
+            background: #fff;
+            border-radius: 28px;
+            border: 1px solid var(--line);
+            padding: clamp(24px, 4vw, 42px);
+            box-shadow: 0 20px 48px -20px rgba(20, 69, 47, 0.35);
+        }
+
+        .report-header {
+            border-bottom: 2px solid var(--line);
+            padding-bottom: 24px;
+            margin-bottom: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .badge-verified {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: var(--mint);
+            color: var(--forest);
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+
+        /* Narrative Feedback Box */
+        .feedback-highlight-box {
+            background: #fdfaf2;
+            border-left: 6px solid var(--sun);
+            border-radius: 18px;
+            padding: 26px 30px;
+            margin-bottom: 32px;
+        }
+        .feedback-highlight-box h3 {
+            margin: 0 0 10px;
+            font-size: 20px;
+            color: var(--forest);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .feedback-text {
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--ink);
+            white-space: pre-line;
+            margin: 0;
+        }
+
+        /* 4-Stat Comparison Strip */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .comp-stat {
+            background: var(--sand);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 20px;
+        }
+        .comp-stat-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+        .comp-stat-val {
+            font-family: "Bricolage Grotesque", sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            margin: 8px 0 2px;
+            color: var(--forest);
+        }
+
+        /* Recommendations */
+        .recs-box {
+            background: #f5f9f6;
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+        .rec-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+        .rec-item:last-child { margin-bottom: 0; }
+        .rec-item i {
+            color: var(--leaf);
+            font-size: 16px;
+            margin-top: 3px;
+        }
+
+        /* Two columns: Daily & Categories */
+        .breakdown-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        @media (max-width: 768px) {
+            .breakdown-grid { grid-template-columns: 1fr; }
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .data-table th {
+            text-align: left;
+            padding: 10px 12px;
+            background: #f4f6f4;
+            color: var(--muted);
+            font-size: 12px;
+            text-transform: uppercase;
+            border-radius: 8px;
+        }
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            padding-top: 20px;
+            border-top: 1px solid var(--line);
+        }
+        .btn-pill {
+            padding: 12px 24px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-forest { background: var(--forest); color: #fff; }
+        .btn-gold { background: var(--sun); color: var(--forest); }
+        .btn-outline { background: transparent; border: 2px solid var(--line); color: var(--forest); }
+
+        @media print {
+            .navbar, .action-bar { display: none !important; }
+            .report-card { box-shadow: none; border: none; padding: 0; }
+            body { background: #fff; }
+        }
+    </style>
+</head>
+<body>
+
+{% include "basepanel.html" %}
+
+<main class="report-page">
+    <div class="report-card">
+        <!-- Header -->
+        <div class="report-header">
+            <div>
+                <span class="badge-verified">
+                    <i class="fa-solid fa-circle-check"></i> Verified Expense Feedback
+                </span>
+                <h1 style="margin: 10px 0 6px; font-size: clamp(28px, 4vw, 36px); color: var(--forest);">
+                    {{ place.name }} Trip Expense Report
+                </h1>
+                <p style="margin: 0; color: var(--muted); font-size: 14px;">
+                    Traveller: <strong>{{ session.user.username }}</strong> &bull; {{ session.total_days }} Days ({{ session.start_date|date:"d M Y" }} &ndash; {{ session.end_date|date:"d M Y" }}) &bull; {{ session.travellers }} Person{{ session.travellers|pluralize }}
+                </p>
+            </div>
+            <div>
+                <button type="button" class="btn-pill btn-outline" onclick="window.print()">
+                    <i class="fa-solid fa-print"></i> Print / PDF
+                </button>
+            </div>
+        </div>
+
+        <!-- 4-Stat Key Comparison -->
+        <div class="comparison-grid">
+            <div class="comp-stat">
+                <div class="comp-stat-label">Planned Budget</div>
+                <div class="comp-stat-val">₹{{ expected_budget|floatformat:0 }}</div>
+                <div style="font-size: 12px; color: var(--muted);">Initial estimate</div>
+            </div>
+
+            <div class="comp-stat">
+                <div class="comp-stat-label">Total Actual Spent</div>
+                <div class="comp-stat-val">₹{{ total_actual|floatformat:0 }}</div>
+                <div style="font-size: 12px; color: var(--muted);">Avg ₹{{ avg_daily|floatformat:0 }} / day</div>
+            </div>
+
+            <div class="comp-stat">
+                <div class="comp-stat-label">{% if is_savings %}Total Savings{% else %}Overspending{% endif %}</div>
+                <div class="comp-stat-val" style="color: {% if is_savings %}var(--good){% else %}var(--bad){% endif %};">
+                    {% if is_savings %}₹{{ delta_amount|floatformat:0 }}{% else %}-₹{{ delta_amount|floatformat:0 }}{% endif %}
+                </div>
+                <div style="font-size: 12px; color: {% if is_savings %}var(--good){% else %}var(--bad){% endif %};">
+                    {% if is_savings %}Under planned budget{% else %}Exceeded allocation{% endif %}
+                </div>
+            </div>
+
+            <div class="comp-stat">
+                <div class="comp-stat-label">Highest Expense Day</div>
+                <div class="comp-stat-val" style="font-size: 22px;">
+                    {% if highest_day %}Day {{ highest_day.day_num }} (₹{{ highest_day.total|floatformat:0 }}){% else %}N/A{% endif %}
+                </div>
+                <div style="font-size: 12px; color: var(--muted);">
+                    {% if lowest_day %}Lowest: Day {{ lowest_day.day_num }} (₹{{ lowest_day.total|floatformat:0 }}){% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Intelligent Feedback Highlight Narrative -->
+        <div class="feedback-highlight-box">
+            <h3>
+                <i class="fa-solid fa-brain" style="color: var(--sun);"></i> Intelligent Travel Feedback & Analysis
+            </h3>
+            <p class="feedback-text">{{ summary_narrative }}</p>
+        </div>
+
+        <!-- Budget Recommendations -->
+        <div class="recs-box">
+            <h3 style="margin: 0 0 14px; font-size: 18px; color: var(--forest);">
+                <i class="fa-solid fa-lightbulb" style="color: var(--sun);"></i> Actionable Advice for Your Next Trip
+            </h3>
+            {% for rec in recommendations %}
+                <div class="rec-item">
+                    <i class="fa-solid fa-arrow-right-long"></i>
+                    <span>{{ rec }}</span>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Breakdowns Grid -->
+        <div class="breakdown-grid">
+            <!-- Day-Wise Spending -->
+            <div>
+                <h3 style="margin: 0 0 12px; font-size: 18px; color: var(--forest);">Day-Wise Spending Summary</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Trip Day</th>
+                            <th>Date</th>
+                            <th style="text-align: right;">Total Spent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for td in context.trip_days %}
+                            <tr>
+                                <td><strong>Day {{ td.day_num }}</strong></td>
+                                <td>{{ td.display_date }}</td>
+                                <td style="text-align: right; font-weight: 700;">₹{{ td.total|floatformat:0 }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Category-Wise Spending -->
+            <div>
+                <h3 style="margin: 0 0 12px; font-size: 18px; color: var(--forest);">Category Breakdown</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Items</th>
+                            <th style="text-align: right;">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cat in context.active_categories %}
+                            <tr>
+                                <td><strong>{{ cat.label }}</strong></td>
+                                <td>{{ cat.count }}</td>
+                                <td style="text-align: right; font-weight: 700;">₹{{ cat.total|floatformat:0 }} ({{ cat.percentage }}%)</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="3" style="text-align: center; color: var(--muted);">No category data recorded.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Transportation Section Review -->
+        <div style="background: #fffcf5; border-radius: 18px; border: 1px solid var(--line); border-left: 5px solid var(--leaf); padding: 22px; margin-bottom: 32px;">
+            <h3 style="margin: 0 0 12px; font-size: 18px; color: var(--forest);">
+                <i class="fa-solid fa-bus"></i> Transportation Expense Analysis
+            </h3>
+            <p style="margin: 0 0 14px; font-size: 14px; color: var(--muted);">
+                Detailed comparison between planned travel routes and verified actual transport fares paid.
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px;">
+                <div style="background: #fff; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--line);">
+                    <div style="font-size: 12px; color: var(--muted);">Estimated Route Cost</div>
+                    <div style="font-size: 18px; font-weight: 800; color: var(--forest);">₹{{ transport.expected_transport|floatformat:0 }}</div>
+                </div>
+                <div style="background: #fff; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--line);">
+                    <div style="font-size: 12px; color: var(--muted);">Bus & Local Transit</div>
+                    <div style="font-size: 18px; font-weight: 800; color: var(--forest);">₹{{ transport.bus_actual|floatformat:0 }}</div>
+                </div>
+                <div style="background: #fff; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--line);">
+                    <div style="font-size: 12px; color: var(--muted);">Train Journeys</div>
+                    <div style="font-size: 18px; font-weight: 800; color: var(--forest);">₹{{ transport.train_actual|floatformat:0 }}</div>
+                </div>
+                <div style="background: #fff; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--line);">
+                    <div style="font-size: 12px; color: var(--muted);">Taxi & Auto Cabs</div>
+                    <div style="font-size: 18px; font-weight: 800; color: var(--forest);">₹{{ transport.taxi_actual|floatformat:0 }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Action Bar -->
+        <div class="action-bar">
+            <a href="{% url 'expenses:tracker_dashboard' session.id %}" class="btn-pill btn-outline">
+                <i class="fa-solid fa-arrow-left"></i> Return to Tracker
+            </a>
+            <div style="display: flex; gap: 10px;">
+                <a href="{% url 'explorer:place_detail' place.slug %}" class="btn-pill btn-forest">
+                    <i class="fa-solid fa-compass"></i> View Destination Guide
+                </a>
+                <a href="{% url 'dashboard' %}" class="btn-pill btn-gold">
+                    <i class="fa-solid fa-map-location-dot"></i> Plan Next Trip
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="{% static 'users/account.js' %}"></script>
+</body>
+</html>
