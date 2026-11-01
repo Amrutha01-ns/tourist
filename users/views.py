@@ -70,9 +70,9 @@ def dashboard(request):
     featured_places = {
         "mysore": find_place("Mysore Palace", "Mysore"),
         "madikeri": find_place("Abbey Falls", "Madikeri"),
-        "chikmagalur": find_place("Mullayanagiri", "Chikkamagaluru", "Chikmagalur", "Hassan"),
-        "hampi": find_place("Hampi", "Halebidu", "Belur"),
-        "udupi": find_place("Udupi", "Gokarna", "Om Beach"),
+        "chikmagalur": find_place("Mullayanagiri", "Baba Budangiri", "Chikkamagaluru"),
+        "hampi": find_place("Virupaksha Temple", "Vittala Temple", "Hampi"),
+        "udupi": find_place("Sri Krishna Temple", "Malpe Beach", "St. Mary's Island", "Udupi"),
     }
 
     # Verified metrics from real database models
@@ -96,21 +96,59 @@ def dashboard(request):
 
 
 DISTRICT_ALIASES = {
-    "chikkamagaluru": "hassan",
-    "chikmagalur": "hassan",
+    # Chikkamagaluru (Has its own district in DB)
+    "chikkamagaluru": "Chikkamagaluru",
+    "chikmagalur": "Chikkamagaluru",
+    "chikmagaluru": "Chikkamagaluru",
+    "chikamanglore": "Chikkamagaluru",
+    "chikkamangalore": "Chikkamagaluru",
+    
+    # Hampi (Has its own district in DB)
+    "hampi": "Hampi",
+    "vijayanagara": "Hampi",
+    "hosapete": "Hampi",
+    "hospet": "Hampi",
+    
+    # Udupi (Has its own district in DB)
+    "udupi": "Udupi",
+    "malpe": "Udupi",
+    
+    # Mangaluru (Has its own district in DB)
+    "mangaluru": "Mangaluru",
+    "mangalore": "Mangaluru",
+    "dakshina kannada": "Mangaluru",
+    "dakshinakannada": "Mangaluru",
+    
+    # Shivamogga (Has its own district in DB)
+    "shivamogga": "Shivamogga",
+    "shimoga": "Shivamogga",
+    
+    # Mandya (Has its own district in DB)
+    "mandya": "Mandya",
+    "srirangapatna": "Mandya",
+    
+    # Kodagu
+    "kodagu": "kodagu",
     "madikeri": "kodagu",
     "coorg": "kodagu",
+    
+    # Mysore
+    "mysore": "mysore",
+    "mysuru": "mysore",
+    
+    # Hassan
+    "hassan": "hassan",
+    "belur": "hassan",
+    "halebidu": "hassan",
+    
+    # Uttara Kannada
+    "uttara kannada": "uttara kannada",
+    "uttarakannada": "uttara kannada",
     "gokarna": "uttara kannada",
     "karwar": "uttara kannada",
     "dandeli": "uttara kannada",
-    "udupi": "uttara kannada",
-    "hampi": "hassan",
-    "mysuru": "mysore",
-    "mysore": "mysore",
-    "kodagu": "kodagu",
-    "hassan": "hassan",
-    "uttara kannada": "uttara kannada",
-    "uttarakannada": "uttara kannada",
+    "kumta": "uttara kannada",
+    "murudeshwar": "uttara kannada",
 }
 
 
