@@ -7,20 +7,58 @@ document.addEventListener("DOMContentLoaded", function () {
     const gpsStatusMessage = document.getElementById("gpsStatusMessage");
 
     const DISTRICT_MAP = {
-        "chikkamagaluru": "hassan",
-        "chikmagalur": "hassan",
+        // Chikkamagaluru
+        "chikkamagaluru": "Chikkamagaluru",
+        "chikmagalur": "Chikkamagaluru",
+        "chikmagaluru": "Chikkamagaluru",
+        "chikamanglore": "Chikkamagaluru",
+        "chikkamangalore": "Chikkamagaluru",
+
+        // Hampi / Vijayanagara
+        "hampi": "Hampi",
+        "vijayanagara": "Hampi",
+        "hosapete": "Hampi",
+        "hospet": "Hampi",
+
+        // Udupi
+        "udupi": "Udupi",
+        "malpe": "Udupi",
+
+        // Mangaluru
+        "mangaluru": "Mangaluru",
+        "mangalore": "Mangaluru",
+        "dakshina kannada": "Mangaluru",
+        "dakshinakannada": "Mangaluru",
+
+        // Shivamogga
+        "shivamogga": "Shivamogga",
+        "shimoga": "Shivamogga",
+
+        // Mandya
+        "mandya": "Mandya",
+        "srirangapatna": "Mandya",
+
+        // Kodagu
+        "kodagu": "kodagu",
         "madikeri": "kodagu",
         "coorg": "kodagu",
-        "gokarna": "uttara kannada",
-        "dandeli": "uttara kannada",
-        "karwar": "uttara kannada",
-        "udupi": "uttara kannada",
-        "hampi": "hassan",
-        "mysuru": "mysore",
+
+        // Mysore
         "mysore": "mysore",
-        "kodagu": "kodagu",
+        "mysuru": "mysore",
+
+        // Hassan
         "hassan": "hassan",
-        "uttara kannada": "uttara kannada"
+        "belur": "hassan",
+        "halebidu": "hassan",
+
+        // Uttara Kannada
+        "uttara kannada": "uttara kannada",
+        "uttarakannada": "uttara kannada",
+        "gokarna": "uttara kannada",
+        "karwar": "uttara kannada",
+        "dandeli": "uttara kannada",
+        "sirsi": "uttara kannada"
     };
 
     // 1. Handle Form Submit (Dropdown or text input)
@@ -75,12 +113,18 @@ document.addEventListener("DOMContentLoaded", function () {
                     const userLat = position.coords.latitude;
                     const userLng = position.coords.longitude;
 
-                    // Central coordinates of tourist districts in Karnataka
+                    // Central coordinates of all 10 tourist districts in Karnataka
                     const hubDistricts = [
                         { name: "mysore", title: "Mysore (Mysuru)", lat: 12.2958, lng: 76.6394 },
                         { name: "kodagu", title: "Kodagu (Madikeri / Coorg)", lat: 12.4244, lng: 75.7382 },
                         { name: "hassan", title: "Hassan (Belur / Halebidu)", lat: 13.0033, lng: 76.1004 },
-                        { name: "uttara kannada", title: "Uttara Kannada (Gokarna / Dandeli)", lat: 14.8136, lng: 74.1298 }
+                        { name: "uttara kannada", title: "Uttara Kannada (Gokarna / Dandeli)", lat: 14.8136, lng: 74.1298 },
+                        { name: "Chikkamagaluru", title: "Chikkamagaluru (Mullayanagiri)", lat: 13.3161, lng: 75.7720 },
+                        { name: "Hampi", title: "Hampi (Vijayanagara)", lat: 15.3350, lng: 76.4600 },
+                        { name: "Udupi", title: "Udupi (Krishna Temple / Malpe)", lat: 13.3409, lng: 74.7421 },
+                        { name: "Mangaluru", title: "Mangaluru (Dakshina Kannada)", lat: 12.9141, lng: 74.8560 },
+                        { name: "Shivamogga", title: "Shivamogga (Jog Falls)", lat: 13.9299, lng: 75.5681 },
+                        { name: "Mandya", title: "Mandya (Srirangapatna)", lat: 12.5244, lng: 76.8958 }
                     ];
 
                     function haversine(lat1, lon1, lat2, lon2) {
