@@ -417,112 +417,166 @@ main {
 
 /* THE BLACK FLOWING THREAD */
 
-.thread-wrapper {
-    width: 100%;
-    max-width: 1200px;
+/* ================= RECENT SEARCHES: AUTHENTIC KARNATAKA MAP CARDS ================= */
 
-    height: 330px;
-    margin: 80px auto 0;
-
+.recent-section {
+    padding: 80px 0 100px;
     position: relative;
 }
 
-.thread {
-    width: 115%;
-    height: 3px;
+.recent-heading {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
 
+.recent-heading h2 {
+    font-family: 'Noto Sans Kannada', "Playfair Display", serif;
+    font-size: 42px;
+    letter-spacing: -0.5px;
+    margin: 8px 0 12px;
+}
+
+.recent-heading p {
+    color: var(--muted);
+    font-size: 15px;
+}
+
+.thread-wrapper {
+    width: 100%;
+    max-width: 1260px;
+    min-height: 380px;
+    height: auto;
+    margin: 55px auto 40px;
+    position: relative;
+}
+
+/* Super clean, modern horizontal timeline rail - no harsh black stroked tilt */
+.thread-rail {
+    width: 100%;
+    height: 2px;
     position: absolute;
-    top: 35px;
-    left: -7.5%;
-
-    background: var(--dark);
-    border-radius: 50%;
-
-    transform: rotate(-1deg);
+    top: 26px;
+    left: 0;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(100, 116, 139, 0.2) 8%, 
+        rgba(100, 116, 139, 0.35) 50%, 
+        rgba(100, 116, 139, 0.2) 92%, 
+        transparent 100%
+    );
+    border-radius: 2px;
 }
 
 .hanging-list {
     position: relative;
     z-index: 2;
-
     display: flex;
     justify-content: space-between;
+    gap: 24px;
+    padding: 0 10px;
 }
 
 .hanging-item {
-    width: 220px;
-
+    width: 275px;
+    flex: 0 0 275px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.pin {
-    width: 13px;
-    height: 13px;
-
-    background: var(--dark);
+/* Polished minimalist connector pin node */
+.pin-node {
+    width: 9px;
+    height: 9px;
+    background: #ffffff;
+    border: 2px solid #b45309;
     border-radius: 50%;
-
     position: relative;
+    top: 21px;
     z-index: 3;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
-.vertical-thread {
-    width: 2px;
-    height: 65px;
-
-    background: var(--dark);
+.hanging-line {
+    width: 1.5px;
+    height: 48px;
+    background: linear-gradient(180deg, #b45309 0%, rgba(180, 83, 9, 0.3) 100%);
+    margin-top: 21px;
 }
 
 .hanging-item.down {
-    transform: translateY(42px);
+    transform: translateY(30px);
 }
 
-.recent-card {
+.hanging-real-map-card {
+    position: relative;
     width: 100%;
-    min-height: 110px;
-
-    padding: 20px;
-
-    display: flex;
-    align-items: center;
-    gap: 13px;
-
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
-
-    transition: transform 0.25s ease;
+    cursor: pointer;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
+                filter 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    /* Clean natural shadow, gentle on the eyes */
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.14));
+    will-change: transform, filter;
 }
 
-.recent-card:hover {
-    transform: translateY(-6px);
+.hanging-real-map-card:hover {
+    transform: translateY(-7px) scale(1.04);
+    /* Clean, soft hover lift */
+    filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.22)) 
+            drop-shadow(0 0 10px rgba(var(--glow-color), 0.35));
 }
 
-.recent-number {
-    color: var(--accent);
-    font-size: 11px;
-    font-weight: 700;
+.real-district-map-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
 }
 
-.recent-card h3 {
-    font-family: "Playfair Display", serif;
-    font-size: 21px;
+.map-inner-photo {
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+    will-change: transform;
+    transform-origin: center;
 }
 
-.recent-card p {
-    margin-top: 4px;
-
-    color: var(--muted);
-    font-size: 11px;
+.hanging-real-map-card:hover .map-inner-photo {
+    transform: scale(1.06);
+    opacity: 0.38;
 }
 
-.arrow {
-    margin-left: auto;
-    font-size: 20px;
+.real-map-border {
+    transition: stroke-width 0.25s ease, filter 0.25s ease;
+}
+
+.hanging-real-map-card:hover .real-map-border {
+    stroke-width: 3;
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.4));
+}
+
+/* Beautiful, bold, clean place typography */
+.real-map-kannada {
+    font-family: 'Noto Sans Kannada', 'Tunga', sans-serif;
+    font-size: 24px;
+    font-weight: 900;
+    fill: #ffffff;
+    letter-spacing: 0.5px;
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.85));
+    user-select: none;
+    pointer-events: none;
+}
+
+.real-map-english {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    fill: #ffffff;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.85));
+    user-select: none;
+    pointer-events: none;
+    opacity: 0.95;
 }
 
 
@@ -1232,4 +1286,387 @@ body.dark-mode .setting-icon {
 
 body.dark-mode .setting-info p {
     color: #999;
+}
+
+
+/* ==========================================================================
+   POPULAR DESTINATIONS: PICTURE CARDS GRID (PREVIOUS STYLE)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Kannada:wght@400;500;600;700;800;900&display=swap');
+
+.kannada-subtitle-accent {
+    font-family: 'Noto Sans Kannada', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.destination-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 290px;
+    gap: 22px;
+    margin-top: 28px;
+}
+
+@media (max-width: 1200px) {
+    .destination-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .destination-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 580px) {
+    .destination-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.destination-card {
+    min-height: 290px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
+    color: var(--white);
+    text-decoration: none;
+    background: #14171f;
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                border-color 0.35s ease;
+    will-change: transform, box-shadow;
+}
+
+.destination-card.large-card {
+    grid-column: span 2;
+}
+
+.destination-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(235, 175, 75, 0.85);
+    box-shadow: 0 22px 48px -10px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(235, 175, 75, 0.4);
+}
+
+.destination-card .card-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.destination-card .card-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.88) contrast(1.05) saturate(1.08);
+    transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+    will-change: transform, filter;
+}
+
+.destination-card:hover .card-bg img {
+    transform: scale(1.065);
+    filter: brightness(0.96) contrast(1.12) saturate(1.16);
+}
+
+.card-cool-border {
+    position: absolute;
+    inset: 0;
+    border-radius: 18px;
+    pointer-events: none;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    z-index: 3;
+    transition: border-color 0.35s ease;
+}
+
+.destination-card:hover .card-cool-border {
+    border-color: rgba(235, 175, 75, 0.65);
+}
+
+.card-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+        180deg,
+        rgba(10, 14, 22, 0.55) 0%,
+        rgba(10, 14, 22, 0.12) 35%,
+        rgba(10, 14, 22, 0.78) 70%,
+        rgba(8, 11, 16, 0.98) 100%
+    );
+}
+
+.card-top-indicator {
+    position: absolute;
+    top: 16px;
+    left: 18px;
+    right: 18px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.place-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    background: rgba(14, 18, 26, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 999px;
+    padding: 4px 12px;
+    color: #ffd166;
+}
+
+.karnataka-mini-locator {
+    width: 26px;
+    height: 32px;
+    background: rgba(14, 18, 26, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+}
+
+.mini-karnataka-svg {
+    width: 20px;
+    height: 26px;
+}
+
+.mini-state-path {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.6);
+    stroke-width: 1.4;
+}
+
+.mini-state-pin {
+    fill: #ffd166;
+}
+
+.destination-content {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    z-index: 2;
+}
+
+.dest-kannada-first {
+    font-family: 'Noto Sans Kannada', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.2;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+.dest-english-sub {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffd166;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+    margin-bottom: 6px;
+}
+
+.destination-content p {
+    font-family: 'Noto Sans Kannada', 'DM Sans', sans-serif;
+    font-size: 12.5px;
+    color: rgba(255, 255, 255, 0.82);
+    line-height: 1.4;
+    margin-bottom: 10px;
+}
+
+.explore-place {
+    display: inline-block;
+    font-family: 'Noto Sans Kannada', 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    padding: 4px 12px;
+    border-radius: 999px;
+    transition: all 0.25s ease;
+}
+
+.destination-card:hover .explore-place {
+    background: #ffd166;
+    border-color: #ffd166;
+    color: #111111;
+}
+
+/* ==========================================================================
+   RECENT SEARCHES: AUTHENTIC REAL DISTRICT MAP-SHAPED CARDS (KARNATAKA GADM)
+   ========================================================================== */
+
+.hanging-list {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.hanging-item {
+    width: 270px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.hanging-item.down {
+    transform: translateY(48px);
+}
+
+/* Card in the REAL SHAPE of the District Map from Karnataka map */
+.hanging-real-map-card {
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
+                filter 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    /* Clean, soft, natural shadow - reduced completely to be gentle on eyes */
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.16));
+    will-change: transform, filter;
+}
+
+.hanging-real-map-card:hover {
+    transform: translateY(-6px) scale(1.035);
+    /* Refined, calm lift with very subtle 8px soft aura - no glaring cloud */
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.22)) 
+            drop-shadow(0 0 8px rgba(var(--glow-color), 0.30));
+}
+
+.real-district-map-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+}
+
+.map-inner-photo {
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+    will-change: transform;
+    transform-origin: center;
+}
+
+.hanging-real-map-card:hover .map-inner-photo {
+    transform: scale(1.05);
+    opacity: 0.28;
+}
+
+.real-map-border {
+    transition: stroke-width 0.3s ease;
+}
+
+.hanging-real-map-card:hover .real-map-border {
+    stroke-width: 2.8;
+}
+
+/* Text Written Directly Inside the Map */
+.real-map-kannada {
+    font-family: 'Noto Sans Kannada', 'Tunga', 'Segoe UI', sans-serif;
+    font-size: 19px;
+    font-weight: 800;
+    fill: #ffffff;
+    letter-spacing: 0.3px;
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.8));
+    user-select: none;
+    pointer-events: none;
+}
+
+.real-map-english {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11.5px;
+    font-weight: 700;
+    fill: #f1f5f9;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.8));
+    user-select: none;
+    pointer-events: none;
+}
+
+.real-map-sub {
+    font-family: 'Noto Sans Kannada', 'DM Sans', sans-serif;
+    font-size: 9px;
+    font-weight: 500;
+    fill: #cbd5e1;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.8));
+    user-select: none;
+    pointer-events: none;
+}
+
+.real-map-num {
+    font-family: 'Noto Sans Kannada', 'DM Sans', sans-serif;
+    font-size: 8.5px;
+    font-weight: 700;
+    fill: rgba(255, 255, 255, 0.65);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    user-select: none;
+    pointer-events: none;
+}
+
+.real-action-bg {
+    transition: fill 0.25s ease, stroke-width 0.25s ease;
+}
+
+.hanging-real-map-card:hover .real-action-bg {
+    fill: rgba(255, 255, 255, 0.25);
+    stroke-width: 1.4;
+}
+
+.real-action-text {
+    font-family: 'Noto Sans Kannada', 'DM Sans', sans-serif;
+    font-size: 8.5px;
+    font-weight: 700;
+    transition: fill 0.25s ease;
+    user-select: none;
+    pointer-events: none;
+}
+
+.hanging-real-map-card:hover .real-action-text {
+    fill: #ffffff;
+}
+
+/* Subtle Radar Pin Animation */
+.real-radar-pulse {
+    animation: realRadarPulse 2.4s infinite ease-out;
+    transform-origin: center;
+}
+
+@keyframes realRadarPulse {
+    0% {
+        r: 3.5;
+        opacity: 0.8;
+    }
+    70% {
+        r: 9;
+        opacity: 0;
+    }
+    100% {
+        r: 9;
+        opacity: 0;
+    }
+}
+
+.real-radar-pulse {
+    animation: realRadarPulse 2.2s infinite ease-out;
+    transform-origin: center;
 }

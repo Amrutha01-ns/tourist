@@ -83,6 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const raw = chosen.toLowerCase();
             const district = DISTRICT_MAP[raw] || raw;
+            document.cookie = "last_district_search=" + encodeURIComponent(district) + "; path=/; max-age=604800";
             window.location.href = `/places/${encodeURIComponent(district)}/`;
         });
     }
