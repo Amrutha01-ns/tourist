@@ -1730,6 +1730,18 @@ def resolve_destination_transit(place, origin_name=None, origin_lat=None, origin
                 ],
             }
 
+    # Resolve enhanced multi-leg journey and dynamic transit data
+    try:
+        from .smart_router import plan_complete_journey
+        return plan_complete_journey(
+            place,
+            origin_text=origin_name,
+            origin_lat=origin_lat,
+            origin_lng=origin_lng
+        )
+    except Exception:
+        pass
+
     # Resolve departure origin
     resolved_origin = (origin_name or "").strip()
     if origin_lat is not None and origin_lng is not None:

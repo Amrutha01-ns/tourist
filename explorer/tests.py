@@ -111,3 +111,59 @@ class ExpenseCalculationAndExplorerTestCase(TestCase):
         self.assertContains(response, "Direct Available Bus Numbers & Routes")
         self.assertContains(response, "City Bus Stand (CBS) - Bay 7")
         self.assertContains(response, "Boarding Advice & Direct Route Tips")
+
+    def test_rajajinagar_to_krs_dam_multi_leg_router(self):
+        krs_place = Place.objects.create(
+            district=self.district,
+            name="KRS Dam",
+            slug="krs-dam-multi",
+            category="watery",
+            speciality="Iconic Dam",
+            description="Famous reservoir.",
+        )
+        url = reverse("explorer:place_detail", kwargs={"slug": krs_place.slug})
+        response = self.client.get(
+            f"{url}?action=transit&origin=Rajajinagar",
+            HTTP_X_REQUESTED_WITH="XMLHttpRequest"
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data["journey_summary"]["total_transfers"], 2)
+        self.assertIn("journey_legs", data)
+        self.assertEqual(len(data["journey_legs"]), 3)
+        self.assertIn("map_data", data)
+        self.assertTrue(len(data["map_data"]["segments"]) >= 3)
+        self.assertIn("BMTC", data["journey_legs"][0]["provider_code"])
+        self.assertIn("KSRTC", data["journey_legs"][1]["provider_code"])
+
+    def test_airport_to_krs_dam_flybus_routing(self):
+        krs_place = Place.objects.create(
+            district=self.district,
+            name="KRS Dam",
+            slug="krs-dam-airport",
+            category="watery",
+            speciality="Iconic Dam",
+            description="Famous reservoir.",
+        )
+        url = reverse("explorer:place_detail", kwargs={"slug": krs_place.slug})
+        response = self.client.get(
+            f"{url}?action=transit&origin=Airport",
+            HTTP_X_REQUESTED_WITH="XMLHttpRequest"
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data["journey_summary"]["total_transfers"], 1)
+        self.assertIn("FLYBUS", data["journey_legs"][0]["bus_number"])
+
+    def test_gps_coordinate_routing(self):
+        url = reverse("explorer:place_detail", kwargs={"slug": self.place.slug})
+        response = self.client.get(
+            f"{url}?action=transit&lat=12.9844&lng=77.5540",
+            HTTP_X_REQUESTED_WITH="XMLHttpRequest"
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertIn("map_data", data)
+        self.assertTrue(len(data["map_data"]["waypoints"]) > 0)
+        self.assertTrue(data.get("is_origin_gps"))
+
