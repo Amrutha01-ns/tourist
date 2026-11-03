@@ -34,17 +34,20 @@ def place_detail(request, slug):
         place=place
     ).first()
 
+    lat = request.GET.get("lat") or request.POST.get("lat")
+    lng = request.GET.get("lng") or request.POST.get("lng")
     param_origin = request.POST.get("origin") or request.GET.get("origin")
     session_origin = request.session.get("user_origin")
+
     if param_origin:
         origin = param_origin.strip()
         request.session["user_origin"] = origin
+    elif lat and lng:
+        origin = None
     elif session_origin:
         origin = session_origin.strip()
     else:
-        origin = "Rajajinagar, Bengaluru"
-    lat = request.GET.get("lat") or request.POST.get("lat")
-    lng = request.GET.get("lng") or request.POST.get("lng")
+        origin = "Alanahalli, Mysuru"
 
     # AJAX endpoint for asynchronous transit origin updates
     if request.headers.get("x-requested-with") == "XMLHttpRequest" and request.GET.get("action") == "transit":
@@ -54,6 +57,8 @@ def place_detail(request, slug):
             origin_lat=lat,
             origin_lng=lng
         )
+        if transit_data.get("origin"):
+            request.session["user_origin"] = transit_data["origin"]
         return JsonResponse(transit_data)
 
     expense = None

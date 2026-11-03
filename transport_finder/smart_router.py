@@ -251,6 +251,124 @@ ORIGIN_NODES = {
         },
     },
 
+    # --- Mysuru City Neighborhoods (Doorstep Local Feeder Network) ---
+    "alanahalli": {
+        "name": "Alanahalli, Mysuru",
+        "short_name": "Alanahalli",
+        "city": "Mysuru",
+        "district": "mysore",
+        "lat": 12.2982,
+        "lng": 76.6925,
+        "feeder_hub": "mysuru-cbs",
+        "feeder_bus": {
+            "bus_number": "MITRA Bus 10A / 10C",
+            "provider": "Mysuru City Transit (KSRTC City Division / MITRA)",
+            "provider_code": "MITRA",
+            "boarding_point": "Alanahalli Bus Stop (Bannur Ring Road)",
+            "drop_point": "Mysuru City Bus Stand (CBS) / Suburban Stand",
+            "stops_via": "Alanahalli → Siddhartha Layout → Nazarbad → Hardinge Circle → CBS",
+            "distance_km": 6.8,
+            "duration": "18–22 mins",
+            "fare": "₹15",
+            "frequency": "Every 10–12 minutes",
+            "operating_hours": "06:00 AM – 10:30 PM",
+            "bus_type": "MITRA City Ordinary & Suvarna",
+            "alt_mode": "Direct auto-rickshaw / bike taxi to Suburban Stand in 14 mins (₹80–₹100)",
+        },
+    },
+    "kuvempunagar": {
+        "name": "Kuvempunagar, Mysuru",
+        "short_name": "Kuvempunagar",
+        "city": "Mysuru",
+        "district": "mysore",
+        "lat": 12.2850,
+        "lng": 76.6260,
+        "feeder_hub": "mysuru-cbs",
+        "feeder_bus": {
+            "bus_number": "MITRA Bus 62 / 63",
+            "provider": "Mysuru City Transit (MITRA)",
+            "provider_code": "MITRA",
+            "boarding_point": "Kuvempunagar Complex Bus Stop",
+            "drop_point": "Mysuru City Bus Stand (CBS)",
+            "stops_via": "Kuvempunagar → Saraswathipuram → Ramaswamy Circle → CBS",
+            "distance_km": 5.4,
+            "duration": "16–20 mins",
+            "fare": "₹15",
+            "frequency": "Every 8–10 minutes",
+            "operating_hours": "06:00 AM – 10:30 PM",
+            "bus_type": "MITRA City Bus",
+        },
+    },
+    "vijayanagar-mysuru": {
+        "name": "Vijayanagar, Mysuru",
+        "short_name": "Vijayanagar (Mysuru)",
+        "city": "Mysuru",
+        "district": "mysore",
+        "lat": 12.3420,
+        "lng": 76.6130,
+        "feeder_hub": "mysuru-cbs",
+        "feeder_bus": {
+            "bus_number": "MITRA Bus 95 / 91",
+            "provider": "Mysuru City Transit (MITRA)",
+            "provider_code": "MITRA",
+            "boarding_point": "Vijayanagar Water Tank / High Tension Double Road",
+            "drop_point": "Mysuru City Bus Stand (CBS)",
+            "stops_via": "Vijayanagar → Gokulam 3rd Stage → Vani Vilas Water Works → CBS",
+            "distance_km": 7.2,
+            "duration": "20–25 mins",
+            "fare": "₹18",
+            "frequency": "Every 10 minutes",
+            "operating_hours": "06:00 AM – 10:30 PM",
+            "bus_type": "MITRA City Bus",
+        },
+    },
+    "gokulam": {
+        "name": "Gokulam / Jayalakshmipuram, Mysuru",
+        "short_name": "Gokulam",
+        "city": "Mysuru",
+        "district": "mysore",
+        "lat": 12.3270,
+        "lng": 76.6290,
+        "feeder_hub": "mysuru-cbs",
+        "feeder_bus": {
+            "bus_number": "MITRA Bus 135 / 119",
+            "provider": "Mysuru City Transit (MITRA)",
+            "provider_code": "MITRA",
+            "boarding_point": "Gokulam 3rd Stage / Contour Road",
+            "drop_point": "Mysuru City Bus Stand (CBS)",
+            "stops_via": "Gokulam → Premier Studios → Railway Station → CBS",
+            "distance_km": 4.8,
+            "duration": "15–18 mins",
+            "fare": "₹14",
+            "frequency": "Every 8 minutes",
+            "operating_hours": "06:00 AM – 10:30 PM",
+            "bus_type": "MITRA City Bus",
+        },
+    },
+    "jp-nagar-mysuru": {
+        "name": "JP Nagar, Mysuru",
+        "short_name": "JP Nagar (Mysuru)",
+        "city": "Mysuru",
+        "district": "mysore",
+        "lat": 12.2680,
+        "lng": 76.6450,
+        "feeder_hub": "mysuru-cbs",
+        "feeder_bus": {
+            "bus_number": "MITRA Bus 72 / 71",
+            "provider": "Mysuru City Transit (MITRA)",
+            "provider_code": "MITRA",
+            "boarding_point": "JP Nagar Bus Stand / Gobli Mara",
+            "drop_point": "Mysuru City Bus Stand (CBS)",
+            "stops_via": "JP Nagar → Vidyaranyapuram → Chamundipuram → CBS",
+            "distance_km": 6.2,
+            "duration": "18–22 mins",
+            "fare": "₹15",
+            "frequency": "Every 10 minutes",
+            "operating_hours": "06:00 AM – 10:30 PM",
+            "bus_type": "MITRA City Bus",
+        },
+    },
+
     # --- Regional District Centers ---
     "mysuru-central": {
         "name": "Mysuru Central KSRTC Bus Stand",
@@ -595,6 +713,178 @@ INTERCITY_CORRIDORS = {
             [12.4244, 75.7382],  # Madikeri
         ],
     },
+    ("mysore", "Shivamogga"): {
+        "service_name": "KSRTC Sahyadri Malnad Express",
+        "operator": "Karnataka State Road Transport Corporation",
+        "operator_code": "KSRTC",
+        "from_terminal": "Mysuru KSRTC Central Stand",
+        "to_terminal": "Shivamogga / Sagara KSRTC Central Stand",
+        "highway": "SH-57 & NH-69 via Holenarasipura, Arsikere & Tarikere",
+        "distance_km": 228.0,
+        "duration": "5h 15m",
+        "fare_range": "₹280 – ₹450",
+        "frequency": "Every 30 minutes",
+        "operating_hours": "05:30 AM – 10:30 PM",
+        "bus_type": "KSRTC Express & Karnataka Sarige",
+        "waypoints": [
+            [12.3168, 76.6578],  # Mysuru
+            [12.7840, 76.2410],  # Holenarasipura
+            [13.0068, 76.1004],  # Hassan
+            [13.3100, 76.2500],  # Arsikere
+            [13.7120, 75.8150],  # Tarikere
+            [13.9299, 75.5681],  # Shivamogga
+            [14.1670, 75.0340],  # Sagara
+        ],
+    },
+    ("mysore", "Hampi"): {
+        "service_name": "KSRTC / KKRTC Vijayanagara Heritage Express",
+        "operator": "KKRTC & KSRTC",
+        "operator_code": "KKRTC",
+        "from_terminal": "Mysuru KSRTC Central Stand",
+        "to_terminal": "Hosapete Central Bus Stand (Hampi Gate)",
+        "highway": "SH-57 & NH-50 via Arsikere & Chitradurga",
+        "distance_km": 335.0,
+        "duration": "6h 45m",
+        "fare_range": "₹390 – ₹620",
+        "frequency": "Every 45 minutes",
+        "operating_hours": "06:00 AM – 10:45 PM",
+        "bus_type": "KSRTC Airavat & Sarige Express",
+        "waypoints": [
+            [12.3168, 76.6578],
+            [13.0068, 76.1004],
+            [13.3100, 76.2500],
+            [14.2250, 76.4020],
+            [15.2750, 76.3888],
+        ],
+    },
+    ("mysore", "Chikkamagaluru"): {
+        "service_name": "KSRTC Malnad Coffee Express",
+        "operator": "Karnataka State Road Transport Corporation",
+        "operator_code": "KSRTC",
+        "from_terminal": "Mysuru KSRTC Central Stand",
+        "to_terminal": "Chikkamagaluru KSRTC Bus Stand",
+        "highway": "SH-57 & Belur Road via Hassan",
+        "distance_km": 162.0,
+        "duration": "3h 40m",
+        "fare_range": "₹180 – ₹320",
+        "frequency": "Every 30 minutes",
+        "operating_hours": "05:45 AM – 09:45 PM",
+        "bus_type": "Karnataka Sarige & Rajahamsa",
+        "waypoints": [
+            [12.3168, 76.6578],
+            [12.7840, 76.2410],
+            [13.0068, 76.1004],
+            [13.1630, 75.8600],
+            [13.3161, 75.7720],
+        ],
+    },
+    ("mysore", "uttara kannada"): {
+        "service_name": "KSRTC Karavali Gokarna Express",
+        "operator": "Karnataka State Road Transport Corporation",
+        "operator_code": "KSRTC",
+        "from_terminal": "Mysuru KSRTC Central Stand",
+        "to_terminal": "Gokarna Bus Stand / Kumta Cross",
+        "highway": "SH-57 & NH-66 via Shivamogga, Sagara & Honnavar",
+        "distance_km": 415.0,
+        "duration": "8h 45m",
+        "fare_range": "₹480 – ₹780",
+        "frequency": "Every 60 minutes",
+        "operating_hours": "06:00 AM – 10:00 PM",
+        "bus_type": "KSRTC Rajahamsa & Non-AC Sleeper",
+        "waypoints": [
+            [12.3168, 76.6578],
+            [13.0068, 76.1004],
+            [13.9299, 75.5681],
+            [14.1670, 75.0340],
+            [14.2800, 74.4500],
+            [14.5428, 74.3188],
+        ],
+    },
+    ("mysore", "Udupi"): {
+        "service_name": "KSRTC Coastal Express",
+        "operator": "Karnataka State Road Transport Corporation",
+        "operator_code": "KSRTC",
+        "from_terminal": "Mysuru KSRTC Central Stand",
+        "to_terminal": "Udupi KSRTC & Service Bus Stand",
+        "highway": "SH-88 & NH-66 via Madikeri & Mangaluru",
+        "distance_km": 275.0,
+        "duration": "6h 30m",
+        "fare_range": "₹320 – ₹550",
+        "frequency": "Every 45 minutes",
+        "operating_hours": "06:00 AM – 11:00 PM",
+        "bus_type": "Airavat Multi-Axle & Rajahamsa",
+        "waypoints": [
+            [12.3168, 76.6578],
+            [12.4244, 75.7382],
+            [12.8872, 74.8458],
+            [13.3409, 74.7421],
+        ],
+    },
+    ("mysore", "Mangaluru"): {
+        "service_name": "KSRTC Mangaluru Express",
+        "operator": "Karnataka State Road Transport Corporation",
+        "operator_code": "KSRTC",
+        "from_terminal": "Mysuru KSRTC Central Stand",
+        "to_terminal": "Mangaluru KSRTC Central Stand (Bejai)",
+        "highway": "SH-88 & NH-275 via Madikeri & Sampaje Ghat",
+        "distance_km": 245.0,
+        "duration": "5h 45m",
+        "fare_range": "₹290 – ₹510",
+        "frequency": "Every 30 minutes",
+        "operating_hours": "05:30 AM – 11:30 PM",
+        "bus_type": "KSRTC Rajahamsa & Airavat",
+        "waypoints": [
+            [12.3168, 76.6578],
+            [12.4244, 75.7382],
+            [12.8710, 75.2530],
+            [12.8872, 74.8458],
+        ],
+    },
+    ("mysore", "Bengaluru"): {
+        "service_name": "KSRTC Airavat EV Power Plus (Expressway Non-Stop)",
+        "operator": "Karnataka State Road Transport Corporation",
+        "operator_code": "KSRTC",
+        "from_terminal": "Mysuru KSRTC Central Stand",
+        "to_terminal": "Kempegowda Bus Station (Majestic) / Satellite Bus Stand",
+        "highway": "Bengaluru-Mysuru 10-Lane Expressway (NH-275)",
+        "distance_km": 140.0,
+        "duration": "2h 15m",
+        "fare_range": "₹170 – ₹350",
+        "frequency": "Every 8–10 minutes (24/7 continuous)",
+        "operating_hours": "Round the clock continuous (24/7)",
+        "bus_type": "EV Power Plus & Airavat Club Class",
+        "waypoints": [
+            [12.3168, 76.6578],
+            [12.4237, 76.6953],
+            [12.5238, 76.8967],
+            [12.5843, 77.0450],
+            [12.5960, 77.1751],
+            [12.7214, 77.2796],
+            [12.7915, 77.3012],
+            [12.9168, 77.4832],
+            [12.9782, 77.5707],
+        ],
+    },
+    ("mysore", "Mandya"): {
+        "service_name": "KSRTC Express Sarige",
+        "operator": "Karnataka State Road Transport Corporation",
+        "operator_code": "KSRTC",
+        "from_terminal": "Mysuru KSRTC Central Stand",
+        "to_terminal": "Mandya Central Bus Stand",
+        "highway": "NH-275 via Srirangapatna",
+        "distance_km": 45.0,
+        "duration": "50 mins",
+        "fare_range": "₹50 – ₹90",
+        "frequency": "Every 10 minutes",
+        "operating_hours": "05:00 AM – 11:30 PM",
+        "bus_type": "Karnataka Sarige",
+        "waypoints": [
+            [12.3168, 76.6578],
+            [12.4237, 76.6953],
+            [12.5238, 76.8967],
+        ],
+    },
+
     ("mysore", "hassan"): {
         "service_name": "KSRTC Mysuru-Hassan Express",
         "operator": "Karnataka State Road Transport Corporation",
@@ -938,24 +1228,31 @@ def resolve_user_origin(origin_text=None, origin_lat=None, origin_lng=None):
                     min_dist = d
                     closest_key = k
 
-            # If within 25km of a known node, use it
+            # Check if within Mysuru urban region (lat ~12.22-12.42, lng ~76.54-76.75)
+            # or within 25km of a known node:
             if closest_key and min_dist <= 25.0:
                 node_copy = dict(ORIGIN_NODES[closest_key])
                 node_copy["is_gps"] = True
-                node_copy["gps_distance_km"] = min_dist
+                node_copy["gps_distance_km"] = round(min_dist, 2)
                 node_copy["detected_coords"] = [lat, lng]
+                if min_dist <= 4.0:
+                    node_copy["name"] = f"{node_copy['short_name']}, Mysuru (Live Doorstep GPS)" if node_copy.get("city") == "Mysuru" else f"{node_copy['short_name']} (Live Doorstep GPS)"
                 return node_copy
             else:
                 # Custom GPS location anywhere in Karnataka
+                is_mysore_region = (12.15 <= lat <= 12.45 and 76.50 <= lng <= 76.80)
+                city_name = "Mysuru" if is_mysore_region else "Current Location"
+                district_name = "mysore" if is_mysore_region else "Custom"
+                hub_name = "mysuru-cbs" if is_mysore_region else "kempegowda-bus-station"
                 return {
                     "name": f"My Location ({round(lat, 4)}, {round(lng, 4)})",
                     "short_name": "My GPS Location",
-                    "city": "Current Location",
-                    "district": "Custom",
+                    "city": city_name,
+                    "district": district_name,
                     "lat": lat,
                     "lng": lng,
                     "is_gps": True,
-                    "feeder_hub": "kempegowda-bus-station",
+                    "feeder_hub": hub_name,
                 }
         except (ValueError, TypeError):
             pass
@@ -963,10 +1260,22 @@ def resolve_user_origin(origin_text=None, origin_lat=None, origin_lng=None):
     # 2. Textual search in origin nodes
     q = (origin_text or "").strip().lower()
     if not q:
-        # Default to Rajajinagar or Majestic as user requested
-        return dict(ORIGIN_NODES["rajajinagar"])
+        return dict(ORIGIN_NODES["alanahalli"])
 
-    # Specific aliases
+    # Specific aliases - Check local neighborhoods first!
+    if "alanahal" in q or "alanahalli" in q or "alanahally" in q or "bannur" in q or "siddhartha" in q:
+        return dict(ORIGIN_NODES["alanahalli"])
+    if "kuvempu" in q:
+        return dict(ORIGIN_NODES["kuvempunagar"])
+    if "vijayanagar" in q and ("mys" in q or "mysore" in q or "mysuru" in q):
+        return dict(ORIGIN_NODES["vijayanagar-mysuru"])
+    if "gokulam" in q or "jayalakshmi" in q:
+        return dict(ORIGIN_NODES["gokulam"])
+    if "jp nagar" in q and ("mys" in q or "mysore" in q or "mysuru" in q):
+        return dict(ORIGIN_NODES["jp-nagar-mysuru"])
+    if "cbs" in q or "city bus stand" in q:
+        return dict(ORIGIN_NODES["mysuru-cbs"])
+
     if "raja" in q:
         return dict(ORIGIN_NODES["rajajinagar"])
     if "airport" in q or "kia" in q or "kempegowda int" in q:
@@ -991,7 +1300,7 @@ def resolve_user_origin(origin_text=None, origin_lat=None, origin_lng=None):
         return dict(ORIGIN_NODES["madikeri"])
     if "hassan" in q:
         return dict(ORIGIN_NODES["hassan"])
-    if "shivamogga" in q or "shimoga" in q:
+    if "shivamogga" in q or "shimoga" in q or "sagar" in q:
         return dict(ORIGIN_NODES["shivamogga"])
     if "mangaluru" in q or "mangalore" in q:
         return dict(ORIGIN_NODES["mangaluru"])
@@ -1009,16 +1318,13 @@ def resolve_user_origin(origin_text=None, origin_lat=None, origin_lng=None):
         if q in node["name"].lower() or q in node["short_name"].lower():
             return dict(node)
 
-    # Fallback to Majestic
-    fallback = dict(ORIGIN_NODES["majestic"])
-    fallback["name"] = f"{origin_text.strip().title()} (via Central Transit)"
-    fallback["short_name"] = origin_text.strip().title()
+    # Fallback to Alanahalli, Mysuru (or named query)
+    fallback = dict(ORIGIN_NODES["alanahalli"])
+    if origin_text and origin_text.strip():
+        fallback["name"] = f"{origin_text.strip().title()} (via Regional Transit)"
+        fallback["short_name"] = origin_text.strip().title()
     return fallback
 
-
-# ============================================================================
-# 5. RESOLVE DESTINATION SPECIFICATION
-# ============================================================================
 
 def resolve_destination_spec(place):
     """
@@ -1132,12 +1438,24 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
     origin_is_in_dest_district = (origin["district"].lower() == dest_district.lower())
     origin_is_airport = ("airport" in origin["name"].lower() or "blr" in origin["short_name"].lower())
 
+    # Detect user starting hub city
+    origin_city_raw = (origin.get("city") or "").lower()
+    origin_dist_raw = (origin.get("district") or "").lower()
+    if "mysur" in origin_city_raw or "mysor" in origin_city_raw or "mysur" in origin_dist_raw or "mysor" in origin_dist_raw:
+        user_hub = "mysore"
+    elif "mangal" in origin_city_raw or "mangal" in origin_dist_raw:
+        user_hub = "Mangaluru"
+    elif "shivam" in origin_city_raw or "shivam" in origin_dist_raw:
+        user_hub = "Shivamogga"
+    else:
+        user_hub = "Bengaluru"
+
     # ------------------------------------------------------------------------
-    # SCENARIO A: User is ALREADY in the same district/city as destination
-    # e.g. User at Mysuru Central seeing Mysore Palace or KRS Dam
+    # SCENARIO A: User is in the same district/city as destination
+    # e.g. User at Alanahalli seeing KRS Dam or Mysore Palace
     # ------------------------------------------------------------------------
     if origin_is_in_dest_district:
-        # Leg 1 is Direct Local City Transit
+        feeder = origin.get("feeder_bus")
         buses = dest_spec.get("buses", [])
         primary_bus = buses[0] if buses else None
         bus_no = primary_bus["bus_number"] if primary_bus else "City Bus"
@@ -1145,52 +1463,129 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
         code = primary_bus["provider_code"] if primary_bus else "MITRA"
 
         fare_int = int("".join(c for c in dest_spec.get("fare", "30") if c.isdigit()) or 30)
-        total_fare_min += fare_int
-        total_fare_max += fare_int
         dur_mins = int("".join(c for c in dest_spec.get("duration_from_hub", "30") if c.isdigit()) or 30)
-        total_duration_mins += dur_mins
 
-        legs.append({
-            "step_number": 1,
-            "leg_type": "local_direct",
-            "title": f"Direct Destination City Transit ({bus_no})",
-            "provider": provider,
-            "provider_code": code,
-            "badge_class": f"badge-{code.lower()}",
-            "bus_number": bus_no,
-            "route_name": primary_bus["route_name"] if primary_bus else f"{origin['name']} ⇔ {dest_spec['name']}",
-            "boarding_point": origin["name"],
-            "drop_point": dest_spec["direct_stop"],
-            "distance": f"{dest_spec.get('distance_from_hub_km', 15)} km",
-            "duration": dest_spec.get("duration_from_hub", "30 mins"),
-            "fare": f"₹{fare_int}",
-            "frequency": dest_spec.get("frequency", "Every 15 mins"),
-            "operating_hours": dest_spec.get("operating_hours", "06:00 AM – 09:30 PM"),
-            "departure_status": f"Departures every 10–15 mins • Next in {dep_in_mins} mins",
-            "stops_via": primary_bus.get("stops_via", "") if primary_bus else "",
-            "instructions": f"Board {bus_no} directly from {origin['short_name']} to reach {dest_spec['name']}.",
-            "stroke_color": "#10b981",
-        })
+        # Check if user has a doorstep feeder bus to reach the main city terminal (e.g. Alanahalli to CBS)
+        is_suburb_locality = (feeder and origin.get("short_name", "") != dest_spec.get("hub") and origin["name"] != dest_spec.get("hub_stop"))
+        if is_suburb_locality:
+            feeder_fare = int("".join(c for c in feeder.get("fare", "15") if c.isdigit()) or 15)
+            feeder_dur = int("".join(c for c in feeder.get("duration", "20") if c.isdigit())[:2] or 20)
+            total_fare_min += feeder_fare + fare_int
+            total_fare_max += feeder_fare + fare_int
+            total_duration_mins += feeder_dur + dur_mins
 
-        map_waypoints = [
-            [origin["lat"], origin["lng"], origin["short_name"], "origin"],
-            [dest_spec["lat"], dest_spec["lng"], dest_spec["name"], "destination"],
-        ]
-        map_segments.append({
-            "name": f"Direct Bus {bus_no}",
-            "coords": [[origin["lat"], origin["lng"]], [dest_spec["lat"], dest_spec["lng"]]],
-            "color": "#10b981",
-            "dash": None,
-        })
+            # Leg 1: Doorstep Feeder
+            legs.append({
+                "step_number": 1,
+                "leg_type": "feeder",
+                "title": f"Doorstep Urban Feeder ({feeder['bus_number']})",
+                "provider": feeder["provider"],
+                "provider_code": feeder["provider_code"],
+                "badge_class": f"badge-{feeder['provider_code'].lower()}",
+                "bus_number": feeder["bus_number"],
+                "route_name": f"{origin['short_name']} ⇔ {feeder['drop_point']}",
+                "boarding_point": feeder["boarding_point"],
+                "drop_point": feeder["drop_point"],
+                "distance": f"{feeder['distance_km']} km",
+                "duration": feeder["duration"],
+                "fare": feeder["fare"],
+                "frequency": feeder["frequency"],
+                "operating_hours": feeder["operating_hours"],
+                "departure_status": f"Next bus in 6 mins • Frequent city service",
+                "stops_via": feeder["stops_via"],
+                "instructions": f"Board {feeder['bus_number']} from {feeder['boarding_point']}. Alight at {feeder['drop_point']}.",
+                "alt_mode": feeder.get("alt_mode"),
+                "stroke_color": "#06b6d4",
+            })
 
-        total_transfers = 0
+            # Leg 2: Destination City Bus
+            legs.append({
+                "step_number": 2,
+                "leg_type": "destination_shuttle",
+                "title": f"Direct Destination City Transit ({bus_no})",
+                "provider": provider,
+                "provider_code": code,
+                "badge_class": f"badge-{code.lower()}",
+                "bus_number": bus_no,
+                "route_name": primary_bus["route_name"] if primary_bus else f"{feeder['drop_point']} ⇔ {dest_spec['name']}",
+                "boarding_point": primary_bus["boarding_point"] if primary_bus else dest_spec["hub_stop"],
+                "drop_point": dest_spec["direct_stop"],
+                "distance": f"{dest_spec.get('distance_from_hub_km', 15)} km",
+                "duration": dest_spec.get("duration_from_hub", "30 mins"),
+                "fare": f"₹{fare_int}",
+                "frequency": dest_spec.get("frequency", "Every 15 mins"),
+                "operating_hours": dest_spec.get("operating_hours", "06:00 AM – 09:30 PM"),
+                "departure_status": f"Departures every 10–15 mins • Next in {dep_in_mins} mins",
+                "stops_via": primary_bus.get("stops_via", "") if primary_bus else "",
+                "instructions": f"Switch at {feeder['drop_point']} to {primary_bus.get('boarding_point', dest_spec['hub_stop'])}. Board {bus_no} directly to {dest_spec['name']}.",
+                "stroke_color": "#10b981",
+            })
+
+            hub_coord = [12.3086, 76.6534] if user_hub == "mysore" else [12.9782, 77.5707]
+            map_waypoints = [
+                [origin["lat"], origin["lng"], origin["short_name"], "origin"],
+                [hub_coord[0], hub_coord[1], f"Transfer: {feeder['drop_point']}", "transfer"],
+                [dest_spec["lat"], dest_spec["lng"], dest_spec["name"], "destination"],
+            ]
+            map_segments = [
+                {
+                    "name": f"Leg 1: Feeder {feeder['bus_number']}",
+                    "coords": [[origin["lat"], origin["lng"]], hub_coord],
+                    "color": "#06b6d4",
+                    "dash": "6, 6",
+                },
+                {
+                    "name": f"Leg 2: Destination Bus {bus_no}",
+                    "coords": [hub_coord, [dest_spec["lat"], dest_spec["lng"]]],
+                    "color": "#10b981",
+                    "dash": None,
+                },
+            ]
+            total_transfers = 1
+        else:
+            total_fare_min += fare_int
+            total_fare_max += fare_int
+            total_duration_mins += dur_mins
+
+            legs.append({
+                "step_number": 1,
+                "leg_type": "local_direct",
+                "title": f"Direct Destination City Transit ({bus_no})",
+                "provider": provider,
+                "provider_code": code,
+                "badge_class": f"badge-{code.lower()}",
+                "bus_number": bus_no,
+                "route_name": primary_bus["route_name"] if primary_bus else f"{origin['name']} ⇔ {dest_spec['name']}",
+                "boarding_point": origin["name"],
+                "drop_point": dest_spec["direct_stop"],
+                "distance": f"{dest_spec.get('distance_from_hub_km', 15)} km",
+                "duration": dest_spec.get("duration_from_hub", "30 mins"),
+                "fare": f"₹{fare_int}",
+                "frequency": dest_spec.get("frequency", "Every 15 mins"),
+                "operating_hours": dest_spec.get("operating_hours", "06:00 AM – 09:30 PM"),
+                "departure_status": f"Departures every 10–15 mins • Next in {dep_in_mins} mins",
+                "stops_via": primary_bus.get("stops_via", "") if primary_bus else "",
+                "instructions": f"Board {bus_no} directly from {origin['short_name']} to reach {dest_spec['name']}.",
+                "stroke_color": "#10b981",
+            })
+
+            map_waypoints = [
+                [origin["lat"], origin["lng"], origin["short_name"], "origin"],
+                [dest_spec["lat"], dest_spec["lng"], dest_spec["name"], "destination"],
+            ]
+            map_segments.append({
+                "name": f"Direct Bus {bus_no}",
+                "coords": [[origin["lat"], origin["lng"]], [dest_spec["lat"], dest_spec["lng"]]],
+                "color": "#10b981",
+                "dash": None,
+            })
+            total_transfers = 0
 
     # ------------------------------------------------------------------------
     # SCENARIO B: User is at BLR Airport and going to Mysuru / Southern Corridor
     # Feature the Famous Direct KSRTC Flybus + Last-Mile Shuttle!
     # ------------------------------------------------------------------------
     elif origin_is_airport and dest_district in ["mysore", "Mandya"]:
-        # Leg 1: Direct KSRTC Flybus (Airport non-stop to Mysuru Central)
         total_fare_min += 800
         total_fare_max += 800
         total_duration_mins += 210
@@ -1217,10 +1612,8 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
             "stroke_color": "#06b6d4",
         })
 
-        # Transfer Node
         transfer_node = ORIGIN_NODES["mysuru-central"]
 
-        # Leg 2: Last-Mile from Mysuru Central / CBS to Destination (e.g. KRS Dam)
         buses = dest_spec.get("buses", [])
         primary_bus = buses[0] if buses else None
         bus_no = primary_bus["bus_number"] if primary_bus else "301"
@@ -1277,16 +1670,15 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
 
     # ------------------------------------------------------------------------
     # SCENARIO C: Multi-Leg Feeder + Inter-City Corridor + Destination Shuttle
-    # (e.g. Rajajinagar to KRS Dam / Abbey Falls / Jog Falls / Hampi)
+    # (e.g. Alanahalli to Jog Falls, or Rajajinagar to KRS Dam / Hampi)
     # ------------------------------------------------------------------------
     else:
-        # Determine Feeder Leg (from User's neighborhood to Central Bus Station)
         feeder = origin.get("feeder_bus")
-        hub_city = "Bengaluru"
-        intercity_key = (hub_city, dest_district)
+        intercity_key = (user_hub, dest_district)
         if intercity_key not in INTERCITY_CORRIDORS:
-            # Fallback intercity corridor
-            intercity_key = ("Bengaluru", "mysore")
+            intercity_key = ("Bengaluru", dest_district)
+            if intercity_key not in INTERCITY_CORRIDORS:
+                intercity_key = ("Bengaluru", "mysore")
 
         corridor = INTERCITY_CORRIDORS[intercity_key]
 
@@ -1307,35 +1699,37 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
                 "provider_code": feeder["provider_code"],
                 "badge_class": f"badge-{feeder['provider_code'].lower()}",
                 "bus_number": feeder["bus_number"],
-                "route_name": f"{origin['short_name']} ⇔ {feeder['drop_point']}",
+                "route_name": f"{origin['short_name']} ⇔ {corridor['from_terminal']}",
                 "boarding_point": feeder["boarding_point"],
-                "drop_point": feeder["drop_point"],
+                "drop_point": corridor["from_terminal"],
                 "distance": f"{feeder['distance_km']} km",
                 "duration": feeder["duration"],
                 "fare": feeder["fare"],
                 "frequency": feeder["frequency"],
                 "operating_hours": feeder["operating_hours"],
-                "departure_status": f"Departures every 5–8 mins • Next in {dep_in_mins} mins",
+                "departure_status": f"Departures every 5–10 mins • Next in {dep_in_mins} mins",
                 "stops_via": feeder["stops_via"],
-                "instructions": f"Board {feeder['bus_number']} from {feeder['boarding_point']}. Alight at {feeder['drop_point']}.",
+                "instructions": f"Board {feeder['bus_number']} from {feeder['boarding_point']}. Alight at {corridor['from_terminal']}.",
                 "alt_mode": feeder.get("alt_mode"),
                 "stroke_color": "#06b6d4",
             })
             step_idx += 1
 
-        # 2. Inter-City Corridor Leg (e.g. Majestic to Mysuru Central Stand)
-        c_min = 170
-        c_max = 350
+        # 2. Inter-City Corridor Leg
         fare_digits = [int(s) for s in corridor["fare_range"].replace("₹", "").split("–") if s.strip().isdigit()]
-        if len(fare_digits) >= 2:
-            c_min, c_max = fare_digits[0], fare_digits[1]
-
+        c_min, c_max = (fare_digits[0], fare_digits[1]) if len(fare_digits) >= 2 else (170, 350)
         total_fare_min += c_min
         total_fare_max += c_max
         dur_hrs = int("".join(c for c in corridor["duration"].split("h")[0] if c.isdigit()) or 2)
-        total_duration_mins += (dur_hrs * 60) + 15
+        dur_mins_extra = 15
+        if "m" in corridor["duration"]:
+            try:
+                dur_mins_extra = int("".join(c for c in corridor["duration"].split("h")[1].split("m")[0] if c.isdigit()) or 15)
+            except Exception:
+                pass
+        total_duration_mins += (dur_hrs * 60) + dur_mins_extra
 
-        intercity_departure_desc = f"Departures every 8–10 mins • 24/7 continuous • Next at {now.hour:02d}:{(minute + 8)%60:02d}"
+        intercity_departure_desc = f"Departures every 15–30 mins • Active corridor • Next at {now.hour:02d}:{(minute + 8)%60:02d}"
 
         legs.append({
             "step_number": step_idx,
@@ -1354,13 +1748,13 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
             "frequency": corridor["frequency"],
             "operating_hours": corridor["operating_hours"],
             "departure_status": intercity_departure_desc,
-            "stops_via": f"Expressway Corridor: {corridor['from_terminal']} → Mandya → {corridor['to_terminal']}",
-            "instructions": f"Switch at {corridor['from_terminal']} Bay 2/3. Board KSRTC Airavat or Sarige Express to {corridor['to_terminal']}.",
-            "stroke_color": "#10b981",
+            "stops_via": f"Highway Corridor: {corridor['from_terminal']} → {corridor['highway']} → {corridor['to_terminal']}",
+            "instructions": f"Switch at {corridor['from_terminal']}. Board KSRTC Express to {corridor['to_terminal']}.",
+            "stroke_color": "#2563eb",
         })
         step_idx += 1
 
-        # 3. Last-Mile Destination Transit Leg (e.g. Mysuru CBS to KRS Dam)
+        # 3. Last-Mile Destination Transit Leg
         buses = dest_spec.get("buses", [])
         primary_bus = buses[0] if buses else None
         bus_no = primary_bus["bus_number"] if primary_bus else "Local Shuttle"
@@ -1376,8 +1770,8 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
             "leg_type": "destination_shuttle",
             "title": f"Last-Mile Destination Transit (Bus {bus_no})",
             "provider": primary_bus["provider"] if primary_bus else "City Transit",
-            "provider_code": primary_bus["provider_code"] if primary_bus else "MITRA",
-            "badge_class": f"badge-{(primary_bus['provider_code'] if primary_bus else 'MITRA').lower()}",
+            "provider_code": primary_bus["provider_code"] if primary_bus else "KSRTC",
+            "badge_class": f"badge-{(primary_bus['provider_code'] if primary_bus else 'KSRTC').lower()}",
             "bus_number": f"Bus {bus_no}",
             "route_name": primary_bus["route_name"] if primary_bus else f"{dest_spec['hub']} ⇔ {dest_spec['name']}",
             "boarding_point": primary_bus["boarding_point"] if primary_bus else dest_spec["hub_stop"],
@@ -1387,46 +1781,45 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
             "fare": f"₹{dest_fare_int}",
             "frequency": dest_spec.get("frequency", "Every 15–20 minutes"),
             "operating_hours": dest_spec.get("operating_hours", "06:00 AM – 09:30 PM"),
-            "departure_status": f"Active destination shuttle • Departures every 15 mins",
+            "departure_status": f"Active destination shuttle • Departures every 15–20 mins",
             "stops_via": primary_bus.get("stops_via", "") if primary_bus else "",
             "instructions": f"At {dest_spec['hub_stop']}, board Bus {bus_no} direct to {dest_spec['name']} entrance.",
-            "stroke_color": "#f59e0b",
+            "stroke_color": "#10b981",
         })
 
         total_transfers = len(legs) - 1
 
-        # Map Geodata
-        majestic_coord = [12.9782, 77.5707]
-        dest_hub_coord = corridor["waypoints"][-1]
+        transfer1_coord = corridor["waypoints"][0]
+        transfer2_coord = corridor["waypoints"][-1]
 
         map_waypoints = [
             [origin["lat"], origin["lng"], origin["short_name"], "origin"],
-            [majestic_coord[0], majestic_coord[1], "Transfer 1: Majestic (KBS)", "transfer"],
-            [dest_hub_coord[0], dest_hub_coord[1], f"Transfer 2: {dest_spec['hub']} Central", "transfer"],
+            [transfer1_coord[0], transfer1_coord[1], f"Transfer 1: {corridor['from_terminal']}", "transfer"],
+            [transfer2_coord[0], transfer2_coord[1], f"Transfer 2: {dest_spec['hub']} Central", "transfer"],
             [dest_spec["lat"], dest_spec["lng"], dest_spec["name"], "destination"],
         ]
 
-        feeder_pts = [[origin["lat"], origin["lng"]], [majestic_coord[0], majestic_coord[1]]]
+        feeder_pts = [[origin["lat"], origin["lng"]], transfer1_coord]
         intercity_pts = corridor["waypoints"]
-        last_mile_pts = [[dest_hub_coord[0], dest_hub_coord[1]], [dest_spec["lat"], dest_spec["lng"]]]
+        last_mile_pts = [transfer2_coord, [dest_spec["lat"], dest_spec["lng"]]]
 
         map_segments = [
             {
-                "name": f"Leg 1: Feeder ({feeder['bus_number'] if feeder else 'Local'})",
+                "name": f"Leg 1: Doorstep Feeder ({feeder['bus_number'] if feeder else 'Local'})",
                 "coords": feeder_pts,
                 "color": "#06b6d4",
                 "dash": "6, 6",
             },
             {
-                "name": "Leg 2: Intercity Express Corridor",
+                "name": f"Leg 2: {corridor['service_name']}",
                 "coords": intercity_pts,
-                "color": "#10b981",
+                "color": "#2563eb",
                 "dash": None,
             },
             {
                 "name": f"Leg 3: Destination Shuttle ({bus_no})",
                 "coords": last_mile_pts,
-                "color": "#f59e0b",
+                "color": "#10b981",
                 "dash": None,
             },
         ]
@@ -1509,12 +1902,13 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
         # Quick Switch Origins
         "quick_origins": [
             {"label": "📍 My GPS Location", "val": "gps", "is_gps": True},
+            {"label": "🏡 Alanahalli (Mysuru)", "val": "Alanahalli", "active": ("alanahalli" in origin["name"].lower())},
+            {"label": "🏛️ Mysuru Central", "val": "Mysuru", "active": ("mysuru" in origin["name"].lower() and "cbs" not in origin["name"].lower() and "alanahalli" not in origin["name"].lower())},
             {"label": "🏙️ Rajajinagar (Bengaluru)", "val": "Rajajinagar", "active": ("rajajinagar" in origin["name"].lower())},
             {"label": "✈️ BLR Airport (Flybus)", "val": "Airport", "active": ("airport" in origin["name"].lower())},
             {"label": "🚉 Majestic (KBS)", "val": "Majestic", "active": ("majestic" in origin["name"].lower())},
             {"label": "🏢 Whitefield", "val": "Whitefield", "active": ("whitefield" in origin["name"].lower())},
             {"label": "🌳 Kengeri", "val": "Kengeri", "active": ("kengeri" in origin["name"].lower())},
-            {"label": "🏛️ Mysuru Central", "val": "Mysuru", "active": ("mysuru" in origin["name"].lower() and "cbs" not in origin["name"].lower())},
             {"label": "🏖️ Mangaluru", "val": "Mangaluru", "active": ("mangaluru" in origin["name"].lower())},
             {"label": "🚂 Hubballi", "val": "Hubballi", "active": ("hubballi" in origin["name"].lower())},
         ],

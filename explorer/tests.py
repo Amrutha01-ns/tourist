@@ -167,3 +167,42 @@ class ExpenseCalculationAndExplorerTestCase(TestCase):
         self.assertTrue(len(data["map_data"]["waypoints"]) > 0)
         self.assertTrue(data.get("is_origin_gps"))
 
+    def test_alanahalli_mysore_to_jog_falls_doorstep_routing(self):
+        shivamogga_dist = District.objects.create(name="Shivamogga")
+        jog_place = Place.objects.create(
+            district=shivamogga_dist,
+            name="Jog Falls",
+            slug="jog-falls-alanahalli",
+            category="watery",
+            speciality="Highest Waterfalls",
+            description="Spectacular falls.",
+        )
+        url = reverse("explorer:place_detail", kwargs={"slug": jog_place.slug})
+        response = self.client.get(
+            f"{url}?action=transit&origin=alanahali mysore",
+            HTTP_X_REQUESTED_WITH="XMLHttpRequest"
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertIn("Alanahalli", data["origin"])
+        self.assertEqual(data["journey_summary"]["total_transfers"], 2)
+        self.assertEqual(len(data["journey_legs"]), 3)
+        # Leg 1 is Feeder from Alanahalli
+        self.assertIn("MITRA", data["journey_legs"][0]["provider_code"])
+        self.assertIn("Alanahalli", data["journey_legs"][0]["boarding_point"])
+        # Leg 2 is KSRTC Express to Shivamogga/Sagara
+        self.assertIn("KSRTC", data["journey_legs"][1]["provider_code"])
+        # Leg 3 is destination shuttle to Jog Falls
+        self.assertIn("Jog Falls", data["journey_legs"][2]["drop_point"])
+
+    def test_alanahalli_gps_coordinates_resolve(self):
+        url = reverse("explorer:place_detail", kwargs={"slug": self.place.slug})
+        response = self.client.get(
+            f"{url}?action=transit&lat=12.2982&lng=76.6925",
+            HTTP_X_REQUESTED_WITH="XMLHttpRequest"
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertIn("Alanahalli", data["origin"])
+        self.assertTrue(data.get("is_origin_gps"))
+

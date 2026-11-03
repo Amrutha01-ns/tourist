@@ -361,6 +361,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const summaryCard = document.getElementById("journeySummaryCard");
         const s = data.journey_summary;
         if (s && summaryCard) {
+            summaryCard.style.display = "block";
             const titleEl = summaryCard.querySelector(".summary-corridor-title");
             if (titleEl) titleEl.textContent = `${s.origin_name} → ${s.destination_name}`;
 
@@ -378,6 +379,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // 2. Update Interactive Route Map
+        const mapWrapper = document.getElementById("transitMapWrapper");
+        if (mapWrapper) mapWrapper.style.display = "block";
         if (data.map_data) {
             initOrUpdateLeafletMap(data.map_data);
         }
@@ -519,6 +522,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     triggerBtn.disabled = false;
                     triggerBtn.innerHTML = originalBtnHtml;
                 }
+                if (transitStatusMsg) {
+                    transitStatusMsg.innerHTML = `<i class="fa-solid fa-satellite-dish" style="color:var(--leaf);"></i> Live GPS position acquired (${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}). Planning doorstep transit...`;
+                }
                 fetchTransitRoutes(null, pos.coords.latitude, pos.coords.longitude);
             },
             function (err) {
@@ -528,11 +534,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
                 console.warn("Geolocation warning:", err.message);
                 if (transitStatusMsg) {
-                    transitStatusMsg.innerHTML = '<i class="fa-solid fa-circle-info" style="color:var(--sun);"></i> GPS access prompt dismissed or timed out. Defaulting to Rajajinagar, Bengaluru.';
+                    transitStatusMsg.innerHTML = '<i class="fa-solid fa-circle-info" style="color:var(--sun);"></i> Browser GPS timed out or access denied. Switched to Alanahalli, Mysuru.';
                 }
-                fetchTransitRoutes("Rajajinagar, Bengaluru", null, null);
+                fetchTransitRoutes("Alanahalli, Mysuru", null, null);
             },
-            { timeout: 9000, enableHighAccuracy: true }
+            { timeout: 10000, enableHighAccuracy: true }
         );
     }
 

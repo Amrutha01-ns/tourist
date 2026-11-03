@@ -436,7 +436,7 @@
 
             <form method="post" id="expenseForm">
                 {% csrf_token %}
-                <input type="hidden" name="origin" id="hiddenExpenseOrigin" value="{{ transit.origin|default:origin|default:'Rajajinagar, Bengaluru' }}">
+                <input type="hidden" name="origin" id="hiddenExpenseOrigin" value="{{ transit.origin|default:origin|default:'Alanahalli, Mysuru' }}">
 
                 <div class="field">
                     <div class="field-head">
@@ -640,12 +640,13 @@
                     </button>
                 {% empty %}
                     <button type="button" class="origin-pill-btn" data-val="gps" data-is-gps="true">📍 My GPS Location</button>
-                    <button type="button" class="origin-pill-btn active" data-val="Rajajinagar">🏙️ Rajajinagar (Bengaluru)</button>
+                    <button type="button" class="origin-pill-btn active" data-val="Alanahalli">🏡 Alanahalli (Mysuru)</button>
+                    <button type="button" class="origin-pill-btn" data-val="Mysuru">🏛️ Mysuru Central</button>
+                    <button type="button" class="origin-pill-btn" data-val="Rajajinagar">🏙️ Rajajinagar (Bengaluru)</button>
                     <button type="button" class="origin-pill-btn" data-val="Airport">✈️ BLR Airport (Flybus)</button>
                     <button type="button" class="origin-pill-btn" data-val="Majestic">🚉 Majestic (KBS)</button>
                     <button type="button" class="origin-pill-btn" data-val="Whitefield">🏢 Whitefield</button>
                     <button type="button" class="origin-pill-btn" data-val="Kengeri">🌳 Kengeri</button>
-                    <button type="button" class="origin-pill-btn" data-val="Mysuru">🏛️ Mysuru Central</button>
                     <button type="button" class="origin-pill-btn" data-val="Mangaluru">🏖️ Mangaluru</button>
                 {% endfor %}
             </div>
@@ -658,7 +659,7 @@
                         id="transitOriginInput"
                         class="transit-input"
                         placeholder="Enter any starting locality (e.g. Rajajinagar, BLR Airport, Majestic, Whitefield)..."
-                        value="{{ transit.origin|default:origin|default:'Rajajinagar, Bengaluru' }}"
+                        value="{{ transit.origin|default:origin|default:'Alanahalli, Mysuru' }}"
                         list="transitOriginList"
                         required
                     >
@@ -698,8 +699,8 @@
             <!-- Dynamic Route Results Container -->
             <div id="transitRoutesContainer">
                 <!-- Journey Summary Card -->
-                {% if transit.journey_summary %}
-                    <div class="journey-summary-card" id="journeySummaryCard">
+                <div class="journey-summary-card" id="journeySummaryCard" {% if not transit.journey_summary %}style="display:none;"{% endif %}>
+                    {% if transit.journey_summary %}
                         <div class="summary-top-row">
                             <div>
                                 <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; background: var(--sun); color: var(--forest); padding: 3px 9px; border-radius: 999px;">
@@ -733,8 +734,8 @@
                                 <div class="metric-val" id="metricDistance">~{{ transit.journey_summary.total_distance_km }} km</div>
                             </div>
                         </div>
-                    </div>
-                {% endif %}
+                    {% endif %}
+                </div>
 
                 <!-- Interactive Travel Corridor Map ("Mappings & Strikes/Lines") -->
                 <div class="transit-map-wrapper" id="transitMapWrapper">
