@@ -253,6 +253,20 @@
         .transit-btn:hover { background: var(--leaf); }
         .transit-geo-btn { background: var(--mint); color: var(--forest); border: 2px solid #a9cdb4; }
         .transit-geo-btn:hover { background: #cfe7d6; }
+        .transit-gps-single-btn {
+            background: linear-gradient(135deg, var(--forest), #1a5839);
+            color: #fff;
+            border: 1.5px solid #2f7d4f;
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            box-shadow: 0 4px 14px rgba(20, 69, 47, 0.22);
+            font-weight: 700;
+        }
+        .transit-gps-single-btn:hover {
+            background: var(--leaf);
+            transform: translateY(-1px);
+        }
 
         .transit-badge {
             display: inline-block; padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 700; text-transform: uppercase;
@@ -436,7 +450,7 @@
 
             <form method="post" id="expenseForm">
                 {% csrf_token %}
-                <input type="hidden" name="origin" id="hiddenExpenseOrigin" value="{{ transit.origin|default:origin|default:'Alanahalli, Mysuru' }}">
+                <input type="hidden" name="origin" id="hiddenExpenseOrigin" value="{{ transit.origin|default:'' }}">
 
                 <div class="field">
                     <div class="field-head">
@@ -609,22 +623,7 @@
                 </div>
             </div>
 
-            <!-- Auto-Detect Location Prompt Banner -->
-            <div class="location-prompt-banner">
-                <div class="prompt-text-group">
-                    <div class="prompt-icon-badge">
-                        <i class="fa-solid fa-location-crosshairs"></i>
-                    </div>
-                    <div>
-                        <h4>Traveling to {{ place.name }}? Let's plan from where you are!</h4>
-                        <p>Auto-detect your location via GPS or pick your neighborhood for complete door-to-door bus routing.</p>
-                    </div>
-                </div>
-                <button type="button" class="btn-gps-detect" id="enableGpsMainBtn">
-                    <span class="live-pulse-dot"></span>
-                    <i class="fa-solid fa-satellite-dish"></i> Auto-Detect My Location
-                </button>
-            </div>
+
 
             <!-- Quick Origin Switch Pills Carousel -->
             <div class="origin-quick-pills" id="originQuickPills">
@@ -639,8 +638,8 @@
                         {{ qo.label }}
                     </button>
                 {% empty %}
-                    <button type="button" class="origin-pill-btn" data-val="gps" data-is-gps="true">📍 My GPS Location</button>
-                    <button type="button" class="origin-pill-btn active" data-val="Alanahalli">🏡 Alanahalli (Mysuru)</button>
+                    <button type="button" class="origin-pill-btn" data-val="Mysuru">🏛️ Mysuru Central</button>
+                    <button type="button" class="origin-pill-btn" data-val="Alanahalli">🏡 Alanahalli (Mysuru)</button>
                     <button type="button" class="origin-pill-btn" data-val="Mysuru">🏛️ Mysuru Central</button>
                     <button type="button" class="origin-pill-btn" data-val="Rajajinagar">🏙️ Rajajinagar (Bengaluru)</button>
                     <button type="button" class="origin-pill-btn" data-val="Airport">✈️ BLR Airport (Flybus)</button>
@@ -659,7 +658,7 @@
                         id="transitOriginInput"
                         class="transit-input"
                         placeholder="Enter any starting locality (e.g. Rajajinagar, BLR Airport, Majestic, Whitefield)..."
-                        value="{{ transit.origin|default:origin|default:'Alanahalli, Mysuru' }}"
+                        value="{{ transit.origin|default:'' }}"
                         list="transitOriginList"
                         required
                     >
@@ -690,8 +689,9 @@
                     <i class="fa-solid fa-magnifying-glass"></i> Find Routes
                 </button>
 
-                <button type="button" class="transit-btn transit-geo-btn" id="transitGeoBtn">
-                    <i class="fa-solid fa-crosshairs"></i> Use My GPS Location
+                <button type="button" class="transit-btn transit-gps-single-btn" id="singleGpsBtn" title="Detect your live location">
+                    <span class="live-pulse-dot"></span>
+                    <i class="fa-solid fa-crosshairs"></i> Detect My Live Location
                 </button>
             </form>
             <p id="transitStatusMsg" style="font-size: 13px; color: var(--muted); margin: -10px 0 16px;"></p>
@@ -743,7 +743,7 @@
                         <div class="map-title-row">
                             <span class="live-pulse-dot"></span>
                             <span>Live Travel Corridor Route Map</span>
-                            <span style="font-size: 13px; font-weight: 500; color: var(--muted);">&bull; {{ transit.origin_short|default:transit.origin }} to {{ place.name }}</span>
+                            <span id="mapSubtitle" style="font-size: 13px; font-weight: 500; color: var(--muted);">&bull; {% if transit.origin %}{{ transit.origin_short|default:transit.origin }} to {{ place.name }}{% else %}{{ place.name }} Destination Map{% endif %}</span>
                         </div>
                         <div>
                             <button type="button" class="map-btn" id="recenterMapBtn" title="Fit entire journey on map">

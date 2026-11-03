@@ -1258,9 +1258,9 @@ def resolve_user_origin(origin_text=None, origin_lat=None, origin_lng=None):
             pass
 
     # 2. Textual search in origin nodes
-    q = (origin_text or "").strip().lower()
-    if not q:
-        return dict(ORIGIN_NODES["alanahalli"])
+    if not origin_text or not origin_text.strip():
+        return None
+    q = origin_text.strip().lower()
 
     # Specific aliases - Check local neighborhoods first!
     if "alanahal" in q or "alanahalli" in q or "alanahally" in q or "bannur" in q or "siddhartha" in q:
@@ -1318,12 +1318,12 @@ def resolve_user_origin(origin_text=None, origin_lat=None, origin_lng=None):
         if q in node["name"].lower() or q in node["short_name"].lower():
             return dict(node)
 
-    # Fallback to Alanahalli, Mysuru (or named query)
-    fallback = dict(ORIGIN_NODES["alanahalli"])
     if origin_text and origin_text.strip():
+        fallback = dict(ORIGIN_NODES["mysuru-central"])
         fallback["name"] = f"{origin_text.strip().title()} (via Regional Transit)"
         fallback["short_name"] = origin_text.strip().title()
-    return fallback
+        return fallback
+    return None
 
 
 def resolve_destination_spec(place):
@@ -1423,10 +1423,74 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
     dest_spec = resolve_destination_spec(place)
     dest_district = dest_spec["district"]
 
-    # Calculate real departure countdown based on current time
     now = datetime.now()
     minute = now.minute
     dep_in_mins = (10 - (minute % 10)) or 10
+
+    # Never hardcode initial location: if unset, return clean destination overview & map
+    if origin is None:
+        direct_buses = [dict(b) for b in dest_spec.get("buses", [])]
+        for r in direct_buses:
+            if "route" not in r and "route_name" in r: r["route"] = r["route_name"]
+            if "route_name" not in r and "route" in r: r["route_name"] = r["route"]
+            if "from" not in r and "boarding_point" in r: r["from"] = r["boarding_point"]
+            if "boarding_point" not in r and "from" in r: r["boarding_point"] = r["from"]
+            if "to" not in r and "drop_point" in r: r["to"] = r["drop_point"]
+            if "drop_point" not in r and "to" in r: r["drop_point"] = r["to"]
+
+        d_lat = dest_spec["lat"]
+        d_lng = dest_spec["lng"]
+        d_name = dest_spec["name"]
+
+        return {
+            "place_name": d_name,
+            "place_slug": getattr(place, "slug", ""),
+            "district": dest_district,
+            "transit_hub": dest_spec["hub"],
+            "direct_stop": dest_spec["direct_stop"],
+            "hub_distance": dest_spec.get("hub_distance") or f"~{dest_spec.get('distance_from_hub_km', 15)} km from {dest_spec['hub']} Bus Stand",
+            "notes": dest_spec.get("notes") or f"Direct transit service connects {dest_spec['hub_stop']} and {d_name}.",
+            "travel_tip": dest_spec.get("travel_tip", ""),
+            "status": dest_spec.get("status", "hub_connected"),
+            "origin": None,
+            "origin_short": None,
+            "origin_coords": None,
+            "is_origin_gps": False,
+            "has_origin": False,
+            "journey_summary": None,
+            "journey_legs": [],
+            "map_data": {
+                "waypoints": [[d_lat, d_lng, d_name, "destination"]],
+                "segments": [],
+                "bounds": [
+                    [d_lat - 0.05, d_lng - 0.05],
+                    [d_lat + 0.05, d_lng + 0.05],
+                ],
+                "center": [d_lat, d_lng],
+            },
+            "bus_routes": direct_buses,
+            "direct_routes": direct_buses,
+            "total_routes_found": len(direct_buses),
+            "live_status": {
+                "is_operating": True,
+                "status_text": f"Regional Transit Active to {d_name}",
+                "next_departure_window": f"{dep_in_mins} mins",
+                "high_frequency": True,
+                "last_updated": now.strftime("%H:%M:%S IST"),
+            },
+            "quick_origins": [
+                {"label": "🏛️ Mysuru Central", "val": "Mysuru", "active": False},
+                {"label": "🏡 Alanahalli (Mysuru)", "val": "Alanahalli", "active": False},
+                {"label": "🏙️ Rajajinagar", "val": "Rajajinagar", "active": False},
+                {"label": "✈️ BLR Airport", "val": "Airport", "active": False},
+                {"label": "🚉 Majestic (KBS)", "val": "Majestic", "active": False},
+                {"label": "🏢 Whitefield", "val": "Whitefield", "active": False},
+                {"label": "🌳 Kengeri", "val": "Kengeri", "active": False},
+                {"label": "🏖️ Mangaluru", "val": "Mangaluru", "active": False},
+                {"label": "🚂 Hubballi", "val": "Hubballi", "active": False},
+            ],
+            "data_disclaimer": "Transit routes and schedules integrate verified KSRTC, BMTC, and MITRA operational timetables with live GPS routing corridor waypoints.",
+        }
 
     legs = []
     map_waypoints = []

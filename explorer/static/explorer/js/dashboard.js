@@ -188,9 +188,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     zoomControl: true,
                 });
 
-                L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-                    maxZoom: 18,
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                // Clean, beautiful, high-reliability CartoDB Voyager tiles (free of OSM 403 blocks)
+                L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+                    subdomains: "abcd",
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>'
                 }).addTo(routeMap);
 
                 routeLayerGroup = L.layerGroup().addTo(routeMap);
@@ -255,7 +257,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         // Set or update map bounds
-        if (mapData.bounds && mapData.bounds.length === 2) {
+        if (waypoints.length === 1) {
+            // Single destination marker (clean centered overview)
+            const destCoord = [waypoints[0][0], waypoints[0][1]];
+            routeMap.setView(destCoord, 12);
+            currentMapBounds = L.latLngBounds([destCoord, destCoord]);
+        } else if (mapData.bounds && mapData.bounds.length === 2) {
             currentMapBounds = mapData.bounds;
             routeMap.fitBounds(mapData.bounds, { padding: [35, 35], maxZoom: 14 });
         } else if (allCoords.length > 0) {
@@ -297,8 +304,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const transitOriginInput = document.getElementById("transitOriginInput");
     const transitRoutesContainer = document.getElementById("transitRoutesContainer");
     const transitStatusMsg = document.getElementById("transitStatusMsg");
-    const transitGeoBtn = document.getElementById("transitGeoBtn");
-    const enableGpsMainBtn = document.getElementById("enableGpsMainBtn");
+    const singleGpsBtn = document.getElementById("singleGpsBtn");
     const findRoutesBtn = document.getElementById("findRoutesBtn");
     const hiddenExpenseOrigin = document.getElementById("hiddenExpenseOrigin");
     const originQuickPills = document.getElementById("originQuickPills");
@@ -357,11 +363,19 @@ document.addEventListener("DOMContentLoaded", function () {
     function renderTransitResults(data) {
         if (!transitRoutesContainer) return;
 
+        // Update map subtitle
+        const mapSubtitle = document.getElementById("mapSubtitle");
+        if (mapSubtitle) {
+            mapSubtitle.textContent = data.origin ? `• ${data.origin_short || data.origin} to ${data.place_name || "Destination"}` : `• ${data.place_name || "Destination"} Destination Map`;
+        }
+
         // 1. Update Journey Summary Card
         const summaryCard = document.getElementById("journeySummaryCard");
         const s = data.journey_summary;
+        if (summaryCard) {
+            summaryCard.style.display = s ? "block" : "none";
+        }
         if (s && summaryCard) {
-            summaryCard.style.display = "block";
             const titleEl = summaryCard.querySelector(".summary-corridor-title");
             if (titleEl) titleEl.textContent = `${s.origin_name} → ${s.destination_name}`;
 
@@ -499,58 +513,86 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // -------------------------------------------------------------
-    // 6. User Geolocation Auto-Detection & Quick Origin Switchers
+    // 6. Single Location Detection (HTML5 Geolocation + Fast IP Fallback)
     // -------------------------------------------------------------
-    function triggerUserGeolocation(triggerBtn) {
-        if (!navigator.geolocation) {
-            alert("Geolocation is not supported by your browser. Please select or enter your locality.");
-            return;
-        }
-
+    async function triggerUserGeolocation(triggerBtn) {
         const originalBtnHtml = triggerBtn ? triggerBtn.innerHTML : "";
         if (triggerBtn) {
             triggerBtn.disabled = true;
-            triggerBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Detecting GPS Location...';
+            triggerBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Detecting Location...';
         }
         if (transitStatusMsg) {
-            transitStatusMsg.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Acquiring accurate satellite GPS position...';
+            transitStatusMsg.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Acquiring your live location...';
         }
 
-        navigator.geolocation.getCurrentPosition(
-            function (pos) {
-                if (triggerBtn) {
-                    triggerBtn.disabled = false;
-                    triggerBtn.innerHTML = originalBtnHtml;
+        let acquired = false;
+
+        // Step 1: Fast HTML5 Browser Geolocation (low accuracy is fast and works on Wi-Fi without GPS hardware)
+        if (navigator.geolocation) {
+            try {
+                await new Promise((resolve) => {
+                    navigator.geolocation.getCurrentPosition(
+                        function (pos) {
+                            acquired = true;
+                            if (transitStatusMsg) {
+                                transitStatusMsg.innerHTML = `<i class="fa-solid fa-satellite-dish" style="color:var(--leaf);"></i> Live GPS location acquired (${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}). Planning route...`;
+                            }
+                            fetchTransitRoutes(null, pos.coords.latitude, pos.coords.longitude);
+                            resolve();
+                        },
+                        function (err) {
+                            console.warn("HTML5 Geolocation error or timeout:", err.message);
+                            resolve();
+                        },
+                        { timeout: 4500, enableHighAccuracy: false, maximumAge: 60000 }
+                    );
+                });
+            } catch (e) {
+                console.warn("Geolocation exception:", e);
+            }
+        }
+
+        if (acquired) {
+            if (triggerBtn) {
+                triggerBtn.disabled = false;
+                triggerBtn.innerHTML = originalBtnHtml;
+            }
+            return;
+        }
+
+        // Step 2: Instant IP Geolocation Fallback (Works 100% on Windows Desktops/Laptops without GPS hardware)
+        try {
+            if (transitStatusMsg) {
+                transitStatusMsg.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Resolving location via network provider...';
+            }
+            const ipRes = await fetch("https://ipapi.co/json/", { signal: AbortSignal.timeout(4000) });
+            if (ipRes.ok) {
+                const ipData = await ipRes.json();
+                if (ipData.latitude && ipData.longitude) {
+                    acquired = true;
+                    if (transitStatusMsg) {
+                        transitStatusMsg.innerHTML = `<i class="fa-solid fa-circle-check" style="color:var(--leaf);"></i> Live location resolved: <strong>${ipData.city || 'Karnataka'}, ${ipData.region || 'India'}</strong>.`;
+                    }
+                    await fetchTransitRoutes(null, ipData.latitude, ipData.longitude);
                 }
-                if (transitStatusMsg) {
-                    transitStatusMsg.innerHTML = `<i class="fa-solid fa-satellite-dish" style="color:var(--leaf);"></i> Live GPS position acquired (${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}). Planning doorstep transit...`;
-                }
-                fetchTransitRoutes(null, pos.coords.latitude, pos.coords.longitude);
-            },
-            function (err) {
-                if (triggerBtn) {
-                    triggerBtn.disabled = false;
-                    triggerBtn.innerHTML = originalBtnHtml;
-                }
-                console.warn("Geolocation warning:", err.message);
-                if (transitStatusMsg) {
-                    transitStatusMsg.innerHTML = '<i class="fa-solid fa-circle-info" style="color:var(--sun);"></i> Browser GPS timed out or access denied. Switched to Alanahalli, Mysuru.';
-                }
-                fetchTransitRoutes("Alanahalli, Mysuru", null, null);
-            },
-            { timeout: 10000, enableHighAccuracy: true }
-        );
+            }
+        } catch (ipErr) {
+            console.warn("IP Geolocation fallback failed:", ipErr);
+        }
+
+        if (triggerBtn) {
+            triggerBtn.disabled = false;
+            triggerBtn.innerHTML = originalBtnHtml;
+        }
+
+        if (!acquired && transitStatusMsg) {
+            transitStatusMsg.innerHTML = '<i class="fa-solid fa-circle-info" style="color:var(--sun);"></i> Unable to auto-detect position. Please select a starting point below or enter your city.';
+        }
     }
 
-    if (enableGpsMainBtn) {
-        enableGpsMainBtn.addEventListener("click", function () {
-            triggerUserGeolocation(enableGpsMainBtn);
-        });
-    }
-
-    if (transitGeoBtn) {
-        transitGeoBtn.addEventListener("click", function () {
-            triggerUserGeolocation(transitGeoBtn);
+    if (singleGpsBtn) {
+        singleGpsBtn.addEventListener("click", function () {
+            triggerUserGeolocation(singleGpsBtn);
         });
     }
 

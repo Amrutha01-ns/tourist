@@ -47,7 +47,7 @@ def place_detail(request, slug):
     elif session_origin:
         origin = session_origin.strip()
     else:
-        origin = "Alanahalli, Mysuru"
+        origin = None
 
     # AJAX endpoint for asynchronous transit origin updates
     if request.headers.get("x-requested-with") == "XMLHttpRequest" and request.GET.get("action") == "transit":
