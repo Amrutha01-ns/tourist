@@ -633,12 +633,10 @@
                         type="button"
                         class="origin-pill-btn {% if qo.active %}active{% endif %}"
                         data-val="{{ qo.val }}"
-                        {% if qo.is_gps %}data-is-gps="true"{% endif %}
                     >
                         {{ qo.label }}
                     </button>
                 {% empty %}
-                    <button type="button" class="origin-pill-btn" data-val="Mysuru">🏛️ Mysuru Central</button>
                     <button type="button" class="origin-pill-btn" data-val="Alanahalli">🏡 Alanahalli (Mysuru)</button>
                     <button type="button" class="origin-pill-btn" data-val="Mysuru">🏛️ Mysuru Central</button>
                     <button type="button" class="origin-pill-btn" data-val="Rajajinagar">🏙️ Rajajinagar (Bengaluru)</button>
@@ -660,7 +658,6 @@
                         placeholder="Enter any starting locality (e.g. Rajajinagar, BLR Airport, Majestic, Whitefield)..."
                         value="{{ transit.origin|default:'' }}"
                         list="transitOriginList"
-                        required
                     >
                     <datalist id="transitOriginList">
                         <option value="Rajajinagar, Bengaluru">

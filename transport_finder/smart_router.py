@@ -1965,7 +1965,6 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
 
         # Quick Switch Origins
         "quick_origins": [
-            {"label": "📍 My GPS Location", "val": "gps", "is_gps": True},
             {"label": "🏡 Alanahalli (Mysuru)", "val": "Alanahalli", "active": ("alanahalli" in origin["name"].lower())},
             {"label": "🏛️ Mysuru Central", "val": "Mysuru", "active": ("mysuru" in origin["name"].lower() and "cbs" not in origin["name"].lower() and "alanahalli" not in origin["name"].lower())},
             {"label": "🏙️ Rajajinagar (Bengaluru)", "val": "Rajajinagar", "active": ("rajajinagar" in origin["name"].lower())},

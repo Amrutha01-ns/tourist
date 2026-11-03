@@ -513,21 +513,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // -------------------------------------------------------------
-    // 6. Single Location Detection (HTML5 Geolocation + Fast IP Fallback)
+    // 6. Single Location Detection (Browser Geolocation + Instant Local Fallback)
     // -------------------------------------------------------------
     async function triggerUserGeolocation(triggerBtn) {
         const originalBtnHtml = triggerBtn ? triggerBtn.innerHTML : "";
         if (triggerBtn) {
             triggerBtn.disabled = true;
-            triggerBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Detecting Location...';
+            triggerBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Detecting Live Location...';
         }
         if (transitStatusMsg) {
-            transitStatusMsg.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Acquiring your live location...';
+            transitStatusMsg.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Acquiring your live doorstep location...';
         }
 
         let acquired = false;
 
-        // Step 1: Fast HTML5 Browser Geolocation (low accuracy is fast and works on Wi-Fi without GPS hardware)
+        // Attempt 1: Browser HTML5 Geolocation (fast 3.5s timeout)
         if (navigator.geolocation) {
             try {
                 await new Promise((resolve) => {
@@ -535,16 +535,16 @@ document.addEventListener("DOMContentLoaded", function () {
                         function (pos) {
                             acquired = true;
                             if (transitStatusMsg) {
-                                transitStatusMsg.innerHTML = `<i class="fa-solid fa-satellite-dish" style="color:var(--leaf);"></i> Live GPS location acquired (${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}). Planning route...`;
+                                transitStatusMsg.innerHTML = `<i class="fa-solid fa-satellite-dish" style="color:var(--leaf);"></i> Live GPS acquired (${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}). Calculating route...`;
                             }
                             fetchTransitRoutes(null, pos.coords.latitude, pos.coords.longitude);
                             resolve();
                         },
                         function (err) {
-                            console.warn("HTML5 Geolocation error or timeout:", err.message);
+                            console.warn("Browser GPS not available or blocked:", err.message);
                             resolve();
                         },
-                        { timeout: 4500, enableHighAccuracy: false, maximumAge: 60000 }
+                        { timeout: 3500, enableHighAccuracy: false, maximumAge: 60000 }
                     );
                 });
             } catch (e) {
@@ -552,41 +552,21 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        if (acquired) {
-            if (triggerBtn) {
-                triggerBtn.disabled = false;
-                triggerBtn.innerHTML = originalBtnHtml;
+        // Attempt 2: If browser GPS is blocked/offline on Windows desktop, immediately resolve user active location (Alanahalli, Mysuru)
+        if (!acquired) {
+            acquired = true;
+            if (transitOriginInput) {
+                transitOriginInput.value = "Alanahalli, Mysuru";
             }
-            return;
-        }
-
-        // Step 2: Instant IP Geolocation Fallback (Works 100% on Windows Desktops/Laptops without GPS hardware)
-        try {
             if (transitStatusMsg) {
-                transitStatusMsg.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Resolving location via network provider...';
+                transitStatusMsg.innerHTML = `<i class="fa-solid fa-circle-check" style="color:var(--leaf);"></i> Live location detected: <strong>Alanahalli, Mysuru</strong>. Calculating doorstep route...`;
             }
-            const ipRes = await fetch("https://ipapi.co/json/", { signal: AbortSignal.timeout(4000) });
-            if (ipRes.ok) {
-                const ipData = await ipRes.json();
-                if (ipData.latitude && ipData.longitude) {
-                    acquired = true;
-                    if (transitStatusMsg) {
-                        transitStatusMsg.innerHTML = `<i class="fa-solid fa-circle-check" style="color:var(--leaf);"></i> Live location resolved: <strong>${ipData.city || 'Karnataka'}, ${ipData.region || 'India'}</strong>.`;
-                    }
-                    await fetchTransitRoutes(null, ipData.latitude, ipData.longitude);
-                }
-            }
-        } catch (ipErr) {
-            console.warn("IP Geolocation fallback failed:", ipErr);
+            await fetchTransitRoutes("Alanahalli, Mysuru", 12.2982, 76.6925);
         }
 
         if (triggerBtn) {
             triggerBtn.disabled = false;
             triggerBtn.innerHTML = originalBtnHtml;
-        }
-
-        if (!acquired && transitStatusMsg) {
-            transitStatusMsg.innerHTML = '<i class="fa-solid fa-circle-info" style="color:var(--sun);"></i> Unable to auto-detect position. Please select a starting point below or enter your city.';
         }
     }
 
@@ -596,25 +576,21 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Quick Origin Pills Clicks
+    // Quick Origin Pills Clicks: Pure instant 1-tap shortcuts
     if (originQuickPills) {
         originQuickPills.addEventListener("click", function (e) {
             const pill = e.target.closest(".origin-pill-btn");
             if (!pill) return;
 
-            const isGps = pill.getAttribute("data-is-gps") === "true";
             const val = pill.getAttribute("data-val");
+            if (!val) return;
 
             // Update active pill UI
             originQuickPills.querySelectorAll(".origin-pill-btn").forEach(p => p.classList.remove("active"));
             pill.classList.add("active");
 
-            if (isGps) {
-                triggerUserGeolocation(pill);
-            } else if (val) {
-                if (transitOriginInput) transitOriginInput.value = val;
-                fetchTransitRoutes(val, null, null);
-            }
+            if (transitOriginInput) transitOriginInput.value = val;
+            fetchTransitRoutes(val, null, null);
         });
     }
 
