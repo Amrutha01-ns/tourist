@@ -305,38 +305,276 @@
         .metric-label { font-size: 11px; text-transform: uppercase; color: #b7d6c2; letter-spacing: 0.5px; margin-bottom: 4px; }
         .metric-val { font-size: 20px; font-weight: 800; color: var(--sun); font-family: "Bricolage Grotesque", sans-serif; }
 
-        /* Interactive Route Map */
+                /* =========================================================
+           TRAVEL CORRIDOR MAP & GPS NAVIGATION HUD (Reference Style)
+           ========================================================= */
         .transit-map-wrapper {
-            margin-bottom: 28px; border-radius: 20px; overflow: hidden;
-            border: 1px solid var(--line); box-shadow: 0 10px 24px -10px rgba(20, 69, 47, 0.2);
-            background: #fff;
+            margin-bottom: 28px; border-radius: 24px; overflow: hidden;
+            border: 1.5px solid #dbe4dc; box-shadow: 0 20px 48px -14px rgba(15, 23, 42, 0.22), 0 0 0 1px rgba(0,0,0,0.04);
+            background: #ffffff; position: relative;
         }
         .map-top-bar {
-            padding: 12px 18px; background: #fafbfa; border-bottom: 1px solid var(--line);
+            padding: 13px 20px; background: linear-gradient(180deg, #ffffff 0%, #f7faf8 100%);
+            border-bottom: 1.5px solid #e2e8f0;
             display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
         }
-        .map-title-row { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; color: var(--forest); }
-        .transit-map-canvas { height: 380px; width: 100%; z-index: 1; }
-        .map-btn {
-            padding: 6px 14px; border-radius: 8px; border: 1px solid var(--line); background: #fff;
-            color: var(--forest); font-size: 12px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+        .map-top-bar {
+            padding: 12px 18px; background: #fbfdfa; border-bottom: 1px solid var(--line);
+            display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
         }
-        .map-btn:hover { background: var(--mint); }
+        .map-title-row { display: flex; align-items: center; gap: 10px; }
+        .map-heading-group { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+        .map-heading-main {
+            font-size: 15px; font-weight: 800; color: var(--forest);
+            font-family: "Bricolage Grotesque", sans-serif; letter-spacing: -0.2px;
+        }
+        .map-heading-sub { font-size: 13px; font-weight: 600; color: var(--muted); }
+        .map-actions-toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+        /* Basemap Theme Switcher */
+        .map-theme-group {
+            display: inline-flex; background: #f0f4ee; padding: 2px;
+            border-radius: 9px; border: 1px solid var(--line); gap: 2px;
+        }
+        .map-theme-btn {
+            border: none; background: transparent; padding: 5px 9px; border-radius: 7px;
+            font-size: 11px; font-weight: 700; color: var(--muted); cursor: pointer;
+            display: inline-flex; align-items: center; gap: 5px; transition: all 0.15s ease;
+        }
+        .map-theme-btn.active {
+            background: #ffffff; color: var(--forest);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+        }
+        .map-theme-btn:hover:not(.active) { color: var(--ink); background: rgba(255,255,255,0.6); }
+
+        .map-btn {
+            padding: 6px 12px; border-radius: 9px; border: 1px solid var(--line); background: #ffffff;
+            color: var(--forest); font-size: 12px; font-weight: 700; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 6px; transition: all 0.15s ease;
+        }
+        .map-btn:hover { background: var(--mint); border-color: var(--leaf); }
+        .map-btn.active { background: #eef6f0; border-color: var(--leaf); color: var(--forest); }
+        .stops-count-badge {
+            background: var(--leaf); color: #ffffff; font-size: 10px; font-weight: 800;
+            padding: 1px 6px; border-radius: 10px; line-height: 1.3;
+        }
+
+        /* Viewport container with relative positioning for Floating HUD */
+        .map-viewport-container { position: relative; width: 100%; height: 440px; }
+        .transit-map-canvas { height: 100%; width: 100%; z-index: 1; background: #e2e8f0; }
+
+        /* Floating Modern "TRAVEL NAVIGATION" HUD Card (Styled after reference image) */
+        .travel-nav-hud {
+            position: absolute; top: 16px; right: 16px; width: 320px;
+            max-width: calc(100% - 32px); background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(12px); border-radius: 16px;
+            box-shadow: 0 16px 36px -8px rgba(15, 23, 42, 0.28), 0 0 0 1px rgba(0,0,0,0.06);
+            z-index: 1000; overflow: hidden; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .travel-nav-header {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: #ffffff; padding: 10px 14px; display: flex;
+            justify-content: space-between; align-items: center;
+        }
+        .travel-nav-title {
+            font-size: 13px; font-weight: 800; letter-spacing: 0.8px;
+            text-transform: uppercase; font-family: "Bricolage Grotesque", sans-serif;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .travel-nav-min-btn {
+            background: transparent; border: none; color: #ffffff; cursor: pointer;
+            font-size: 12px; opacity: 0.85; padding: 2px 6px; border-radius: 4px; transition: opacity 0.15s;
+        }
+        .travel-nav-min-btn:hover { opacity: 1; background: rgba(255,255,255,0.2); }
+        .travel-nav-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+        .travel-nav-hud.minimized .travel-nav-body { display: none; }
+
+        .travel-nav-corridor-row {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 8px; padding-bottom: 8px; border-bottom: 1px solid #f1f5f9;
+        }
+        .hud-stop-point {
+            display: flex; align-items: center; gap: 6px; font-size: 13px;
+            color: #1e293b; max-width: 44%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .hud-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+        .hud-dot.origin-dot { background: #10b981; box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25); }
+        .hud-dot.dest-dot { background: #ef4444; box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.25); }
+        .hud-corridor-line { color: #94a3b8; font-size: 12px; flex-shrink: 0; }
+
+        .travel-nav-meta-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+        .travel-nav-meta-item {
+            background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;
+            padding: 6px 8px; display: flex; flex-direction: column;
+        }
+        .hud-meta-label {
+            font-size: 10px; color: #64748b; font-weight: 600; text-transform: uppercase;
+            display: flex; align-items: center; gap: 4px;
+        }
+        .hud-meta-val {
+            font-size: 13px; font-weight: 800; color: #0f172a;
+            font-family: "Bricolage Grotesque", sans-serif; margin-top: 2px;
+        }
+
+        .travel-nav-status-banner {
+            display: flex; align-items: center; gap: 8px; background: #f0fdf4;
+            border: 1px solid #bbf7d0; padding: 6px 10px; border-radius: 8px;
+            font-size: 11px; color: #166534; font-weight: 600;
+        }
+        .hud-pulse-ring {
+            width: 8px; height: 8px; background: #16a34a; border-radius: 50%;
+            box-shadow: 0 0 0 rgba(22, 163, 74, 0.5); animation: hudPulse 1.8s infinite; flex-shrink: 0;
+        }
+        @keyframes hudPulse {
+            0% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.6); }
+            70% { box-shadow: 0 0 0 6px rgba(22, 163, 74, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
+        }
+
+        .travel-nav-sim-status {
+            background: #fefce8; border: 1px solid #fef08a; border-radius: 8px;
+            padding: 7px 10px; display: flex; align-items: center; gap: 10px;
+        }
+        .sim-bus-icon {
+            width: 26px; height: 26px; background: #eab308; color: #ffffff;
+            border-radius: 50%; display: grid; place-items: center; font-size: 11px; flex-shrink: 0;
+        }
+        .sim-text-group { display: flex; flex-direction: column; font-size: 11px; color: #854d0e; overflow: hidden; }
+        .sim-text-group strong {
+            font-size: 12px; color: #713f12; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+
+        /* En-Route Bus Stops Interactive Timeline Ribbon */
+        .enroute-stops-timeline-strip {
+            background: #ffffff; border-top: 1px solid var(--line); padding: 10px 18px;
+        }
+        .stops-strip-header {
+            display: flex; align-items: center; gap: 8px; font-size: 12px;
+            font-weight: 700; color: var(--forest); margin-bottom: 8px;
+        }
+        .stops-strip-track {
+            display: flex; align-items: center; gap: 8px; overflow-x: auto;
+            padding-bottom: 6px; scrollbar-width: thin;
+        }
+        .stops-strip-track::-webkit-scrollbar { height: 4px; }
+        .stops-strip-track::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+
+        .stop-pill-item {
+            display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px;
+            background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px;
+            font-size: 12px; font-weight: 600; color: #334155; cursor: pointer;
+            white-space: nowrap; transition: all 0.15s ease; flex-shrink: 0;
+        }
+        .stop-pill-item:hover { background: #f1f5f9; border-color: #cbd5e1; transform: translateY(-1px); }
+        .stop-pill-item.active {
+            background: var(--forest); color: #ffffff; border-color: var(--forest);
+            box-shadow: 0 3px 8px rgba(20, 69, 47, 0.25);
+        }
+        .stop-pill-seq {
+            width: 18px; height: 18px; border-radius: 50%; background: rgba(0,0,0,0.08);
+            display: grid; place-items: center; font-size: 10px; font-weight: 800;
+        }
+        .stop-pill-item.active .stop-pill-seq { background: rgba(255,255,255,0.25); color: #ffffff; }
+        .stop-pill-arrow { color: #cbd5e1; font-size: 10px; flex-shrink: 0; }
+
+        /* Legend Bar */
         .map-legend-bar {
-            padding: 8px 18px; background: #fdfaf2; border-top: 1px solid var(--line);
-            display: flex; gap: 18px; font-size: 12px; color: var(--muted); flex-wrap: wrap; align-items: center;
+            padding: 10px 18px; background: #fafbfa; border-top: 1px solid var(--line);
+            display: flex; gap: 16px; font-size: 12px; color: var(--muted); flex-wrap: wrap; align-items: center;
         }
         .legend-indicator { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; color: var(--ink); }
-        .legend-line-strike { width: 22px; height: 5px; border-radius: 3px; display: inline-block; }
-
-        /* Leaflet Custom Marker Pins */
-        .leaflet-custom-marker {
-            display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
-            color: #fff; font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.35); border: 2.5px solid #fff;
+        .legend-road-preview {
+            width: 24px; height: 6px; background: #1e293b; border-radius: 3px; display: inline-block; position: relative;
         }
-        .pin-origin { background: #0891b2; }
-        .pin-transfer { background: #2563eb; }
-        .pin-dest { background: #d97706; }
+        .legend-road-preview::after {
+            content: ""; position: absolute; top: 2px; left: 2px; right: 2px; height: 2px; border-top: 1.5px dashed #ffffff;
+        }
+        .legend-pin-preview {
+            width: 15px; height: 15px; border-radius: 50%; display: inline-grid; place-items: center; font-size: 8px; color: #fff;
+        }
+        .pin-origin-sample { background: #10b981; }
+        .pin-transfer-sample { background: #2563eb; }
+        .pin-dest-sample { background: #ef4444; }
+        .legend-stop-sample {
+            width: 15px; height: 15px; border-radius: 50%; background: #ffffff; border: 1.5px solid #1e293b;
+            display: inline-grid; place-items: center; font-size: 7px; color: #1e293b;
+        }
+
+        /* Leaflet Custom DivIcon Markers (Matching Reference Image) */
+        .custom-gps-pin {
+            position: relative; width: 36px; height: 48px; cursor: pointer;
+        }
+        .gps-pin-teardrop {
+            width: 34px; height: 34px; border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg); position: absolute; top: 0; left: 1px;
+            display: grid; place-items: center; border: 2.5px solid #ffffff;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .gps-pin-teardrop:hover { transform: rotate(-45deg) scale(1.18); }
+        .gps-pin-teardrop.pin-origin { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+        .gps-pin-teardrop.pin-transfer { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); }
+        .gps-pin-teardrop.pin-dest { background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); }
+
+        .gps-pin-disc {
+            transform: rotate(45deg); width: 18px; height: 18px; border-radius: 50%;
+            background: #ffffff; display: grid; place-items: center; font-size: 10px;
+            font-weight: 800; color: #0f172a; box-shadow: inset 0 1px 2px rgba(0,0,0,0.25);
+        }
+        .gps-pin-shadow {
+            position: absolute; bottom: 2px; left: 8px; width: 20px; height: 6px;
+            background: rgba(15, 23, 42, 0.35); border-radius: 50%; filter: blur(1.5px);
+        }
+
+        /* En-Route Bus Stop Circle Disc Marker */
+        .transit-stop-marker {
+            width: 24px; height: 24px; border-radius: 50%; background: #ffffff;
+            border: 2px solid #1e293b; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            display: grid; place-items: center; font-size: 10px; color: #1e293b;
+            cursor: pointer; transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .transit-stop-marker:hover, .transit-stop-marker.highlighted {
+            transform: scale(1.35); background: #f59e0b; border-color: #78350f;
+            color: #78350f; z-index: 1000 !important;
+        }
+
+        /* Simulated Bus Moving Marker */
+        .simulated-bus-marker {
+            width: 32px; height: 32px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            border: 2.5px solid #ffffff; border-radius: 50%;
+            box-shadow: 0 6px 16px rgba(217, 119, 6, 0.5), 0 0 0 4px rgba(245, 158, 11, 0.3);
+            display: grid; place-items: center; color: #ffffff; font-size: 13px;
+        }
+
+        /* Leaflet Popup Styling */
+        .custom-transit-popup .leaflet-popup-content-wrapper {
+            border-radius: 14px; padding: 0; overflow: hidden;
+            box-shadow: 0 14px 30px rgba(15, 23, 42, 0.22); border: 1px solid rgba(0,0,0,0.08);
+        }
+        .custom-transit-popup .leaflet-popup-content { margin: 0; line-height: 1.5; }
+        .stop-popup-card { padding: 14px 16px; min-width: 220px; max-width: 280px; }
+        .stop-popup-badge {
+            font-size: 10px; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 0.5px; padding: 3px 8px; border-radius: 6px;
+            display: inline-block; margin-bottom: 6px;
+        }
+        .badge-origin-stop { background: #dcfce7; color: #166534; }
+        .badge-transfer-stop { background: #dbeafe; color: #1e40af; }
+        .badge-enroute-stop { background: #fef3c7; color: #92400e; }
+        .badge-dest-stop { background: #fee2e2; color: #991b1b; }
+        .stop-popup-title {
+            margin: 0 0 6px; font-size: 15px; font-weight: 800;
+            color: #0f172a; font-family: "Bricolage Grotesque", sans-serif;
+        }
+        .stop-popup-detail {
+            font-size: 12px; color: #475569; margin: 3px 0;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .stop-popup-tip {
+            margin-top: 8px; padding: 6px 8px; background: #f8fafc;
+            border-radius: 6px; font-size: 11px; color: #334155;
+            border-left: 3px solid var(--leaf);
+        }
 
         /* Modern Journey Stepper ("Strikes & Lines") */
         .journey-stepper-wrap { margin-bottom: 28px; }
@@ -637,7 +875,7 @@
                         {{ qo.label }}
                     </button>
                 {% empty %}
-                    <button type="button" class="origin-pill-btn" data-val="Alanahalli">🏡 Alanahalli (Mysuru)</button>
+                    <button type="button" class="origin-pill-btn" data-val="Bengaluru">🏛️ Bengaluru (Majestic)</button>
                     <button type="button" class="origin-pill-btn" data-val="Mysuru">🏛️ Mysuru Central</button>
                     <button type="button" class="origin-pill-btn" data-val="Rajajinagar">🏙️ Rajajinagar (Bengaluru)</button>
                     <button type="button" class="origin-pill-btn" data-val="Airport">✈️ BLR Airport (Flybus)</button>
@@ -690,6 +928,9 @@
                     <span class="live-pulse-dot"></span>
                     <i class="fa-solid fa-crosshairs"></i> Detect My Live Location
                 </button>
+                <button type="button" class="transit-btn transit-geo-btn" id="clearOriginBtn" title="Reset to destination view">
+                    <i class="fa-solid fa-rotate-left"></i> Reset
+                </button>
             </form>
             <p id="transitStatusMsg" style="font-size: 13px; color: var(--muted); margin: -10px 0 16px;"></p>
 
@@ -734,35 +975,155 @@
                     {% endif %}
                 </div>
 
-                <!-- Interactive Travel Corridor Map ("Mappings & Strikes/Lines") -->
+                                <!-- Interactive Travel Corridor Map & GPS Navigation (Creative Reference Design) -->
                 <div class="transit-map-wrapper" id="transitMapWrapper">
                     <div class="map-top-bar">
                         <div class="map-title-row">
                             <span class="live-pulse-dot"></span>
-                            <span>Live Travel Corridor Route Map</span>
-                            <span id="mapSubtitle" style="font-size: 13px; font-weight: 500; color: var(--muted);">&bull; {% if transit.origin %}{{ transit.origin_short|default:transit.origin }} to {{ place.name }}{% else %}{{ place.name }} Destination Map{% endif %}</span>
+                            <div class="map-heading-group">
+                                <span class="map-heading-main">Live Travel Corridor Navigation Map</span>
+                                <span id="mapSubtitle" class="map-heading-sub">&bull; {% if transit.origin %}{{ transit.origin_short|default:transit.origin }} to {{ place.name }}{% else %}{{ place.name }} Destination Corridor{% endif %}</span>
+                            </div>
                         </div>
-                        <div>
+                        <div class="map-actions-toolbar">
+                            <!-- Basemap Theme Switcher -->
+                            <div class="map-theme-group" id="mapThemeGroup">
+                                <button type="button" class="map-theme-btn active" data-theme="streets" title="Crystal clear street & highway navigation">
+                                    <i class="fa-solid fa-road"></i> Streets
+                                </button>
+                                <button type="button" class="map-theme-btn" data-theme="transit" title="Vibrant public transit and terrain map">
+                                    <i class="fa-solid fa-bus"></i> Transit
+                                </button>
+                                <button type="button" class="map-theme-btn" data-theme="satellite" title="Satellite imagery with road overlay">
+                                    <i class="fa-solid fa-satellite"></i> Satellite
+                                </button>
+                            </div>
+
+                            <!-- Toggle Intermediate Bus Stops -->
+                            <button type="button" class="map-btn active" id="toggleStopsBtn" title="Toggle intermediate bus stops along the highway">
+                                <i class="fa-solid fa-signs-post"></i> <span id="toggleStopsText">Bus Stops</span>
+                                <span class="stops-count-badge" id="stopsCountBadge">{% if transit.map_data.transit_stops %}{{ transit.map_data.transit_stops|length }}{% else %}Stops{% endif %}</span>
+                            </button>
+
+                            <!-- Simulate Bus Ride Animation -->
+                            <button type="button" class="map-btn" id="simulateRideBtn" title="Animate bus journey from start to destination">
+                                <i class="fa-solid fa-play"></i> <span id="simulateBtnText">Simulate Ride</span>
+                            </button>
+
+                            <!-- Recenter / Fit Route -->
                             <button type="button" class="map-btn" id="recenterMapBtn" title="Fit entire journey on map">
-                                <i class="fa-solid fa-expand"></i> Fit Entire Route
+                                <i class="fa-solid fa-expand"></i> Fit Route
                             </button>
                         </div>
                     </div>
-                    <!-- Leaflet Canvas -->
-                    <div id="transitRouteMap" class="transit-map-canvas"></div>
+
+                    <!-- Viewport containing Map Canvas and the Floating TRAVEL NAVIGATION HUD Card -->
+                    <div class="map-viewport-container">
+                        <div id="transitRouteMap" class="transit-map-canvas"></div>
+
+                        <!-- Floating Modern "TRAVEL NAVIGATION" HUD Card (Styled after reference image) -->
+                        <div class="travel-nav-hud" id="travelNavHud">
+                            <div class="travel-nav-header">
+                                <div class="travel-nav-title">
+                                    <i class="fa-solid fa-diamond-turn-right"></i> TRAVEL NAVIGATION
+                                </div>
+                                <button type="button" class="travel-nav-min-btn" id="toggleHudBtn" title="Minimize / Expand HUD">
+                                    <i class="fa-solid fa-chevron-up"></i>
+                                </button>
+                            </div>
+
+                            <div class="travel-nav-body" id="travelNavBody">
+                                <div class="travel-nav-corridor-row">
+                                    <div class="hud-stop-point">
+                                        <span class="hud-dot origin-dot"></span>
+                                        <strong id="hudOriginText">{% if transit.origin %}{{ transit.origin_short|default:transit.origin }}{% else %}Departure{% endif %}</strong>
+                                    </div>
+                                    <div class="hud-corridor-line">
+                                        <i class="fa-solid fa-arrow-right-long"></i>
+                                    </div>
+                                    <div class="hud-stop-point">
+                                        <span class="hud-dot dest-dot"></span>
+                                        <strong id="hudDestText">{{ place.name|default:"Destination" }}</strong>
+                                    </div>
+                                </div>
+
+                                <div class="travel-nav-meta-grid">
+                                    <div class="travel-nav-meta-item">
+                                        <span class="hud-meta-label"><i class="fa-solid fa-route"></i> Distance</span>
+                                        <span class="hud-meta-val" id="hudDistance">~{{ transit.journey_summary.total_distance_km|default:"--" }} km</span>
+                                    </div>
+                                    <div class="travel-nav-meta-item">
+                                        <span class="hud-meta-label"><i class="fa-regular fa-clock"></i> Duration</span>
+                                        <span class="hud-meta-val" id="hudDuration">{{ transit.journey_summary.total_duration|default:"--" }}</span>
+                                    </div>
+                                    <div class="travel-nav-meta-item">
+                                        <span class="hud-meta-label"><i class="fa-solid fa-signs-post"></i> Bus Halts</span>
+                                        <span class="hud-meta-val" id="hudStopCount">{% if transit.map_data.transit_stops %}{{ transit.map_data.transit_stops|length }} Stops{% else %}-- Stops{% endif %}</span>
+                                    </div>
+                                    <div class="travel-nav-meta-item">
+                                        <span class="hud-meta-label"><i class="fa-solid fa-ticket"></i> Total Fare</span>
+                                        <span class="hud-meta-val" id="hudTotalFare">{{ transit.journey_summary.total_fare|default:"--" }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="travel-nav-status-banner" id="hudStatusBanner">
+                                    <div class="hud-pulse-ring"></div>
+                                    <span id="hudStatusText">Continuous Bus Service Operational</span>
+                                </div>
+
+                                <div class="travel-nav-sim-status" id="hudSimStatus" style="display: none;">
+                                    <div class="sim-bus-icon"><i class="fa-solid fa-bus"></i></div>
+                                    <div class="sim-text-group">
+                                        <strong id="simCurrentStopName">Approaching Next Stop...</strong>
+                                        <span id="simProgressText">Progress: 0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- En-Route Bus Stops Interactive Timeline Ribbon -->
+                    <div class="enroute-stops-timeline-strip" id="enrouteStopsStrip">
+                        <div class="stops-strip-header">
+                            <span><i class="fa-solid fa-bus-simple"></i> En-Route Bus Stops & Transit Halts:</span>
+                            <small style="color:var(--muted);">(Click any stop to inspect platform & timings)</small>
+                        </div>
+                        <div class="stops-strip-track" id="stopsStripTrack">
+                            {% if transit.map_data.transit_stops %}
+                                {% for s in transit.map_data.transit_stops %}
+                                    <div class="stop-pill-item" data-stop-seq="{{ s.seq }}" data-lat="{{ s.lat }}" data-lng="{{ s.lng }}">
+                                        <span class="stop-pill-seq">{{ s.seq }}</span>
+                                        <span>{{ s.name }}</span>
+                                    </div>
+                                    {% if not forloop.last %}
+                                        <i class="fa-solid fa-chevron-right stop-pill-arrow"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+
                     <!-- Legend -->
                     <div class="map-legend-bar">
                         <span class="legend-indicator">
-                            <span class="legend-line-strike" style="background: var(--feeder-color); border: 1px dashed #fff;"></span>
-                            Urban Feeder Bus
+                            <span class="legend-road-preview"></span>
+                            Asphalt Navigation Highway
                         </span>
                         <span class="legend-indicator">
-                            <span class="legend-line-strike" style="background: var(--intercity-color);"></span>
-                            KSRTC Intercity Expressway
+                            <span class="legend-pin-preview pin-origin-sample"><i class="fa-solid fa-location-dot"></i></span>
+                            Origin Feeder Stop
                         </span>
                         <span class="legend-indicator">
-                            <span class="legend-line-strike" style="background: var(--dest-color);"></span>
-                            Last-Mile Destination Shuttle
+                            <span class="legend-pin-preview pin-transfer-sample"><i class="fa-solid fa-shuffle"></i></span>
+                            Transit Interchange Hub
+                        </span>
+                        <span class="legend-indicator">
+                            <span class="legend-stop-sample"><i class="fa-solid fa-bus"></i></span>
+                            Highway Bus Halt
+                        </span>
+                        <span class="legend-indicator">
+                            <span class="legend-pin-preview pin-dest-sample"><i class="fa-solid fa-flag-checkered"></i></span>
+                            Tourist Destination
                         </span>
                     </div>
                 </div>
@@ -935,6 +1296,6 @@
 {% include "footer.html" %}
 
 <script src="{% static 'users/account.js' %}"></script>
-<script src="{% static 'explorer/js/dashboard.js' %}"></script>
+<script src="{% static 'explorer/js/dashboard.js' %}?v={% now 'U' %}"></script>
 </body>
 </html>

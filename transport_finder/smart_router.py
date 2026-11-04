@@ -460,6 +460,52 @@ ORIGIN_NODES = {
         "is_primary_hub": True,
         "feeder_hub": None,
     },
+        "ron": {
+        "name": "Ron, Gadag (Live Location)",
+        "short_name": "Ron",
+        "city": "Ron",
+        "district": "gadag",
+        "lat": 15.6994,
+        "lng": 75.7341,
+        "is_primary_hub": False,
+        "feeder_hub": "hubballi",
+        "feeder_bus": {
+            "bus_number": "NWK-RON-01",
+            "provider": "North Western Karnataka Road Transport Corporation (NWKRTC)",
+            "provider_code": "NWKRTC",
+            "boarding_point": "Ron Bus Stand",
+            "drop_point": "Hubballi Central Bus Stand (CBT)",
+            "stops_via": "Ron → Gadag Town → Annigeri → Hubballi CBT",
+            "frequency": "Every 20 minutes",
+            "distance_km": 72.0,
+            "duration": "1h 15m",
+            "fare": "₹65",
+            "bus_type": "NWKRTC Express",
+        },
+    },
+    "gadag": {
+        "name": "Gadag KSRTC Central Stand",
+        "short_name": "Gadag Central",
+        "city": "Gadag",
+        "district": "gadag",
+        "lat": 15.4290,
+        "lng": 75.6320,
+        "is_primary_hub": False,
+        "feeder_hub": "hubballi",
+        "feeder_bus": {
+            "bus_number": "NWK-GDG-01",
+            "provider": "NWKRTC",
+            "provider_code": "NWKRTC",
+            "boarding_point": "Gadag Central Stand",
+            "drop_point": "Hubballi Central Bus Stand (CBT)",
+            "stops_via": "Gadag → Annigeri → Hubballi CBT",
+            "frequency": "Every 15 minutes",
+            "distance_km": 56.0,
+            "duration": "55 mins",
+            "fare": "₹50",
+            "bus_type": "NWKRTC Express",
+        },
+    },
     "hubballi": {
         "name": "Hubballi Central Bus Stand (CBT)",
         "short_name": "Hubballi CBT",
@@ -478,6 +524,72 @@ ORIGIN_NODES = {
 # ============================================================================
 
 INTERCITY_CORRIDORS = {
+    ("Hubballi", "kodagu"): {
+        "service_name": "NWKRTC Malnad Coorg Express",
+        "operator": "North Western Karnataka Road Transport Corporation",
+        "operator_code": "NWKRTC",
+        "from_terminal": "Hubballi Central Bus Stand (CBT)",
+        "to_terminal": "Madikeri KSRTC Bus Stand",
+        "highway": "NH-48 & SH-57 via Davanagere, Shivamogga, Hassan, Kushalnagar",
+        "distance_km": 395.0,
+        "duration": "7h 45m",
+        "fare_range": "₹420 – ₹750",
+        "frequency": "Every 45 minutes",
+        "operating_hours": "05:00 AM – 10:30 PM",
+        "bus_type": "NWKRTC Airavat / Rajahamsa Executive",
+        "waypoints": [
+            [15.3524, 75.1417],  # Hubballi
+            [14.7950, 75.4020],  # Haveri
+            [14.4644, 75.9218],  # Davanagere
+            [13.9299, 75.5681],  # Shivamogga
+            [13.0068, 76.1004],  # Hassan
+            [12.4578, 75.9610],  # Kushalnagar
+            [12.4244, 75.7382],  # Madikeri
+        ],
+        "transit_stops": [
+            {"seq": 1, "name": "Hubballi Central Bus Stand (CBT)", "lat": 15.3524, "lng": 75.1417, "platform": "Bay 4 (Coorg Route)", "halt": "Origin departure", "buses": "NWKRTC Malnad Express", "type": "origin", "tip": "Major North Karnataka transit hub."},
+            {"seq": 2, "name": "Haveri Highway Stand", "lat": 14.7950, "lng": 75.4020, "platform": "NH-48 Bay", "halt": "5 min halt", "buses": "NWKRTC Sarige", "type": "enroute", "tip": "Quick highway refreshment stop."},
+            {"seq": 3, "name": "Davanagere KSRTC Central Terminal", "lat": 14.4644, "lng": 75.9218, "platform": "Platform 3", "halt": "10 min halt", "buses": "KSRTC / NWKRTC Intercity", "type": "transfer", "tip": "Central Karnataka junction halt."},
+            {"seq": 4, "name": "Shivamogga KSRTC Stand", "lat": 13.9299, "lng": 75.5681, "platform": "Bay 6", "halt": "10 min halt", "buses": "Malnad Express", "type": "transfer", "tip": "Gateway to Western Ghats."},
+            {"seq": 5, "name": "Hassan Central Bus Stand", "lat": 13.0068, "lng": 76.1004, "platform": "Platform 5", "halt": "10 min halt", "buses": "Cauvery Express", "type": "transfer", "tip": "Major transit interchange towards Kodagu."},
+            {"seq": 6, "name": "Kushalnagar Transit Hub", "lat": 12.4578, "lng": 75.9610, "platform": "Bay 2", "halt": "10 min transfer", "buses": "Dubare Kaveri Shuttle", "type": "transfer", "tip": "Transfer point for Dubare Elephant Camp (14 km) & Bylakuppe."},
+            {"seq": 7, "name": "Madikeri KSRTC Stand", "lat": 12.4244, "lng": 75.7382, "platform": "Bay 1", "halt": "Terminal arrival", "buses": "KSRTC Coorg Service", "type": "destination", "tip": "Coorg district headquarters."},
+        ],
+    },
+    ("Hubballi", "Udupi"): {
+        "service_name": "NWKRTC Karavali Coastal King",
+        "operator": "North Western Karnataka Road Transport Corporation",
+        "operator_code": "NWKRTC",
+        "from_terminal": "Hubballi Central Bus Stand (CBT)",
+        "to_terminal": "Udupi Service & KSRTC Bus Stand",
+        "highway": "SH-63 & NH-66 via Yellapur, Ankola, Kumta, Kundapura",
+        "distance_km": 285.0,
+        "duration": "5h 50m",
+        "fare_range": "₹310 – ₹540",
+        "frequency": "Every 30 minutes",
+        "operating_hours": "05:30 AM – 11:00 PM",
+        "bus_type": "NWKRTC Rajahamsa & Suvarna Sarige",
+        "waypoints": [
+            [15.3524, 75.1417],  # Hubballi CBT
+            [14.9650, 74.7120],  # Yellapur
+            [14.6640, 74.3010],  # Ankola
+            [14.4280, 74.4180],  # Kumta
+            [14.2800, 74.4500],  # Honnavar
+            [13.9850, 74.5500],  # Bhatkal
+            [13.6260, 74.6930],  # Kundapura
+            [13.3409, 74.7421],  # Udupi
+        ],
+        "transit_stops": [
+            {"seq": 1, "name": "Hubballi CBT", "lat": 15.3524, "lng": 75.1417, "platform": "Bay 5 (Coastal Bay)", "halt": "Origin departure", "buses": "NWKRTC Coastal King", "type": "origin", "tip": "Frequent direct departures towards Karavali coast."},
+            {"seq": 2, "name": "Yellapur Ghat Halt", "lat": 14.9650, "lng": 74.7120, "platform": "Main Bay", "halt": "5 min halt", "buses": "NWKRTC Sarige", "type": "enroute", "tip": "Ghat scenic stop amidst dense teak forests."},
+            {"seq": 3, "name": "Ankola NH-66 Junction", "lat": 14.6640, "lng": 74.3010, "platform": "NH-66 Shelter", "halt": "5 min halt", "buses": "Coastal Highway Bus", "type": "transfer", "tip": "Merge point onto coastal national highway."},
+            {"seq": 4, "name": "Kumta Town Stand", "lat": 14.4280, "lng": 74.4180, "platform": "Bay 2", "halt": "5 min halt", "buses": "NWKRTC Express", "type": "enroute", "tip": "Coastal town center."},
+            {"seq": 5, "name": "Bhatkal KSRTC Stand", "lat": 13.9850, "lng": 74.5500, "platform": "Bay 1", "halt": "5 min halt", "buses": "Coastal Express", "type": "enroute", "tip": "Highway coastal hub."},
+            {"seq": 6, "name": "Kundapura Service Stand", "lat": 13.6260, "lng": 74.6930, "platform": "Platform 3", "halt": "5 min halt", "buses": "Udupi Express", "type": "enroute", "tip": "Panchagangavalli river bridge crossing."},
+            {"seq": 7, "name": "Udupi Service Bus Stand", "lat": 13.3409, "lng": 74.7421, "platform": "City Shuttle Bay", "halt": "Arrival terminal", "buses": "City Shuttle UDP-01", "type": "destination", "tip": "Walk 5 mins through Car Street to Sri Krishna Temple."},
+        ],
+    },
+
     # --- Bengaluru to Other Districts ---
     ("Bengaluru", "mysore"): {
         "service_name": "KSRTC Airavat Club Class / Karnataka Sarige",
@@ -540,11 +652,28 @@ INTERCITY_CORRIDORS = {
         "operating_hours": "05:30 AM – 11:45 PM",
         "bus_type": "Airavat Diamond Class Volvo / Rajahamsa",
         "waypoints": [
-            [12.9782, 77.5707],
-            [12.3168, 76.6578],
+            [12.9782, 77.5707],  # Majestic / Bengaluru
+            [12.7980, 77.3820],  # Bidadi
+            [12.7210, 77.2810],  # Ramanagara
+            [12.6510, 77.2020],  # Channapatna
+            [12.5840, 77.0450],  # Maddur
+            [12.5240, 76.8960],  # Mandya
+            [12.4220, 76.6950],  # Srirangapatna
+            [12.3168, 76.6578],  # Mysuru
+            [12.3380, 76.4320],  # Bilikere
             [12.3050, 76.2890],  # Hunsur
+            [12.3410, 76.0960],  # Periyapatna
+            [12.4350, 75.9680],  # Bylakuppe
             [12.4578, 75.9610],  # Kushalnagar
             [12.4244, 75.7382],  # Madikeri
+        ],
+        "transit_stops": [
+            {"seq": 1, "name": "Mysore Road Satellite Stand / KBS", "lat": 12.9782, "lng": 77.5707, "platform": "Bay 3A", "halt": "Origin departure", "buses": "KSRTC Airavat Express", "type": "origin", "tip": "Express departures to Coorg every 30 mins."},
+            {"seq": 2, "name": "Mandya Express Highway Halt", "lat": 12.5240, "lng": 76.8960, "platform": "NH-275 Bay", "halt": "5 min halt", "buses": "KSRTC Express / Flybus", "type": "enroute", "tip": "Mid-way refresh stop on Bengaluru-Mysuru Expressway."},
+            {"seq": 3, "name": "Mysuru Central Bus Stand", "lat": 12.3168, "lng": 76.6578, "platform": "Platform 6", "halt": "15 min transfer", "buses": "MITRA / KSRTC Intercity", "type": "transfer", "tip": "Major interchange connecting Mysuru Palace, Chamundi, and Kodagu."},
+            {"seq": 4, "name": "Hunsur Highway Bus Stand", "lat": 12.3050, "lng": 76.2890, "platform": "Main Bay", "halt": "5 min halt", "buses": "KSRTC Coorg Express", "type": "enroute", "tip": "Gateway to Nagarahole and Kodagu foothill reserve."},
+            {"seq": 5, "name": "Kushalnagar Transit Stand", "lat": 12.4578, "lng": 75.9610, "platform": "Bay 2", "halt": "10 min transfer", "buses": "Dubare Shuttle / Golden Temple Bus", "type": "transfer", "tip": "Hop off here for Dubare Elephant Camp (14 km) & Tibetan Monastery."},
+            {"seq": 6, "name": "Madikeri Central KSRTC Terminal", "lat": 12.4244, "lng": 75.7382, "platform": "Bay 1", "halt": "Final destination", "buses": "KSRTC Coorg Division", "type": "destination", "tip": "Central hub for Abbey Falls, Raja Seat, and Talacauvery."},
         ],
     },
     ("Bengaluru", "hassan"): {
@@ -635,7 +764,7 @@ INTERCITY_CORRIDORS = {
         "operator_code": "KSRTC",
         "from_terminal": "Kempegowda Bus Station / Satellite Bus Stand",
         "to_terminal": "Udupi KSRTC & Service Bus Stand",
-        "highway": "NH-75 & Shiradi Ghat / Charmadi Corridor",
+        "highway": "NH-75 & NH-66 via Hassan, Shiradi Ghat & Mangaluru",
         "distance_km": 402.0,
         "duration": "8h 15m",
         "fare_range": "₹480 – ₹890",
@@ -643,12 +772,35 @@ INTERCITY_CORRIDORS = {
         "operating_hours": "Round the clock",
         "bus_type": "Airavat Club Class Volvo / Non-AC Sleeper",
         "waypoints": [
-            [12.9782, 77.5707],
+            [12.9782, 77.5707],  # Majestic
+            [13.0970, 77.3910],  # Nelamangala
+            [13.0240, 77.0420],  # Kunigal
+            [12.9710, 76.7210],  # Bellur Cross
+            [12.9060, 76.3920],  # Channarayapatna
             [13.0068, 76.1004],  # Hassan
-            [12.9460, 75.3120],  # Sakleshpur
-            [12.8872, 74.8458],  # Mangaluru
+            [12.9460, 75.7890],  # Sakleshpur
+            [12.8250, 75.4620],  # Gundya (Shiradi Ghat Exit)
+            [12.8710, 75.2530],  # Uppinangady
+            [12.8760, 75.0290],  # Bantwal / B.C. Road
+            [12.8872, 74.8458],  # Mangaluru Bejai
+            [13.0110, 74.7940],  # Surathkal NITK
+            [13.0930, 74.7920],  # Mulki
+            [13.2230, 74.7490],  # Kaup
             [13.3409, 74.7421],  # Udupi
         ],
+        "transit_stops": [
+            {"name": "Kempegowda Bus Station (Majestic)", "type": "origin_hub", "platform": "Terminal 1 (Coastal Bay)", "halt": "Departure Terminal", "lat": 12.9782, "lng": 77.5707, "buses": "KSRTC Airavat Multi-Axle", "tip": "Board at Terminal 1 Coastal Bays."},
+            {"name": "Nelamangala Toll Junction", "type": "transit_stop", "platform": "Expressway Halt", "halt": "3 min pickup", "lat": 13.0970, "lng": 77.3910, "buses": "KSRTC Express", "tip": "North-west Bengaluru highway boarding point."},
+            {"name": "Kunigal Bypass Halt", "type": "transit_stop", "platform": "Highway Shelter", "halt": "5 min halt", "lat": 13.0240, "lng": 77.0420, "buses": "NH-75 Express", "tip": "Expressway transit stop."},
+            {"name": "Hassan Central Bus Stand", "type": "transit_hub", "platform": "Platform 3", "halt": "15 min refreshment halt", "lat": 13.0068, "lng": 76.1004, "buses": "Airavat & Sarige Express", "tip": "Major halfway refreshment and dinner halt."},
+            {"name": "Sakleshpur KSRTC Stand", "type": "transit_stop", "platform": "Main Bay", "halt": "5 min halt", "lat": 12.9460, "lng": 75.7890, "buses": "Western Ghats Corridor", "tip": "Highland stop before entering Shiradi Ghat."},
+            {"name": "Uppinangady Bus Shelter", "type": "transit_stop", "platform": "Highway Cross", "halt": "5 min halt", "lat": 12.8710, "lng": 75.2530, "buses": "KSRTC Coastal Express", "tip": "Foot of the ghats junction."},
+            {"name": "Mangaluru KSRTC Bejai Terminal", "type": "transit_hub", "platform": "Platform 6", "halt": "15 min transit halt", "lat": 12.8872, "lng": 74.8458, "buses": "Coastal King Volvo", "tip": "Coastal district capital interchange terminal."},
+            {"name": "Surathkal NITK Junction", "type": "transit_stop", "platform": "NH-66 Shelter", "halt": "2 min halt", "lat": 13.0110, "lng": 74.7940, "buses": "Express", "tip": "NITK university junction."},
+            {"name": "Mulki Bus Stand", "type": "transit_stop", "platform": "Town Shelter", "halt": "3 min halt", "lat": 13.0930, "lng": 74.7920, "buses": "Coastal Bus", "tip": "Town stop on NH-66."},
+            {"name": "Kaup Lighthouse Cross", "type": "transit_stop", "platform": "Highway Shelter", "halt": "2 min halt", "lat": 13.2230, "lng": 74.7490, "buses": "Coastal Shuttles", "tip": "Kaup Beach connection point."},
+            {"name": "Udupi KSRTC & Service Bus Stand", "type": "destination_hub", "platform": "Bay 2", "halt": "Arrival Terminal", "lat": 13.3409, "lng": 74.7421, "buses": "City Feeder UDP-01 / Walk to Temple", "tip": "Alight here to switch to City Bus UDP-01 or walk 5 minutes through Car Street to Sri Krishna Temple."},
+        ]
     },
     ("Bengaluru", "Mangaluru"): {
         "service_name": "KSRTC Mangaluru Express",
@@ -707,10 +859,21 @@ INTERCITY_CORRIDORS = {
         "operating_hours": "05:30 AM – 10:30 PM",
         "bus_type": "Sarige & Rajahamsa",
         "waypoints": [
-            [12.3168, 76.6578],
+            [12.3168, 76.6578],  # Mysuru
+            [12.3380, 76.4320],  # Bilikere
             [12.3050, 76.2890],  # Hunsur
+            [12.3410, 76.0960],  # Periyapatna
+            [12.4350, 75.9680],  # Bylakuppe
             [12.4578, 75.9610],  # Kushalnagar
             [12.4244, 75.7382],  # Madikeri
+        ],
+        "transit_stops": [
+            {"seq": 1, "name": "Mysuru Central Bus Stand", "lat": 12.3168, "lng": 76.6578, "platform": "Platform 6", "halt": "Origin departure", "buses": "KSRTC Cauvery Express", "type": "origin", "tip": "Direct departures towards Madikeri and Kushalnagar every 20 mins."},
+            {"seq": 2, "name": "Bilikere Junction Halt", "lat": 12.3380, "lng": 76.4320, "platform": "Bypass Bay", "halt": "3 min halt", "buses": "KSRTC Sarige", "type": "enroute", "tip": "Highway junction connecting Hassan and Kodagu."},
+            {"seq": 3, "name": "Hunsur Highway Bus Stand", "lat": 12.3050, "lng": 76.2890, "platform": "Main Bay", "halt": "5 min halt", "buses": "KSRTC Express", "type": "enroute", "tip": "Frequent tea and refreshment stop."},
+            {"seq": 4, "name": "Periyapatna Town Stand", "lat": 12.3410, "lng": 76.0960, "platform": "Town Bay", "halt": "5 min halt", "buses": "KSRTC Coorg Express", "type": "enroute", "tip": "Heritage tobacco market town en route to Coorg."},
+            {"seq": 5, "name": "Kushalnagar Transit Hub", "lat": 12.4578, "lng": 75.9610, "platform": "Bay 2", "halt": "10 min transfer", "buses": "Dubare Shuttle / Golden Temple Bus", "type": "transfer", "tip": "Transfer point for Dubare Elephant Camp (14 km) & Bylakuppe."},
+            {"seq": 6, "name": "Madikeri Central KSRTC Stand", "lat": 12.4244, "lng": 75.7382, "platform": "Bay 1", "halt": "Terminal halt", "buses": "KSRTC Malnad Service", "type": "destination", "tip": "Hill station terminal for Coorg sightseeing."},
         ],
     },
     ("mysore", "Shivamogga"): {
@@ -801,12 +964,12 @@ INTERCITY_CORRIDORS = {
         ],
     },
     ("mysore", "Udupi"): {
-        "service_name": "KSRTC Coastal Express",
+        "service_name": "KSRTC Coastal Express (Airavat & Rajahamsa)",
         "operator": "Karnataka State Road Transport Corporation",
         "operator_code": "KSRTC",
         "from_terminal": "Mysuru KSRTC Central Stand",
         "to_terminal": "Udupi KSRTC & Service Bus Stand",
-        "highway": "SH-88 & NH-66 via Madikeri & Mangaluru",
+        "highway": "SH-88 & NH-66 via Hunsur, Madikeri & Mangaluru",
         "distance_km": 275.0,
         "duration": "6h 30m",
         "fare_range": "₹320 – ₹550",
@@ -814,11 +977,37 @@ INTERCITY_CORRIDORS = {
         "operating_hours": "06:00 AM – 11:00 PM",
         "bus_type": "Airavat Multi-Axle & Rajahamsa",
         "waypoints": [
-            [12.3168, 76.6578],
-            [12.4244, 75.7382],
-            [12.8872, 74.8458],
-            [13.3409, 74.7421],
+            [12.3168, 76.6578],  # Mysuru KSRTC Central
+            [12.3480, 76.4520],  # Bilikere
+            [12.3050, 76.2890],  # Hunsur
+            [12.3410, 76.0970],  # Periyapatna
+            [12.4578, 75.9610],  # Kushalnagar
+            [12.4640, 75.8340],  # Suntikoppa
+            [12.4244, 75.7382],  # Madikeri
+            [12.5020, 75.5560],  # Sampaje Ghat
+            [12.5630, 75.3890],  # Sullya
+            [12.7660, 75.2030],  # Puttur
+            [12.8760, 75.0290],  # Bantwal / B.C. Road
+            [12.8872, 74.8458],  # Mangaluru Bejai
+            [13.0110, 74.7940],  # Surathkal NITK
+            [13.0930, 74.7920],  # Mulki
+            [13.1670, 74.7730],  # Padubidri
+            [13.2230, 74.7490],  # Kaup
+            [13.3409, 74.7421],  # Udupi Service Stand
         ],
+        "transit_stops": [
+            {"name": "Mysuru KSRTC Central Stand", "type": "origin_hub", "platform": "Platform 3 (Coastal Express)", "halt": "Departure Terminal", "lat": 12.3168, "lng": 76.6578, "buses": "KSRTC Airavat, Rajahamsa, Sarige", "tip": "Board at Platform 3. Direct booking counter available at Counter 7."},
+            {"name": "Hunsur Highway Bus Stand", "type": "transit_stop", "platform": "Bay 1", "halt": "5 min halt", "lat": 12.3050, "lng": 76.2890, "buses": "Intercity Express", "tip": "Major town passenger pickup point on SH-88."},
+            {"name": "Kushalnagar Bus Shelter", "type": "transit_stop", "platform": "Main Bay", "halt": "5 min halt", "lat": 12.4578, "lng": 75.9610, "buses": "Cauvery Corridor Express", "tip": "Express halt near Cauvery bridge."},
+            {"name": "Madikeri KSRTC Stand", "type": "transit_hub", "platform": "Platform 4", "halt": "10 min tea halt", "lat": 12.4244, "lng": 75.7382, "buses": "Hill Station Express & Sarige", "tip": "Scenic hill station refreshment halt before the ghat descent."},
+            {"name": "Sullya KSRTC Bus Stand", "type": "transit_stop", "platform": "Main Bay", "halt": "5 min halt", "lat": 12.5630, "lng": 75.3890, "buses": "Sarige & Rajahamsa", "tip": "Ghat exit checkpoint and regional halt."},
+            {"name": "Puttur KSRTC Stand", "type": "transit_stop", "platform": "Bay 2", "halt": "5 min halt", "lat": 12.7660, "lng": 75.2030, "buses": "KSRTC Express", "tip": "Town center terminal."},
+            {"name": "Mangaluru KSRTC Bejai Terminal", "type": "transit_hub", "platform": "Platform 6 (Udupi Bay)", "halt": "15 min interchange halt", "lat": 12.8872, "lng": 74.8458, "buses": "KSRTC Coastal King & Express", "tip": "Major coastal transit terminal with food court and facilities."},
+            {"name": "Surathkal NITK Junction", "type": "transit_stop", "platform": "NH-66 Shelter", "halt": "2 min pickup", "lat": 13.0110, "lng": 74.7940, "buses": "Coastal Express", "tip": "NITK campus junction stop."},
+            {"name": "Mulki Bus Stand", "type": "transit_stop", "platform": "NH-66 Stop", "halt": "3 min halt", "lat": 13.0930, "lng": 74.7920, "buses": "Express & Shuttles", "tip": "Coastal express stop."},
+            {"name": "Kaup Lighthouse Cross", "type": "transit_stop", "platform": "Highway Cross", "halt": "2 min pickup", "lat": 13.2230, "lng": 74.7490, "buses": "NH-66 Coastal Buses", "tip": "Kaup Beach connection point."},
+            {"name": "Udupi KSRTC & Service Bus Stand", "type": "destination_hub", "platform": "Platform 2 (City Feeder Bay)", "halt": "Arrival Terminal", "lat": 13.3409, "lng": 74.7421, "buses": "City Shuttle UDP-01 / Walk to Temple", "tip": "Alight here to switch to City Bus UDP-01 or walk 5 minutes through Car Street to Sri Krishna Temple."},
+        ]
     },
     ("mysore", "Mangaluru"): {
         "service_name": "KSRTC Mangaluru Express",
@@ -911,7 +1100,137 @@ INTERCITY_CORRIDORS = {
 # 3. DESTINATION LAST-MILE DIRECT BUS SPECS (All 85 Destinations)
 # ============================================================================
 
+DISTRICT_HUBS = {
+    "mysore": {"name": "Mysuru", "lat": 12.3168, "lng": 76.6578, "hub_stop": "Mysuru City Bus Stand (CBS) / Central Stand"},
+    "udupi": {"name": "Udupi", "lat": 13.3409, "lng": 74.7421, "hub_stop": "Udupi Service & KSRTC Bus Stand"},
+    "mangaluru": {"name": "Mangaluru", "lat": 12.8872, "lng": 74.8458, "hub_stop": "Mangaluru KSRTC Central Stand (Bejai)"},
+    "dakshina kannada": {"name": "Mangaluru", "lat": 12.8872, "lng": 74.8458, "hub_stop": "Mangaluru KSRTC Central Stand (Bejai)"},
+    "kodagu": {"name": "Madikeri", "lat": 12.4244, "lng": 75.7382, "hub_stop": "Madikeri KSRTC Bus Stand"},
+    "shivamogga": {"name": "Shivamogga", "lat": 13.9299, "lng": 75.5681, "hub_stop": "Shivamogga KSRTC Central Stand"},
+    "chikkamagaluru": {"name": "Chikkamagaluru", "lat": 13.3161, "lng": 75.7720, "hub_stop": "Chikkamagaluru KSRTC Bus Stand"},
+    "hassan": {"name": "Hassan", "lat": 13.0068, "lng": 76.1004, "hub_stop": "Hassan Central Bus Stand"},
+    "hampi": {"name": "Hosapete (Hampi)", "lat": 15.2750, "lng": 76.3888, "hub_stop": "Hosapete Central Bus Stand"},
+    "vijayanagara": {"name": "Hosapete (Hampi)", "lat": 15.2750, "lng": 76.3888, "hub_stop": "Hosapete Central Bus Stand"},
+    "uttara kannada": {"name": "Gokarna / Kumta", "lat": 14.5428, "lng": 74.3188, "hub_stop": "Gokarna KSRTC Bus Stand"},
+    "mandya": {"name": "Mandya", "lat": 12.5238, "lng": 76.8967, "hub_stop": "Mandya Central Bus Stand"},
+    "bengaluru": {"name": "Bengaluru", "lat": 12.9782, "lng": 77.5707, "hub_stop": "Kempegowda Bus Station (Majestic)"},
+    "bengaluru urban": {"name": "Bengaluru", "lat": 12.9782, "lng": 77.5707, "hub_stop": "Kempegowda Bus Station (Majestic)"},
+    "belagavi": {"name": "Belagavi", "lat": 15.8497, "lng": 74.4977, "hub_stop": "Belagavi Central Bus Stand (CBT)"},
+    "dharwad": {"name": "Hubballi", "lat": 15.3524, "lng": 75.1417, "hub_stop": "Hubballi Central Bus Stand"},
+}
+
 DESTINATION_SPECS = {
+    "dubare-elephant-camp": {
+        "name": "Dubare Elephant Camp",
+        "district": "kodagu",
+        "hub": "Kushalnagar / Madikeri",
+        "hub_stop": "Kushalnagar KSRTC Bus Stand",
+        "lat": 12.3683,
+        "lng": 75.9044,
+        "direct_stop": "Dubare Elephant Camp Ferry and Bus Stop",
+        "distance_from_hub_km": 14.0,
+        "duration_from_hub": "25 mins",
+        "fare": "₹25",
+        "frequency": "Every 20 minutes",
+        "operating_hours": "07:30 AM – 06:30 PM",
+        "bus_type": "KSRTC / Kaveri Local Shuttle",
+        "buses": [
+            {
+                "bus_number": "DUB-01",
+                "route_id": "KOD-DUB-01",
+                "provider": "KSRTC / Kodagu Local Transit",
+                "provider_code": "KSRTC",
+                "route_name": "Kushalnagar ⇔ Guddehosur ⇔ Dubare Elephant Camp",
+                "boarding_point": "Kushalnagar Bus Stand (Bay 2)",
+                "drop_point": "Dubare Elephant Camp Stop",
+                "stops_via": "Kushalnagar → Guddehosur → Nanjarayapatna → Dubare",
+                "frequency": "Every 20 minutes",
+                "operating_hours": "07:30 AM – 06:30 PM",
+                "fare": "₹25",
+                "bus_type": "Kaveri River Route Shuttle",
+            },
+        ],
+        "travel_tip": "Board any KSRTC bus to Kushalnagar Stand, then take the frequent Kaveri Shuttle direct to Dubare Elephant Camp.",
+    },
+
+    "sri-krishna-temple": {
+        "name": "Sri Krishna Matha & Temple, Udupi",
+        "district": "Udupi",
+        "hub": "Udupi",
+        "hub_stop": "Udupi Service & City Bus Stand (Near Clock Tower)",
+        "lat": 13.3409,
+        "lng": 74.7554,
+        "direct_stop": "Car Street / Sri Krishna Temple Kanaka Kindi Gate",
+        "distance_from_hub_km": 1.2,
+        "duration_from_hub": "5 mins",
+        "fare": "₹10",
+        "frequency": "Every 5–10 minutes",
+        "operating_hours": "05:00 AM – 10:00 PM",
+        "bus_type": "City Bus & Electric Shuttle",
+        "buses": [
+            {
+                "bus_number": "UDP-01",
+                "route_id": "UDP-MATHA-01",
+                "provider": "Udupi City Transit / KSRTC City Feeder",
+                "provider_code": "KSRTC",
+                "route_name": "Udupi Service Bus Stand ⇔ Car Street / Sri Krishna Temple",
+                "boarding_point": "Udupi Service Bus Stand (Bay 2)",
+                "drop_point": "Sri Krishna Temple Entrance / Car Street",
+                "stops_via": "Service Bus Stand → Clock Tower → Sanskrit College Circle → Temple Car Street",
+                "frequency": "Every 5–10 minutes",
+                "operating_hours": "05:00 AM – 10:00 PM",
+                "fare": "₹10",
+                "bus_type": "City Feeder Shuttle (or 5 min walk)",
+            },
+            {
+                "bus_number": "UDP-04",
+                "route_id": "UDP-RLY-TEMPLE",
+                "provider": "Udupi City Bus Union",
+                "provider_code": "KSRTC",
+                "route_name": "Udupi Railway Station ⇔ Service Bus Stand ⇔ Sri Krishna Temple",
+                "boarding_point": "Udupi Railway Station / Service Stand",
+                "drop_point": "Sri Krishna Matha Entrance Gate",
+                "stops_via": "Railway Station → Manipal Cross → Service Bus Stand → Temple Car Street",
+                "frequency": "Every 15 minutes",
+                "operating_hours": "05:30 AM – 09:30 PM",
+                "fare": "₹15",
+                "bus_type": "City Bus",
+            },
+        ],
+        "travel_tip": "Board City Bus UDP-01 from Udupi Railway Station or walk 5 minutes from Service Bus Stand through vibrant Car Street.",
+    },
+    "kaup-beach-and-lighthouse": {
+        "name": "Kaup Beach & Historic Lighthouse",
+        "district": "Udupi",
+        "hub": "Udupi",
+        "hub_stop": "Udupi Service Bus Stand",
+        "lat": 13.2230,
+        "lng": 74.7410,
+        "direct_stop": "Kaup Light House Beach Gate",
+        "distance_from_hub_km": 14.5,
+        "duration_from_hub": "25 mins",
+        "fare": "₹20",
+        "frequency": "Every 15 minutes",
+        "operating_hours": "06:00 AM – 08:30 PM",
+        "bus_type": "Express & Coastal Shuttle",
+        "buses": [
+            {
+                "bus_number": "UDP-KAP",
+                "route_id": "UDP-KAP-01",
+                "provider": "Udupi City Transit",
+                "provider_code": "KSRTC",
+                "route_name": "Udupi Service Stand ⇔ Kaup Lighthouse Beach",
+                "boarding_point": "Udupi Service Bus Stand",
+                "drop_point": "Kaup Beach Gate",
+                "stops_via": "Udupi → Katapadi → Kaup Cross → Lighthouse Beach",
+                "frequency": "Every 15 minutes",
+                "operating_hours": "06:00 AM – 08:30 PM",
+                "fare": "₹20",
+                "bus_type": "City & Coastal Bus",
+            }
+        ],
+        "travel_tip": "Catch any Mangaluru-bound local bus, alight at Kaup Junction, and take the 5-min beach shuttle to the lighthouse.",
+    },
     "krs-dam": {
         "name": "KRS Dam & Brindavan Gardens",
         "district": "mysore",
@@ -1213,7 +1532,7 @@ def resolve_user_origin(origin_text=None, origin_lat=None, origin_lng=None):
     Intelligently identify the user's starting point from GPS coordinates
     or user query string. Returns standard node dict.
     """
-    # 1. Try coordinate match if valid numbers provided
+    # 1. Dynamic GPS Coordinate Matching (Works for ANY location in Karnataka & India)
     if origin_lat is not None and origin_lng is not None:
         try:
             lat = float(origin_lat)
@@ -1228,31 +1547,100 @@ def resolve_user_origin(origin_text=None, origin_lat=None, origin_lng=None):
                     min_dist = d
                     closest_key = k
 
-            # Check if within Mysuru urban region (lat ~12.22-12.42, lng ~76.54-76.75)
-            # or within 25km of a known node:
-            if closest_key and min_dist <= 25.0:
+            user_provided_name = (origin_text or "").strip()
+            if user_provided_name.lower() in ["live gps doorstep location", "live doorstep gps", "live gps location", "my location", "current location", "clear", "none", ""]:
+                user_provided_name = None
+
+            # Only snap to a known node if very close (<= 3.5 km)
+            if closest_key and min_dist <= 3.5:
                 node_copy = dict(ORIGIN_NODES[closest_key])
                 node_copy["is_gps"] = True
                 node_copy["gps_distance_km"] = round(min_dist, 2)
                 node_copy["detected_coords"] = [lat, lng]
-                if min_dist <= 4.0:
-                    node_copy["name"] = f"{node_copy['short_name']}, Mysuru (Live Doorstep GPS)" if node_copy.get("city") == "Mysuru" else f"{node_copy['short_name']} (Live Doorstep GPS)"
+                node_copy["lat"] = lat
+                node_copy["lng"] = lng
+                disp = user_provided_name or node_copy["short_name"]
+                node_copy["name"] = f"{disp} (Live Doorstep GPS)"
                 return node_copy
             else:
                 # Custom GPS location anywhere in Karnataka
-                is_mysore_region = (12.15 <= lat <= 12.45 and 76.50 <= lng <= 76.80)
-                city_name = "Mysuru" if is_mysore_region else "Current Location"
-                district_name = "mysore" if is_mysore_region else "Custom"
-                hub_name = "mysuru-cbs" if is_mysore_region else "kempegowda-bus-station"
+                closest_node = ORIGIN_NODES[closest_key] if closest_key else None
+                nearest_town = closest_node["short_name"] if (closest_node and min_dist <= 35.0) else None
+
+                if user_provided_name:
+                    display_name = user_provided_name
+                elif nearest_town:
+                    display_name = f"{nearest_town} Area"
+                else:
+                    display_name = f"Live GPS ({round(lat, 4)}, {round(lng, 4)})"
+
+                short_name = display_name.split(",")[0].strip()
+
+                # Determine regional administrative zone and primary hub
+                if 12.10 <= lat <= 12.60 and 76.30 <= lng <= 77.10:
+                    city_name = "Mysuru Region"
+                    district_name = "mysore"
+                    hub_name = "mysuru-central"
+                    hub_terminal = "Mysuru Central KSRTC Bus Stand"
+                    hub_coord = [12.3168, 76.6578]
+                elif lat >= 14.80:
+                    city_name = short_name or "North Karnataka"
+                    district_name = "Dharwad"
+                    hub_name = "hubballi"
+                    hub_terminal = "Hubballi Central Bus Stand (CBT)"
+                    hub_coord = [15.3524, 75.1417]
+                elif lng <= 75.10 and lat <= 14.50:
+                    city_name = short_name or "Coastal Karnataka"
+                    district_name = "dakshina kannada"
+                    hub_name = "mangaluru"
+                    hub_terminal = "Mangaluru KSRTC Central Stand"
+                    hub_coord = [12.8703, 74.8806]
+                elif 13.50 <= lat <= 14.80 and lng <= 76.00:
+                    city_name = short_name or "Malnad Region"
+                    district_name = "shivamogga"
+                    hub_name = "shivamogga"
+                    hub_terminal = "Shivamogga KSRTC Central Stand"
+                    hub_coord = [13.9299, 75.5681]
+                else:
+                    city_name = short_name or "Bengaluru Region"
+                    district_name = "bengaluru-urban"
+                    hub_name = "kempegowda-bus-station"
+                    hub_terminal = "Kempegowda Bus Station (Majestic)"
+                    hub_coord = [12.9782, 77.5707]
+
+                dist_to_hub = round(haversine_distance(lat, lng, hub_coord[0], hub_coord[1]), 1)
+                feeder_dur = max(15, min(60, int(dist_to_hub * 1.8)))
+                feeder_fare = max(15, min(50, int(dist_to_hub * 2.2)))
+
+                feeder_bus = {
+                    "bus_number": f"{'NWK' if lat >= 14.5 else 'KSRTC'}-Feeder",
+                    "provider": f"{city_name} Transit Division",
+                    "provider_code": "NWKRTC" if lat >= 14.5 else "KSRTC",
+                    "boarding_point": f"{short_name} Local Stop / Doorstep Point",
+                    "drop_point": hub_terminal,
+                    "stops_via": f"{short_name} Local Route → Highway Link → {hub_terminal}",
+                    "distance_km": dist_to_hub,
+                    "duration": f"{feeder_dur} mins",
+                    "fare": f"₹{feeder_fare}",
+                    "frequency": "Every 12–15 minutes",
+                    "operating_hours": "05:30 AM – 10:30 PM",
+                    "bus_type": "Regional City & Rural Feeder",
+                    "alt_mode": "Auto-rickshaw / Local Taxi to Central Stand",
+                }
+
+                final_name = f"{display_name} (Live Doorstep GPS)" if not ("live" in display_name.lower() or "gps" in display_name.lower()) else display_name
+
                 return {
-                    "name": f"My Location ({round(lat, 4)}, {round(lng, 4)})",
-                    "short_name": "My GPS Location",
+                    "name": final_name,
+                    "short_name": short_name,
                     "city": city_name,
                     "district": district_name,
                     "lat": lat,
                     "lng": lng,
                     "is_gps": True,
                     "feeder_hub": hub_name,
+                    "feeder_bus": feeder_bus,
+                    "detected_coords": [lat, lng],
                 }
         except (ValueError, TypeError):
             pass
@@ -1263,6 +1651,10 @@ def resolve_user_origin(origin_text=None, origin_lat=None, origin_lng=None):
     q = origin_text.strip().lower()
 
     # Specific aliases - Check local neighborhoods first!
+    if "ron" in q:
+        return dict(ORIGIN_NODES["ron"])
+    if "gadag" in q:
+        return dict(ORIGIN_NODES["gadag"])
     if "alanahal" in q or "alanahalli" in q or "alanahally" in q or "bannur" in q or "siddhartha" in q:
         return dict(ORIGIN_NODES["alanahalli"])
     if "kuvempu" in q:
@@ -1349,6 +1741,19 @@ def resolve_destination_spec(place):
             status = prof.get("status", "hub_connected")
             hub_dist = prof.get("hub_distance") or "~15 km from Hub"
             bus_routes = [dict(b) for b in prof.get("bus_routes", [])]
+            d_clean = district_name.strip().lower()
+            hub_info = DISTRICT_HUBS.get(d_clean)
+            if not hub_info:
+                for k, v in DISTRICT_HUBS.items():
+                    if k in d_clean or d_clean in k:
+                        hub_info = v
+                        break
+            base_lat = hub_info["lat"] if hub_info else 12.9716
+            base_lng = hub_info["lng"] if hub_info else 77.5946
+            offset_lat = (((len(slug) * 3) % 11) - 5) * 0.005
+            offset_lng = (((len(place_name) * 5) % 11) - 5) * 0.005
+            prof_lat = round(base_lat + offset_lat, 4)
+            prof_lng = round(base_lng + offset_lng, 4)
             return {
                 "name": place_name,
                 "district": district_name,
@@ -1356,8 +1761,8 @@ def resolve_destination_spec(place):
                 "status": status,
                 "hub_distance": hub_dist,
                 "hub_stop": f"{hub} Central Bus Stand",
-                "lat": round(12.3000 + (len(slug) * 0.012), 4),
-                "lng": round(76.6000 + (len(place_name) * 0.008), 4),
+                "lat": prof_lat,
+                "lng": prof_lng,
                 "direct_stop": prof.get("direct_stop") or f"{place_name} Stop",
                 "distance_from_hub_km": 19.0 if "19" in hub_dist else 15.0,
                 "duration_from_hub": "30 mins",
@@ -1373,9 +1778,23 @@ def resolve_destination_spec(place):
         pass
 
     # Generate consistent high-detail fallback for any of the 85 destinations
-    hub_name = district_name.title()
-    lat = 12.3000 + (len(slug) * 0.012)
-    lng = 76.6000 + (len(place_name) * 0.008)
+    d_clean = district_name.strip().lower()
+    hub_info = DISTRICT_HUBS.get(d_clean)
+    if not hub_info:
+        for k, v in DISTRICT_HUBS.items():
+            if k in d_clean or d_clean in k:
+                hub_info = v
+                break
+    if not hub_info:
+        hub_info = {"name": district_name.title(), "lat": 12.3168, "lng": 76.6578, "hub_stop": f"{district_name.title()} Central Stand"}
+
+    hub_name = hub_info["name"]
+    base_lat = hub_info["lat"]
+    base_lng = hub_info["lng"]
+    offset_lat = (((len(slug) * 3) % 11) - 5) * 0.006
+    offset_lng = (((len(place_name) * 5) % 11) - 5) * 0.006
+    lat = round(base_lat + offset_lat, 4)
+    lng = round(base_lng + offset_lng, 4)
 
     return {
         "name": place_name,
@@ -1479,8 +1898,8 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
                 "last_updated": now.strftime("%H:%M:%S IST"),
             },
             "quick_origins": [
-                {"label": "🏛️ Mysuru Central", "val": "Mysuru", "active": False},
-                {"label": "🏡 Alanahalli (Mysuru)", "val": "Alanahalli", "active": False},
+                {"label": "🏛️ Bengaluru (Majestic)", "val": "Bengaluru", "active": False},
+                {"label": "🏰 Mysuru Central", "val": "Mysuru", "active": False},
                 {"label": "🏙️ Rajajinagar", "val": "Rajajinagar", "active": False},
                 {"label": "✈️ BLR Airport", "val": "Airport", "active": False},
                 {"label": "🚉 Majestic (KBS)", "val": "Majestic", "active": False},
@@ -1509,6 +1928,8 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
         user_hub = "mysore"
     elif "mangal" in origin_city_raw or "mangal" in origin_dist_raw:
         user_hub = "Mangaluru"
+    elif "hubb" in origin_city_raw or "hubb" in origin_dist_raw or "dharwad" in origin_dist_raw or "gadag" in origin_dist_raw or "ron" in origin_city_raw:
+        user_hub = "Hubballi"
     elif "shivam" in origin_city_raw or "shivam" in origin_dist_raw:
         user_hub = "Shivamogga"
     else:
@@ -1550,7 +1971,7 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
                 "route_name": f"{origin['short_name']} ⇔ {feeder['drop_point']}",
                 "boarding_point": feeder["boarding_point"],
                 "drop_point": feeder["drop_point"],
-                "distance": f"{feeder['distance_km']} km",
+                "distance": f"{feeder.get('distance_km', 15.0)} km",
                 "duration": feeder["duration"],
                 "fare": feeder["fare"],
                 "frequency": feeder["frequency"],
@@ -1758,22 +2179,22 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
             legs.append({
                 "step_number": step_idx,
                 "leg_type": "feeder",
-                "title": f"Local Urban Feeder ({feeder['bus_number']})",
-                "provider": feeder["provider"],
-                "provider_code": feeder["provider_code"],
-                "badge_class": f"badge-{feeder['provider_code'].lower()}",
-                "bus_number": feeder["bus_number"],
+                "title": f"Local Regional Feeder ({feeder.get('bus_number', 'Bus')})",
+                "provider": feeder.get("provider", "Regional Transport"),
+                "provider_code": feeder.get("provider_code", "NWKRTC"),
+                "badge_class": f"badge-{feeder.get('provider_code', 'ksrtc').lower()}",
+                "bus_number": feeder.get("bus_number", "Feeder"),
                 "route_name": f"{origin['short_name']} ⇔ {corridor['from_terminal']}",
-                "boarding_point": feeder["boarding_point"],
+                "boarding_point": feeder.get("boarding_point", origin['name']),
                 "drop_point": corridor["from_terminal"],
-                "distance": f"{feeder['distance_km']} km",
-                "duration": feeder["duration"],
-                "fare": feeder["fare"],
-                "frequency": feeder["frequency"],
-                "operating_hours": feeder["operating_hours"],
-                "departure_status": f"Departures every 5–10 mins • Next in {dep_in_mins} mins",
-                "stops_via": feeder["stops_via"],
-                "instructions": f"Board {feeder['bus_number']} from {feeder['boarding_point']}. Alight at {corridor['from_terminal']}.",
+                "distance": f"{feeder.get('distance_km', 15.0)} km",
+                "duration": feeder.get("duration", "30 mins"),
+                "fare": feeder.get("fare", "₹25"),
+                "frequency": feeder.get("frequency", "Every 15 mins"),
+                "operating_hours": feeder.get("operating_hours", "06:00 AM – 10:30 PM"),
+                "departure_status": f"Departures every 10–15 mins • Next in {dep_in_mins} mins",
+                "stops_via": feeder.get("stops_via", ""),
+                "instructions": f"Board {feeder.get('bus_number', 'Feeder')} from {feeder.get('boarding_point', origin['name'])}. Alight at {corridor['from_terminal']}.",
                 "alt_mode": feeder.get("alt_mode"),
                 "stroke_color": "#06b6d4",
             })
@@ -1909,6 +2330,113 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
         if "drop_point" not in r and "to" in r:
             r["drop_point"] = r["to"]
 
+    # Build complete sequential transit stops for visualization
+    all_transit_stops = []
+    feeder_obj = origin.get("feeder_bus")
+    all_transit_stops.append({
+        "seq": 1,
+        "name": f"{origin['short_name']} Feeder Stop" if feeder_obj else f"{origin['short_name']} Departure Point",
+        "type": "origin",
+        "lat": origin["lat"],
+        "lng": origin["lng"],
+        "platform": feeder_obj["boarding_point"] if feeder_obj else "Departure Terminal",
+        "halt": "Boarding Point",
+        "buses": feeder_obj["bus_number"] if feeder_obj else "Local Bus",
+        "tip": f"Board {feeder_obj['bus_number']} from {feeder_obj['boarding_point']}." if feeder_obj else "Trip starts here.",
+        "distance_km": 0,
+    })
+
+    if 'corridor' in locals() and corridor:
+        corridor_stops = corridor.get("transit_stops", [])
+        for cstop in corridor_stops:
+            if abs(cstop["lat"] - origin["lat"]) < 0.008 and abs(cstop["lng"] - origin["lng"]) < 0.008:
+                continue
+            if abs(cstop["lat"] - dest_spec["lat"]) < 0.008 and abs(cstop["lng"] - dest_spec["lng"]) < 0.008:
+                continue
+            all_transit_stops.append({
+                "seq": len(all_transit_stops) + 1,
+                "name": cstop["name"],
+                "type": cstop.get("type", "transit_stop"),
+                "lat": cstop["lat"],
+                "lng": cstop["lng"],
+                "platform": cstop.get("platform", "Highway Express Bay"),
+                "halt": cstop.get("halt", "5 min halt"),
+                "buses": cstop.get("buses", corridor.get("bus_type", "KSRTC Express")),
+                "tip": cstop.get("tip", "Active bus transit halt."),
+                "distance_km": cstop.get("distance_km", ""),
+            })
+    elif origin_is_airport and 'transfer_node' in locals():
+        all_transit_stops.append({
+            "seq": 2,
+            "name": "Mysuru KSRTC Central Stand",
+            "type": "transfer",
+            "lat": transfer_node["lat"],
+            "lng": transfer_node["lng"],
+            "platform": "Flybus Bay / CBS Bay 7",
+            "halt": "15 min transfer halt",
+            "buses": "KSRTC Flybus ⇔ MITRA City Bus",
+            "tip": "Alight from Flybus, cross to CBS Bay 7.",
+            "distance_km": 175,
+        })
+    elif origin_is_in_dest_district and 'is_suburb_locality' in locals() and is_suburb_locality:
+        all_transit_stops.append({
+            "seq": 2,
+            "name": feeder.get("drop_point", "City Bus Stand"),
+            "type": "transfer",
+            "lat": hub_coord[0],
+            "lng": hub_coord[1],
+            "platform": dest_spec.get("hub_stop", "Bay 7"),
+            "halt": "8-10 min transfer",
+            "buses": f"Switch from {feeder.get('bus_number')} to Bus {bus_no}",
+            "tip": f"Alight from feeder, switch to {bus_no}.",
+            "distance_km": feeder.get("distance_km", 5),
+        })
+
+    # Guarantee a rich en-route stop sequence (never show only 1 or 2 stops)
+    if len(all_transit_stops) <= 1 and 'map_segments' in locals() and map_segments:
+        all_coords = []
+        for seg in map_segments:
+            all_coords.extend(seg.get("coords", []))
+        if len(all_coords) >= 4:
+            step = max(1, len(all_coords) // 5)
+            pts_sample = all_coords[step:-1:step][:4]
+            for idx, pt in enumerate(pts_sample):
+                best_town = None
+                min_d = float("inf")
+                for nk, nv in ORIGIN_NODES.items():
+                    d = haversine_distance(pt[0], pt[1], nv["lat"], nv["lng"])
+                    if d < min_d:
+                        min_d = d
+                        best_town = nv.get("short_name") or nv.get("name")
+                town_name = f"{best_town} Highway Halt" if (best_town and min_d <= 35.0) else f"Express Highway Transit Halt {idx + 1}"
+                all_transit_stops.append({
+                    "seq": len(all_transit_stops) + 1,
+                    "name": town_name,
+                    "type": "transit_stop",
+                    "lat": pt[0],
+                    "lng": pt[1],
+                    "platform": f"Bay {idx + 1} (Highway Express)",
+                    "halt": "5 min halt",
+                    "buses": "KSRTC / Regional Express",
+                    "tip": "Standard highway halt & passenger interchange.",
+                    "distance_km": round(haversine_distance(origin["lat"], origin["lng"], pt[0], pt[1]), 1),
+                })
+
+    all_transit_stops.append({
+        "seq": len(all_transit_stops) + 1,
+        "name": dest_spec.get("direct_stop") or dest_spec["name"],
+        "type": "destination",
+        "lat": dest_spec["lat"],
+        "lng": dest_spec["lng"],
+        "platform": "Arrival Terminal",
+        "halt": "Final Arrival",
+        "buses": f"Bus {bus_no}" if 'bus_no' in locals() else "Destination Transit",
+        "tip": f"Arrived at {dest_spec['name']}! Enjoy your visit.",
+        "distance_km": round(sum(haversine_distance(p1[0], p1[1], p2[0], p2[1]) for seg in map_segments for p1, p2 in zip(seg["coords"][:-1], seg["coords"][1:])), 1),
+    })
+
+    pts_for_bounds = map_waypoints + [[s["lat"], s["lng"]] for s in all_transit_stops]
+
     return {
         "place_name": dest_spec["name"],
         "place_slug": getattr(place, "slug", ""),
@@ -1942,11 +2470,22 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
         # Map Geodata for Leaflet Rendering
         "map_data": {
             "waypoints": map_waypoints,
+            "transit_stops": all_transit_stops,
             "segments": map_segments,
             "bounds": [
-                [min(pt[0] for pt in map_waypoints) - 0.05, min(pt[1] for pt in map_waypoints) - 0.05],
-                [max(pt[0] for pt in map_waypoints) + 0.05, max(pt[1] for pt in map_waypoints) + 0.05],
+                [min(pt[0] for pt in pts_for_bounds) - 0.05, min(pt[1] for pt in pts_for_bounds) - 0.05],
+                [max(pt[0] for pt in pts_for_bounds) + 0.05, max(pt[1] for pt in pts_for_bounds) + 0.05],
             ],
+            "corridor_summary": {
+                "origin_name": origin["name"],
+                "origin_short": origin["short_name"],
+                "destination_name": dest_spec["name"],
+                "total_stops": len(all_transit_stops),
+                "total_distance_km": round(sum(haversine_distance(p1[0], p1[1], p2[0], p2[1]) for seg in map_segments for p1, p2 in zip(seg["coords"][:-1], seg["coords"][1:])), 1),
+                "total_duration": formatted_duration,
+                "total_fare": f"₹{total_fare_min} – ₹{total_fare_max}" if total_fare_min != total_fare_max else f"₹{total_fare_min}",
+                "next_departure": f"Next bus in {dep_in_mins} mins",
+            }
         },
 
         # Backward-compatible direct bus routes
@@ -1965,8 +2504,8 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
 
         # Quick Switch Origins
         "quick_origins": [
-            {"label": "🏡 Alanahalli (Mysuru)", "val": "Alanahalli", "active": ("alanahalli" in origin["name"].lower())},
-            {"label": "🏛️ Mysuru Central", "val": "Mysuru", "active": ("mysuru" in origin["name"].lower() and "cbs" not in origin["name"].lower() and "alanahalli" not in origin["name"].lower())},
+            {"label": "🏛️ Bengaluru (Majestic)", "val": "Bengaluru", "active": ("bengaluru" in origin["name"].lower() or "majestic" in origin["name"].lower())},
+            {"label": "🏰 Mysuru Central", "val": "Mysuru", "active": ("mysuru" in origin["name"].lower() and "cbs" not in origin["name"].lower() and "alanahalli" not in origin["name"].lower())},
             {"label": "🏙️ Rajajinagar (Bengaluru)", "val": "Rajajinagar", "active": ("rajajinagar" in origin["name"].lower())},
             {"label": "✈️ BLR Airport (Flybus)", "val": "Airport", "active": ("airport" in origin["name"].lower())},
             {"label": "🚉 Majestic (KBS)", "val": "Majestic", "active": ("majestic" in origin["name"].lower())},
