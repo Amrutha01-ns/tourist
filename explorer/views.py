@@ -103,6 +103,9 @@ def place_detail(request, slug):
             request.session["user_lng"] = lng
             transit_data["is_origin_gps"] = True
             transit_data["detected_coords"] = [lat, lng]
+            if "map_data" in transit_data:
+                transit_data["map_data"]["is_origin_gps"] = True
+                transit_data["map_data"]["origin_coords"] = [lat, lng]
         return JsonResponse(transit_data)
 
     expense = None
@@ -137,6 +140,12 @@ def place_detail(request, slug):
         origin_lat=lat,
         origin_lng=lng
     )
+    if lat is not None and lng is not None and isinstance(transit, dict):
+        transit["is_origin_gps"] = True
+        transit["detected_coords"] = [lat, lng]
+        if "map_data" in transit and isinstance(transit["map_data"], dict):
+            transit["map_data"]["is_origin_gps"] = True
+            transit["map_data"]["origin_coords"] = [lat, lng]
 
     return render(
         request,

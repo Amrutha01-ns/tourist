@@ -1988,17 +1988,7 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
                 "high_frequency": True,
                 "last_updated": now.strftime("%H:%M:%S IST"),
             },
-            "quick_origins": [
-                {"label": "🏛️ Bengaluru (Majestic)", "val": "Bengaluru", "active": False},
-                {"label": "🏰 Mysuru Central", "val": "Mysuru", "active": False},
-                {"label": "🏙️ Rajajinagar", "val": "Rajajinagar", "active": False},
-                {"label": "✈️ BLR Airport", "val": "Airport", "active": False},
-                {"label": "🚉 Majestic (KBS)", "val": "Majestic", "active": False},
-                {"label": "🏢 Whitefield", "val": "Whitefield", "active": False},
-                {"label": "🌳 Kengeri", "val": "Kengeri", "active": False},
-                {"label": "🏖️ Mangaluru", "val": "Mangaluru", "active": False},
-                {"label": "🚂 Hubballi", "val": "Hubballi", "active": False},
-            ],
+            "quick_origins": [],
             "data_disclaimer": "Transit routes and schedules integrate verified KSRTC, BMTC, and MITRA operational timetables with live GPS routing corridor waypoints.",
         }
 
@@ -2558,11 +2548,18 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
         # Step-by-Step Multi-Leg Journey Plan
         "journey_legs": legs,
 
+        # Live GPS Flags
+        "is_origin_gps": origin.get("is_gps", False),
+        "detected_coords": origin.get("detected_coords"),
+        "origin_coords": origin.get("detected_coords"),
+
         # Map Geodata for Leaflet Rendering
         "map_data": {
             "waypoints": map_waypoints,
             "transit_stops": all_transit_stops,
             "segments": map_segments,
+            "is_origin_gps": origin.get("is_gps", False),
+            "origin_coords": origin.get("detected_coords"),
             "bounds": [
                 [min(pt[0] for pt in pts_for_bounds) - 0.05, min(pt[1] for pt in pts_for_bounds) - 0.05],
                 [max(pt[0] for pt in pts_for_bounds) + 0.05, max(pt[1] for pt in pts_for_bounds) + 0.05],
@@ -2594,17 +2591,7 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
         },
 
         # Quick Switch Origins
-        "quick_origins": [
-            {"label": "🏛️ Bengaluru (Majestic)", "val": "Bengaluru", "active": ("bengaluru" in origin["name"].lower() or "majestic" in origin["name"].lower())},
-            {"label": "🏰 Mysuru Central", "val": "Mysuru", "active": ("mysuru" in origin["name"].lower() and "cbs" not in origin["name"].lower() and "alanahalli" not in origin["name"].lower())},
-            {"label": "🏡 Alanahalli (Mysuru)", "val": "Alanahalli", "active": ("alanahalli" in origin["name"].lower())},
-            {"label": "🏙️ Rajajinagar", "val": "Rajajinagar", "active": ("rajajinagar" in origin["name"].lower())},
-            {"label": "✈️ BLR Airport (Flybus)", "val": "Airport", "active": ("airport" in origin["name"].lower())},
-            {"label": "☕ Hassan Central", "val": "Hassan", "active": ("hassan" in origin["name"].lower())},
-            {"label": "🏢 Whitefield", "val": "Whitefield", "active": ("whitefield" in origin["name"].lower())},
-            {"label": "🏖️ Mangaluru", "val": "Mangaluru", "active": ("mangaluru" in origin["name"].lower())},
-            {"label": "🚂 Hubballi", "val": "Hubballi", "active": ("hubballi" in origin["name"].lower())},
-        ],
+        "quick_origins": [],
 
         "data_disclaimer": "Transit routes and schedules integrate verified KSRTC, BMTC, and MITRA operational timetables with live GPS routing corridor waypoints.",
     }

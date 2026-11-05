@@ -186,6 +186,14 @@
         let cachedMapData = null;
         let stopMarkersMap = {};
 
+        // Live GPS & Google Maps Blue Dot tracking state
+        let userGpsMarker = null;
+        let userAccuracyCircle = null;
+        let currentUserCoords = null;
+        let currentUserAccuracy = null;
+        let lastRoutedCoords = null;
+        let watchPositionId = null;
+
         // Simulation variables
         let isSimulating = false;
         let simTimer = null;
@@ -454,9 +462,11 @@
             });
 
             // 4. Update HUD and En-Route Stops Timeline Ribbon
-            // 3b. Render Live Doorstep GPS Pin & Accuracy Circle if live GPS active
+            // 3b. Render Google Maps Iconic Blue Dot & Accuracy Halo if live GPS active
             if (liveGpsLayerGroup) {
                 liveGpsLayerGroup.clearLayers();
+                userGpsMarker = null;
+                userAccuracyCircle = null;
                 const storedLat = sessionStorage.getItem("tourist_live_lat");
                 const storedLng = sessionStorage.getItem("tourist_live_lng");
                 const isGpsActive = mapData.is_origin_gps || (storedLat && storedLng && mapData.origin && mapData.origin.toLowerCase().includes("live"));
@@ -464,32 +474,8 @@
                 const gpsLng = mapData.origin_coords ? mapData.origin_coords[1] : (storedLng ? parseFloat(storedLng) : null);
 
                 if (isGpsActive && gpsLat && gpsLng) {
-                    const accRadius = parseInt(sessionStorage.getItem("tourist_live_acc") || "45", 10);
-                    const radarCircle = L.circle([gpsLat, gpsLng], {
-                        radius: Math.min(accRadius, 1200),
-                        color: "#0284c7",
-                        fillColor: "#38bdf8",
-                        fillOpacity: 0.15,
-                        weight: 1.5,
-                        dashArray: "4, 6"
-                    });
-                    liveGpsLayerGroup.addLayer(radarCircle);
-
-                    const radarIcon = L.divIcon({
-                        className: "user-live-radar-icon",
-                        html: '<div class="user-live-radar-pin"><span class="live-radar-wave"></span><span class="live-radar-core"></span></div>',
-                        iconSize: [26, 26],
-                        iconAnchor: [13, 13]
-                    });
-                    const radarMarker = L.marker([gpsLat, gpsLng], { icon: radarIcon });
-                    radarMarker.bindPopup(`
-                        <div class="stop-popup-card">
-                            <span class="stop-popup-badge badge-origin-stop"><i class="fa-solid fa-satellite-dish"></i> LIVE DOORSTEP GPS</span>
-                            <h4 class="stop-popup-title">Your Live Doorstep Location</h4>
-                            <div class="stop-popup-detail"><i class="fa-solid fa-location-crosshairs"></i> GPS: ${gpsLat.toFixed(4)}, ${gpsLng.toFixed(4)} (&plusmn;${accRadius}m)</div>
-                            <div class="stop-popup-detail" style="color:var(--leaf);"><i class="fa-solid fa-circle-check"></i> High-accuracy live satellite/Wi-Fi positioning</div>
-                        </div>`, { className: "custom-transit-popup" });
-                    liveGpsLayerGroup.addLayer(radarMarker);
+                    const accRadius = parseInt(sessionStorage.getItem("tourist_live_acc") || "35", 10);
+                    renderGoogleMapsBlueDot(gpsLat, gpsLng, accRadius, false);
                 }
             }
 
@@ -509,6 +495,59 @@
             setTimeout(() => {
                 if (routeMap) routeMap.invalidateSize();
             }, 250);
+        }
+
+        // -------------------------------------------------------------
+        // Google Maps Iconic Pulsing Blue Dot & Accuracy Halo
+        // -------------------------------------------------------------
+        function renderGoogleMapsBlueDot(lat, lng, accuracy, flyTo = false) {
+            currentUserCoords = [lat, lng];
+            currentUserAccuracy = accuracy || 35;
+            if (!routeMap || !liveGpsLayerGroup) return;
+
+            const radius = Math.max(accuracy || 35, 15);
+
+            if (userAccuracyCircle) {
+                userAccuracyCircle.setLatLng([lat, lng]);
+                userAccuracyCircle.setRadius(Math.min(radius, 1200));
+            } else {
+                userAccuracyCircle = L.circle([lat, lng], {
+                    radius: Math.min(radius, 1200),
+                    color: "#1a73e8",
+                    fillColor: "#4285f4",
+                    fillOpacity: 0.16,
+                    weight: 1.5,
+                    dashArray: "4, 6"
+                });
+                liveGpsLayerGroup.addLayer(userAccuracyCircle);
+            }
+
+            if (userGpsMarker) {
+                userGpsMarker.setLatLng([lat, lng]);
+            } else {
+                const blueDotIcon = L.divIcon({
+                    className: "gmaps-user-marker",
+                    html: '<div class="gmaps-blue-halo"></div><div class="gmaps-blue-dot"></div>',
+                    iconSize: [22, 22],
+                    iconAnchor: [11, 11]
+                });
+                userGpsMarker = L.marker([lat, lng], { icon: blueDotIcon, zIndexOffset: 3000 });
+                userGpsMarker.bindPopup(`
+                    <div class="stop-popup-card">
+                        <span class="stop-popup-badge" style="background:#1a73e8; color:#fff;">
+                            <i class="fa-solid fa-satellite-dish"></i> LIVE DOORSTEP GPS
+                        </span>
+                        <h4 class="stop-popup-title" style="margin: 6px 0 4px; font-size: 14px; color:#1a73e8;">Your Real-Time Location</h4>
+                        <div class="stop-popup-detail"><i class="fa-solid fa-location-crosshairs"></i> Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}</div>
+                        <div class="stop-popup-detail"><i class="fa-solid fa-bullseye"></i> Accuracy: &plusmn;${Math.round(radius)}m</div>
+                        <div class="stop-popup-detail" style="color:var(--leaf);"><i class="fa-solid fa-circle-check"></i> High accuracy device positioning</div>
+                    </div>`, { className: "custom-transit-popup" });
+                liveGpsLayerGroup.addLayer(userGpsMarker);
+            }
+
+            if (flyTo) {
+                routeMap.flyTo([lat, lng], Math.max(routeMap.getZoom(), 14), { duration: 1.2 });
+            }
         }
 
         // Update Floating "TRAVEL NAVIGATION" HUD Card
@@ -749,9 +788,18 @@
         const transitRoutesContainer = document.getElementById("transitRoutesContainer");
         const transitStatusMsg = document.getElementById("transitStatusMsg");
         const singleGpsBtn = document.getElementById("singleGpsBtn");
+        const gpsBtnLabel = document.getElementById("gpsBtnLabel");
+        const watchGpsBtn = document.getElementById("watchGpsBtn");
+        const watchBtnLabel = document.getElementById("watchBtnLabel");
+        const clearOriginBtn = document.getElementById("clearOriginBtn");
+        const gmapsFabBtn = document.getElementById("gmapsFabBtn");
+        const gmapsLivePanel = document.getElementById("gmapsLivePanel");
+        const gmapsStatusBadge = document.getElementById("gmapsStatusBadge");
+        const gmapsLocationName = document.getElementById("gmapsLocationName");
+        const gmapsAccuracyIndicator = document.getElementById("gmapsAccuracyIndicator");
+        const gmapsDeviceTag = document.getElementById("gmapsDeviceTag");
         const findRoutesBtn = document.getElementById("findRoutesBtn");
         const hiddenExpenseOrigin = document.getElementById("hiddenExpenseOrigin");
-        const originQuickPills = document.getElementById("originQuickPills");
 
         async function fetchTransitRoutes(origin, lat, lng) {
             if (!transitRoutesContainer) return;
@@ -939,56 +987,96 @@
                 directBusWrap.innerHTML = busHtml;
             }
 
-            // 5. Update Quick Pills active classes
-            if (originQuickPills) {
-                const pills = originQuickPills.querySelectorAll(".origin-pill-btn");
-                const curOrigin = (data.origin || "").toLowerCase();
-                pills.forEach(pill => {
-                    const pVal = (pill.getAttribute("data-val") || "").toLowerCase();
-                    if (pVal !== "gps" && curOrigin.includes(pVal)) {
-                        pill.classList.add("active");
-                    } else if (pVal === "gps" && data.is_origin_gps) {
-                        pill.classList.add("active");
-                    } else {
-                        pill.classList.remove("active");
-                    }
-                });
+            // 5. Update Google Maps Live Navigation Panel State
+            if (data.is_origin_gps || (data.origin && data.origin.toLowerCase().includes("live"))) {
+                const cLat = data.map_data?.origin_coords ? data.map_data.origin_coords[0] : (currentUserCoords ? currentUserCoords[0] : null);
+                const cLng = data.map_data?.origin_coords ? data.map_data.origin_coords[1] : (currentUserCoords ? currentUserCoords[1] : null);
+                if (cLat && cLng) {
+                    updateGpsPanelState(watchPositionId ? "tracking" : "active", {
+                        name: data.origin_short || data.origin,
+                        lat: cLat,
+                        lng: cLng,
+                        accuracy: currentUserAccuracy || 30
+                    });
+                }
+            } else if (!data.origin) {
+                updateGpsPanelState("reset");
             }
         }
 
         // -------------------------------------------------------------
         // 7. Transparent, Accurate Live Device Location (Hardware GPS & Wi-Fi)
         // -------------------------------------------------------------
-        const KARNATAKA_KNOWN_LOCALITIES = [
-            { name: "Alanahalli, Mysuru", short: "Alanahalli", lat: 12.2982, lng: 76.6925 },
-            { name: "Kuvempunagar, Mysuru", short: "Kuvempunagar", lat: 12.2850, lng: 76.6260 },
-            { name: "Vijayanagar, Mysuru", short: "Vijayanagar (Mysuru)", lat: 12.3420, lng: 76.6130 },
-            { name: "Gokulam, Mysuru", short: "Gokulam", lat: 12.3270, lng: 76.6290 },
-            { name: "JP Nagar, Mysuru", short: "JP Nagar (Mysuru)", lat: 12.2680, lng: 76.6450 },
-            { name: "Mysuru Central KSRTC Bus Stand", short: "Mysuru Central", lat: 12.3168, lng: 76.6578 },
-            { name: "Mysuru City Bus Stand (CBS)", short: "Mysuru CBS", lat: 12.3086, lng: 76.6534 },
-            { name: "Rajajinagar, Bengaluru", short: "Rajajinagar", lat: 12.9844, lng: 77.5540 },
-            { name: "Kempegowda Bus Station (Majestic)", short: "Majestic (KBS)", lat: 12.9782, lng: 77.5707 },
-            { name: "Kempegowda International Airport (BLR)", short: "BLR Airport", lat: 13.1998, lng: 77.7051 },
-            { name: "Whitefield / ITPL, Bengaluru", short: "Whitefield", lat: 12.9863, lng: 77.7314 },
-            { name: "Electronic City, Bengaluru", short: "Electronic City", lat: 12.8452, lng: 77.6602 },
-            { name: "Kengeri Satellite Town, Bengaluru", short: "Kengeri", lat: 12.9168, lng: 77.4832 },
-            { name: "Indiranagar, Bengaluru", short: "Indiranagar", lat: 12.9784, lng: 77.6408 },
-            { name: "Jayanagar 4th Block, Bengaluru", short: "Jayanagar", lat: 12.9299, lng: 77.5824 },
-            { name: "Yeshwantpur TTMC, Bengaluru", short: "Yeshwantpur", lat: 13.0238, lng: 77.5501 },
-            { name: "Hebbal Flyover, Bengaluru", short: "Hebbal", lat: 13.0358, lng: 77.5970 },
-            { name: "Madikeri KSRTC Stand (Kodagu)", short: "Madikeri", lat: 12.4244, lng: 75.7382 },
-            { name: "Hassan Central KSRTC Bus Stand", short: "Hassan Central", lat: 13.0068, lng: 76.1004 },
-            { name: "Shivamogga KSRTC Central Stand", short: "Shivamogga", lat: 13.9299, lng: 75.5681 },
-            { name: "Chikkamagaluru KSRTC Central Stand", short: "Chikkamagaluru", lat: 13.3161, lng: 75.7720 },
-            { name: "Mangaluru KSRTC Central Stand", short: "Mangaluru", lat: 12.8872, lng: 74.8458 },
-            { name: "Udupi Service & KSRTC Bus Stand", short: "Udupi", lat: 13.3409, lng: 74.7421 },
-            { name: "Hosapete Central Bus Stand (Hampi)", short: "Hosapete", lat: 15.2750, lng: 76.3888 },
-            { name: "Gokarna KSRTC Bus Stand", short: "Gokarna", lat: 14.5428, lng: 74.3188 },
-            { name: "Hubballi Central Bus Stand (CBT)", short: "Hubballi", lat: 15.3524, lng: 75.1417 },
-            { name: "Gadag KSRTC Central Stand", short: "Gadag", lat: 15.4290, lng: 75.6320 },
-            { name: "Ron, Gadag", short: "Ron", lat: 15.6994, lng: 75.7341 }
-        ];
+        function detectDeviceType() {
+            const ua = navigator.userAgent || "";
+            if (/iPad|tablet|(android(?!.*mobile))/i.test(ua)) return "Tablet GPS";
+            if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated/i.test(ua)) return "Phone GPS";
+            return "Laptop/PC Wi-Fi";
+        }
+
+        function updateGpsPanelState(state, info = {}) {
+            if (gmapsDeviceTag) gmapsDeviceTag.textContent = detectDeviceType();
+
+            if (state === "searching") {
+                if (gmapsLivePanel) gmapsLivePanel.classList.add("gps-active");
+                if (gmapsStatusBadge) {
+                    gmapsStatusBadge.style.background = "#e0f2fe";
+                    gmapsStatusBadge.style.color = "#0284c7";
+                    gmapsStatusBadge.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Acquiring GPS...';
+                }
+                if (gmapsLocationName) gmapsLocationName.textContent = "Connecting to device GPS & Wi-Fi positioning...";
+                if (gmapsAccuracyIndicator) gmapsAccuracyIndicator.innerHTML = '<i class="fa-solid fa-circle-info"></i> Please tap "Allow" if browser asks for location access';
+                if (singleGpsBtn) singleGpsBtn.disabled = true;
+                if (gpsBtnLabel) gpsBtnLabel.textContent = "Acquiring...";
+            } else if (state === "active") {
+                if (gmapsLivePanel) gmapsLivePanel.classList.add("gps-active");
+                if (gmapsStatusBadge) {
+                    gmapsStatusBadge.style.background = "#dcfce7";
+                    gmapsStatusBadge.style.color = "#15803d";
+                    gmapsStatusBadge.innerHTML = '<i class="fa-solid fa-circle-check"></i> Live GPS Fix Active';
+                }
+                if (gmapsLocationName && info.name) gmapsLocationName.textContent = info.name;
+                if (gmapsAccuracyIndicator && info.lat !== undefined && info.lng !== undefined) {
+                    const acc = info.accuracy ? `&bull; &plusmn;${info.accuracy}m` : "";
+                    gmapsAccuracyIndicator.innerHTML = `<i class="fa-solid fa-location-crosshairs" style="color:#0284c7;"></i> Live GPS: ${info.lat.toFixed(4)}, ${info.lng.toFixed(4)} ${acc}`;
+                }
+                if (singleGpsBtn) singleGpsBtn.disabled = false;
+                if (gpsBtnLabel) gpsBtnLabel.textContent = "Update GPS";
+            } else if (state === "tracking") {
+                if (gmapsLivePanel) gmapsLivePanel.classList.add("gps-active");
+                if (gmapsStatusBadge) {
+                    gmapsStatusBadge.style.background = "#dbeafe";
+                    gmapsStatusBadge.style.color = "#1d4ed8";
+                    gmapsStatusBadge.innerHTML = '<i class="fa-solid fa-location-arrow fa-beat"></i> Live Navigation Active';
+                }
+                if (gmapsLocationName && info.name) gmapsLocationName.textContent = info.name;
+                if (gmapsAccuracyIndicator && info.accuracy !== undefined) {
+                    gmapsAccuracyIndicator.innerHTML = `<i class="fa-solid fa-person-walking" style="color:#1d4ed8;"></i> Continuous real-time movement tracking (&plusmn;${info.accuracy}m)`;
+                }
+            } else if (state === "error") {
+                if (gmapsLivePanel) gmapsLivePanel.classList.remove("gps-active");
+                if (gmapsStatusBadge) {
+                    gmapsStatusBadge.style.background = "#fee2e2";
+                    gmapsStatusBadge.style.color = "#b91c1c";
+                    gmapsStatusBadge.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> GPS Unavailable';
+                }
+                if (gmapsLocationName && info.message) gmapsLocationName.textContent = info.message;
+                if (gmapsAccuracyIndicator && info.tip) gmapsAccuracyIndicator.innerHTML = info.tip;
+                if (singleGpsBtn) singleGpsBtn.disabled = false;
+                if (gpsBtnLabel) gpsBtnLabel.textContent = "Detect Live GPS";
+            } else if (state === "reset") {
+                if (gmapsLivePanel) gmapsLivePanel.classList.remove("gps-active");
+                if (gmapsStatusBadge) {
+                    gmapsStatusBadge.style.background = "#f1f5f9";
+                    gmapsStatusBadge.style.color = "#475569";
+                    gmapsStatusBadge.innerHTML = '<i class="fa-solid fa-satellite-dish"></i> Live GPS Ready';
+                }
+                if (gmapsLocationName) gmapsLocationName.textContent = 'Tap "Detect Live GPS" to find bus routes from your location';
+                if (gmapsAccuracyIndicator) gmapsAccuracyIndicator.innerHTML = '<i class="fa-solid fa-circle-info"></i> Direct doorstep routing for phone, tablet, or laptop';
+                if (singleGpsBtn) singleGpsBtn.disabled = false;
+                if (gpsBtnLabel) gpsBtnLabel.textContent = "Detect Live GPS";
+            }
+        }
 
         function geoDistanceKm(lat1, lon1, lat2, lon2) {
             const R = 6371;
@@ -1001,70 +1089,58 @@
         }
 
         async function resolveLocalityName(lat, lng) {
-            // 1. Check if user is within close proximity (<= 4.5 km) to a verified Karnataka locality
-            let closest = null;
-            let minD = Infinity;
-            for (const loc of KARNATAKA_KNOWN_LOCALITIES) {
-                const dist = geoDistanceKm(lat, lng, loc.lat, loc.lng);
-                if (dist < minD) {
-                    minD = dist;
-                    closest = loc;
-                }
-            }
-            if (closest && minD <= 4.5) {
-                return closest.short;
-            }
-
-            // 2. Client-side reverse geocoding via OpenStreetMap Nominatim with safe 3.5s timeout
+            // Pure dynamic reverse geocoding via OpenStreetMap Nominatim with safe 4s timeout
             try {
-                const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=14`, {
-                    signal: AbortSignal.timeout(3500)
+                const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=16&addressdetails=1`, {
+                    signal: AbortSignal.timeout(4000),
+                    headers: { "Accept-Language": "en" }
                 });
                 if (res.ok) {
                     const data = await res.json();
                     const addr = data.address || {};
-                    const loc = addr.suburb || addr.neighbourhood || addr.city_district || addr.town || addr.village || addr.city;
-                    if (loc) {
-                        return `${loc}, Karnataka`;
+                    const locality = addr.suburb || addr.neighbourhood || addr.residential || addr.quarter || addr.subdistrict;
+                    const city = addr.city || addr.town || addr.municipality || addr.village;
+                    const state = addr.state;
+                    if (locality && city) {
+                        return `${locality}, ${city}`;
+                    } else if (locality) {
+                        return state ? `${locality}, ${state}` : locality;
+                    } else if (city) {
+                        return state ? `${city}, ${state}` : city;
+                    } else if (data.display_name) {
+                        const parts = data.display_name.split(",");
+                        return parts.slice(0, 2).join(",").trim();
                     }
                 }
             } catch (_) {}
 
-            // 3. Fallback to closest regional town if within 30 km
-            if (closest && minD <= 30.0) {
-                return `${closest.short} Area`;
-            }
-
             return `Live GPS (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
         }
 
-        async function triggerUserGeolocation(triggerBtn) {
-            const originalBtnHtml = triggerBtn ? triggerBtn.innerHTML : "";
-            if (triggerBtn) {
-                triggerBtn.disabled = true;
-                triggerBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Acquiring GPS...';
-            }
+        async function triggerUserGeolocation(triggerBtn, flyToMap = true) {
+            updateGpsPanelState("searching");
 
             if (!navigator.geolocation) {
+                updateGpsPanelState("error", {
+                    message: "Geolocation is not supported by your browser.",
+                    tip: '<i class="fa-solid fa-circle-exclamation"></i> Please search your locality in the input bar below.'
+                });
                 if (transitStatusMsg) {
-                    transitStatusMsg.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="color:#b42318;"></i> Geolocation is not supported by your browser. Please select a starting city below or type your locality.';
+                    transitStatusMsg.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="color:#b42318;"></i> Geolocation is not supported by your browser.';
                 }
-                if (triggerBtn) { triggerBtn.disabled = false; triggerBtn.innerHTML = originalBtnHtml; }
                 return;
             }
 
             // Check for insecure context (e.g. testing mobile over http://192.168.x.x)
             if (window.isSecureContext === false && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
+                updateGpsPanelState("error", {
+                    message: `Browser blocks device GPS on unencrypted network (http://${window.location.host}).`,
+                    tip: '<i class="fa-solid fa-shield-halved" style="color:#d97706;"></i> Use localhost or HTTPS for live mobile GPS, or enter your starting point below.'
+                });
                 if (transitStatusMsg) {
-                    transitStatusMsg.innerHTML = `<i class="fa-solid fa-shield-halved" style="color:#d97706;"></i> Browser security blocks device GPS over unencrypted network (http://${window.location.host}). For mobile live GPS, please access via localhost/HTTPS, or select your locality from the quick pills below.`;
+                    transitStatusMsg.innerHTML = `<i class="fa-solid fa-shield-halved" style="color:#d97706;"></i> Device GPS blocked on unencrypted HTTP (${window.location.host}). Please access via localhost/HTTPS.`;
                 }
-                if (triggerBtn) { triggerBtn.disabled = false; triggerBtn.innerHTML = originalBtnHtml; }
                 return;
-            }
-
-            // Inform user to allow location if prompted
-            if (transitStatusMsg) {
-                transitStatusMsg.innerHTML = '<i class="fa-solid fa-location-crosshairs fa-spin" style="color:var(--leaf);"></i> Connecting to device GPS. If prompted, please click <strong>Allow</strong>...';
             }
 
             function getPositionPromise(options) {
@@ -1075,29 +1151,30 @@
 
             let pos = null;
             try {
-                // Quick cached attempt (fast response if position was cached recently < 2 mins)
-                pos = await getPositionPromise({ timeout: 2500, maximumAge: 120000, enableHighAccuracy: false }).catch(() => null);
+                // 1. Quick cached attempt (< 2 mins)
+                pos = await getPositionPromise({ timeout: 2000, maximumAge: 120000, enableHighAccuracy: false }).catch(() => null);
 
-                // Fresh high accuracy attempt with generous 15s timeout
+                // 2. High accuracy fresh position with 15s timeout
                 if (!pos || !pos.coords) {
                     pos = await getPositionPromise({ timeout: 15000, maximumAge: 0, enableHighAccuracy: true });
                 }
             } catch (err) {
                 console.warn("Device geolocation error:", err);
                 let userMsg = "Unable to determine your GPS position.";
+                let userTip = '<i class="fa-solid fa-circle-exclamation"></i> Please enter your locality in the search bar below.';
                 if (err.code === 1) { // PERMISSION_DENIED
-                    userMsg = '<i class="fa-solid fa-lock" style="color:#b42318;"></i> Location access was denied. Please click the lock icon 🔒 in your address bar to enable Location permissions, or choose your starting locality below.';
+                    userMsg = "Location access was denied.";
+                    userTip = '<i class="fa-solid fa-lock" style="color:#b42318;"></i> Click the lock icon in your browser address bar to allow Location access.';
                 } else if (err.code === 2) { // POSITION_UNAVAILABLE
-                    userMsg = '<i class="fa-solid fa-satellite-dish" style="color:#d97706;"></i> Device GPS position unavailable. Please ensure location services are enabled on your device, or choose a starting city below.';
+                    userMsg = "Device GPS position is unavailable.";
+                    userTip = '<i class="fa-solid fa-satellite-dish" style="color:#d97706;"></i> Ensure Location/GPS toggle is enabled in your device settings.';
                 } else if (err.code === 3) { // TIMEOUT
-                    userMsg = '<i class="fa-regular fa-clock" style="color:#d97706;"></i> GPS request timed out. Please click "Detect My Live Location" again or select your locality below.';
+                    userMsg = "GPS acquisition timed out.";
+                    userTip = '<i class="fa-regular fa-clock" style="color:#d97706;"></i> Satellite signal weak. Tap "Detect Live GPS" to retry.';
                 }
+                updateGpsPanelState("error", { message: userMsg, tip: userTip });
                 if (transitStatusMsg) {
-                    transitStatusMsg.innerHTML = userMsg;
-                }
-                if (triggerBtn) {
-                    triggerBtn.disabled = false;
-                    triggerBtn.innerHTML = originalBtnHtml;
+                    transitStatusMsg.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="color:#b42318;"></i> ${userMsg}`;
                 }
                 return;
             }
@@ -1107,16 +1184,15 @@
                 const lng = pos.coords.longitude;
                 const accuracy = Math.round(pos.coords.accuracy || 0);
 
-                // Store verified live coordinates in sessionStorage
+                currentUserCoords = [lat, lng];
+                currentUserAccuracy = accuracy;
+                lastRoutedCoords = [lat, lng];
+
                 try {
                     sessionStorage.setItem("tourist_live_lat", lat);
                     sessionStorage.setItem("tourist_live_lng", lng);
                     sessionStorage.setItem("tourist_live_acc", accuracy);
                 } catch (_) {}
-
-                if (transitStatusMsg) {
-                    transitStatusMsg.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Live GPS acquired (${lat.toFixed(4)}, ${lng.toFixed(4)} &bull; &plusmn;${accuracy}m). Resolving locality & bus routes...`;
-                }
 
                 const localityName = await resolveLocalityName(lat, lng);
                 const queryName = localityName || `Live Doorstep GPS (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
@@ -1125,77 +1201,178 @@
                     transitOriginInput.value = queryName;
                 }
 
+                updateGpsPanelState("active", {
+                    name: queryName,
+                    lat: lat,
+                    lng: lng,
+                    accuracy: accuracy
+                });
+
+                renderGoogleMapsBlueDot(lat, lng, accuracy, flyToMap);
+
                 if (transitStatusMsg) {
-                    transitStatusMsg.innerHTML = `<i class="fa-solid fa-circle-check" style="color:var(--leaf);"></i> Live doorstep GPS acquired: <strong>${queryName}</strong> (&plusmn;${accuracy}m). Calculating doorstep bus routes...`;
+                    transitStatusMsg.innerHTML = `<i class="fa-solid fa-circle-check" style="color:var(--leaf);"></i> Live GPS locked: <strong>${queryName}</strong> (&plusmn;${accuracy}m). Routing buses...`;
                 }
 
                 await fetchTransitRoutes(queryName, lat, lng);
             }
-
-            if (triggerBtn) {
-                triggerBtn.disabled = false;
-                triggerBtn.innerHTML = originalBtnHtml;
-            }
         }
 
+        function startWatchPosition() {
+            if (!navigator.geolocation) return;
+
+            if (watchPositionId !== null) {
+                navigator.geolocation.clearWatch(watchPositionId);
+                watchPositionId = null;
+            }
+
+            if (watchGpsBtn) watchGpsBtn.classList.add("tracking");
+            if (watchBtnLabel) watchBtnLabel.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Tracking';
+
+            watchPositionId = navigator.geolocation.watchPosition(
+                async function (pos) {
+                    const lat = pos.coords.latitude;
+                    const lng = pos.coords.longitude;
+                    const acc = Math.round(pos.coords.accuracy || 0);
+
+                    currentUserCoords = [lat, lng];
+                    currentUserAccuracy = acc;
+
+                    try {
+                        sessionStorage.setItem("tourist_live_lat", lat);
+                        sessionStorage.setItem("tourist_live_lng", lng);
+                        sessionStorage.setItem("tourist_live_acc", acc);
+                    } catch (_) {}
+
+                    renderGoogleMapsBlueDot(lat, lng, acc, false);
+
+                    // Check if moved more than 250m to trigger route recalculation
+                    let shouldReroute = false;
+                    if (!lastRoutedCoords) {
+                        shouldReroute = true;
+                    } else {
+                        const d = geoDistanceKm(lastRoutedCoords[0], lastRoutedCoords[1], lat, lng);
+                        if (d >= 0.25) {
+                            shouldReroute = true;
+                        }
+                    }
+
+                    const localityName = await resolveLocalityName(lat, lng);
+                    updateGpsPanelState("tracking", {
+                        name: localityName,
+                        lat: lat,
+                        lng: lng,
+                        accuracy: acc
+                    });
+
+                    if (shouldReroute) {
+                        lastRoutedCoords = [lat, lng];
+                        if (transitOriginInput) transitOriginInput.value = localityName;
+                        await fetchTransitRoutes(localityName, lat, lng);
+                    }
+                },
+                function (err) {
+                    console.warn("Watch position update error:", err);
+                },
+                {
+                    enableHighAccuracy: true,
+                    maximumAge: 4000,
+                    timeout: 12000
+                }
+            );
+        }
+
+        function stopWatchPosition() {
+            if (watchPositionId !== null) {
+                navigator.geolocation.clearWatch(watchPositionId);
+                watchPositionId = null;
+            }
+            if (watchGpsBtn) watchGpsBtn.classList.remove("tracking");
+            if (watchBtnLabel) watchBtnLabel.textContent = "Live Navigation";
+        }
+
+        // Control button listeners
         if (singleGpsBtn) {
             singleGpsBtn.onclick = function () {
-                triggerUserGeolocation(singleGpsBtn);
+                triggerUserGeolocation(singleGpsBtn, true);
             };
         }
 
-        const clearOriginBtn = document.getElementById("clearOriginBtn");
+        if (watchGpsBtn) {
+            watchGpsBtn.onclick = function () {
+                if (watchPositionId !== null) {
+                    stopWatchPosition();
+                    if (currentUserCoords) {
+                        updateGpsPanelState("active", {
+                            name: transitOriginInput ? transitOriginInput.value : "Live GPS Fix Active",
+                            lat: currentUserCoords[0],
+                            lng: currentUserCoords[1],
+                            accuracy: currentUserAccuracy || 30
+                        });
+                    } else {
+                        updateGpsPanelState("reset");
+                    }
+                } else {
+                    startWatchPosition();
+                }
+            };
+        }
+
         if (clearOriginBtn) {
             clearOriginBtn.onclick = function () {
+                stopWatchPosition();
+                currentUserCoords = null;
+                currentUserAccuracy = null;
+                lastRoutedCoords = null;
+
                 try {
                     sessionStorage.removeItem("tourist_live_lat");
                     sessionStorage.removeItem("tourist_live_lng");
                     sessionStorage.removeItem("tourist_live_acc");
                 } catch (_) {}
+
                 if (transitOriginInput) transitOriginInput.value = "";
-                if (originQuickPills) {
-                    originQuickPills.querySelectorAll(".origin-pill-btn").forEach(p => p.classList.remove("active"));
-                }
+                if (liveGpsLayerGroup) liveGpsLayerGroup.clearLayers();
+                userGpsMarker = null;
+                userAccuracyCircle = null;
+
+                updateGpsPanelState("reset");
                 fetchTransitRoutes("clear", null, null);
             };
         }
 
-        // Quick Origin Pills Clicks
-        if (originQuickPills) {
-            originQuickPills.addEventListener("click", function (e) {
-                const pill = e.target.closest(".origin-pill-btn");
-                if (!pill) return;
-
-                const val = pill.getAttribute("data-val");
-                if (!val) return;
-
-                // When user selects a named pill, clear stored live GPS
-                try {
-                    sessionStorage.removeItem("tourist_live_lat");
-                    sessionStorage.removeItem("tourist_live_lng");
-                    sessionStorage.removeItem("tourist_live_acc");
-                } catch (_) {}
-
-                originQuickPills.querySelectorAll(".origin-pill-btn").forEach(p => p.classList.remove("active"));
-                pill.classList.add("active");
-
-                if (transitOriginInput) transitOriginInput.value = val;
-                fetchTransitRoutes(val, null, null);
-            });
+        if (gmapsFabBtn) {
+            gmapsFabBtn.onclick = function () {
+                if (currentUserCoords && routeMap) {
+                    gmapsFabBtn.classList.add("active");
+                    routeMap.flyTo(currentUserCoords, Math.max(routeMap.getZoom(), 14), { duration: 1.0 });
+                    if (userGpsMarker) {
+                        setTimeout(() => userGpsMarker.openPopup(), 1100);
+                    }
+                    setTimeout(() => gmapsFabBtn.classList.remove("active"), 1400);
+                } else {
+                    triggerUserGeolocation(singleGpsBtn, true);
+                }
+            };
         }
 
-        // Search Form Submit
         if (transitOriginForm) {
             transitOriginForm.addEventListener("submit", function (e) {
                 e.preventDefault();
                 const originVal = transitOriginInput ? transitOriginInput.value.trim() : "";
                 if (originVal) {
-                    // Manual search resets live GPS coordinates
+                    stopWatchPosition();
                     try {
                         sessionStorage.removeItem("tourist_live_lat");
                         sessionStorage.removeItem("tourist_live_lng");
                         sessionStorage.removeItem("tourist_live_acc");
                     } catch (_) {}
+                    if (liveGpsLayerGroup) liveGpsLayerGroup.clearLayers();
+                    userGpsMarker = null;
+                    userAccuracyCircle = null;
+                    currentUserCoords = null;
+                    lastRoutedCoords = null;
+                    updateGpsPanelState("reset");
                     fetchTransitRoutes(originVal, null, null);
                 }
             });
@@ -1216,41 +1393,39 @@
             bindStopPillClicks();
         }
 
-        // If user already granted location permission in browser, auto-detect on load
-        if (navigator.permissions && navigator.permissions.query) {
+        // Initialize device tag display
+        if (gmapsDeviceTag) gmapsDeviceTag.textContent = detectDeviceType();
+
+        // Check if cached coordinates already exist from this session
+        const savedLat = sessionStorage.getItem("tourist_live_lat");
+        const savedLng = sessionStorage.getItem("tourist_live_lng");
+        const savedAcc = parseInt(sessionStorage.getItem("tourist_live_acc") || "35", 10);
+
+        if (savedLat && savedLng) {
+            const pLat = parseFloat(savedLat);
+            const pLng = parseFloat(savedLng);
+            currentUserCoords = [pLat, pLng];
+            currentUserAccuracy = savedAcc;
+            renderGoogleMapsBlueDot(pLat, pLng, savedAcc, false);
+            resolveLocalityName(pLat, pLng).then(locName => {
+                updateGpsPanelState("active", {
+                    name: locName,
+                    lat: pLat,
+                    lng: pLng,
+                    accuracy: savedAcc
+                });
+            });
+        } else if (navigator.permissions && navigator.permissions.query) {
+            // If user already granted location permission in browser, auto-detect on load
             navigator.permissions.query({ name: "geolocation" }).then(res => {
                 if (res && res.state === "granted") {
-                    const savedLat = sessionStorage.getItem("tourist_live_lat");
-                    const savedLng = sessionStorage.getItem("tourist_live_lng");
-                    if (savedLat && savedLng) {
-                        // Restore cached live GPS immediately
-                        setTimeout(() => {
-                            resolveLocalityName(parseFloat(savedLat), parseFloat(savedLng)).then(locName => {
-                                if (transitOriginInput && !transitOriginInput.value) {
-                                    transitOriginInput.value = locName;
-                                }
-                                fetchTransitRoutes(locName, parseFloat(savedLat), parseFloat(savedLng));
-                            });
-                        }, 200);
-                    } else {
-                        setTimeout(() => {
-                            triggerUserGeolocation(singleGpsBtn);
-                        }, 400);
-                    }
+                    setTimeout(() => {
+                        triggerUserGeolocation(singleGpsBtn, false);
+                    }, 400);
                 }
             }).catch(() => {});
         }
     }
-
-    // Run when DOM is ready
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initDashboard);
-    } else {
-        initDashboard();
-    }
-})();
-
-    
 
     // Run when DOM is ready
     if (document.readyState === "loading") {
