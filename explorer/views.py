@@ -1,5 +1,4 @@
 import json
-import urllib.request
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 
@@ -26,49 +25,6 @@ def calculate_expense(budget, travellers, days):
     }
 
 
-def detect_server_location():
-    """
-    Server-side IP location detection.
-    Bypasses all client-side CORS, AdBlockers, and hardware GPS limitations.
-    """
-    apis = [
-        "https://ipwho.is/",
-        "https://ipapi.co/json/",
-        "https://freeipapi.com/api/json",
-    ]
-    for api in apis:
-        try:
-            req = urllib.request.Request(
-                api,
-                headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
-            )
-            res = urllib.request.urlopen(req, timeout=3)
-            data = json.loads(res.read().decode("utf-8"))
-            city = data.get("city") or data.get("cityName")
-            region = data.get("region") or data.get("regionName") or "Karnataka"
-            lat = data.get("latitude") or data.get("lat")
-            lng = data.get("longitude") or data.get("lon")
-            if city and lat and lng:
-                return {
-                    "city": str(city),
-                    "region": str(region),
-                    "lat": float(lat),
-                    "lng": float(lng),
-                    "display": f"{city}, {region}",
-                }
-        except Exception:
-            continue
-
-    # Fallback to Bengaluru
-    return {
-        "city": "Bengaluru",
-        "region": "Karnataka",
-        "lat": 12.9716,
-        "lng": 77.5946,
-        "display": "Bengaluru, Karnataka",
-    }
-
-
 def place_detail(request, slug):
     place = get_object_or_404(
         Place.objects.select_related("district"),
@@ -79,50 +35,61 @@ def place_detail(request, slug):
         place=place
     ).first()
 
-    lat = request.GET.get("lat") or request.POST.get("lat")
-    lng = request.GET.get("lng") or request.POST.get("lng")
+    lat_raw = request.GET.get("lat") or request.POST.get("lat")
+    lng_raw = request.GET.get("lng") or request.POST.get("lng")
     param_origin = request.POST.get("origin") or request.GET.get("origin")
     clear_origin = request.GET.get("clear_origin") or request.POST.get("clear_origin")
     session_origin = request.session.get("user_origin")
+    session_lat = request.session.get("user_lat")
+    session_lng = request.session.get("user_lng")
 
-    # Automatically purge stale legacy 'Alanahalli' from session if not explicitly requested
-    if session_origin and "alanahalli" in session_origin.lower() and not param_origin:
-        if "user_origin" in request.session:
-            del request.session["user_origin"]
-        session_origin = None
+    # Parse coordinates if valid numbers
+    lat = None
+    lng = None
+    if lat_raw and lng_raw:
+        try:
+            lat = float(lat_raw)
+            lng = float(lng_raw)
+        except (ValueError, TypeError):
+            lat = None
+            lng = None
 
-    # Dedicated action: Server-Side Live Location Detection
-    if request.headers.get("x-requested-with") == "XMLHttpRequest" and request.GET.get("action") == "detect_location":
-        detected = detect_server_location()
-        transit_data = resolve_destination_transit(
-            place,
-            origin_name=detected["display"],
-            origin_lat=detected["lat"],
-            origin_lng=detected["lng"],
-        )
-        if transit_data.get("origin"):
-            request.session["user_origin"] = transit_data["origin"]
-        transit_data["detected_location"] = detected
-        return JsonResponse(transit_data)
-
+    # Handle Reset / Clear
     if clear_origin or (param_origin and param_origin.strip().lower() in ("clear", "reset", "none")):
-        if "user_origin" in request.session:
-            del request.session["user_origin"]
-        origin = "Bengaluru"
-        session_origin = None
+        request.session.pop("user_origin", None)
+        request.session.pop("user_lat", None)
+        request.session.pop("user_lng", None)
+        origin = None
+        lat = None
+        lng = None
+        if request.headers.get("x-requested-with") == "XMLHttpRequest":
+            transit_data = resolve_destination_transit(place, origin_name=None, origin_lat=None, origin_lng=None)
+            return JsonResponse(transit_data)
+    elif lat is not None and lng is not None:
+        # Live Device GPS received
+        origin = param_origin.strip() if param_origin else None
+        request.session["user_lat"] = lat
+        request.session["user_lng"] = lng
+        if origin:
+            request.session["user_origin"] = origin
     elif param_origin:
         origin = param_origin.strip()
         request.session["user_origin"] = origin
-    elif lat and lng:
-        origin = param_origin.strip() if param_origin else None
+        # Named text origin overrides previous GPS coordinates
+        request.session.pop("user_lat", None)
+        request.session.pop("user_lng", None)
+    elif session_lat is not None and session_lng is not None:
+        lat = session_lat
+        lng = session_lng
+        origin = session_origin
     elif session_origin:
         origin = session_origin.strip()
     else:
-        # Default to Karnataka capital & transit hub so the map is NEVER blank or showing 1 pin!
-        origin = "Bengaluru"
+        # Default destination view (user can click 1-tap live GPS or quick origin pills)
+        origin = None
 
     # AJAX endpoint for asynchronous transit origin updates
-    if request.headers.get("x-requested-with") == "XMLHttpRequest" and request.GET.get("action") == "transit":
+    if request.headers.get("x-requested-with") == "XMLHttpRequest" and (request.GET.get("action") == "transit" or request.GET.get("action") == "detect_location"):
         transit_data = resolve_destination_transit(
             place,
             origin_name=origin,
@@ -131,6 +98,11 @@ def place_detail(request, slug):
         )
         if transit_data.get("origin"):
             request.session["user_origin"] = transit_data["origin"]
+        if lat is not None and lng is not None:
+            request.session["user_lat"] = lat
+            request.session["user_lng"] = lng
+            transit_data["is_origin_gps"] = True
+            transit_data["detected_coords"] = [lat, lng]
         return JsonResponse(transit_data)
 
     expense = None

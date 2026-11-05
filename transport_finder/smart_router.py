@@ -1527,18 +1527,121 @@ DESTINATION_SPECS = {
 # 4. RESOLVE USER ORIGIN (Locality, GPS, or District Hub)
 # ============================================================================
 
+REGIONAL_TRANSIT_HUBS = {
+    "mysuru-central": {
+        "hub_name": "mysuru-central",
+        "city_name": "Mysuru Region",
+        "district_name": "mysore",
+        "hub_terminal": "Mysuru Central KSRTC Bus Stand",
+        "coord": [12.3168, 76.6578],
+        "provider_code": "KSRTC",
+        "provider_name": "KSRTC Mysuru Rural & Urban Division",
+    },
+    "kempegowda-bus-station": {
+        "hub_name": "kempegowda-bus-station",
+        "city_name": "Bengaluru Region",
+        "district_name": "bengaluru-urban",
+        "hub_terminal": "Kempegowda Bus Station (Majestic)",
+        "coord": [12.9782, 77.5707],
+        "provider_code": "BMTC/KSRTC",
+        "provider_name": "BMTC & KSRTC Bengaluru Division",
+    },
+    "madikeri": {
+        "hub_name": "madikeri",
+        "city_name": "Kodagu / Coorg",
+        "district_name": "kodagu",
+        "hub_terminal": "Madikeri KSRTC Stand",
+        "coord": [12.4244, 75.7382],
+        "provider_code": "KSRTC",
+        "provider_name": "KSRTC Kodagu Division",
+    },
+    "hassan": {
+        "hub_name": "hassan",
+        "city_name": "Hassan Region",
+        "district_name": "hassan",
+        "hub_terminal": "Hassan Central KSRTC Bus Stand",
+        "coord": [13.0068, 76.1004],
+        "provider_code": "KSRTC",
+        "provider_name": "KSRTC Hassan Division",
+    },
+    "mangaluru": {
+        "hub_name": "mangaluru",
+        "city_name": "Coastal Karnataka",
+        "district_name": "dakshina kannada",
+        "hub_terminal": "Mangaluru KSRTC Central Stand (Bejai)",
+        "coord": [12.8872, 74.8458],
+        "provider_code": "KSRTC",
+        "provider_name": "KSRTC Mangaluru Division",
+    },
+    "udupi": {
+        "hub_name": "udupi",
+        "city_name": "Udupi Coastal Region",
+        "district_name": "Udupi",
+        "hub_terminal": "Udupi Service & KSRTC Bus Stand",
+        "coord": [13.3409, 74.7421],
+        "provider_code": "KSRTC",
+        "provider_name": "KSRTC Mangaluru / Udupi Division",
+    },
+    "shivamogga": {
+        "hub_name": "shivamogga",
+        "city_name": "Malnad Region",
+        "district_name": "shivamogga",
+        "hub_terminal": "Shivamogga KSRTC Central Stand",
+        "coord": [13.9299, 75.5681],
+        "provider_code": "KSRTC",
+        "provider_name": "KSRTC Shivamogga Division",
+    },
+    "chikkamagaluru": {
+        "hub_name": "chikkamagaluru",
+        "city_name": "Chikkamagaluru Coffee Region",
+        "district_name": "Chikkamagaluru",
+        "hub_terminal": "Chikkamagaluru KSRTC Central Stand",
+        "coord": [13.3161, 75.7720],
+        "provider_code": "KSRTC",
+        "provider_name": "KSRTC Chikkamagaluru Division",
+    },
+    "hubballi": {
+        "hub_name": "hubballi",
+        "city_name": "North Karnataka Hub",
+        "district_name": "Dharwad",
+        "hub_terminal": "Hubballi Central Bus Stand (CBT)",
+        "coord": [15.3524, 75.1417],
+        "provider_code": "NWKRTC",
+        "provider_name": "NWKRTC Hubballi-Dharwad Division",
+    },
+    "hosapete": {
+        "hub_name": "hosapete",
+        "city_name": "Vijayanagara / Hampi Region",
+        "district_name": "Hampi",
+        "hub_terminal": "Hosapete Central Bus Stand (Hampi Hub)",
+        "coord": [15.2750, 76.3888],
+        "provider_code": "KKRTC",
+        "provider_name": "KKRTC Ballari/Vijayanagara Division",
+    },
+    "gokarna": {
+        "hub_name": "gokarna",
+        "city_name": "Uttara Kannada Coast",
+        "district_name": "uttara kannada",
+        "hub_terminal": "Gokarna KSRTC Bus Stand",
+        "coord": [14.5428, 74.3188],
+        "provider_code": "NWKRTC",
+        "provider_name": "NWKRTC Uttara Kannada Division",
+    },
+}
+
+
 def resolve_user_origin(origin_text=None, origin_lat=None, origin_lng=None):
     """
     Intelligently identify the user's starting point from GPS coordinates
     or user query string. Returns standard node dict.
     """
-    # 1. Dynamic GPS Coordinate Matching (Works for ANY location in Karnataka & India)
+    # 1. Dynamic GPS Coordinate Matching (True Live Device Location)
     if origin_lat is not None and origin_lng is not None:
         try:
             lat = float(origin_lat)
             lng = float(origin_lng)
 
-            # Find closest origin node
+            # Find closest origin locality node
             closest_key = None
             min_dist = float("inf")
             for k, node in ORIGIN_NODES.items():
@@ -1548,11 +1651,14 @@ def resolve_user_origin(origin_text=None, origin_lat=None, origin_lng=None):
                     closest_key = k
 
             user_provided_name = (origin_text or "").strip()
-            if user_provided_name.lower() in ["live gps doorstep location", "live doorstep gps", "live gps location", "my location", "current location", "clear", "none", ""]:
+            if user_provided_name.lower() in [
+                "live gps doorstep location", "live doorstep gps", "live gps location",
+                "my location", "current location", "clear", "none", "", "live gps"
+            ]:
                 user_provided_name = None
 
-            # Only snap to a known node if very close (<= 3.5 km)
-            if closest_key and min_dist <= 3.5:
+            # Only snap to a known locality node if very close (<= 4.5 km)
+            if closest_key and min_dist <= 4.5:
                 node_copy = dict(ORIGIN_NODES[closest_key])
                 node_copy["is_gps"] = True
                 node_copy["gps_distance_km"] = round(min_dist, 2)
@@ -1564,61 +1670,41 @@ def resolve_user_origin(origin_text=None, origin_lat=None, origin_lng=None):
                 return node_copy
             else:
                 # Custom GPS location anywhere in Karnataka
+                # Find closest regional transit hub by true geographical distance
+                closest_hub_key = min(
+                    REGIONAL_TRANSIT_HUBS.keys(),
+                    key=lambda hk: haversine_distance(lat, lng, REGIONAL_TRANSIT_HUBS[hk]["coord"][0], REGIONAL_TRANSIT_HUBS[hk]["coord"][1])
+                )
+                hub = REGIONAL_TRANSIT_HUBS[closest_hub_key]
+                hub_coord = hub["coord"]
+                hub_name = hub["hub_name"]
+                hub_terminal = hub["hub_terminal"]
+                city_name = hub["city_name"]
+                district_name = hub["district_name"]
+
                 closest_node = ORIGIN_NODES[closest_key] if closest_key else None
-                nearest_town = closest_node["short_name"] if (closest_node and min_dist <= 35.0) else None
+                nearest_town = closest_node["short_name"] if (closest_node and min_dist <= 30.0) else None
 
                 if user_provided_name:
                     display_name = user_provided_name
                 elif nearest_town:
                     display_name = f"{nearest_town} Area"
                 else:
-                    display_name = f"Live GPS ({round(lat, 4)}, {round(lng, 4)})"
+                    display_name = f"{city_name} Doorstep Location"
 
-                short_name = display_name.split(",")[0].strip()
-
-                # Determine regional administrative zone and primary hub
-                if 12.10 <= lat <= 12.60 and 76.30 <= lng <= 77.10:
-                    city_name = "Mysuru Region"
-                    district_name = "mysore"
-                    hub_name = "mysuru-central"
-                    hub_terminal = "Mysuru Central KSRTC Bus Stand"
-                    hub_coord = [12.3168, 76.6578]
-                elif lat >= 14.80:
-                    city_name = short_name or "North Karnataka"
-                    district_name = "Dharwad"
-                    hub_name = "hubballi"
-                    hub_terminal = "Hubballi Central Bus Stand (CBT)"
-                    hub_coord = [15.3524, 75.1417]
-                elif lng <= 75.10 and lat <= 14.50:
-                    city_name = short_name or "Coastal Karnataka"
-                    district_name = "dakshina kannada"
-                    hub_name = "mangaluru"
-                    hub_terminal = "Mangaluru KSRTC Central Stand"
-                    hub_coord = [12.8703, 74.8806]
-                elif 13.50 <= lat <= 14.80 and lng <= 76.00:
-                    city_name = short_name or "Malnad Region"
-                    district_name = "shivamogga"
-                    hub_name = "shivamogga"
-                    hub_terminal = "Shivamogga KSRTC Central Stand"
-                    hub_coord = [13.9299, 75.5681]
-                else:
-                    city_name = short_name or "Bengaluru Region"
-                    district_name = "bengaluru-urban"
-                    hub_name = "kempegowda-bus-station"
-                    hub_terminal = "Kempegowda Bus Station (Majestic)"
-                    hub_coord = [12.9782, 77.5707]
+                short_name = nearest_town or city_name.split()[0]
 
                 dist_to_hub = round(haversine_distance(lat, lng, hub_coord[0], hub_coord[1]), 1)
-                feeder_dur = max(15, min(60, int(dist_to_hub * 1.8)))
-                feeder_fare = max(15, min(50, int(dist_to_hub * 2.2)))
+                feeder_dur = max(15, min(75, int(dist_to_hub * 1.8)))
+                feeder_fare = max(15, min(65, int(dist_to_hub * 2.2)))
 
                 feeder_bus = {
-                    "bus_number": f"{'NWK' if lat >= 14.5 else 'KSRTC'}-Feeder",
-                    "provider": f"{city_name} Transit Division",
-                    "provider_code": "NWKRTC" if lat >= 14.5 else "KSRTC",
-                    "boarding_point": f"{short_name} Local Stop / Doorstep Point",
+                    "bus_number": f"{hub['provider_code']}-Feeder",
+                    "provider": hub["provider_name"],
+                    "provider_code": hub["provider_code"],
+                    "boarding_point": f"{display_name} Local Stop / Doorstep Point",
                     "drop_point": hub_terminal,
-                    "stops_via": f"{short_name} Local Route → Highway Link → {hub_terminal}",
+                    "stops_via": f"{display_name} → Highway Feeder Link → {hub_terminal}",
                     "distance_km": dist_to_hub,
                     "duration": f"{feeder_dur} mins",
                     "fare": f"₹{feeder_fare}",
@@ -1659,18 +1745,18 @@ def resolve_user_origin(origin_text=None, origin_lat=None, origin_lng=None):
         return dict(ORIGIN_NODES["alanahalli"])
     if "kuvempu" in q:
         return dict(ORIGIN_NODES["kuvempunagar"])
-    if "vijayanagar" in q and ("mys" in q or "mysore" in q or "mysuru" in q):
-        return dict(ORIGIN_NODES["vijayanagar-mysuru"])
+    if "vijayanagar" in q:
+        return dict(ORIGIN_NODES["vijayanagar-mysuru"]) if ("mys" in q or "mysore" in q or "mysuru" in q) else dict(ORIGIN_NODES["vijayanagar-mysuru"])
     if "gokulam" in q or "jayalakshmi" in q:
         return dict(ORIGIN_NODES["gokulam"])
-    if "jp nagar" in q and ("mys" in q or "mysore" in q or "mysuru" in q):
+    if "jp nagar" in q:
         return dict(ORIGIN_NODES["jp-nagar-mysuru"])
     if "cbs" in q or "city bus stand" in q:
         return dict(ORIGIN_NODES["mysuru-cbs"])
 
     if "raja" in q:
         return dict(ORIGIN_NODES["rajajinagar"])
-    if "airport" in q or "kia" in q or "kempegowda int" in q:
+    if "airport" in q or "kia" in q or "kempegowda int" in q or "flybus" in q:
         return dict(ORIGIN_NODES["airport"])
     if "whitefield" in q or "itpl" in q:
         return dict(ORIGIN_NODES["whitefield"])
@@ -1686,7 +1772,13 @@ def resolve_user_origin(origin_text=None, origin_lat=None, origin_lng=None):
         return dict(ORIGIN_NODES["yeshwantpur"])
     if "hebbal" in q:
         return dict(ORIGIN_NODES["hebbal"])
-    if "mysore" in q or "mysuru" in q:
+
+    # Major Hub Aliases
+    if "majestic" in q or "kbs" in q or "kempegowda bus station" in q:
+        return dict(ORIGIN_NODES["majestic"])
+    if "bangalore" in q or "bengaluru" in q or "blr" in q:
+        return dict(ORIGIN_NODES["majestic"])
+    if "mysore" in q or "mysuru" in q or "mysore central" in q:
         return dict(ORIGIN_NODES["mysuru-central"])
     if "madikeri" in q or "coorg" in q:
         return dict(ORIGIN_NODES["madikeri"])
@@ -1696,7 +1788,7 @@ def resolve_user_origin(origin_text=None, origin_lat=None, origin_lng=None):
         return dict(ORIGIN_NODES["shivamogga"])
     if "mangaluru" in q or "mangalore" in q:
         return dict(ORIGIN_NODES["mangaluru"])
-    if "udupi" in q:
+    if "udupi" in q or "manipal" in q:
         return dict(ORIGIN_NODES["udupi"])
     if "hampi" in q or "hosapete" in q or "hospet" in q:
         return dict(ORIGIN_NODES["hosapete"])
@@ -1704,7 +1796,6 @@ def resolve_user_origin(origin_text=None, origin_lat=None, origin_lng=None):
         return dict(ORIGIN_NODES["gokarna"])
     if "hubli" in q or "hubballi" in q:
         return dict(ORIGIN_NODES["hubballi"])
-
     # General substring matching
     for k, node in ORIGIN_NODES.items():
         if q in node["name"].lower() or q in node["short_name"].lower():
@@ -2506,11 +2597,11 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
         "quick_origins": [
             {"label": "🏛️ Bengaluru (Majestic)", "val": "Bengaluru", "active": ("bengaluru" in origin["name"].lower() or "majestic" in origin["name"].lower())},
             {"label": "🏰 Mysuru Central", "val": "Mysuru", "active": ("mysuru" in origin["name"].lower() and "cbs" not in origin["name"].lower() and "alanahalli" not in origin["name"].lower())},
-            {"label": "🏙️ Rajajinagar (Bengaluru)", "val": "Rajajinagar", "active": ("rajajinagar" in origin["name"].lower())},
+            {"label": "🏡 Alanahalli (Mysuru)", "val": "Alanahalli", "active": ("alanahalli" in origin["name"].lower())},
+            {"label": "🏙️ Rajajinagar", "val": "Rajajinagar", "active": ("rajajinagar" in origin["name"].lower())},
             {"label": "✈️ BLR Airport (Flybus)", "val": "Airport", "active": ("airport" in origin["name"].lower())},
-            {"label": "🚉 Majestic (KBS)", "val": "Majestic", "active": ("majestic" in origin["name"].lower())},
+            {"label": "☕ Hassan Central", "val": "Hassan", "active": ("hassan" in origin["name"].lower())},
             {"label": "🏢 Whitefield", "val": "Whitefield", "active": ("whitefield" in origin["name"].lower())},
-            {"label": "🌳 Kengeri", "val": "Kengeri", "active": ("kengeri" in origin["name"].lower())},
             {"label": "🏖️ Mangaluru", "val": "Mangaluru", "active": ("mangaluru" in origin["name"].lower())},
             {"label": "🚂 Hubballi", "val": "Hubballi", "active": ("hubballi" in origin["name"].lower())},
         ],

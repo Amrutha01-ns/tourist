@@ -268,6 +268,39 @@
             transform: translateY(-1px);
         }
 
+        /* Live User Location Radar Pin on Leaflet Map */
+        .user-live-radar-pin {
+            position: relative;
+            width: 26px;
+            height: 26px;
+        }
+        .live-radar-wave {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            top: -7px;
+            left: -7px;
+            border-radius: 50%;
+            background: rgba(2, 132, 199, 0.35);
+            animation: liveRadarPulse 2s ease-out infinite;
+            pointer-events: none;
+        }
+        .live-radar-core {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 5px;
+            left: 5px;
+            border-radius: 50%;
+            background: #0284c7;
+            border: 3px solid #ffffff;
+            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.6);
+        }
+        @keyframes liveRadarPulse {
+            0% { transform: scale(0.5); opacity: 1; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+
         .transit-badge {
             display: inline-block; padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 700; text-transform: uppercase;
         }
@@ -876,13 +909,14 @@
                     </button>
                 {% empty %}
                     <button type="button" class="origin-pill-btn" data-val="Bengaluru">🏛️ Bengaluru (Majestic)</button>
-                    <button type="button" class="origin-pill-btn" data-val="Mysuru">🏛️ Mysuru Central</button>
+                    <button type="button" class="origin-pill-btn" data-val="Mysuru">🏰 Mysuru Central</button>
+                    <button type="button" class="origin-pill-btn" data-val="Alanahalli">🏡 Alanahalli (Mysuru)</button>
                     <button type="button" class="origin-pill-btn" data-val="Rajajinagar">🏙️ Rajajinagar (Bengaluru)</button>
                     <button type="button" class="origin-pill-btn" data-val="Airport">✈️ BLR Airport (Flybus)</button>
-                    <button type="button" class="origin-pill-btn" data-val="Majestic">🚉 Majestic (KBS)</button>
+                    <button type="button" class="origin-pill-btn" data-val="Hassan">☕ Hassan Central</button>
                     <button type="button" class="origin-pill-btn" data-val="Whitefield">🏢 Whitefield</button>
-                    <button type="button" class="origin-pill-btn" data-val="Kengeri">🌳 Kengeri</button>
                     <button type="button" class="origin-pill-btn" data-val="Mangaluru">🏖️ Mangaluru</button>
+                    <button type="button" class="origin-pill-btn" data-val="Hubballi">🚂 Hubballi</button>
                 {% endfor %}
             </div>
 

@@ -181,6 +181,7 @@
         let stopsLayerGroup = null;
         let pinsLayerGroup = null;
         let simLayerGroup = null;
+        let liveGpsLayerGroup = null;
         let currentMapBounds = null;
         let cachedMapData = null;
         let stopMarkersMap = {};
@@ -300,6 +301,7 @@
                     stopsLayerGroup = L.layerGroup().addTo(routeMap);
                     pinsLayerGroup = L.layerGroup().addTo(routeMap);
                     simLayerGroup = L.layerGroup().addTo(routeMap);
+                    liveGpsLayerGroup = L.layerGroup().addTo(routeMap);
                 } catch (e) {
                     console.warn("Leaflet map initialization warning:", e);
                     return;
@@ -309,6 +311,7 @@
                 stopsLayerGroup.clearLayers();
                 pinsLayerGroup.clearLayers();
                 simLayerGroup.clearLayers();
+                if (liveGpsLayerGroup) liveGpsLayerGroup.clearLayers();
                 stopSimulation();
             }
 
@@ -451,6 +454,45 @@
             });
 
             // 4. Update HUD and En-Route Stops Timeline Ribbon
+            // 3b. Render Live Doorstep GPS Pin & Accuracy Circle if live GPS active
+            if (liveGpsLayerGroup) {
+                liveGpsLayerGroup.clearLayers();
+                const storedLat = sessionStorage.getItem("tourist_live_lat");
+                const storedLng = sessionStorage.getItem("tourist_live_lng");
+                const isGpsActive = mapData.is_origin_gps || (storedLat && storedLng && mapData.origin && mapData.origin.toLowerCase().includes("live"));
+                const gpsLat = mapData.origin_coords ? mapData.origin_coords[0] : (storedLat ? parseFloat(storedLat) : null);
+                const gpsLng = mapData.origin_coords ? mapData.origin_coords[1] : (storedLng ? parseFloat(storedLng) : null);
+
+                if (isGpsActive && gpsLat && gpsLng) {
+                    const accRadius = parseInt(sessionStorage.getItem("tourist_live_acc") || "45", 10);
+                    const radarCircle = L.circle([gpsLat, gpsLng], {
+                        radius: Math.min(accRadius, 1200),
+                        color: "#0284c7",
+                        fillColor: "#38bdf8",
+                        fillOpacity: 0.15,
+                        weight: 1.5,
+                        dashArray: "4, 6"
+                    });
+                    liveGpsLayerGroup.addLayer(radarCircle);
+
+                    const radarIcon = L.divIcon({
+                        className: "user-live-radar-icon",
+                        html: '<div class="user-live-radar-pin"><span class="live-radar-wave"></span><span class="live-radar-core"></span></div>',
+                        iconSize: [26, 26],
+                        iconAnchor: [13, 13]
+                    });
+                    const radarMarker = L.marker([gpsLat, gpsLng], { icon: radarIcon });
+                    radarMarker.bindPopup(`
+                        <div class="stop-popup-card">
+                            <span class="stop-popup-badge badge-origin-stop"><i class="fa-solid fa-satellite-dish"></i> LIVE DOORSTEP GPS</span>
+                            <h4 class="stop-popup-title">Your Live Doorstep Location</h4>
+                            <div class="stop-popup-detail"><i class="fa-solid fa-location-crosshairs"></i> GPS: ${gpsLat.toFixed(4)}, ${gpsLng.toFixed(4)} (&plusmn;${accRadius}m)</div>
+                            <div class="stop-popup-detail" style="color:var(--leaf);"><i class="fa-solid fa-circle-check"></i> High-accuracy live satellite/Wi-Fi positioning</div>
+                        </div>`, { className: "custom-transit-popup" });
+                    liveGpsLayerGroup.addLayer(radarMarker);
+                }
+            }
+
             updateFloatingNavHud(mapData);
             updateEnrouteStopsRibbon(transitStops);
 
@@ -915,165 +957,179 @@
         }
 
         // -------------------------------------------------------------
-        // 7. Multi-Tier Dynamic Location Detection (Browser GPS + Geolocation APIs)
+        // 7. Transparent, Accurate Live Device Location (Hardware GPS & Wi-Fi)
         // -------------------------------------------------------------
-        async function detectUserLocationViaApi() {
-            // Free, fast, reliable Geolocation APIs (works on desktops, laptops, mobile)
-            const apis = [
-                {
-                    url: "https://ipwho.is/",
-                    extract: (data) => (data && data.success) ? {
-                        city: data.city || data.region,
-                        region: data.region || "Karnataka",
-                        lat: data.latitude,
-                        lng: data.longitude,
-                        display: `${data.city || data.region}, ${data.region || 'Karnataka'}`
-                    } : null
-                },
-                {
-                    url: "https://ipapi.co/json/",
-                    extract: (data) => (data && data.city) ? {
-                        city: data.city,
-                        region: data.region || "Karnataka",
-                        lat: data.latitude,
-                        lng: data.longitude,
-                        display: `${data.city}, ${data.region || 'Karnataka'}`
-                    } : null
-                },
-                {
-                    url: "https://freeipapi.com/api/json",
-                    extract: (data) => (data && data.cityName) ? {
-                        city: data.cityName,
-                        region: data.regionName || "Karnataka",
-                        lat: data.latitude,
-                        lng: data.longitude,
-                        display: `${data.cityName}, ${data.regionName || 'Karnataka'}`
-                    } : null
-                }
-            ];
+        const KARNATAKA_KNOWN_LOCALITIES = [
+            { name: "Alanahalli, Mysuru", short: "Alanahalli", lat: 12.2982, lng: 76.6925 },
+            { name: "Kuvempunagar, Mysuru", short: "Kuvempunagar", lat: 12.2850, lng: 76.6260 },
+            { name: "Vijayanagar, Mysuru", short: "Vijayanagar (Mysuru)", lat: 12.3420, lng: 76.6130 },
+            { name: "Gokulam, Mysuru", short: "Gokulam", lat: 12.3270, lng: 76.6290 },
+            { name: "JP Nagar, Mysuru", short: "JP Nagar (Mysuru)", lat: 12.2680, lng: 76.6450 },
+            { name: "Mysuru Central KSRTC Bus Stand", short: "Mysuru Central", lat: 12.3168, lng: 76.6578 },
+            { name: "Mysuru City Bus Stand (CBS)", short: "Mysuru CBS", lat: 12.3086, lng: 76.6534 },
+            { name: "Rajajinagar, Bengaluru", short: "Rajajinagar", lat: 12.9844, lng: 77.5540 },
+            { name: "Kempegowda Bus Station (Majestic)", short: "Majestic (KBS)", lat: 12.9782, lng: 77.5707 },
+            { name: "Kempegowda International Airport (BLR)", short: "BLR Airport", lat: 13.1998, lng: 77.7051 },
+            { name: "Whitefield / ITPL, Bengaluru", short: "Whitefield", lat: 12.9863, lng: 77.7314 },
+            { name: "Electronic City, Bengaluru", short: "Electronic City", lat: 12.8452, lng: 77.6602 },
+            { name: "Kengeri Satellite Town, Bengaluru", short: "Kengeri", lat: 12.9168, lng: 77.4832 },
+            { name: "Indiranagar, Bengaluru", short: "Indiranagar", lat: 12.9784, lng: 77.6408 },
+            { name: "Jayanagar 4th Block, Bengaluru", short: "Jayanagar", lat: 12.9299, lng: 77.5824 },
+            { name: "Yeshwantpur TTMC, Bengaluru", short: "Yeshwantpur", lat: 13.0238, lng: 77.5501 },
+            { name: "Hebbal Flyover, Bengaluru", short: "Hebbal", lat: 13.0358, lng: 77.5970 },
+            { name: "Madikeri KSRTC Stand (Kodagu)", short: "Madikeri", lat: 12.4244, lng: 75.7382 },
+            { name: "Hassan Central KSRTC Bus Stand", short: "Hassan Central", lat: 13.0068, lng: 76.1004 },
+            { name: "Shivamogga KSRTC Central Stand", short: "Shivamogga", lat: 13.9299, lng: 75.5681 },
+            { name: "Chikkamagaluru KSRTC Central Stand", short: "Chikkamagaluru", lat: 13.3161, lng: 75.7720 },
+            { name: "Mangaluru KSRTC Central Stand", short: "Mangaluru", lat: 12.8872, lng: 74.8458 },
+            { name: "Udupi Service & KSRTC Bus Stand", short: "Udupi", lat: 13.3409, lng: 74.7421 },
+            { name: "Hosapete Central Bus Stand (Hampi)", short: "Hosapete", lat: 15.2750, lng: 76.3888 },
+            { name: "Gokarna KSRTC Bus Stand", short: "Gokarna", lat: 14.5428, lng: 74.3188 },
+            { name: "Hubballi Central Bus Stand (CBT)", short: "Hubballi", lat: 15.3524, lng: 75.1417 },
+            { name: "Gadag KSRTC Central Stand", short: "Gadag", lat: 15.4290, lng: 75.6320 },
+            { name: "Ron, Gadag", short: "Ron", lat: 15.6994, lng: 75.7341 }
+        ];
 
-            for (const api of apis) {
-                try {
-                    const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 3500);
-                    const res = await fetch(api.url, { signal: controller.signal });
-                    clearTimeout(timeoutId);
-                    if (res.ok) {
-                        const json = await res.json();
-                        const parsed = api.extract(json);
-                        if (parsed && typeof parsed.lat === "number" && typeof parsed.lng === "number") {
-                            return parsed;
-                        }
-                    }
-                } catch (e) {
-                    console.warn(`IP location check failed for ${api.url}:`, e.message);
+        function geoDistanceKm(lat1, lon1, lat2, lon2) {
+            const R = 6371;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        }
+
+        async function resolveLocalityName(lat, lng) {
+            // 1. Check if user is within close proximity (<= 4.5 km) to a verified Karnataka locality
+            let closest = null;
+            let minD = Infinity;
+            for (const loc of KARNATAKA_KNOWN_LOCALITIES) {
+                const dist = geoDistanceKm(lat, lng, loc.lat, loc.lng);
+                if (dist < minD) {
+                    minD = dist;
+                    closest = loc;
                 }
             }
-            return null;
+            if (closest && minD <= 4.5) {
+                return closest.short;
+            }
+
+            // 2. Client-side reverse geocoding via OpenStreetMap Nominatim with safe 3.5s timeout
+            try {
+                const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=14`, {
+                    signal: AbortSignal.timeout(3500)
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    const addr = data.address || {};
+                    const loc = addr.suburb || addr.neighbourhood || addr.city_district || addr.town || addr.village || addr.city;
+                    if (loc) {
+                        return `${loc}, Karnataka`;
+                    }
+                }
+            } catch (_) {}
+
+            // 3. Fallback to closest regional town if within 30 km
+            if (closest && minD <= 30.0) {
+                return `${closest.short} Area`;
+            }
+
+            return `Live GPS (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
         }
 
         async function triggerUserGeolocation(triggerBtn) {
             const originalBtnHtml = triggerBtn ? triggerBtn.innerHTML : "";
             if (triggerBtn) {
                 triggerBtn.disabled = true;
-                triggerBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Detecting Live Location...';
+                triggerBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Acquiring GPS...';
             }
+
+            if (!navigator.geolocation) {
+                if (transitStatusMsg) {
+                    transitStatusMsg.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="color:#b42318;"></i> Geolocation is not supported by your browser. Please select a starting city below or type your locality.';
+                }
+                if (triggerBtn) { triggerBtn.disabled = false; triggerBtn.innerHTML = originalBtnHtml; }
+                return;
+            }
+
+            // Check for insecure context (e.g. testing mobile over http://192.168.x.x)
+            if (window.isSecureContext === false && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
+                if (transitStatusMsg) {
+                    transitStatusMsg.innerHTML = `<i class="fa-solid fa-shield-halved" style="color:#d97706;"></i> Browser security blocks device GPS over unencrypted network (http://${window.location.host}). For mobile live GPS, please access via localhost/HTTPS, or select your locality from the quick pills below.`;
+                }
+                if (triggerBtn) { triggerBtn.disabled = false; triggerBtn.innerHTML = originalBtnHtml; }
+                return;
+            }
+
+            // Inform user to allow location if prompted
             if (transitStatusMsg) {
-                transitStatusMsg.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Contacting GPS & Geolocation Network...';
+                transitStatusMsg.innerHTML = '<i class="fa-solid fa-location-crosshairs fa-spin" style="color:var(--leaf);"></i> Connecting to device GPS. If prompted, please click <strong>Allow</strong>...';
             }
 
-            let lat = null, lng = null, detectedPlaceName = null;
+            function getPositionPromise(options) {
+                return new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject, options);
+                });
+            }
 
-            // 1. First, check browser device GPS (navigator.geolocation) with 5-second timeout
-            if (navigator.geolocation) {
-                try {
-                    const pos = await new Promise((resolve) => {
-                        const timer = setTimeout(() => resolve(null), 5000);
-                        navigator.geolocation.getCurrentPosition(
-                            p => { clearTimeout(timer); resolve(p); },
-                            err => { clearTimeout(timer); resolve(null); },
-                            { timeout: 5000, enableHighAccuracy: true, maximumAge: 0 }
-                        );
-                    });
-                    if (pos && pos.coords) {
-                        lat = pos.coords.latitude;
-                        lng = pos.coords.longitude;
-                        // Fast reverse geocoding via OpenStreetMap Nominatim
-                        try {
-                            const revRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=14`, {
-                                signal: AbortSignal.timeout(2000)
-                            });
-                            if (revRes.ok) {
-                                const revJson = await revRes.json();
-                                const addr = revJson.address || {};
-                                const town = addr.suburb || addr.neighbourhood || addr.city || addr.town || addr.village || addr.county;
-                                if (town) detectedPlaceName = `${town}, Karnataka`;
-                            }
-                        } catch (_) {}
-                    }
-                } catch (gpsErr) {
-                    console.log("Device GPS passed:", gpsErr);
+            let pos = null;
+            try {
+                // Quick cached attempt (fast response if position was cached recently < 2 mins)
+                pos = await getPositionPromise({ timeout: 2500, maximumAge: 120000, enableHighAccuracy: false }).catch(() => null);
+
+                // Fresh high accuracy attempt with generous 15s timeout
+                if (!pos || !pos.coords) {
+                    pos = await getPositionPromise({ timeout: 15000, maximumAge: 0, enableHighAccuracy: true });
                 }
-            }
-
-            // 2. If browser GPS unavailable or desktop PC with no GPS chip, use Server-Side Geolocation API
-            if (!lat || !lng) {
-                try {
-                    if (transitStatusMsg) {
-                        transitStatusMsg.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Resolving your location via ISP Geolocation Network...';
-                    }
-                    const sRes = await fetch(`${window.location.pathname}?action=detect_location`, {
-                        headers: { "X-Requested-With": "XMLHttpRequest" }
-                    });
-                    if (sRes.ok) {
-                        const sData = await sRes.json();
-                        if (sData && sData.detected_location) {
-                            lat = sData.detected_location.lat;
-                            lng = sData.detected_location.lng;
-                            detectedPlaceName = sData.detected_location.display || sData.detected_location.city;
-
-                            if (transitOriginInput) {
-                                transitOriginInput.value = detectedPlaceName || sData.origin;
-                            }
-                            if (transitStatusMsg) {
-                                transitStatusMsg.innerHTML = `<i class="fa-solid fa-circle-check" style="color:var(--leaf);"></i> Live location detected: <strong>${detectedPlaceName || sData.origin}</strong>. Calculating doorstep route...`;
-                            }
-                            renderTransitResults(sData);
-
-                            if (triggerBtn) {
-                                triggerBtn.disabled = false;
-                                triggerBtn.innerHTML = originalBtnHtml;
-                            }
-                            return;
-                        }
-                    }
-                } catch (srvErr) {
-                    console.warn("Server geolocation call error:", srvErr);
+            } catch (err) {
+                console.warn("Device geolocation error:", err);
+                let userMsg = "Unable to determine your GPS position.";
+                if (err.code === 1) { // PERMISSION_DENIED
+                    userMsg = '<i class="fa-solid fa-lock" style="color:#b42318;"></i> Location access was denied. Please click the lock icon 🔒 in your address bar to enable Location permissions, or choose your starting locality below.';
+                } else if (err.code === 2) { // POSITION_UNAVAILABLE
+                    userMsg = '<i class="fa-solid fa-satellite-dish" style="color:#d97706;"></i> Device GPS position unavailable. Please ensure location services are enabled on your device, or choose a starting city below.';
+                } else if (err.code === 3) { // TIMEOUT
+                    userMsg = '<i class="fa-regular fa-clock" style="color:#d97706;"></i> GPS request timed out. Please click "Detect My Live Location" again or select your locality below.';
                 }
-            }
-
-            // 3. Fallback: Client-side IP APIs
-            if (!lat || !lng) {
-                const ipLoc = await detectUserLocationViaApi();
-                if (ipLoc) {
-                    lat = ipLoc.lat;
-                    lng = ipLoc.lng;
-                    detectedPlaceName = ipLoc.display || `${ipLoc.city}, Karnataka`;
-                }
-            }
-
-            // 4. If location coordinates acquired, request dynamic route
-            if (lat && lng) {
-                const queryName = detectedPlaceName || `Live GPS (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
-                if (transitOriginInput) transitOriginInput.value = queryName;
                 if (transitStatusMsg) {
-                    transitStatusMsg.innerHTML = `<i class="fa-solid fa-satellite-dish" style="color:var(--leaf);"></i> Live GPS acquired (${lat.toFixed(4)}, ${lng.toFixed(4)}). Calculating doorstep route...`;
+                    transitStatusMsg.innerHTML = userMsg;
                 }
+                if (triggerBtn) {
+                    triggerBtn.disabled = false;
+                    triggerBtn.innerHTML = originalBtnHtml;
+                }
+                return;
+            }
+
+            if (pos && pos.coords) {
+                const lat = pos.coords.latitude;
+                const lng = pos.coords.longitude;
+                const accuracy = Math.round(pos.coords.accuracy || 0);
+
+                // Store verified live coordinates in sessionStorage
+                try {
+                    sessionStorage.setItem("tourist_live_lat", lat);
+                    sessionStorage.setItem("tourist_live_lng", lng);
+                    sessionStorage.setItem("tourist_live_acc", accuracy);
+                } catch (_) {}
+
+                if (transitStatusMsg) {
+                    transitStatusMsg.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Live GPS acquired (${lat.toFixed(4)}, ${lng.toFixed(4)} &bull; &plusmn;${accuracy}m). Resolving locality & bus routes...`;
+                }
+
+                const localityName = await resolveLocalityName(lat, lng);
+                const queryName = localityName || `Live Doorstep GPS (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
+
+                if (transitOriginInput) {
+                    transitOriginInput.value = queryName;
+                }
+
+                if (transitStatusMsg) {
+                    transitStatusMsg.innerHTML = `<i class="fa-solid fa-circle-check" style="color:var(--leaf);"></i> Live doorstep GPS acquired: <strong>${queryName}</strong> (&plusmn;${accuracy}m). Calculating doorstep bus routes...`;
+                }
+
                 await fetchTransitRoutes(queryName, lat, lng);
-            } else {
-                if (transitStatusMsg) {
-                    transitStatusMsg.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="color:#d97706;"></i> Unable to determine GPS. Please select a starting city below or type your locality.';
-                }
             }
 
             if (triggerBtn) {
@@ -1091,6 +1147,11 @@
         const clearOriginBtn = document.getElementById("clearOriginBtn");
         if (clearOriginBtn) {
             clearOriginBtn.onclick = function () {
+                try {
+                    sessionStorage.removeItem("tourist_live_lat");
+                    sessionStorage.removeItem("tourist_live_lng");
+                    sessionStorage.removeItem("tourist_live_acc");
+                } catch (_) {}
                 if (transitOriginInput) transitOriginInput.value = "";
                 if (originQuickPills) {
                     originQuickPills.querySelectorAll(".origin-pill-btn").forEach(p => p.classList.remove("active"));
@@ -1108,6 +1169,13 @@
                 const val = pill.getAttribute("data-val");
                 if (!val) return;
 
+                // When user selects a named pill, clear stored live GPS
+                try {
+                    sessionStorage.removeItem("tourist_live_lat");
+                    sessionStorage.removeItem("tourist_live_lng");
+                    sessionStorage.removeItem("tourist_live_acc");
+                } catch (_) {}
+
                 originQuickPills.querySelectorAll(".origin-pill-btn").forEach(p => p.classList.remove("active"));
                 pill.classList.add("active");
 
@@ -1122,6 +1190,12 @@
                 e.preventDefault();
                 const originVal = transitOriginInput ? transitOriginInput.value.trim() : "";
                 if (originVal) {
+                    // Manual search resets live GPS coordinates
+                    try {
+                        sessionStorage.removeItem("tourist_live_lat");
+                        sessionStorage.removeItem("tourist_live_lng");
+                        sessionStorage.removeItem("tourist_live_acc");
+                    } catch (_) {}
                     fetchTransitRoutes(originVal, null, null);
                 }
             });
@@ -1142,16 +1216,41 @@
             bindStopPillClicks();
         }
 
-        // Auto-detect real location if origin is empty or stale legacy Alanahalli
-        if (transitOriginInput) {
-            const curVal = (transitOriginInput.value || "").trim().toLowerCase();
-            if (!curVal || curVal.includes("alanahalli")) {
-                setTimeout(() => {
-                    triggerUserGeolocation(singleGpsBtn);
-                }, 350);
-            }
+        // If user already granted location permission in browser, auto-detect on load
+        if (navigator.permissions && navigator.permissions.query) {
+            navigator.permissions.query({ name: "geolocation" }).then(res => {
+                if (res && res.state === "granted") {
+                    const savedLat = sessionStorage.getItem("tourist_live_lat");
+                    const savedLng = sessionStorage.getItem("tourist_live_lng");
+                    if (savedLat && savedLng) {
+                        // Restore cached live GPS immediately
+                        setTimeout(() => {
+                            resolveLocalityName(parseFloat(savedLat), parseFloat(savedLng)).then(locName => {
+                                if (transitOriginInput && !transitOriginInput.value) {
+                                    transitOriginInput.value = locName;
+                                }
+                                fetchTransitRoutes(locName, parseFloat(savedLat), parseFloat(savedLng));
+                            });
+                        }, 200);
+                    } else {
+                        setTimeout(() => {
+                            triggerUserGeolocation(singleGpsBtn);
+                        }, 400);
+                    }
+                }
+            }).catch(() => {});
         }
     }
+
+    // Run when DOM is ready
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initDashboard);
+    } else {
+        initDashboard();
+    }
+})();
+
+    
 
     // Run when DOM is ready
     if (document.readyState === "loading") {

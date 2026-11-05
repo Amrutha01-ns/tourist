@@ -101,6 +101,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
+            if (window.isSecureContext === false && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
+                if (gpsStatusMessage) {
+                    gpsStatusMessage.textContent = "Device GPS requires HTTPS or localhost. When testing on LAN mobile, please select your destination district above.";
+                    gpsStatusMessage.style.color = "#d97706";
+                }
+                return;
+            }
+
             const originalBtnHtml = currentLocationBtn.innerHTML;
             currentLocationBtn.disabled = true;
             currentLocationBtn.innerHTML = '<span><i class="fa-solid fa-spinner fa-spin" style="color: #2f7d4f;"></i></span> Locating nearest tourist district...';
