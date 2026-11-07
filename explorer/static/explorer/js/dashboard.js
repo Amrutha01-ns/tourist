@@ -182,6 +182,8 @@
         let pinsLayerGroup = null;
         let simLayerGroup = null;
         let liveGpsLayerGroup = null;
+        let citiesLayerGroup = null;
+        let infraLayerGroup = null;
         let currentMapBounds = null;
         let cachedMapData = null;
         let stopMarkersMap = {};
@@ -201,30 +203,187 @@
         let simPath = [];
         let simMarker = null;
 
+        // Three distinct, high-definition map views:
+        // 1. Streets & Cities: Google Navigation with clear city and district typography
+        // 2. Satellite Hybrid: High-resolution satellite aerial imagery WITH city, district & road overlay
+        // 3. 3D Buildings & Infra: OpenStreetMap standard with 3D building outlines and civic infrastructure
         const TILE_THEMES = {
             streets: {
-                url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+                name: "Streets & Cities",
+                url: "https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
                 options: {
-                    maxZoom: 19,
-                    attribution: '&copy; Esri &mdash; National Geographic, DeLorme, NAVTEQ, USGS'
-                }
-            },
-            transit: {
-                url: "https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",
-                options: {
-                    maxZoom: 19,
-                    subdomains: "abc",
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, HOT'
+                    maxZoom: 20,
+                    subdomains: ["mt0", "mt1", "mt2", "mt3"],
+                    attribution: '&copy; Google Maps &mdash; Streets, Cities &amp; District Boundaries'
                 }
             },
             satellite: {
-                url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                name: "Satellite Hybrid",
+                url: "https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
+                options: {
+                    maxZoom: 20,
+                    subdomains: ["mt0", "mt1", "mt2", "mt3"],
+                    attribution: '&copy; Google Imagery &mdash; Satellite with City, District &amp; Road Overlay'
+                }
+            },
+            infrastructure: {
+                name: "3D Buildings & Infra",
+                url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                 options: {
                     maxZoom: 19,
-                    attribution: '&copy; Esri, Maxar, Earthstar Geographics'
+                    subdomains: ["a", "b", "c"],
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &mdash; 3D Building Outlines &amp; Civic Infrastructure'
                 }
             }
         };
+
+        // Prominent Karnataka Regional Hubs for corridor context & spatial orientation
+        const KARNATAKA_REGIONAL_HUBS = [
+            { name: "Bengaluru", district: "Bengaluru Urban", lat: 12.9716, lng: 77.5946 },
+            { name: "Mysuru", district: "Mysuru", lat: 12.2958, lng: 76.6394 },
+            { name: "Mandya", district: "Mandya", lat: 12.5240, lng: 76.8960 },
+            { name: "Ramanagara", district: "Ramanagara", lat: 12.7200, lng: 77.2790 },
+            { name: "Channapatna", district: "Ramanagara", lat: 12.6500, lng: 77.2000 },
+            { name: "Srirangapatna", district: "Mandya", lat: 12.4230, lng: 76.6830 },
+            { name: "Hunsur", district: "Mysuru", lat: 12.3050, lng: 76.2890 },
+            { name: "Kushalnagar", district: "Kodagu", lat: 12.4600, lng: 75.9600 },
+            { name: "Madikeri", district: "Kodagu", lat: 12.4244, lng: 75.7382 },
+            { name: "Somwarpet", district: "Kodagu", lat: 12.5950, lng: 75.8640 },
+            { name: "Virajpet", district: "Kodagu", lat: 12.2000, lng: 75.8000 },
+            { name: "Hassan", district: "Hassan", lat: 13.0068, lng: 76.1004 },
+            { name: "Sakleshpur", district: "Hassan", lat: 12.9430, lng: 75.7860 },
+            { name: "Belur", district: "Hassan", lat: 13.1630, lng: 75.8640 },
+            { name: "Chikkamagaluru", district: "Chikkamagaluru", lat: 13.3161, lng: 75.7720 },
+            { name: "Mudigere", district: "Chikkamagaluru", lat: 13.1360, lng: 75.6410 },
+            { name: "Sringeri", district: "Chikkamagaluru", lat: 13.4190, lng: 75.2570 },
+            { name: "Mangaluru", district: "Dakshina Kannada", lat: 12.9141, lng: 74.8560 },
+            { name: "Udupi", district: "Udupi", lat: 13.3409, lng: 74.7421 },
+            { name: "Kundapura", district: "Udupi", lat: 13.6270, lng: 74.6930 },
+            { name: "Karkala", district: "Udupi", lat: 13.2140, lng: 74.9980 },
+            { name: "Shivamogga", district: "Shivamogga", lat: 13.9299, lng: 75.5681 },
+            { name: "Bhadravati", district: "Shivamogga", lat: 13.8400, lng: 75.7000 },
+            { name: "Sagar", district: "Shivamogga", lat: 14.1660, lng: 75.0330 },
+            { name: "Jog Falls", district: "Shivamogga", lat: 14.2280, lng: 74.8120 },
+            { name: "Davanagere", district: "Davanagere", lat: 14.4644, lng: 75.9218 },
+            { name: "Chitradurga", district: "Chitradurga", lat: 14.2230, lng: 76.4000 },
+            { name: "Tumakuru", district: "Tumakuru", lat: 13.3400, lng: 77.1000 },
+            { name: "Hubballi", district: "Dharwad", lat: 15.3647, lng: 75.1240 },
+            { name: "Dharwad", district: "Dharwad", lat: 15.4589, lng: 75.0078 },
+            { name: "Belagavi", district: "Belagavi", lat: 15.8497, lng: 74.4977 },
+            { name: "Gokarna", district: "Uttara Kannada", lat: 14.5479, lng: 74.3188 },
+            { name: "Karwar", district: "Uttara Kannada", lat: 14.8130, lng: 74.1300 },
+            { name: "Hosapete (Hampi)", district: "Vijayanagara", lat: 15.2700, lng: 76.3900 },
+            { name: "Badami", district: "Bagalkote", lat: 15.9180, lng: 75.6760 },
+            { name: "Vijayapura", district: "Vijayapura", lat: 16.8302, lng: 75.7100 },
+            { name: "Kalaburagi", district: "Kalaburagi", lat: 17.3297, lng: 76.8343 }
+        ];
+
+        function renderRegionalCityPills(bounds) {
+            if (!citiesLayerGroup || !bounds) return;
+            citiesLayerGroup.clearLayers();
+
+            let minLat, maxLat, minLng, maxLng;
+            if (typeof bounds.getSouthWest === "function") {
+                const sw = bounds.getSouthWest();
+                const ne = bounds.getNorthEast();
+                minLat = Math.min(sw.lat, ne.lat) - 0.35;
+                maxLat = Math.max(sw.lat, ne.lat) + 0.35;
+                minLng = Math.min(sw.lng, ne.lng) - 0.35;
+                maxLng = Math.max(sw.lng, ne.lng) + 0.35;
+            } else if (Array.isArray(bounds) && bounds.length === 2) {
+                minLat = Math.min(bounds[0][0], bounds[1][0]) - 0.35;
+                maxLat = Math.max(bounds[0][0], bounds[1][0]) + 0.35;
+                minLng = Math.min(bounds[0][1], bounds[1][1]) - 0.35;
+                maxLng = Math.max(bounds[0][1], bounds[1][1]) + 0.35;
+            } else {
+                return;
+            }
+
+            KARNATAKA_REGIONAL_HUBS.forEach(hub => {
+                if (hub.lat >= minLat && hub.lat <= maxLat && hub.lng >= minLng && hub.lng <= maxLng) {
+                    const icon = L.divIcon({
+                        className: "city-map-pill-container",
+                        html: `<div class="city-map-pill" title="${hub.name} (${hub.district} District)"><span class="city-dot"></span><span class="city-name">${hub.name}</span><small class="city-dist">${hub.district}</small></div>`,
+                        iconSize: [null, null],
+                        iconAnchor: [35, 12]
+                    });
+                    const m = L.marker([hub.lat, hub.lng], { icon: icon, zIndexOffset: 300 });
+                    m.bindPopup(`
+                        <div class="city-popup-card">
+                            <span class="city-popup-tag"><i class="fa-solid fa-map-pin"></i> Karnataka Regional Hub</span>
+                            <h4 style="margin:4px 0 2px; font-size:15px; color:#14452f;">${hub.name}</h4>
+                            <p style="margin:0; font-size:12px; color:#475569;"><strong>District:</strong> ${hub.district} &bull; Region: Karnataka</p>
+                        </div>
+                    `, { className: "custom-transit-popup" });
+                    citiesLayerGroup.addLayer(m);
+                }
+            });
+        }
+
+        function renderInfrastructureLayer(mapData) {
+            if (!infraLayerGroup) return;
+            infraLayerGroup.clearLayers();
+
+            // 1. Destination Architecture & 3D Building Complex Marker
+            let destPoint = null;
+            const destStop = (mapData.transit_stops || []).find(s => s.type === "destination");
+            if (destStop) {
+                destPoint = [destStop.lat, destStop.lng];
+            } else if (mapData.waypoints && mapData.waypoints.length > 0) {
+                destPoint = mapData.waypoints[mapData.waypoints.length - 1];
+            }
+
+            if (destPoint) {
+                const destName = mapData.place_name || "Destination Complex";
+                const destDistrict = mapData.district || "Karnataka";
+                const icon = L.divIcon({
+                    className: "infra-marker-container",
+                    html: `<div class="infra-poi-marker type-monument" title="${destName} 3D Architectural Site"><i class="fa-solid fa-landmark"></i></div>`,
+                    iconSize: [36, 36],
+                    iconAnchor: [18, 18]
+                });
+                const m = L.marker(destPoint, { icon: icon, zIndexOffset: 700 });
+                m.bindPopup(`
+                    <div class="infra-popup-card">
+                        <span class="infra-badge-monument"><i class="fa-solid fa-building-columns"></i> 3D Heritage Architecture &amp; Monument</span>
+                        <h4 style="margin:6px 0 3px; font-size:15px; color:#854d0e;">${destName}</h4>
+                        <p style="margin:0 0 6px; font-size:12px; color:#334155;"><strong>Location:</strong> ${destDistrict} District &bull; Public Monument Grounds</p>
+                        <div class="infra-facilities-row">
+                            <span><i class="fa-solid fa-person-walking"></i> Visitor Quadrangle</span>
+                            <span><i class="fa-solid fa-ticket"></i> Entry Terminal</span>
+                            <span><i class="fa-solid fa-square-parking"></i> EV/Vehicle Parking</span>
+                        </div>
+                    </div>
+                `, { className: "custom-transit-popup" });
+                infraLayerGroup.addLayer(m);
+            }
+
+            // 2. Transit Terminals & Infrastructure Nodes along Corridor
+            (mapData.transit_stops || []).forEach(stop => {
+                if (stop.type === "origin" || stop.type === "transfer") {
+                    const icon = L.divIcon({
+                        className: "infra-marker-container",
+                        html: `<div class="infra-poi-marker type-bus" title="${stop.name} Bus Terminal Infrastructure"><i class="fa-solid fa-bus"></i></div>`,
+                        iconSize: [32, 32],
+                        iconAnchor: [16, 16]
+                    });
+                    const m = L.marker([stop.lat, stop.lng], { icon: icon, zIndexOffset: 650 });
+                    m.bindPopup(`
+                        <div class="infra-popup-card">
+                            <span class="infra-badge-bus"><i class="fa-solid fa-bus-simple"></i> Public Transit Terminal Infrastructure</span>
+                            <h4 style="margin:6px 0 3px; font-size:14px; color:#14532d;">${stop.name}</h4>
+                            <p style="margin:0 0 6px; font-size:12px; color:#334155;"><strong>Platform Bay:</strong> ${stop.platform || "Main Terminal Bay"} &bull; ${stop.buses || "Intercity Sarige & Express"}</p>
+                            <div class="infra-facilities-row">
+                                <span><i class="fa-solid fa-restroom"></i> Passenger Lounges</span>
+                                <span><i class="fa-solid fa-charging-station"></i> EV Fast Charging</span>
+                                <span><i class="fa-solid fa-store"></i> Refreshment Bays</span>
+                            </div>
+                        </div>
+                    `, { className: "custom-transit-popup" });
+                    infraLayerGroup.addLayer(m);
+                }
+            });
+        }
 
         // Smooth Catmull-Rom Spline Curve Interpolation
         function generateCurvedPoints(coords, pointsPerSegment = 8) {
@@ -284,6 +443,18 @@
             document.querySelectorAll(".map-theme-btn").forEach(btn => {
                 btn.classList.toggle("active", btn.dataset.theme === themeKey);
             });
+
+            // Toggle 3D Infrastructure layer indicator
+            const infraLegend = document.getElementById("infraLegendIndicator");
+            if (infraLayerGroup) {
+                if (themeKey === "infrastructure") {
+                    if (!routeMap.hasLayer(infraLayerGroup)) routeMap.addLayer(infraLayerGroup);
+                    if (infraLegend) infraLegend.style.display = "inline-flex";
+                } else {
+                    if (routeMap.hasLayer(infraLayerGroup)) routeMap.removeLayer(infraLayerGroup);
+                    if (infraLegend) infraLegend.style.display = "none";
+                }
+            }
         }
 
         function initOrUpdateLeafletMap(mapData) {
@@ -301,15 +472,24 @@
                         zoomControl: true,
                     });
 
-                    // Default to crystal-clear Esri World Street Map
+                    // Default to crystal-clear Google Streets & Cities Navigation
                     const defaultCfg = TILE_THEMES.streets;
                     currentTileLayer = L.tileLayer(defaultCfg.url, defaultCfg.options).addTo(routeMap);
 
                     roadLayerGroup = L.layerGroup().addTo(routeMap);
                     stopsLayerGroup = L.layerGroup().addTo(routeMap);
                     pinsLayerGroup = L.layerGroup().addTo(routeMap);
+                    citiesLayerGroup = L.layerGroup().addTo(routeMap);
+                    infraLayerGroup = L.layerGroup(); // Added to map dynamically in 'infrastructure' theme
                     simLayerGroup = L.layerGroup().addTo(routeMap);
                     liveGpsLayerGroup = L.layerGroup().addTo(routeMap);
+
+                    // Re-calculate visible city and district pills when map moves or zooms
+                    routeMap.on("moveend", () => {
+                        if (routeMap) {
+                            renderRegionalCityPills(routeMap.getBounds());
+                        }
+                    });
                 } catch (e) {
                     console.warn("Leaflet map initialization warning:", e);
                     return;
@@ -318,6 +498,8 @@
                 roadLayerGroup.clearLayers();
                 stopsLayerGroup.clearLayers();
                 pinsLayerGroup.clearLayers();
+                if (citiesLayerGroup) citiesLayerGroup.clearLayers();
+                if (infraLayerGroup) infraLayerGroup.clearLayers();
                 simLayerGroup.clearLayers();
                 if (liveGpsLayerGroup) liveGpsLayerGroup.clearLayers();
                 stopSimulation();
@@ -492,8 +674,27 @@
                 routeMap.fitBounds(b, { padding: [40, 40], maxZoom: 13 });
             }
 
+            // Update floating district & place badge on map canvas
+            const regionBadge = document.getElementById("mapRegionBadge");
+            if (regionBadge && (mapData.place_name || mapData.district)) {
+                regionBadge.innerHTML = `<i class="fa-solid fa-map-location-dot"></i> <span>${mapData.place_name || 'Tourist Destination'} &bull; <strong>${mapData.district || 'Karnataka'} District</strong></span>`;
+            }
+
+            // Populate Regional City Pills and 3D Infrastructure
+            renderRegionalCityPills(currentMapBounds || routeMap.getBounds());
+            renderInfrastructureLayer(mapData);
+
+            // If infrastructure theme is currently selected, ensure infraLayerGroup is displayed
+            const activeThemeBtn = document.querySelector(".map-theme-btn.active");
+            if (activeThemeBtn && activeThemeBtn.dataset.theme === "infrastructure") {
+                if (!routeMap.hasLayer(infraLayerGroup)) routeMap.addLayer(infraLayerGroup);
+            }
+
             setTimeout(() => {
-                if (routeMap) routeMap.invalidateSize();
+                if (routeMap) {
+                    routeMap.invalidateSize();
+                    renderRegionalCityPills(routeMap.getBounds());
+                }
             }, 250);
         }
 
