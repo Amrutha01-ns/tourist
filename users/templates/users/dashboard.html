@@ -116,11 +116,15 @@
                     </button>
                 </form>
 
-                <button type="button" class="current-location-btn" id="currentLocationBtn">
-                    <span><i class="fa-solid fa-crosshairs" style="color: #2f7d4f; margin-right: 6px;"></i></span>
-                    Use My Current Location
-                </button>
-                <div id="gpsStatusMessage" style="font-size: 13px; color: #555; margin-top: 8px; min-height: 18px;"></div>
+                <!-- LIVE LOCATION CONTROLS (Clean, minimal action bar) -->
+                <div class="live-location-action-bar">
+                    <button type="button" class="current-location-btn" id="currentLocationBtn" title="Detect your real live location">
+                        <i class="fa-solid fa-location-crosshairs"></i>
+                        <span id="currentLocationBtnText">Use My Current Location</span>
+                    </button>
+                    <span class="live-location-hint" id="liveLocationHint"></span>
+                </div>
+                <div id="gpsStatusMessage" class="gps-status-msg" style="display: none;"></div>
             </div>
 
             <div class="hero-decoration">

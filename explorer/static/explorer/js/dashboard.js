@@ -467,14 +467,14 @@
                 liveGpsLayerGroup.clearLayers();
                 userGpsMarker = null;
                 userAccuracyCircle = null;
-                const storedLat = sessionStorage.getItem("tourist_live_lat");
-                const storedLng = sessionStorage.getItem("tourist_live_lng");
+                const storedLat = sessionStorage.getItem("tourist_live_lat") || localStorage.getItem("tourist_live_lat");
+                const storedLng = sessionStorage.getItem("tourist_live_lng") || localStorage.getItem("tourist_live_lng");
                 const isGpsActive = mapData.is_origin_gps || (storedLat && storedLng && mapData.origin && mapData.origin.toLowerCase().includes("live"));
                 const gpsLat = mapData.origin_coords ? mapData.origin_coords[0] : (storedLat ? parseFloat(storedLat) : null);
                 const gpsLng = mapData.origin_coords ? mapData.origin_coords[1] : (storedLng ? parseFloat(storedLng) : null);
 
                 if (isGpsActive && gpsLat && gpsLng) {
-                    const accRadius = parseInt(sessionStorage.getItem("tourist_live_acc") || "35", 10);
+                    const accRadius = parseInt(sessionStorage.getItem("tourist_live_acc") || localStorage.getItem("tourist_live_acc") || "35", 10);
                     renderGoogleMapsBlueDot(gpsLat, gpsLng, accRadius, false);
                 }
             }
@@ -783,6 +783,9 @@
         // -------------------------------------------------------------
         // 6. Public Transportation Route Discovery & GPS Enablement
         // -------------------------------------------------------------
+        const browserLocationBanner = document.getElementById("browserLocationBanner");
+        const bannerAllowGpsBtn = document.getElementById("bannerAllowGpsBtn");
+        const bannerDismissBtn = document.getElementById("bannerDismissBtn");
         const transitOriginForm = document.getElementById("transitOriginForm");
         const transitOriginInput = document.getElementById("transitOriginInput");
         const transitRoutesContainer = document.getElementById("transitRoutesContainer");
@@ -1089,38 +1092,59 @@
         }
 
         async function resolveLocalityName(lat, lng) {
-            // Pure dynamic reverse geocoding via OpenStreetMap Nominatim with safe 4s timeout
+            // Check synchronized client storage first
+            const cachedCity = localStorage.getItem("tourist_user_city") || sessionStorage.getItem("tourist_user_city");
+            if (cachedCity && (!lat || !lng)) return cachedCity;
+
+            // Accurate Reverse Geocoding via BigDataCloud client API
             try {
-                const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=16&addressdetails=1`, {
-                    signal: AbortSignal.timeout(4000),
+                const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`, {
+                    signal: AbortSignal.timeout(3500)
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    const city = data.city || data.locality || data.principalSubdivision;
+                    const state = data.principalSubdivision || "";
+                    if (city) {
+                        const fullName = state && !city.includes(state) ? `${city}, ${state}` : city;
+                        localStorage.setItem("tourist_user_city", fullName);
+                        document.cookie = "tourist_user_city=" + encodeURIComponent(fullName) + "; path=/; max-age=604800; SameSite=Lax";
+                        return fullName;
+                    }
+                }
+            } catch (_) {}
+
+            // Secondary fallback via Nominatim
+            try {
+                const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=14&addressdetails=1`, {
+                    signal: AbortSignal.timeout(3500),
                     headers: { "Accept-Language": "en" }
                 });
                 if (res.ok) {
                     const data = await res.json();
                     const addr = data.address || {};
-                    const locality = addr.suburb || addr.neighbourhood || addr.residential || addr.quarter || addr.subdistrict;
-                    const city = addr.city || addr.town || addr.municipality || addr.village;
-                    const state = addr.state;
-                    if (locality && city) {
-                        return `${locality}, ${city}`;
-                    } else if (locality) {
-                        return state ? `${locality}, ${state}` : locality;
-                    } else if (city) {
-                        return state ? `${city}, ${state}` : city;
-                    } else if (data.display_name) {
-                        const parts = data.display_name.split(",");
-                        return parts.slice(0, 2).join(",").trim();
+                    const city = addr.city || addr.town || addr.village || addr.suburb || addr.county;
+                    const state = addr.state || "";
+                    if (city) {
+                        const fullName = state && !city.includes(state) ? `${city}, ${state}` : city;
+                        localStorage.setItem("tourist_user_city", fullName);
+                        document.cookie = "tourist_user_city=" + encodeURIComponent(fullName) + "; path=/; max-age=604800; SameSite=Lax";
+                        return fullName;
                     }
                 }
             } catch (_) {}
 
-            return `Live GPS (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
+            return cachedCity || `Live GPS (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
         }
 
-        async function triggerUserGeolocation(triggerBtn, flyToMap = true) {
+        async function triggerUserGeolocation(triggerBtn, flyToMap = true, isAuto = false) {
             updateGpsPanelState("searching");
+            if (bannerAllowGpsBtn) {
+                bannerAllowGpsBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Requesting Location...</span>';
+            }
 
             if (!navigator.geolocation) {
+                if (browserLocationBanner) browserLocationBanner.style.display = "none";
                 updateGpsPanelState("error", {
                     message: "Geolocation is not supported by your browser.",
                     tip: '<i class="fa-solid fa-circle-exclamation"></i> Please search your locality in the input bar below.'
@@ -1131,52 +1155,103 @@
                 return;
             }
 
-            // Check for insecure context (e.g. testing mobile over http://192.168.x.x)
-            if (window.isSecureContext === false && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
-                updateGpsPanelState("error", {
-                    message: `Browser blocks device GPS on unencrypted network (http://${window.location.host}).`,
-                    tip: '<i class="fa-solid fa-shield-halved" style="color:#d97706;"></i> Use localhost or HTTPS for live mobile GPS, or enter your starting point below.'
-                });
-                if (transitStatusMsg) {
-                    transitStatusMsg.innerHTML = `<i class="fa-solid fa-shield-halved" style="color:#d97706;"></i> Device GPS blocked on unencrypted HTTP (${window.location.host}). Please access via localhost/HTTPS.`;
-                }
-                return;
-            }
-
             function getPositionPromise(options) {
                 return new Promise((resolve, reject) => {
+                    if (!navigator.geolocation) {
+                        return reject(new Error("Geolocation not supported"));
+                    }
                     navigator.geolocation.getCurrentPosition(resolve, reject, options);
                 });
             }
 
+            // Universal Network Geolocation Fallback (Google-style, works on any port, phone, or network)
+            async function getNetworkIpLocation() {
+                try {
+                    const res = await fetch("https://api.bigdatacloud.net/data/reverse-geocode-client", {
+                        signal: AbortSignal.timeout(4000)
+                    });
+                    if (res.ok) {
+                        const d = await res.json();
+                        const lat = parseFloat(d.latitude);
+                        const lng = parseFloat(d.longitude);
+                        const city = d.city || d.locality || d.principalSubdivision || "Karnataka";
+                        const state = d.principalSubdivision || "";
+                        const fullCity = state && !city.includes(state) ? `${city}, ${state}` : city;
+                        if (!isNaN(lat) && !isNaN(lng)) {
+                            localStorage.setItem("tourist_user_city", fullCity);
+                            document.cookie = "tourist_user_city=" + encodeURIComponent(fullCity) + "; path=/; max-age=604800; SameSite=Lax";
+                            return {
+                                coords: {
+                                    latitude: lat,
+                                    longitude: lng,
+                                    accuracy: 2500
+                                },
+                                city: fullCity
+                            };
+                        }
+                    }
+                } catch (_) {}
+                return null;
+            }
+
             let pos = null;
             try {
-                // 1. Quick cached attempt (< 2 mins)
-                pos = await getPositionPromise({ timeout: 2000, maximumAge: 120000, enableHighAccuracy: false }).catch(() => null);
-
-                // 2. High accuracy fresh position with 15s timeout
-                if (!pos || !pos.coords) {
-                    pos = await getPositionPromise({ timeout: 15000, maximumAge: 0, enableHighAccuracy: true });
-                }
+                // High accuracy fresh position with generous 25s timeout for mobile GPS
+                pos = await getPositionPromise({
+                    enableHighAccuracy: true,
+                    timeout: 25000,
+                    maximumAge: 0
+                });
             } catch (err) {
-                console.warn("Device geolocation error:", err);
-                let userMsg = "Unable to determine your GPS position.";
-                let userTip = '<i class="fa-solid fa-circle-exclamation"></i> Please enter your locality in the search bar below.';
-                if (err.code === 1) { // PERMISSION_DENIED
-                    userMsg = "Location access was denied.";
-                    userTip = '<i class="fa-solid fa-lock" style="color:#b42318;"></i> Click the lock icon in your browser address bar to allow Location access.';
-                } else if (err.code === 2) { // POSITION_UNAVAILABLE
-                    userMsg = "Device GPS position is unavailable.";
-                    userTip = '<i class="fa-solid fa-satellite-dish" style="color:#d97706;"></i> Ensure Location/GPS toggle is enabled in your device settings.';
-                } else if (err.code === 3) { // TIMEOUT
-                    userMsg = "GPS acquisition timed out.";
-                    userTip = '<i class="fa-regular fa-clock" style="color:#d97706;"></i> Satellite signal weak. Tap "Detect Live GPS" to retry.';
+                // If high accuracy times out (e.g. desktop PC without GPS hardware or indoor satellite loss),
+                // fall back to standard Wi-Fi / IP / cell network positioning
+                if (err && err.code === 3) {
+                    try {
+                        pos = await getPositionPromise({
+                            enableHighAccuracy: false,
+                            timeout: 10000,
+                            maximumAge: 300000
+                        });
+                    } catch (fallbackErr) {
+                        err = fallbackErr;
+                    }
                 }
-                updateGpsPanelState("error", { message: userMsg, tip: userTip });
-                if (transitStatusMsg) {
-                    transitStatusMsg.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="color:#b42318;"></i> ${userMsg}`;
+
+                if (!pos || !pos.coords) {
+                    // Try Google-style network IP geolocation fallback
+                    const netLoc = await getNetworkIpLocation();
+                    if (netLoc && netLoc.coords) {
+                        pos = netLoc;
+                    }
                 }
-                return;
+
+                if (!pos || !pos.coords) {
+                    console.warn("Device geolocation error:", err);
+                    if (bannerAllowGpsBtn) {
+                        bannerAllowGpsBtn.innerHTML = '<i class="fa-solid fa-location-arrow"></i> <span>Allow Browser Location</span>';
+                    }
+
+                    let userMsg = "Unable to determine your GPS position.";
+                    let userTip = '<i class="fa-solid fa-circle-exclamation"></i> Please enter your locality in the search bar below.';
+
+                    if (err && err.code === 1) { // PERMISSION_DENIED
+                        if (browserLocationBanner) browserLocationBanner.style.display = "none";
+                        userMsg = "Location access was denied in your browser.";
+                        userTip = '<i class="fa-solid fa-lock" style="color:#b42318;"></i> Click the lock / settings icon next to your URL bar to allow Location access, or enter your area below.';
+                    } else if (err && err.code === 2) { // POSITION_UNAVAILABLE
+                        userMsg = "Device location is currently unavailable.";
+                        userTip = '<i class="fa-solid fa-satellite-dish" style="color:#d97706;"></i> Ensure Location / Wi-Fi is enabled in your device settings.';
+                    } else if (err && err.code === 3) { // TIMEOUT
+                        userMsg = "Location acquisition timed out.";
+                        userTip = '<i class="fa-regular fa-clock" style="color:#d97706;"></i> Tap "Detect Live GPS" to retry, or type your starting area below.';
+                    }
+
+                    updateGpsPanelState("error", { message: userMsg, tip: userTip });
+                    if (transitStatusMsg) {
+                        transitStatusMsg.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="color:#b42318;"></i> ${userMsg}`;
+                    }
+                    return;
+                }
             }
 
             if (pos && pos.coords) {
@@ -1188,10 +1263,19 @@
                 currentUserAccuracy = accuracy;
                 lastRoutedCoords = [lat, lng];
 
+                // Hide the permission banner on successful acquisition
+                if (browserLocationBanner) browserLocationBanner.style.display = "none";
+
+                // Persist coordinates across sessionStorage, localStorage, and cookies
                 try {
                     sessionStorage.setItem("tourist_live_lat", lat);
                     sessionStorage.setItem("tourist_live_lng", lng);
                     sessionStorage.setItem("tourist_live_acc", accuracy);
+                    localStorage.setItem("tourist_live_lat", lat);
+                    localStorage.setItem("tourist_live_lng", lng);
+                    localStorage.setItem("tourist_live_acc", accuracy);
+                    document.cookie = "tourist_user_lat=" + lat + "; path=/; max-age=604800; SameSite=Lax";
+                    document.cookie = "tourist_user_lng=" + lng + "; path=/; max-age=604800; SameSite=Lax";
                 } catch (_) {}
 
                 const localityName = await resolveLocalityName(lat, lng);
@@ -1242,6 +1326,11 @@
                         sessionStorage.setItem("tourist_live_lat", lat);
                         sessionStorage.setItem("tourist_live_lng", lng);
                         sessionStorage.setItem("tourist_live_acc", acc);
+                        localStorage.setItem("tourist_live_lat", lat);
+                        localStorage.setItem("tourist_live_lng", lng);
+                        localStorage.setItem("tourist_live_acc", acc);
+                        document.cookie = "tourist_user_lat=" + lat + "; path=/; max-age=604800; SameSite=Lax";
+                        document.cookie = "tourist_user_lng=" + lng + "; path=/; max-age=604800; SameSite=Lax";
                     } catch (_) {}
 
                     renderGoogleMapsBlueDot(lat, lng, acc, false);
@@ -1294,7 +1383,7 @@
         // Control button listeners
         if (singleGpsBtn) {
             singleGpsBtn.onclick = function () {
-                triggerUserGeolocation(singleGpsBtn, true);
+                triggerUserGeolocation(singleGpsBtn, true, false);
             };
         }
 
@@ -1329,6 +1418,11 @@
                     sessionStorage.removeItem("tourist_live_lat");
                     sessionStorage.removeItem("tourist_live_lng");
                     sessionStorage.removeItem("tourist_live_acc");
+                    localStorage.removeItem("tourist_live_lat");
+                    localStorage.removeItem("tourist_live_lng");
+                    localStorage.removeItem("tourist_live_acc");
+                    document.cookie = "tourist_user_lat=; path=/; max-age=0";
+                    document.cookie = "tourist_user_lng=; path=/; max-age=0";
                 } catch (_) {}
 
                 if (transitOriginInput) transitOriginInput.value = "";
@@ -1351,7 +1445,7 @@
                     }
                     setTimeout(() => gmapsFabBtn.classList.remove("active"), 1400);
                 } else {
-                    triggerUserGeolocation(singleGpsBtn, true);
+                    triggerUserGeolocation(singleGpsBtn, true, false);
                 }
             };
         }
@@ -1366,6 +1460,11 @@
                         sessionStorage.removeItem("tourist_live_lat");
                         sessionStorage.removeItem("tourist_live_lng");
                         sessionStorage.removeItem("tourist_live_acc");
+                        localStorage.removeItem("tourist_live_lat");
+                        localStorage.removeItem("tourist_live_lng");
+                        localStorage.removeItem("tourist_live_acc");
+                        document.cookie = "tourist_user_lat=; path=/; max-age=0";
+                        document.cookie = "tourist_user_lng=; path=/; max-age=0";
                     } catch (_) {}
                     if (liveGpsLayerGroup) liveGpsLayerGroup.clearLayers();
                     userGpsMarker = null;
@@ -1393,38 +1492,109 @@
             bindStopPillClicks();
         }
 
+        // Wire up Browser Location Permission Banner controls
+        if (bannerAllowGpsBtn) {
+            bannerAllowGpsBtn.onclick = function () {
+                triggerUserGeolocation(singleGpsBtn, true, false);
+            };
+        }
+        if (bannerDismissBtn) {
+            bannerDismissBtn.onclick = function () {
+                if (browserLocationBanner) browserLocationBanner.style.display = "none";
+                try {
+                    sessionStorage.setItem("tourist_loc_prompt_dismissed", "1");
+                } catch (_) {}
+            };
+        }
+
         // Initialize device tag display
         if (gmapsDeviceTag) gmapsDeviceTag.textContent = detectDeviceType();
 
-        // Check if cached coordinates already exist from this session
-        const savedLat = sessionStorage.getItem("tourist_live_lat");
-        const savedLng = sessionStorage.getItem("tourist_live_lng");
-        const savedAcc = parseInt(sessionStorage.getItem("tourist_live_acc") || "35", 10);
+        // -------------------------------------------------------------
+        // Comprehensive Browser-Based Live Geolocation Initiation Flow
+        // -------------------------------------------------------------
+        function initLocationServices() {
+            const storedLat = sessionStorage.getItem("tourist_live_lat") || localStorage.getItem("tourist_live_lat");
+            const storedLng = sessionStorage.getItem("tourist_live_lng") || localStorage.getItem("tourist_live_lng");
+            const storedAcc = parseInt(sessionStorage.getItem("tourist_live_acc") || localStorage.getItem("tourist_live_acc") || "35", 10);
+            const isDismissed = sessionStorage.getItem("tourist_loc_prompt_dismissed") === "1";
 
-        if (savedLat && savedLng) {
-            const pLat = parseFloat(savedLat);
-            const pLng = parseFloat(savedLng);
-            currentUserCoords = [pLat, pLng];
-            currentUserAccuracy = savedAcc;
-            renderGoogleMapsBlueDot(pLat, pLng, savedAcc, false);
-            resolveLocalityName(pLat, pLng).then(locName => {
-                updateGpsPanelState("active", {
-                    name: locName,
-                    lat: pLat,
-                    lng: pLng,
-                    accuracy: savedAcc
+            const hasServerGps = cachedMapData && (cachedMapData.is_origin_gps || (cachedMapData.origin && cachedMapData.origin.toLowerCase().includes("live")));
+
+            if (storedLat && storedLng) {
+                const pLat = parseFloat(storedLat);
+                const pLng = parseFloat(storedLng);
+                currentUserCoords = [pLat, pLng];
+                currentUserAccuracy = storedAcc;
+                renderGoogleMapsBlueDot(pLat, pLng, storedAcc, false);
+                resolveLocalityName(pLat, pLng).then(locName => {
+                    updateGpsPanelState("active", {
+                        name: locName,
+                        lat: pLat,
+                        lng: pLng,
+                        accuracy: storedAcc
+                    });
                 });
-            });
-        } else if (navigator.permissions && navigator.permissions.query) {
-            // If user already granted location permission in browser, auto-detect on load
-            navigator.permissions.query({ name: "geolocation" }).then(res => {
-                if (res && res.state === "granted") {
-                    setTimeout(() => {
-                        triggerUserGeolocation(singleGpsBtn, false);
-                    }, 400);
+
+                // If initial server HTML wasn't already calculated from this live GPS, fetch it now!
+                if (!hasServerGps) {
+                    fetchTransitRoutes("Live Doorstep GPS", pLat, pLng);
                 }
-            }).catch(() => {});
+                return;
+            }
+
+            // If coordinates not yet stored, actively request browser geolocation
+            if (navigator.permissions && navigator.permissions.query) {
+                navigator.permissions.query({ name: "geolocation" }).then(res => {
+                    if (res.state === "granted") {
+                        if (browserLocationBanner) browserLocationBanner.style.display = "none";
+                        setTimeout(() => {
+                            triggerUserGeolocation(singleGpsBtn, false, true);
+                        }, 300);
+                    } else if (res.state === "prompt") {
+                        // Display prominent explanatory prompt banner
+                        if (!isDismissed && browserLocationBanner) {
+                            browserLocationBanner.style.display = "flex";
+                        }
+                        // Actively invoke geolocation so browser displays the native permission prompt!
+                        setTimeout(() => {
+                            triggerUserGeolocation(singleGpsBtn, false, true);
+                        }, 300);
+                    } else if (res.state === "denied") {
+                        if (browserLocationBanner) browserLocationBanner.style.display = "none";
+                        updateGpsPanelState("error", {
+                            message: "Browser location permission is blocked.",
+                            tip: '<i class="fa-solid fa-lock" style="color:#b42318;"></i> Click the lock icon next to your URL bar to allow Location, or search your locality below.'
+                        });
+                    }
+
+                    res.onchange = function () {
+                        if (res.state === "granted") {
+                            if (browserLocationBanner) browserLocationBanner.style.display = "none";
+                            triggerUserGeolocation(singleGpsBtn, true, false);
+                        } else if (res.state === "denied") {
+                            if (browserLocationBanner) browserLocationBanner.style.display = "none";
+                        }
+                    };
+                }).catch(() => {
+                    if (!isDismissed && browserLocationBanner) {
+                        browserLocationBanner.style.display = "flex";
+                    }
+                    setTimeout(() => {
+                        triggerUserGeolocation(singleGpsBtn, false, true);
+                    }, 300);
+                });
+            } else if (navigator.geolocation) {
+                if (!isDismissed && browserLocationBanner) {
+                    browserLocationBanner.style.display = "flex";
+                }
+                setTimeout(() => {
+                    triggerUserGeolocation(singleGpsBtn, false, true);
+                }, 300);
+            }
         }
+
+        initLocationServices();
     }
 
     // Run when DOM is ready

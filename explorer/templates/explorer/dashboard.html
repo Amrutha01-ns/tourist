@@ -887,6 +887,200 @@
             .transit-map-canvas { height: 290px; }
         }
         @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+        /* Nearby Places with Best Route Section */
+        .nearby-places-section {
+            margin-top: 32px;
+            padding: 30px;
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            box-shadow: 0 16px 36px -20px rgba(20, 69, 47, .35);
+        }
+        .nearby-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 16px;
+            margin-bottom: 22px;
+            flex-wrap: wrap;
+        }
+        .nearby-eyebrow {
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            color: var(--leaf);
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .nearby-title {
+            font-size: 24px;
+            color: var(--forest);
+            margin: 6px 0 4px;
+        }
+        .nearby-subtitle {
+            margin: 0;
+            font-size: 14px;
+            color: var(--muted);
+        }
+        .nearby-count-pill {
+            background: var(--mint);
+            color: var(--forest);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 999px;
+            white-space: nowrap;
+        }
+        .nearby-thread-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 18px;
+        }
+        .nearby-card {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            overflow: hidden;
+            transition: transform .22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow .22s cubic-bezier(0.16, 1, 0.3, 1), border-color .2s;
+            display: flex;
+            flex-direction: column;
+        }
+        .nearby-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 28px -10px rgba(20, 69, 47, 0.22);
+            border-color: #a4cca8;
+        }
+        .nearby-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .nearby-image-wrap {
+            position: relative;
+            width: 100%;
+            height: 160px;
+            background: #14452f;
+            overflow: hidden;
+        }
+        .nearby-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .nearby-card:hover .nearby-img {
+            transform: scale(1.06);
+        }
+        .nearby-img-fallback {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1f6443, #14452f);
+            display: grid;
+            place-items: center;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 32px;
+        }
+        .nearby-dist-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(20, 69, 47, 0.88);
+            backdrop-filter: blur(6px);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .nearby-dist-badge i {
+            color: var(--sun);
+        }
+        .nearby-body {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        .nearby-cat-tag {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--leaf);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .nearby-name {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--forest);
+            margin: 4px 0 10px;
+            line-height: 1.3;
+        }
+        .nearby-transit-route {
+            background: #f8faf9;
+            border: 1px solid #e1eee4;
+            border-radius: 12px;
+            padding: 9px 11px;
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            margin-bottom: 12px;
+        }
+        .transit-route-icon {
+            width: 26px;
+            height: 26px;
+            border-radius: 7px;
+            background: var(--forest);
+            color: var(--sun);
+            display: grid;
+            place-items: center;
+            font-size: 11px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .transit-route-details {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .transit-route-text {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1.35;
+        }
+        .transit-route-time {
+            font-size: 11px;
+            color: var(--leaf);
+            font-weight: 600;
+            margin-top: 2px;
+        }
+        .nearby-action-row {
+            margin-top: auto;
+            padding-top: 10px;
+            border-top: 1px solid #f1f5f2;
+        }
+        .nearby-view-btn {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--forest);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color .15s, gap .15s;
+        }
+        .nearby-card:hover .nearby-view-btn {
+            color: var(--leaf);
+            gap: 9px;
+        }
     </style>
 </head>
 
@@ -1512,6 +1706,73 @@
         {% endif %}
         {% if transit.journey_summary %}
             {{ transit.journey_summary|json_script:"transitSummaryData" }}
+        {% endif %}
+
+        <!-- Nearby Places with Best Route Section -->
+        {% if nearby_places %}
+        <section class="nearby-places-section" id="nearbyPlacesSection">
+            <div class="nearby-header">
+                <div>
+                    <span class="nearby-eyebrow">
+                        <i class="fa-solid fa-compass"></i> DISCOVER NEARBY ATTRACTIONS
+                    </span>
+                    <h2 class="nearby-title">Next Stops On Your Journey From {{ place.name }}</h2>
+                    <p class="nearby-subtitle">
+                        Pair your trip with these top attractions in {{ place.district.name }} with direct public transit routes & distances.
+                    </p>
+                </div>
+                <div class="nearby-count-pill">
+                    <span>{{ nearby_places|length }} Destinations Nearby</span>
+                </div>
+            </div>
+
+            <div class="nearby-thread-grid">
+                {% for item in nearby_places %}
+                    <article class="nearby-card">
+                        <a href="{{ item.url }}" class="nearby-card-link" title="Explore {{ item.place.name }}">
+                            <div class="nearby-image-wrap">
+                                {% if item.place.image %}
+                                    <img src="{{ item.place.image.url }}" alt="{{ item.place.name }}" class="nearby-img" loading="lazy"
+                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+                                    <div class="nearby-img-fallback" style="display:none;">
+                                        <i class="fa-solid fa-mountain-sun"></i>
+                                    </div>
+                                {% else %}
+                                    <div class="nearby-img-fallback">
+                                        <i class="fa-solid fa-mountain-sun"></i>
+                                    </div>
+                                {% endif %}
+                                <span class="nearby-dist-badge">
+                                    <i class="fa-solid fa-location-dot"></i> {{ item.distance }}
+                                </span>
+                            </div>
+
+                            <div class="nearby-body">
+                                <span class="nearby-cat-tag">{{ item.place.category|title }} &bull; {{ item.place.district.name }}</span>
+                                <h4 class="nearby-name">{{ item.place.name }}</h4>
+
+                                <!-- Connecting Transit Recommendation -->
+                                <div class="nearby-transit-route">
+                                    <div class="transit-route-icon">
+                                        <i class="fa-solid fa-bus-simple"></i>
+                                    </div>
+                                    <div class="transit-route-details">
+                                        <span class="transit-route-text">{{ item.route }}</span>
+                                        <span class="transit-route-time"><i class="fa-regular fa-clock"></i> {{ item.time }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="nearby-action-row">
+                                    <span class="nearby-view-btn">
+                                        Plan Route &amp; View <i class="fa-solid fa-arrow-right"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
         {% endif %}
 
         <a class="back-link" href="{% url 'places_by_district' place.district.name %}">
