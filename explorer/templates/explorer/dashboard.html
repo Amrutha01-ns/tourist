@@ -637,55 +637,55 @@
         }
         .map-region-badge i { color: var(--sun); font-size: 12px; }
 
-        /* Karnataka City & District Map Pills */
-        .city-map-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(4px);
-            border: 1.5px solid #2f7d4f;
-            border-radius: 999px;
-            padding: 3px 9px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
-            font-size: 11px;
-            font-weight: 800;
-            color: #14452f;
-            white-space: nowrap;
-            cursor: pointer;
-            transition: all .15s ease;
+        /* Google Maps-style Minimal Subtle City Dots & Hover Tooltips */
+        .city-dot-container {
+            background: transparent !important;
+            border: none !important;
         }
-        .city-map-pill:hover {
-            transform: scale(1.08) translateY(-1px);
-            background: #14452f;
-            color: #ffffff;
-            border-color: var(--sun);
-        }
-        .city-map-pill:hover .city-dist {
-            color: #fde047;
-        }
-        .city-dot {
-            width: 7px;
-            height: 7px;
+        .city-map-dot {
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            background: #10b981;
-            flex-shrink: 0;
-            box-shadow: 0 0 0 1.5px #fff;
+            background: #1e293b;
+            border: 1.5px solid #ffffff;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            transition: all .18s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .city-dist {
-            font-size: 9px;
-            color: #64748b;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            margin-left: 2px;
+        .city-map-dot:hover {
+            transform: scale(1.6);
+            background: #0284c7;
+            border-color: #ffffff;
+            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.65);
+        }
+        .google-style-city-tooltip {
+            background: rgba(15, 23, 42, 0.94) !important;
+            backdrop-filter: blur(4px) !important;
+            color: #ffffff !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            border-radius: 6px !important;
+            padding: 3px 8px !important;
+            font-size: 11px !important;
+            font-family: inherit !important;
+            font-weight: 600 !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+            white-space: nowrap !important;
+        }
+        .google-style-city-tooltip .city-dist-subtle {
+            font-size: 9.5px;
+            color: #94a3b8;
+            font-weight: 500;
+            margin-left: 3px;
+        }
+        .leaflet-tooltip-top.google-style-city-tooltip::before {
+            border-top-color: rgba(15, 23, 42, 0.94) !important;
         }
         .city-popup-card {
-            padding: 6px 4px;
-            min-width: 170px;
+            padding: 4px 2px;
+            min-width: 150px;
         }
         .city-popup-tag {
-            font-size: 10px;
+            font-size: 9.5px;
             font-weight: 800;
             text-transform: uppercase;
             color: #10b981;

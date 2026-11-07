@@ -228,11 +228,11 @@
             },
             infrastructure: {
                 name: "3D Buildings & Infra",
-                url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                url: "https://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}",
                 options: {
-                    maxZoom: 19,
-                    subdomains: ["a", "b", "c"],
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &mdash; 3D Building Outlines &amp; Civic Infrastructure'
+                    maxZoom: 20,
+                    subdomains: ["mt0", "mt1", "mt2", "mt3"],
+                    attribution: '&copy; Google Maps &mdash; 3D Terrain, Buildings &amp; Infrastructure'
                 }
             }
         };
@@ -286,15 +286,15 @@
             if (typeof bounds.getSouthWest === "function") {
                 const sw = bounds.getSouthWest();
                 const ne = bounds.getNorthEast();
-                minLat = Math.min(sw.lat, ne.lat) - 0.35;
-                maxLat = Math.max(sw.lat, ne.lat) + 0.35;
-                minLng = Math.min(sw.lng, ne.lng) - 0.35;
-                maxLng = Math.max(sw.lng, ne.lng) + 0.35;
+                minLat = Math.min(sw.lat, ne.lat);
+                maxLat = Math.max(sw.lat, ne.lat);
+                minLng = Math.min(sw.lng, ne.lng);
+                maxLng = Math.max(sw.lng, ne.lng);
             } else if (Array.isArray(bounds) && bounds.length === 2) {
-                minLat = Math.min(bounds[0][0], bounds[1][0]) - 0.35;
-                maxLat = Math.max(bounds[0][0], bounds[1][0]) + 0.35;
-                minLng = Math.min(bounds[0][1], bounds[1][1]) - 0.35;
-                maxLng = Math.max(bounds[0][1], bounds[1][1]) + 0.35;
+                minLat = Math.min(bounds[0][0], bounds[1][0]);
+                maxLat = Math.max(bounds[0][0], bounds[1][0]);
+                minLng = Math.min(bounds[0][1], bounds[1][1]);
+                maxLng = Math.max(bounds[0][1], bounds[1][1]);
             } else {
                 return;
             }
@@ -302,17 +302,23 @@
             KARNATAKA_REGIONAL_HUBS.forEach(hub => {
                 if (hub.lat >= minLat && hub.lat <= maxLat && hub.lng >= minLng && hub.lng <= maxLng) {
                     const icon = L.divIcon({
-                        className: "city-map-pill-container",
-                        html: `<div class="city-map-pill" title="${hub.name} (${hub.district} District)"><span class="city-dot"></span><span class="city-name">${hub.name}</span><small class="city-dist">${hub.district}</small></div>`,
-                        iconSize: [null, null],
-                        iconAnchor: [35, 12]
+                        className: "city-dot-container",
+                        html: `<div class="city-map-dot"></div>`,
+                        iconSize: [12, 12],
+                        iconAnchor: [6, 6]
                     });
                     const m = L.marker([hub.lat, hub.lng], { icon: icon, zIndexOffset: 300 });
+                    m.bindTooltip(`<strong>${hub.name}</strong><span class="city-dist-subtle">(${hub.district} Dist)</span>`, {
+                        direction: "top",
+                        offset: [0, -6],
+                        className: "google-style-city-tooltip",
+                        opacity: 0.95
+                    });
                     m.bindPopup(`
                         <div class="city-popup-card">
-                            <span class="city-popup-tag"><i class="fa-solid fa-map-pin"></i> Karnataka Regional Hub</span>
-                            <h4 style="margin:4px 0 2px; font-size:15px; color:#14452f;">${hub.name}</h4>
-                            <p style="margin:0; font-size:12px; color:#475569;"><strong>District:</strong> ${hub.district} &bull; Region: Karnataka</p>
+                            <span class="city-popup-tag"><i class="fa-solid fa-map-pin"></i> Karnataka Hub</span>
+                            <h4 style="margin:4px 0 2px; font-size:14px; color:#14452f;">${hub.name}</h4>
+                            <p style="margin:0; font-size:11.5px; color:#475569;"><strong>District:</strong> ${hub.district} &bull; Karnataka</p>
                         </div>
                     `, { className: "custom-transit-popup" });
                     citiesLayerGroup.addLayer(m);
