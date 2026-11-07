@@ -1,52 +1,242 @@
+import time
+from django.db import IntegrityError
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from places.models import District, Place
 from transport_finder.models import TransitStop, Route, TransportProvider
+from .services import generate_otp, send_otp_email, mask_email
 
 
 def register(request):
+    if request.user.is_authenticated:
+        return redirect("dashboard")
+
+    # Handle cancel / reset OTP
+    if request.GET.get("cancel_otp"):
+        for key in ["pending_reg_username", "pending_reg_email", "pending_reg_password", "reg_otp", "reg_otp_time"]:
+            request.session.pop(key, None)
+        return redirect("register")
+
+    error = None
+    success = None
+    info = None
+
+    has_pending = bool(request.session.get("pending_reg_username") and request.session.get("reg_otp"))
+    step = "otp" if has_pending else "form"
+    pending_email = request.session.get("pending_reg_email", "")
+
     if request.method == "POST":
-        username = request.POST["username"]
-        email = request.POST["email"]
-        password = request.POST["password"]
+        action = request.POST.get("action", "")
 
-        User.objects.create_user(
-            username=username,
-            email=email,
-            password=password
-        )
+        if action == "resend_otp" or request.POST.get("resend"):
+            if not has_pending:
+                return redirect("register")
+            new_otp = generate_otp(6)
+            request.session["reg_otp"] = new_otp
+            request.session["reg_otp_time"] = time.time()
+            send_otp_email(pending_email, new_otp, purpose="account registration")
+            success = f"A new verification OTP has been sent to {mask_email(pending_email)}."
+            step = "otp"
 
-        return redirect("login")
+        elif action == "verify_otp" or step == "otp":
+            entered_otp = request.POST.get("otp", "").strip()
+            saved_otp = request.session.get("reg_otp")
+            otp_time = request.session.get("reg_otp_time", 0)
 
-    return render(request, "users/register.html")
+            if not saved_otp or not request.session.get("pending_reg_username"):
+                error = "Registration session expired. Please enter your details again."
+                step = "form"
+            elif (time.time() - otp_time) > 600:
+                error = "Verification code expired (10 minutes limit). Please click Resend OTP."
+                step = "otp"
+            elif entered_otp != saved_otp:
+                error = "Invalid OTP code. Please enter the 6-digit code sent to your email."
+                step = "otp"
+            else:
+                # Valid OTP! Create user and immediately redirect to Dashboard
+                username = request.session.get("pending_reg_username")
+                email = request.session.get("pending_reg_email")
+                password = request.session.get("pending_reg_password")
+
+                try:
+                    if User.objects.filter(username__iexact=username).exists():
+                        error = f"The username '{username}' is already taken. Please choose another username or sign in."
+                        step = "form"
+                    elif User.objects.filter(email__iexact=email).exists():
+                        error = f"An account with email '{email}' is already registered. Please sign in."
+                        step = "form"
+                    else:
+                        user = User.objects.create_user(
+                            username=username,
+                            email=email,
+                            password=password
+                        )
+                        # Clear pending registration session
+                        for key in ["pending_reg_username", "pending_reg_email", "pending_reg_password", "reg_otp", "reg_otp_time"]:
+                            request.session.pop(key, None)
+
+                        # Log the newly verified user in and navigate straight to dashboard
+                        login(request, user)
+                        return redirect("dashboard")
+                except IntegrityError:
+                    error = f"The username '{username}' or email '{email}' already exists. Please choose another username or sign in."
+                    step = "form"
+
+        else:
+            # Form submission to start registration
+            username = request.POST.get("username", "").strip()
+            email = request.POST.get("email", "").strip()
+            password = request.POST.get("password", "")
+
+            if not username or not email or not password:
+                error = "Please fill in all required fields."
+                step = "form"
+            elif User.objects.filter(username__iexact=username).exists():
+                error = f"The username '{username}' is already taken. Please choose another username or sign in."
+                step = "form"
+            elif User.objects.filter(email__iexact=email).exists():
+                error = f"An account with email '{email}' is already registered. Please sign in."
+                step = "form"
+            elif len(password) < 4:
+                error = "Password must be at least 4 characters long."
+                step = "form"
+            else:
+                # Generate verification OTP
+                reg_otp = generate_otp(6)
+                request.session["pending_reg_username"] = username
+                request.session["pending_reg_email"] = email
+                request.session["pending_reg_password"] = password
+                request.session["reg_otp"] = reg_otp
+                request.session["reg_otp_time"] = time.time()
+
+                send_otp_email(email, reg_otp, purpose="account registration")
+
+                step = "otp"
+                pending_email = email
+                info = f"We have sent a 6-digit verification code to {mask_email(email)}. Enter it below to activate your account."
+
+    return render(
+        request,
+        "users/register.html",
+        {
+            "step": step,
+            "error": error,
+            "success": success,
+            "info": info,
+            "masked_email": mask_email(pending_email),
+            "pending_email": pending_email,
+            "debug_otp": request.session.get("reg_otp"),
+        }
+    )
 
 
 def user_login(request):
+    if request.user.is_authenticated:
+        return redirect("dashboard")
+
+    # Handle cancel / reset OTP
+    if request.GET.get("cancel_otp"):
+        for key in ["pending_login_user_id", "login_otp", "login_otp_time", "pending_login_email"]:
+            request.session.pop(key, None)
+        return redirect("login")
+
+    error = None
+    success = None
+    info = None
+
+    has_pending = bool(request.session.get("pending_login_user_id") and request.session.get("login_otp"))
+    step = "otp" if has_pending else "credentials"
+    pending_email = request.session.get("pending_login_email", "")
+
     if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
+        action = request.POST.get("action", "")
 
-        user = authenticate(
-            request,
-            username=username,
-            password=password
-        )
+        if action == "resend_otp" or request.POST.get("resend"):
+            if not has_pending:
+                return redirect("login")
+            new_otp = generate_otp(6)
+            request.session["login_otp"] = new_otp
+            request.session["login_otp_time"] = time.time()
+            send_otp_email(pending_email, new_otp, purpose="sign in")
+            success = f"A fresh verification OTP has been sent to {mask_email(pending_email)}."
+            step = "otp"
 
-        if user is not None:
-            login(request, user)
-            return redirect("dashboard")
+        elif action == "verify_otp" or step == "otp":
+            entered_otp = request.POST.get("otp", "").strip()
+            saved_otp = request.session.get("login_otp")
+            user_id = request.session.get("pending_login_user_id")
+            otp_time = request.session.get("login_otp_time", 0)
 
-        return render(
-            request,
-            "users/login.html",
-            {
-                "error": "You have entered wrong username or password. Please enter valid credentials."
-            }
-        )
+            if not saved_otp or not user_id:
+                error = "Sign in session expired. Please enter your credentials again."
+                step = "credentials"
+            elif (time.time() - otp_time) > 600:
+                error = "Verification code expired (10 minutes limit). Please click Resend OTP."
+                step = "otp"
+            elif entered_otp != saved_otp:
+                error = "Invalid OTP code. Please check your email and enter the 6-digit code."
+                step = "otp"
+            else:
+                user = User.objects.filter(id=user_id).first()
+                if not user:
+                    error = "User account not found. Please sign in again."
+                    step = "credentials"
+                else:
+                    login(request, user)
+                    for key in ["pending_login_user_id", "login_otp", "login_otp_time", "pending_login_email"]:
+                        request.session.pop(key, None)
+                    return redirect("dashboard")
 
-    return render(request, "users/login.html")
+        else:
+            # Credentials submitted
+            identifier = request.POST.get("username", "").strip()
+            password = request.POST.get("password", "")
+
+            user = None
+            if identifier and password:
+                user = authenticate(request, username=identifier, password=password)
+                if user is None and "@" in identifier:
+                    matched_user = User.objects.filter(email__iexact=identifier).first()
+                    if matched_user:
+                        user = authenticate(request, username=matched_user.username, password=password)
+
+            if user is not None:
+                user_email = user.email.strip() if user.email else ""
+                if not user_email:
+                    # User without email bypasses OTP
+                    login(request, user)
+                    return redirect("dashboard")
+
+                login_otp = generate_otp(6)
+                request.session["pending_login_user_id"] = user.id
+                request.session["login_otp"] = login_otp
+                request.session["login_otp_time"] = time.time()
+                request.session["pending_login_email"] = user_email
+
+                send_otp_email(user_email, login_otp, purpose="sign in")
+
+                step = "otp"
+                pending_email = user_email
+                info = f"Security verification: We sent a 6-digit OTP to {mask_email(user_email)}. Please enter it below to sign in."
+            else:
+                error = "You have entered wrong username or password. Please enter valid credentials."
+                step = "credentials"
+
+    return render(
+        request,
+        "users/login.html",
+        {
+            "step": step,
+            "error": error,
+            "success": success,
+            "info": info,
+            "masked_email": mask_email(pending_email),
+            "pending_email": pending_email,
+            "debug_otp": request.session.get("login_otp"),
+        }
+    )
 
 
 KARNATAKA_DISTRICTS_DATA = [

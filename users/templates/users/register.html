@@ -1,10 +1,16 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register | Tourist Planner</title>
-
+    <title>Create Account | Tourist Karnataka</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <style>
         * {
             box-sizing: border-box;
@@ -13,115 +19,532 @@
         }
 
         body {
+            font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #f0f7f3 0%, #e2efe7 100%);
             min-height: 100vh;
+            color: #1a2e22;
+            padding-top: 100px;
+            padding-bottom: 40px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
+            justify-content: center;
         }
 
-        .container {
-            width: 380px;
-            padding: 35px;
-            background: white;
+        .auth-wrapper {
+            width: 100%;
+            max-width: 440px;
+            padding: 0 16px;
+        }
+
+        .nav-back-row {
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .back-home-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: #2f7d4f;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            transition: all .2s ease;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 6px 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(47, 125, 79, 0.2);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .back-home-link:hover {
+            color: #14452f;
+            transform: translateX(-2px);
+            background: #ffffff;
+        }
+
+        .auth-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 36px 32px;
+            box-shadow: 0 20px 45px -15px rgba(20, 69, 47, 0.18), 0 0 0 1px rgba(20, 69, 47, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #14452f, #2f7d4f, #f4b63f);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .auth-icon-badge {
+            width: 54px;
+            height: 54px;
+            margin: 0 auto 14px;
+            border-radius: 16px;
+            background: #edf7f0;
+            color: #2f7d4f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 8px 18px rgba(47, 125, 79, 0.15);
+        }
+
+        .auth-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #14452f;
+            letter-spacing: -0.3px;
+            margin-bottom: 6px;
+        }
+
+        .auth-subtitle {
+            font-size: 14px;
+            color: #556b5f;
+            line-height: 1.4;
+        }
+
+        /* Alert Notifications */
+        .alert-box {
+            padding: 12px 16px;
             border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            font-size: 13.5px;
+            line-height: 1.45;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
         }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 10px;
+        .alert-error {
+            background: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
         }
 
-        p {
-            text-align: center;
-            margin-bottom: 25px;
+        .alert-success {
+            background: #f0fdf4;
+            color: #166534;
+            border: 1px solid #bbf7d0;
         }
 
+        .alert-info {
+            background: #eff6ff;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+
+        .alert-box i {
+            margin-top: 2px;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+
+        /* Form elements */
         .form-group {
             margin-bottom: 18px;
         }
 
-        label {
+        .form-group label {
             display: block;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #2c3e34;
             margin-bottom: 7px;
-            font-weight: bold;
         }
 
-        input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
+        .input-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            color: #83978b;
             font-size: 15px;
+            pointer-events: none;
         }
 
-        input:focus {
-            outline: none;
-            border-color: #555;
-        }
-
-        button {
+        .form-input {
             width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-            background: #333;
-            color: white;
+            padding: 13px 14px 13px 40px;
+            border: 1.5px solid #d1ded6;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: inherit;
+            color: #14452f;
+            background: #fafcfb;
+            transition: all .2s ease;
         }
 
-        button:hover {
-            background: #555;
+        .form-input:focus {
+            outline: none;
+            border-color: #2f7d4f;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(47, 125, 79, 0.15);
+        }
+
+        /* Large numeric OTP input */
+        .otp-input-wrap {
+            margin: 18px 0;
+        }
+
+        .otp-input {
+            width: 100%;
+            padding: 16px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 12px;
+            color: #14452f;
+            border: 2px solid #2f7d4f;
+            border-radius: 14px;
+            background: #f7fbf9;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+            transition: all .2s ease;
+        }
+
+        .otp-input:focus {
+            outline: none;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(47, 125, 79, 0.2);
+        }
+
+        .otp-hint {
+            text-align: center;
+            font-size: 13px;
+            color: #63776b;
+            margin-top: 8px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 999px;
+            font-size: 15.5px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            background: linear-gradient(135deg, #14452f 0%, #226743 100%);
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            box-shadow: 0 8px 20px rgba(20, 69, 47, 0.25);
+            transition: all .2s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            background: linear-gradient(135deg, #0e3523 0%, #1a5737 100%);
+            box-shadow: 0 10px 24px rgba(20, 69, 47, 0.32);
+        }
+
+        .btn-resend {
+            background: none;
+            border: none;
+            color: #2f7d4f;
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: underline;
+            padding: 4px;
+            display: inline-block;
+            transition: color .15s;
+        }
+
+        .btn-resend:hover {
+            color: #14452f;
+        }
+
+        .otp-actions {
+            margin-top: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Dev OTP Helper Box */
+        .dev-otp-box {
+            background: #fdf6ec;
+            border: 1.5px dashed #f59e0b;
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        .dev-otp-header {
+            font-size: 12px;
+            font-weight: 700;
+            color: #b45309;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+        .dev-otp-code-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 4px 0;
+        }
+        .dev-otp-val {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: #92400e;
+            background: #fff;
+            padding: 3px 12px;
+            border-radius: 8px;
+            border: 1px solid #fde68a;
+        }
+        .dev-autofill-btn {
+            background: #f59e0b;
+            color: #fff;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background .15s;
+        }
+        .dev-autofill-btn:hover {
+            background: #d97706;
+        }
+        .dev-otp-sub {
+            display: block;
+            font-size: 11.5px;
+            color: #78350f;
+            margin-top: 6px;
+            line-height: 1.35;
+        }
+
+        .auth-footer {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 14px;
+            color: #556b5f;
+            border-top: 1px solid #edf2ef;
+            padding-top: 18px;
+        }
+
+        .auth-footer a {
+            color: #2f7d4f;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+            color: #14452f;
         }
     </style>
 </head>
-
 <body>
     {% include "users/_topnav.html" %}
 
-    <div class="container">
-        <h1>Create Account</h1>
-        <p>Start planning your journey</p>
+    <div class="auth-wrapper">
+        <div class="nav-back-row">
+            <a href="{% url 'dashboard' %}" class="back-home-link">
+                <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
 
-        <form method="POST">
-            {% csrf_token %}
-
-            <div class="form-group">
-                <label>Username</label>
-                <input 
-                    type="text" 
-                    name="username" 
-                    placeholder="Enter username"
-                    required
-                >
+        <div class="auth-card">
+            <!-- Header -->
+            <div class="auth-header">
+                <div class="auth-icon-badge">
+                    {% if step == "otp" %}
+                        <i class="fa-solid fa-envelope-circle-check"></i>
+                    {% else %}
+                        <i class="fa-solid fa-user-plus"></i>
+                    {% endif %}
+                </div>
+                <h1 class="auth-title">
+                    {% if step == "otp" %}Verify Your Email{% else %}Create Account{% endif %}
+                </h1>
+                <p class="auth-subtitle">
+                    {% if step == "otp" %}
+                        We sent a 6-digit verification code to <strong>{{ masked_email }}</strong>
+                    {% else %}
+                        Start planning your authentic Karnataka travel journeys
+                    {% endif %}
+                </p>
             </div>
 
-            <div class="form-group">
-                <label>Email</label>
-                <input 
-                    type="email" 
-                    name="email" 
-                    placeholder="Enter email"
-                    required
-                >
-            </div>
+            <!-- Notifications -->
+            {% if error %}
+                <div class="alert-box alert-error">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <div>{{ error }}</div>
+                </div>
+            {% endif %}
 
-            <div class="form-group">
-                <label>Password</label>
-                <input 
-                    type="password" 
-                    name="password" 
-                    placeholder="Enter password"
-                    required
-                >
-            </div>
+            {% if success %}
+                <div class="alert-box alert-success">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <div>{{ success }}</div>
+                </div>
+            {% endif %}
 
-            <button type="submit">Create Account</button>
-        </form>
+            {% if info %}
+                <div class="alert-box alert-info">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <div>{{ info }}</div>
+                </div>
+            {% endif %}
+
+            <!-- STEP 1: REGISTRATION FORM -->
+            {% if step != "otp" %}
+                <form method="POST" action="{% url 'register' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="submit_details">
+
+                    <div class="form-group">
+                        <label for="regUsername">Username</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-user input-icon"></i>
+                            <input
+                                type="text"
+                                id="regUsername"
+                                name="username"
+                                class="form-input"
+                                placeholder="Choose a username"
+                                autofocus
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regEmail">Email Address</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-envelope input-icon"></i>
+                            <input
+                                type="email"
+                                id="regEmail"
+                                name="email"
+                                class="form-input"
+                                placeholder="name@example.com"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regPassword">Password</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-lock input-icon"></i>
+                            <input
+                                type="password"
+                                id="regPassword"
+                                name="password"
+                                class="form-input"
+                                placeholder="Create a secure password"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <span>Send Email Verification Code</span>
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    Already have an account?
+                    <a href="{% url 'login' %}">Sign In</a>
+                </div>
+
+            <!-- STEP 2: EMAIL OTP VERIFICATION & DIRECT GO TO DASHBOARD -->
+            {% else %}
+                {% if debug_otp %}
+                    <div class="dev-otp-box">
+                        <div class="dev-otp-header">
+                            <i class="fa-solid fa-code"></i>
+                            <span>Localhost Testing Mode OTP</span>
+                        </div>
+                        <div class="dev-otp-code-row">
+                            <span class="dev-otp-val">{{ debug_otp }}</span>
+                            <button type="button" class="dev-autofill-btn" onclick="document.querySelector('.otp-input').value='{{ debug_otp }}'">
+                                Auto-Fill Code
+                            </button>
+                        </div>
+                        <small class="dev-otp-sub">
+                            Logged to terminal console. To deliver real emails to your Gmail inbox, add <code>EMAIL_HOST_USER</code> and <code>EMAIL_HOST_PASSWORD</code> to your <code>.env</code> file.
+                        </small>
+                    </div>
+                {% endif %}
+
+                <form method="POST" action="{% url 'register' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="verify_otp">
+
+                    <div class="otp-input-wrap">
+                        <label style="display:block; text-align:center; font-weight:700; margin-bottom:8px; font-size:14px;">
+                            Enter 6-Digit Email Verification Code
+                        </label>
+                        <input
+                            type="text"
+                            name="otp"
+                            maxlength="6"
+                            class="otp-input"
+                            placeholder="------"
+                            value="{{ debug_otp|default:'' }}"
+                            autofocus
+                            required
+                            pattern="[0-9]{6}"
+                            inputmode="numeric"
+                            autocomplete="one-time-code"
+                        >
+                        <p class="otp-hint">Code expires in 10 minutes</p>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <span>Verify & Go to Dashboard</span>
+                        <i class="fa-solid fa-compass"></i>
+                    </button>
+                </form>
+
+                <div class="otp-actions">
+                    <form method="POST" action="{% url 'register' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="resend_otp">
+                        <button type="submit" class="btn-resend">
+                            <i class="fa-solid fa-rotate-right"></i> Didn't receive email? Resend OTP
+                        </button>
+                    </form>
+
+                    <a href="{% url 'register' %}?cancel_otp=1" style="font-size:13px; color:#63776b; text-decoration:none;">
+                        <i class="fa-solid fa-pen-to-square"></i> Change registration details
+                    </a>
+                </div>
+            {% endif %}
+        </div>
     </div>
-
 </body>
 </html>
