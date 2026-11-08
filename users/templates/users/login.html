@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In | Tourist Karnataka Dashboard</title>
+    <title>Sign In | Tourist Karnataka District Atlas</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,16 +13,16 @@
     
     <style>
         :root {
-            --bg-night: #060e0a;
-            --glass-bg: rgba(10, 24, 18, 0.78);
-            --glass-card: rgba(18, 38, 29, 0.65);
+            --bg-night: #050e09;
+            --glass-bg: rgba(9, 22, 16, 0.82);
+            --glass-card: rgba(16, 36, 27, 0.72);
             --glass-border: rgba(255, 255, 255, 0.12);
             --neon-emerald: #10b981;
             --neon-cyan: #06b6d4;
             --neon-gold: #f59e0b;
-            --neon-rose: #f43f5e;
+            --neon-pink: #ec4899;
             --text-main: #f3f7f4;
-            --text-dim: #94a39b;
+            --text-dim: #92a49a;
         }
 
         * {
@@ -33,7 +33,7 @@
 
         body {
             font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: #040906;
+            background: #030805;
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
@@ -44,18 +44,17 @@
             overflow-x: hidden;
         }
 
-        /* Ambient Glowing Nebula Blobs */
+        /* Ambient Glowing Background Blobs */
         .ambient-blob-1 {
             position: fixed;
             top: -20%;
             left: -15%;
             width: 65vw;
             height: 65vw;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.28) 0%, rgba(6, 182, 212, 0.12) 40%, transparent 70%);
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, rgba(6, 182, 212, 0.1) 40%, transparent 70%);
             filter: blur(100px);
             pointer-events: none;
             z-index: 0;
-            animation: floatGlow 12s ease-in-out infinite alternate;
         }
 
         .ambient-blob-2 {
@@ -64,59 +63,53 @@
             right: -15%;
             width: 60vw;
             height: 60vw;
-            background: radial-gradient(circle, rgba(245, 158, 11, 0.22) 0%, rgba(16, 185, 129, 0.12) 45%, transparent 70%);
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.2) 0%, rgba(16, 185, 129, 0.1) 45%, transparent 70%);
             filter: blur(110px);
             pointer-events: none;
             z-index: 0;
-            animation: floatGlow 15s ease-in-out infinite alternate-reverse;
         }
 
-        @keyframes floatGlow {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(40px, -30px) scale(1.08); }
-        }
-
-        /* Super Dashboard Auth Container */
+        /* Main Container */
         .dashboard-container {
             position: relative;
             z-index: 1;
             width: 100%;
-            max-width: 1360px;
-            min-height: 720px;
+            max-width: 1380px;
+            min-height: 740px;
             background: var(--glass-bg);
             backdrop-filter: blur(28px) saturate(1.3);
             -webkit-backdrop-filter: blur(28px) saturate(1.3);
             border-radius: 28px;
             border: 1px solid var(--glass-border);
-            box-shadow: 0 35px 90px -20px rgba(0, 0, 0, 0.8), 0 0 50px rgba(16, 185, 129, 0.12);
+            box-shadow: 0 35px 90px -20px rgba(0, 0, 0, 0.85), 0 0 50px rgba(16, 185, 129, 0.15);
             display: grid;
             grid-template-columns: 1.55fr 1fr;
             overflow: hidden;
         }
 
         /* ========================================================
-           LEFT PANE: Karnataka Tourism Data Visualization Dashboard
+           LEFT PANE: Complete Karnataka 31 Districts Atlas Map
            ======================================================== */
-        .vis-pane {
-            padding: 36px 40px;
+        .atlas-pane {
+            padding: 32px 36px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             position: relative;
-            background: linear-gradient(135deg, rgba(8, 20, 15, 0.7) 0%, rgba(12, 30, 22, 0.5) 100%);
+            background: linear-gradient(135deg, rgba(7, 18, 13, 0.75) 0%, rgba(11, 28, 20, 0.55) 100%);
             border-right: 1px solid var(--glass-border);
         }
 
-        /* Top Brand & Filter Bar */
-        .vis-header {
+        /* Top Header & Division Filters */
+        .atlas-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 16px;
-            margin-bottom: 24px;
+            margin-bottom: 16px;
         }
 
-        .vis-brand-col {
+        .atlas-brand {
             display: flex;
             align-items: center;
             gap: 12px;
@@ -135,386 +128,232 @@
             box-shadow: 0 0 20px rgba(16, 185, 129, 0.45);
         }
 
-        .vis-title-col h2 {
+        .atlas-title-text h2 {
             font-size: 20px;
             font-weight: 800;
             color: #ffffff;
             letter-spacing: -0.3px;
         }
 
-        .vis-title-col p {
-            font-size: 12.5px;
+        .atlas-title-text p {
+            font-size: 12px;
             color: var(--text-dim);
             font-weight: 500;
         }
 
-        /* Category Filter Pills */
-        .filter-pills {
-            display: flex;
-            gap: 6px;
-            background: rgba(0, 0, 0, 0.4);
-            padding: 4px;
-            border-radius: 999px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .filter-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-dim);
-            font-family: inherit;
-            font-size: 12px;
-            font-weight: 700;
-            padding: 6px 14px;
-            border-radius: 999px;
-            cursor: pointer;
+        /* Authentic Geopolitical Karnataka 31-District Color Palette */
+        .district-poly {
+            stroke-width: 1.6;
+            stroke-linejoin: round;
+            stroke-linecap: round;
+            fill-opacity: 0.65;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .filter-btn.active, .filter-btn:hover {
-            background: rgba(16, 185, 129, 0.2);
-            color: #34d399;
-            box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
-        }
+        .d-bidar { fill: #f43f5e; stroke: #fb7185; }           /* Rose Red */
+        .d-kalaburagi { fill: #8b5cf6; stroke: #a78bfa; }      /* Purple */
+        .d-yadgir { fill: #f97316; stroke: #fb923c; }          /* Orange */
+        .d-vijayapura { fill: #eab308; stroke: #fde047; }      /* Golden Yellow */
+        .d-bagalkote { fill: #10b981; stroke: #34d399; }       /* Emerald Green */
+        .d-belagavi { fill: #0284c7; stroke: #38bdf8; }        /* Sky Blue */
+        .d-raichur { fill: #06b6d4; stroke: #22d3ee; }         /* Cyan */
+        .d-koppal { fill: #f59e0b; stroke: #fcd34d; }          /* Sunflower Amber */
+        .d-gadag { fill: #14b8a6; stroke: #2dd4bf; }           /* Mint Teal */
+        .d-dharwad { fill: #ec4899; stroke: #f472b6; }         /* Coral Pink */
+        .d-uttara_kannada { fill: #059669; stroke: #10b981; }  /* Deep Coastal Forest */
+        .d-haveri { fill: #d97706; stroke: #f59e0b; }          /* Warm Ochre */
+        .d-vijayanagara { fill: #f97316; stroke: #fb923c; }    /* Saffron Gold */
+        .d-ballari { fill: #a855f7; stroke: #c084fc; }         /* Royal Purple */
+        .d-davanagere { fill: #ef4444; stroke: #f87171; }      /* Bright Coral */
+        .d-shivamogga { fill: #16a34a; stroke: #4ade80; }      /* Malnad Green */
+        .d-chitradurga { fill: #ca8a04; stroke: #eab308; }     /* Sandstone Gold */
+        .d-udupi { fill: #0891b2; stroke: #06b6d4; }           /* Coastal Teal */
+        .d-chikkamagaluru { fill: #047857; stroke: #059669; }  /* Coffee Valley Green */
+        .d-dakshina_kannada { fill: #2563eb; stroke: #60a5fa; }/* Ocean Azure */
+        .d-hassan { fill: #9333ea; stroke: #c084fc; }          /* Orchid Violet */
+        .d-tumakuru { fill: #ea580c; stroke: #fb923c; }        /* Terracotta Orange */
+        .d-chikkaballapura { fill: #db2777; stroke: #f472b6; } /* Magenta */
+        .d-kolar { fill: #eab308; stroke: #facc15; }           /* Kolar Gold */
+        .d-bengaluru_rural { fill: #10b981; stroke: #34d399; } /* Fresh Emerald */
+        .d-bengaluru_urban { fill: #06b6d4; stroke: #22d3ee; } /* Electric Cyan */
+        .d-ramanagara { fill: #7c3aed; stroke: #a78bfa; }      /* Silk Violet */
+        .d-mandya { fill: #84cc16; stroke: #a3e635; }          /* Sugarcane Lime */
+        .d-kodagu { fill: #059669; stroke: #34d399; }          /* Coorg Mist Emerald */
+        .d-mysuru { fill: #e11d48; stroke: #fb7185; }          /* Heritage Crimson */
+        .d-chamarajanagar { fill: #15803d; stroke: #22c55e; }  /* Forest Reserve Green */
 
-        /* Main Data Body (Split: Stats Column + Karnataka Map Column) */
-        .vis-body {
-            display: grid;
-            grid-template-columns: 1fr 1.15fr;
-            gap: 28px;
-            align-items: center;
-            margin: auto 0;
-        }
-
-        /* Stats Column */
-        .stats-col {
+        .state-emblem-badge {
             display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        /* Big Hero Metric */
-        .hero-metric-card {
-            background: var(--glass-card);
-            border: 1px solid var(--glass-border);
-            border-radius: 18px;
-            padding: 18px 22px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .metric-label-row {
-            display: flex;
             align-items: center;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
-
-        .metric-label {
-            font-size: 12.5px;
-            color: var(--text-dim);
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 7px 16px;
+            border-radius: 999px;
+            font-size: 12px;
             font-weight: 700;
+            color: #d1ded6;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
 
-        .metric-badge-trend {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            background: rgba(16, 185, 129, 0.18);
-            border: 1px solid rgba(16, 185, 129, 0.35);
-            color: #34d399;
-            font-size: 11.5px;
+        /* Hover & Active Glowing State */
+        .district-cell:hover .district-poly,
+        .district-cell.is-selected .district-poly {
+            fill-opacity: 0.95 !important;
+            stroke: #ffffff !important;
+            stroke-width: 2.8 !important;
+            filter: drop-shadow(0 0 14px currentColor) brightness(1.35) !important;
+        }
+
+        .district-cell.dimmed {
+            opacity: 0.25;
+        }
+
+        .district-lbl {
+            font-family: "DM Sans", sans-serif;
+            font-size: 8.5px;
             font-weight: 800;
-            padding: 3px 8px;
-            border-radius: 999px;
+            fill: #ffffff;
+            text-anchor: middle;
+            pointer-events: none;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95);
         }
 
-        .metric-value-huge {
-            font-size: 38px;
-            font-weight: 900;
-            letter-spacing: -0.5px;
-            color: #ffffff;
-            line-height: 1.1;
-            font-feature-settings: "tnum";
-            text-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+        /* Animated Corridor Lines between Major Hubs */
+        .hub-transit-arc {
+            fill: none;
+            stroke-linecap: round;
+            stroke-dasharray: 4 6;
+            animation: flowDash 2.5s linear infinite;
         }
 
-        .metric-sub {
-            font-size: 12px;
-            color: var(--text-dim);
-            margin-top: 5px;
+        @keyframes flowDash {
+            from { stroke-dashoffset: 80; }
+            to { stroke-dashoffset: 0; }
         }
 
-        /* Circuit Popularity Progress Bars */
-        .circuits-bars-card {
+        /* Right Side: District Detail Inspector Card */
+        .district-inspector-card {
             background: var(--glass-card);
-            border: 1px solid var(--glass-border);
-            border-radius: 18px;
-            padding: 18px 20px;
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            border-radius: 20px;
+            padding: 22px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 30px rgba(16, 185, 129, 0.12);
             display: flex;
             flex-direction: column;
-            gap: 13px;
+            gap: 16px;
+            transition: all 0.3s ease;
         }
 
-        .circuit-bar-item {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .circuit-meta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .circuit-name {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--text-main);
-        }
-
-        .circuit-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-
-        .circuit-val {
-            color: var(--text-dim);
-            font-feature-settings: "tnum";
-        }
-
-        .progress-track {
-            height: 6px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 999px;
+        .inspector-photo-wrap {
+            position: relative;
+            width: 100%;
+            height: 140px;
+            border-radius: 14px;
             overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
-        .progress-fill {
+        .inspector-photo {
+            width: 100%;
             height: 100%;
-            border-radius: 999px;
-            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
+            object-fit: cover;
+            transition: transform 0.5s ease;
         }
 
-        .progress-fill::after {
-            content: "";
+        .inspector-photo-wrap:hover .inspector-photo {
+            transform: scale(1.06);
+        }
+
+        .inspector-div-tag {
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            animation: shimmerBar 2.5s infinite;
-        }
-
-        @keyframes shimmerBar {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        /* Sparkline Cards Row */
-        .sparklines-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .sparkline-card {
-            background: var(--glass-card);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 14px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.25s ease, border-color 0.25s ease;
-        }
-
-        .sparkline-card:hover {
-            transform: translateY(-2px);
-            border-color: rgba(16, 185, 129, 0.35);
-        }
-
-        .sparkline-title {
-            font-size: 11px;
-            color: var(--text-dim);
-            font-weight: 700;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #34d399;
+            font-size: 10.5px;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 999px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        .sparkline-val {
+        .inspector-names h3 {
             font-size: 20px;
             font-weight: 800;
             color: #ffffff;
-            margin: 4px 0 2px;
+            margin-bottom: 2px;
+            letter-spacing: -0.3px;
         }
 
-        .sparkline-svg {
-            width: 100%;
-            height: 38px;
-            margin-top: 4px;
-        }
-
-        /* ========================================================
-           RIGHT HALF OF SHOWCASE: Complete Interactive Karnataka Map
-           ======================================================== */
-        .karnataka-map-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            min-height: 420px;
-        }
-
-        .map-svg-container {
-            width: 100%;
-            max-width: 380px;
-            height: auto;
-            filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.6));
-            position: relative;
-        }
-
-        /* SVG Map Styling */
-        .karnataka-silhouette {
-            fill: rgba(6, 20, 14, 0.85);
-            stroke: #10b981;
-            stroke-width: 2.5;
-            stroke-linejoin: round;
-            filter: drop-shadow(0 0 12px rgba(16, 185, 129, 0.45));
-            transition: all 0.4s ease;
-        }
-
-        .karnataka-silhouette:hover {
-            stroke: #34d399;
-            filter: drop-shadow(0 0 20px rgba(52, 211, 153, 0.65));
-        }
-
-        .map-contour {
-            fill: none;
-            stroke: rgba(16, 185, 129, 0.18);
-            stroke-width: 1;
-            stroke-dasharray: 4 4;
-        }
-
-        /* Animated Glowing Transit Corridor Lines */
-        .transit-corridor-line {
-            fill: none;
-            stroke-linecap: round;
-            stroke-dasharray: 6 8;
-            animation: flowTransit 3s linear infinite;
-        }
-
-        .line-emerald {
-            stroke: #10b981;
-            stroke-width: 2.2;
-            filter: drop-shadow(0 0 6px #10b981);
-        }
-
-        .line-cyan {
-            stroke: #06b6d4;
-            stroke-width: 2;
-            filter: drop-shadow(0 0 6px #06b6d4);
-        }
-
-        .line-gold {
-            stroke: #f59e0b;
-            stroke-width: 2;
-            filter: drop-shadow(0 0 6px #f59e0b);
-        }
-
-        @keyframes flowTransit {
-            from { stroke-dashoffset: 140; }
-            to { stroke-dashoffset: 0; }
-        }
-
-        /* Map Pin Nodes & Radar Pulses */
-        .map-node {
-            cursor: pointer;
-            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .map-node:hover {
-            transform: scale(1.35);
-        }
-
-        .node-pulse-ring {
-            animation: nodeBeacon 2.2s infinite cubic-bezier(0, 0.2, 0.8, 1);
-            transform-origin: center;
-        }
-
-        @keyframes nodeBeacon {
-            0% { r: 5px; opacity: 0.9; }
-            100% { r: 18px; opacity: 0; }
-        }
-
-        .node-center {
-            filter: drop-shadow(0 0 8px currentColor);
-        }
-
-        .node-label {
-            font-family: "DM Sans", sans-serif;
-            font-size: 11px;
-            font-weight: 800;
-            fill: #ffffff;
-            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
-            pointer-events: none;
-        }
-
-        /* Floating Destination Glass Card (Reference Style) */
-        .floating-spot-card {
-            position: absolute;
-            bottom: 12px;
-            right: 0;
-            background: rgba(10, 26, 18, 0.85);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(16, 185, 129, 0.4);
-            border-radius: 16px;
-            padding: 10px 14px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 16px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(16, 185, 129, 0.2);
-            transition: all 0.3s ease;
-            z-index: 5;
-            max-width: 260px;
-        }
-
-        .spot-thumb {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
-            object-fit: cover;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            flex-shrink: 0;
-        }
-
-        .spot-info h4 {
+        .inspector-names span {
             font-size: 13px;
-            font-weight: 800;
-            color: #ffffff;
-            line-height: 1.2;
-        }
-
-        .spot-info p {
-            font-size: 11px;
             color: #34d399;
             font-weight: 700;
-            margin-top: 2px;
+        }
+
+        .inspector-row {
             display: flex;
-            align-items: center;
+            flex-direction: column;
             gap: 4px;
         }
 
+        .inspector-row-label {
+            font-size: 11px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .inspector-row-val {
+            font-size: 13px;
+            color: #e5ece8;
+            line-height: 1.4;
+            font-weight: 600;
+        }
+
+        .transit-guarantee-pill {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            border-radius: 10px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #86efac;
+            font-weight: 700;
+        }
+
+        .btn-inspect-explore {
+            width: 100%;
+            padding: 11px 16px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #040906;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 13.5px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-inspect-explore:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.5);
+            color: #040906;
+        }
+
         /* Bottom Live State Bar */
-        .vis-footer-bar {
-            margin-top: 20px;
+        .atlas-footer-bar {
             background: rgba(0, 0, 0, 0.45);
             border: 1px solid var(--glass-border);
             border-radius: 14px;
@@ -630,7 +469,6 @@
             line-height: 1.45;
         }
 
-        /* Alert notifications */
         .alert-box {
             padding: 12px 16px;
             border-radius: 12px;
@@ -654,7 +492,6 @@
             border: 1px solid rgba(16, 185, 129, 0.35);
         }
 
-        /* Form Controls */
         .form-group {
             margin-bottom: 16px;
         }
@@ -795,13 +632,12 @@
             text-decoration: underline;
         }
 
-        /* Responsive Breakpoints */
         @media (max-width: 1080px) {
             .dashboard-container {
                 grid-template-columns: 1fr;
                 max-width: 600px;
             }
-            .vis-pane {
+            .atlas-pane {
                 display: none;
             }
             .auth-pane {
@@ -818,262 +654,277 @@
     <div class="dashboard-container">
 
         <!-- ========================================================
-             LEFT PANE: Karnataka Tourism Data Visualization Dashboard
+             LEFT PANE: Complete Karnataka 31 Districts Atlas Map
              ======================================================== -->
-        <div class="vis-pane">
+        <div class="atlas-pane">
 
-            <!-- Top Header -->
-            <div class="vis-header">
-                <div class="vis-brand-col">
+            <!-- Top Header & Division Filters -->
+            <div class="atlas-header">
+                <div class="atlas-brand">
                     <div class="brand-icon-box">
-                        <i class="fa-solid fa-compass"></i>
+                        <i class="fa-solid fa-map-location-dot"></i>
                     </div>
-                    <div class="vis-title-col">
-                        <h2>Tourism Statistics</h2>
-                        <p>Data visualization & analytics of Karnataka tourism</p>
+                    <div class="atlas-title-text">
+                        <h2>Karnataka District Atlas · ಅಧಿಕೃತ ನಕಾಶೆ</h2>
+                        <p>Complete 31 districts · Official KSRTC public transit network</p>
                     </div>
                 </div>
 
-                <!-- Filter Pills -->
-                <div class="filter-pills">
-                    <button type="button" class="filter-btn active" onclick="switchFilter('all', this)">All</button>
-                    <button type="button" class="filter-btn" onclick="switchFilter('heritage', this)">Heritage</button>
-                    <button type="button" class="filter-btn" onclick="switchFilter('ghats', this)">Western Ghats</button>
-                    <button type="button" class="filter-btn" onclick="switchFilter('coastal', this)">Coastal</button>
+                <div class="state-emblem-badge">
+                    <i class="fa-solid fa-map-marked-alt" style="color: #10b981;"></i>
+                    <span>All 31 Districts · Geopolitical Map</span>
                 </div>
             </div>
 
-            <!-- Main Data Visual Body -->
-            <div class="vis-body">
+            <!-- Atlas Stage: Complete Karnataka Map + Interactive Inspector Card -->
+            <div class="atlas-stage">
 
-                <!-- Left Column: Metrics & Progress Bars & Mini Wave Charts -->
-                <div class="stats-col">
-
-                    <!-- Big Hero Metric -->
-                    <div class="hero-metric-card">
-                        <div class="metric-label-row">
-                            <span class="metric-label" id="metricLabel">Users Travelled</span>
-                            <span class="metric-badge-trend">▲ 14.8%</span>
-                        </div>
-                        <div class="metric-value-huge" id="metricNumber">4,532,234</div>
-                        <div class="metric-sub" id="metricSub">Public transit & verified passenger journeys</div>
-                    </div>
-
-                    <!-- Circuit Progress Breakdown -->
-                    <div class="circuits-bars-card">
-                        <!-- Mysore -->
-                        <div class="circuit-bar-item">
-                            <div class="circuit-meta">
-                                <span class="circuit-name">
-                                    <span class="circuit-dot" style="background:#06b6d4;"></span>
-                                    <span>Mysuru Heritage Corridor</span>
-                                </span>
-                                <span class="circuit-val" id="barVal1">1,654,000</span>
-                            </div>
-                            <div class="progress-track">
-                                <div class="progress-fill" id="bar1" style="width: 88%; background: linear-gradient(90deg, #06b6d4, #3b82f6);"></div>
-                            </div>
-                        </div>
-
-                        <!-- Coorg -->
-                        <div class="circuit-bar-item">
-                            <div class="circuit-meta">
-                                <span class="circuit-name">
-                                    <span class="circuit-dot" style="background:#10b981;"></span>
-                                    <span>Coorg & Western Ghats</span>
-                                </span>
-                                <span class="circuit-val" id="barVal2">1,234,000</span>
-                            </div>
-                            <div class="progress-track">
-                                <div class="progress-fill" id="bar2" style="width: 76%; background: linear-gradient(90deg, #10b981, #059669);"></div>
-                            </div>
-                        </div>
-
-                        <!-- Hampi -->
-                        <div class="circuit-bar-item">
-                            <div class="circuit-meta">
-                                <span class="circuit-name">
-                                    <span class="circuit-dot" style="background:#f59e0b;"></span>
-                                    <span>Hampi & Vijayanagara</span>
-                                </span>
-                                <span class="circuit-val" id="barVal3">884,500</span>
-                            </div>
-                            <div class="progress-track">
-                                <div class="progress-fill" id="bar3" style="width: 64%; background: linear-gradient(90deg, #f59e0b, #d97706);"></div>
-                            </div>
-                        </div>
-
-                        <!-- Coastal -->
-                        <div class="circuit-bar-item">
-                            <div class="circuit-meta">
-                                <span class="circuit-name">
-                                    <span class="circuit-dot" style="background:#ec4899;"></span>
-                                    <span>Karavali & Udupi Coast</span>
-                                </span>
-                                <span class="circuit-val" id="barVal4">759,734</span>
-                            </div>
-                            <div class="progress-track">
-                                <div class="progress-fill" id="bar4" style="width: 52%; background: linear-gradient(90deg, #ec4899, #8b5cf6);"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Bottom Sparkline Cards (Reference Style) -->
-                    <div class="sparklines-row">
-                        <!-- Mini Card 1: Cyan Wave -->
-                        <div class="sparkline-card">
-                            <div>
-                                <div class="sparkline-title">Live Transit Flow</div>
-                                <div class="sparkline-val">24,850</div>
-                            </div>
-                            <svg class="sparkline-svg" viewBox="0 0 120 40">
-                                <defs>
-                                    <linearGradient id="cyanWaveGrad" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.5"/>
-                                        <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.0"/>
-                                    </linearGradient>
-                                </defs>
-                                <path d="M 0,35 Q 20,10 40,24 T 80,12 T 120,5 L 120,40 L 0,40 Z" fill="url(#cyanWaveGrad)"/>
-                                <path d="M 0,35 Q 20,10 40,24 T 80,12 T 120,5" fill="none" stroke="#06b6d4" stroke-width="2.5"/>
-                            </svg>
-                        </div>
-
-                        <!-- Mini Card 2: Amber Wave -->
-                        <div class="sparkline-card">
-                            <div>
-                                <div class="sparkline-title">KSRTC Priority</div>
-                                <div class="sparkline-val">98.4%</div>
-                            </div>
-                            <svg class="sparkline-svg" viewBox="0 0 120 40">
-                                <defs>
-                                    <linearGradient id="amberWaveGrad" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.5"/>
-                                        <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.0"/>
-                                    </linearGradient>
-                                </defs>
-                                <path d="M 0,30 Q 30,5 60,18 T 100,8 T 120,2 L 120,40 L 0,40 Z" fill="url(#amberWaveGrad)"/>
-                                <path d="M 0,30 Q 30,5 60,18 T 100,8 T 120,2" fill="none" stroke="#f59e0b" stroke-width="2.5"/>
-                            </svg>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Right Column: Complete Interactive Karnataka Map -->
-                <div class="karnataka-map-wrapper">
-                    <svg class="map-svg-container" viewBox="0 0 400 500">
+                <!-- The Super Well-Structured Complete Karnataka Map SVG -->
+                <div class="svg-map-box">
+                    <svg class="karnataka-complete-svg" viewBox="60 20 380 660" xmlns="http://www.w3.org/2000/svg">
                         <defs>
-                            <!-- Glow Filters -->
-                            <filter id="neonMapGlow" x="-20%" y="-20%" width="140%" height="140%">
-                                <feGaussianBlur stdDeviation="5" result="blur" />
+                            <!-- State Backdrop Outer Glow -->
+                            <filter id="karnatakaAtlasGlow" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="8" result="blur" />
                                 <feComposite in="SourceGraphic" in2="blur" operator="over" />
                             </filter>
-                            <!-- Map Gradient -->
-                            <linearGradient id="karnatakaGlassGrad" x1="0" y1="0" x2="1" y2="1">
-                                <stop offset="0%" stop-color="#082015" stop-opacity="0.95"/>
-                                <stop offset="50%" stop-color="#0d2e20" stop-opacity="0.85"/>
-                                <stop offset="100%" stop-color="#06180f" stop-opacity="0.95"/>
-                            </linearGradient>
                         </defs>
 
-                        <!-- Smooth Complete Karnataka Boundary Silhouette -->
-                        <path class="karnataka-silhouette"
-                              d="M 250,30 C 260.0,29.2 270.0,34.2 280,45 C 290.0,55.8 306.7,80.0 310,95 C 313.3,110.0 297.5,124.2 300,135 C 302.5,145.8 326.7,150.0 325,160 C 323.3,170.0 299.2,185.8 290,195 C 280.8,204.2 270.8,205.0 270,215 C 269.2,225.0 287.5,242.5 285,255 C 282.5,267.5 255.8,276.7 255,290 C 254.2,303.3 270.0,324.2 280,335 C 290.0,345.8 301.7,349.2 315,355 C 328.3,360.8 355.0,363.3 360,370 C 365.0,376.7 354.2,389.2 345,395 C 335.8,400.8 315.0,400.0 305,405 C 295.0,410.0 294.2,415.0 285,425 C 275.8,435.0 260.0,455.0 250,465 C 240.0,475.0 233.3,485.8 225,485 C 216.7,484.2 208.3,468.3 200,460 C 191.7,451.7 184.2,442.5 175,435 C 165.8,427.5 153.3,423.3 145,415 C 136.7,406.7 130.0,397.5 125,385 C 120.0,372.5 118.3,355.8 115,340 C 111.7,324.2 108.3,306.7 105,290 C 101.7,273.3 97.8,255.0 95,240 C 92.2,225.0 87.2,213.3 88,200 C 88.8,186.7 95.5,171.7 100,160 C 104.5,148.3 107.5,139.2 115,130 C 122.5,120.8 134.2,114.2 145,105 C 155.8,95.8 167.5,84.2 180,75 C 192.5,65.8 208.3,57.5 220,50 C 231.7,42.5 240.0,30.8 250,30 Z"
-                              fill="url(#karnatakaGlassGrad)"/>
+                        <!-- High Speed Animated Transit Trajectories -->
+                        <path class="hub-transit-arc" stroke="#06b6d4" stroke-width="2.2" d="M 345,525 Q 280,550 212,578"/>
+                        <path class="hub-transit-arc" stroke="#10b981" stroke-width="2.2" d="M 212,578 Q 170,550 142,522"/>
+                        <path class="hub-transit-arc" stroke="#f59e0b" stroke-width="2.2" d="M 345,525 Q 310,400 252,302"/>
+                        <path class="hub-transit-arc" stroke="#34d399" stroke-width="2" d="M 345,525 Q 260,480 173,435"/>
+                        <path class="hub-transit-arc" stroke="#06b6d4" stroke-width="2" d="M 173,435 Q 135,410 100,385"/>
 
-                        <!-- Internal Contour Grid Lines -->
-                        <path class="map-contour" d="M 100,160 Q 200,180 290,195"/>
-                        <path class="map-contour" d="M 105,290 Q 180,310 280,335"/>
-                        <path class="map-contour" d="M 125,385 Q 210,400 305,405"/>
+                        <!-- ALL 31 DISTRICTS OF KARNATAKA (Structured Polygons) -->
 
-                        <!-- Animated Transit Trajectory Arcs -->
-                        <!-- 1. Bengaluru -> Mysuru (Airavat Express) -->
-                        <path class="transit-corridor-line line-cyan" d="M 295,385 Q 260,395 210,430"/>
-                        <!-- 2. Mysuru -> Coorg (Rajahamsa Ghat) -->
-                        <path class="transit-corridor-line line-emerald" d="M 210,430 Q 185,415 155,410"/>
-                        <!-- 3. Bengaluru -> Hampi (Heritage Line) -->
-                        <path class="transit-corridor-line line-gold" d="M 295,385 Q 285,300 255,215"/>
-                        <!-- 4. Bengaluru -> Chikkamagaluru -->
-                        <path class="transit-corridor-line line-emerald" d="M 295,385 Q 235,360 165,330"/>
-                        <!-- 5. Chikkamagaluru -> Udupi (Agumbe Pass) -->
-                        <path class="transit-corridor-line line-cyan" d="M 165,330 Q 135,315 115,310"/>
-                        <!-- 6. Hampi -> Shivamogga -->
-                        <path class="transit-corridor-line line-gold" d="M 255,215 Q 205,235 160,260"/>
-
-                        <!-- Destination Pins with Radar Beacons -->
-                        <!-- Mysuru -->
-                        <g class="map-node" transform="translate(210, 430)" onclick="selectDestination('mysore')">
-                            <circle class="node-pulse-ring" r="8" fill="rgba(6, 182, 212, 0.45)"/>
-                            <circle class="node-center" r="5.5" fill="#06b6d4"/>
-                            <text class="node-label" x="8" y="4">Mysuru</text>
+                        <!-- 1. Bidar -->
+                        <g class="district-cell" data-div="kalyana" id="cell-bidar" onclick="inspectDistrict('bidar')">
+                            <path class="district-poly d-bidar" d="M 320,30 L 360,40 L 370,75 L 340,85 L 315,65 Z"/>
+                            <text class="district-lbl" x="341" y="60">ಬೀದರ್</text>
                         </g>
 
-                        <!-- Bengaluru -->
-                        <g class="map-node" transform="translate(295, 385)" onclick="selectDestination('bengaluru')">
-                            <circle class="node-pulse-ring" r="9" fill="rgba(16, 185, 129, 0.55)"/>
-                            <circle class="node-center" r="6" fill="#10b981"/>
-                            <text class="node-label" x="-60" y="4">Bengaluru</text>
+                        <!-- 2. Kalaburagi -->
+                        <g class="district-cell" data-div="kalyana" id="cell-kalaburagi" onclick="inspectDistrict('kalaburagi')">
+                            <path class="district-poly d-kalaburagi" d="M 270,85 L 315,65 L 340,85 L 350,140 L 305,145 L 275,120 Z"/>
+                            <text class="district-lbl" x="310" y="112">ಕಲಬುರಗಿ</text>
                         </g>
 
-                        <!-- Madikeri / Coorg -->
-                        <g class="map-node" transform="translate(155, 410)" onclick="selectDestination('coorg')">
-                            <circle class="node-pulse-ring" r="7" fill="rgba(16, 185, 129, 0.45)"/>
-                            <circle class="node-center" r="5" fill="#10b981"/>
-                            <text class="node-label" x="-42" y="4">Coorg</text>
+                        <!-- 3. Yadgir -->
+                        <g class="district-cell" data-div="kalyana" id="cell-yadgir" onclick="inspectDistrict('yadgir')">
+                            <path class="district-poly d-yadgir" d="M 305,145 L 350,140 L 365,190 L 320,200 L 300,165 Z"/>
+                            <text class="district-lbl" x="330" y="172">ಯಾದಗಿರಿ</text>
                         </g>
 
-                        <!-- Chikkamagaluru -->
-                        <g class="map-node" transform="translate(165, 330)" onclick="selectDestination('chikmagalur')">
-                            <circle class="node-pulse-ring" r="7" fill="rgba(52, 211, 153, 0.45)"/>
-                            <circle class="node-center" r="5" fill="#34d399"/>
-                            <text class="node-label" x="8" y="4">Chikmagalur</text>
+                        <!-- 4. Vijayapura -->
+                        <g class="district-cell" data-div="kittur" id="cell-vijayapura" onclick="inspectDistrict('vijayapura')">
+                            <path class="district-poly d-vijayapura" d="M 200,85 L 270,85 L 275,120 L 255,160 L 195,140 L 190,105 Z"/>
+                            <text class="district-lbl" x="230" y="125">ವಿಜಯಪುರ</text>
                         </g>
 
-                        <!-- Hampi -->
-                        <g class="map-node" transform="translate(255, 215)" onclick="selectDestination('hampi')">
-                            <circle class="node-pulse-ring" r="8" fill="rgba(245, 158, 11, 0.5)"/>
-                            <circle class="node-center" r="5.5" fill="#f59e0b"/>
-                            <text class="node-label" x="8" y="4">Hampi</text>
+                        <!-- 5. Bagalkote -->
+                        <g class="district-cell" data-div="kittur" id="cell-bagalkote" onclick="inspectDistrict('bagalkote')">
+                            <path class="district-poly d-bagalkote" d="M 195,140 L 255,160 L 250,215 L 180,205 L 185,165 Z"/>
+                            <text class="district-lbl" x="215" y="182">ಬಾಗಲಕೋಟೆ</text>
                         </g>
 
-                        <!-- Udupi / Gokarna -->
-                        <g class="map-node" transform="translate(115, 310)" onclick="selectDestination('udupi')">
-                            <circle class="node-pulse-ring" r="7" fill="rgba(236, 72, 153, 0.45)"/>
-                            <circle class="node-center" r="5" fill="#ec4899"/>
-                            <text class="node-label" x="-42" y="4">Udupi</text>
+                        <!-- 6. Belagavi -->
+                        <g class="district-cell" data-div="kittur" id="cell-belagavi" onclick="inspectDistrict('belagavi')">
+                            <path class="district-poly d-belagavi" d="M 105,130 L 190,105 L 185,165 L 175,230 L 125,235 L 95,185 Z"/>
+                            <text class="district-lbl" x="145" y="175">ಬೆಳಗಾವಿ</text>
                         </g>
 
-                        <!-- Shivamogga -->
-                        <g class="map-node" transform="translate(160, 260)" onclick="selectDestination('shivamogga')">
-                            <circle class="node-pulse-ring" r="6" fill="rgba(16, 185, 129, 0.4)"/>
-                            <circle class="node-center" r="4.5" fill="#10b981"/>
-                            <text class="node-label" x="8" y="4">Jog Falls</text>
+                        <!-- 7. Raichur -->
+                        <g class="district-cell" data-div="kalyana" id="cell-raichur" onclick="inspectDistrict('raichur')">
+                            <path class="district-poly d-raichur" d="M 285,195 L 320,200 L 365,190 L 355,250 L 290,245 L 280,215 Z"/>
+                            <text class="district-lbl" x="320" y="225">ರಾಯಚೂರು</text>
+                        </g>
+
+                        <!-- 8. Koppal -->
+                        <g class="district-cell" data-div="kalyana" id="cell-koppal" onclick="inspectDistrict('koppal')">
+                            <path class="district-poly d-koppal" d="M 230,215 L 280,215 L 290,245 L 275,275 L 225,270 L 220,235 Z"/>
+                            <text class="district-lbl" x="255" y="248">ಕೊಪ್ಪಳ</text>
+                        </g>
+
+                        <!-- 9. Gadag -->
+                        <g class="district-cell" data-div="kittur" id="cell-gadag" onclick="inspectDistrict('gadag')">
+                            <path class="district-poly d-gadag" d="M 175,230 L 220,235 L 225,270 L 215,295 L 170,290 Z"/>
+                            <text class="district-lbl" x="198" y="265">ಗದಗ</text>
+                        </g>
+
+                        <!-- 10. Dharwad -->
+                        <g class="district-cell" data-div="kittur" id="cell-dharwad" onclick="inspectDistrict('dharwad')">
+                            <path class="district-poly d-dharwad" d="M 125,235 L 175,230 L 170,290 L 120,285 L 115,255 Z"/>
+                            <text class="district-lbl" x="142" y="262">ಧಾರವಾಡ</text>
+                        </g>
+
+                        <!-- 11. Uttara Kannada -->
+                        <g class="district-cell" data-div="coastal" id="cell-uttara_kannada" onclick="inspectDistrict('uttara_kannada')">
+                            <path class="district-poly d-uttara_kannada" d="M 75,220 L 115,255 L 120,285 L 140,345 L 85,340 L 65,260 Z"/>
+                            <text class="district-lbl" x="98" y="290">ಉತ್ತರ ಕನ್ನಡ</text>
+                        </g>
+
+                        <!-- 12. Haveri -->
+                        <g class="district-cell" data-div="kittur" id="cell-haveri" onclick="inspectDistrict('haveri')">
+                            <path class="district-poly d-haveri" d="M 155,290 L 215,295 L 210,345 L 150,345 Z"/>
+                            <text class="district-lbl" x="180" y="322">ಹಾವೇರಿ</text>
+                        </g>
+
+                        <!-- 13. Vijayanagara (Hampi) -->
+                        <g class="district-cell" data-div="kalyana" id="cell-vijayanagara" onclick="inspectDistrict('vijayanagara')">
+                            <path class="district-poly d-vijayanagara" d="M 225,270 L 275,275 L 295,325 L 245,335 L 220,305 Z"/>
+                            <text class="district-lbl" x="252" y="306" style="fill:#fef08a;">ಹಂಪಿ</text>
+                        </g>
+
+                        <!-- 14. Ballari -->
+                        <g class="district-cell" data-div="kalyana" id="cell-ballari" onclick="inspectDistrict('ballari')">
+                            <path class="district-poly d-ballari" d="M 275,275 L 355,250 L 350,330 L 295,325 Z"/>
+                            <text class="district-lbl" x="318" y="300">ಬಳ್ಳಾರಿ</text>
+                        </g>
+
+                        <!-- 15. Davanagere -->
+                        <g class="district-cell" data-div="bengaluru" id="cell-davanagere" onclick="inspectDistrict('davanagere')">
+                            <path class="district-poly d-davanagere" d="M 210,345 L 245,335 L 265,385 L 205,395 Z"/>
+                            <text class="district-lbl" x="232" y="368">ದಾವಣಗೆರೆ</text>
+                        </g>
+
+                        <!-- 16. Shivamogga -->
+                        <g class="district-cell" data-div="malnad" id="cell-shivamogga" onclick="inspectDistrict('shivamogga')">
+                            <path class="district-poly d-shivamogga" d="M 135,345 L 205,345 L 200,410 L 125,405 L 120,365 Z"/>
+                            <text class="district-lbl" x="160" y="380">ಶಿವಮೊಗ್ಗ</text>
+                        </g>
+
+                        <!-- 17. Chitradurga -->
+                        <g class="district-cell" data-div="bengaluru" id="cell-chitradurga" onclick="inspectDistrict('chitradurga')">
+                            <path class="district-poly d-chitradurga" d="M 245,335 L 295,325 L 315,395 L 265,390 Z"/>
+                            <text class="district-lbl" x="282" y="362">ಚಿತ್ರದುರ್ಗ</text>
+                        </g>
+
+                        <!-- 18. Udupi -->
+                        <g class="district-cell" data-div="coastal" id="cell-udupi" onclick="inspectDistrict('udupi')">
+                            <path class="district-poly d-udupi" d="M 80,340 L 125,355 L 120,430 L 75,415 Z"/>
+                            <text class="district-lbl" x="100" y="385">ಉಡುಪಿ</text>
+                        </g>
+
+                        <!-- 19. Chikkamagaluru -->
+                        <g class="district-cell" data-div="malnad" id="cell-chikkamagaluru" onclick="inspectDistrict('chikkamagaluru')">
+                            <path class="district-poly d-chikkamagaluru" d="M 135,405 L 200,410 L 215,465 L 145,465 Z"/>
+                            <text class="district-lbl" x="173" y="440">ಚಿಕ್ಕಮಗಳೂರು</text>
+                        </g>
+
+                        <!-- 20. Dakshina Kannada (Mangaluru) -->
+                        <g class="district-cell" data-div="coastal" id="cell-dakshina_kannada" onclick="inspectDistrict('dakshina_kannada')">
+                            <path class="district-poly d-dakshina_kannada" d="M 75,415 L 120,430 L 135,495 L 85,485 Z"/>
+                            <text class="district-lbl" x="102" y="460">ಮಂಗಳೂರು</text>
+                        </g>
+
+                        <!-- 21. Hassan -->
+                        <g class="district-cell" data-div="mysore" id="cell-hassan" onclick="inspectDistrict('hassan')">
+                            <path class="district-poly d-hassan" d="M 195,435 L 245,440 L 250,510 L 185,505 Z"/>
+                            <text class="district-lbl" x="218" y="475">ಹಾಸನ</text>
+                        </g>
+
+                        <!-- 22. Tumakuru -->
+                        <g class="district-cell" data-div="bengaluru" id="cell-tumakuru" onclick="inspectDistrict('tumakuru')">
+                            <path class="district-poly d-tumakuru" d="M 265,390 L 315,395 L 325,485 L 255,475 Z"/>
+                            <text class="district-lbl" x="290" y="440">ತುಮಕೂರು</text>
+                        </g>
+
+                        <!-- 23. Chikkaballapura -->
+                        <g class="district-cell" data-div="bengaluru" id="cell-chikkaballapura" onclick="inspectDistrict('chikkaballapura')">
+                            <path class="district-poly d-chikkaballapura" d="M 320,415 L 375,410 L 380,470 L 325,475 Z"/>
+                            <text class="district-lbl" x="350" y="445">ಚಿಕ್ಕಬಳ್ಳಾಪುರ</text>
+                        </g>
+
+                        <!-- 24. Kolar -->
+                        <g class="district-cell" data-div="bengaluru" id="cell-kolar" onclick="inspectDistrict('kolar')">
+                            <path class="district-poly d-kolar" d="M 375,410 L 435,445 L 430,510 L 375,505 Z"/>
+                            <text class="district-lbl" x="402" y="465">ಕೋಲಾರ</text>
+                        </g>
+
+                        <!-- 25. Bengaluru Rural -->
+                        <g class="district-cell" data-div="bengaluru" id="cell-bengaluru_rural" onclick="inspectDistrict('bengaluru_rural')">
+                            <path class="district-poly d-bengaluru_rural" d="M 315,475 L 365,470 L 370,520 L 320,515 Z"/>
+                            <text class="district-lbl" x="342" y="495">ಗ್ರಾಮಾಂತರ</text>
+                        </g>
+
+                        <!-- 26. Bengaluru Urban -->
+                        <g class="district-cell is-selected" data-div="bengaluru" id="cell-bengaluru_urban" onclick="inspectDistrict('bengaluru_urban')">
+                            <path class="district-poly d-bengaluru_urban" d="M 325,505 L 360,505 L 365,545 L 330,545 Z"/>
+                            <text class="district-lbl" x="345" y="528" style="fill:#6ee7b7; font-weight:900;">ಬೆಂಗಳೂರು</text>
+                        </g>
+
+                        <!-- 27. Ramanagara -->
+                        <g class="district-cell" data-div="bengaluru" id="cell-ramanagara" onclick="inspectDistrict('ramanagara')">
+                            <path class="district-poly d-ramanagara" d="M 285,505 L 325,505 L 320,565 L 280,560 Z"/>
+                            <text class="district-lbl" x="302" y="538">ರಾಮನಗರ</text>
+                        </g>
+
+                        <!-- 28. Mandya -->
+                        <g class="district-cell" data-div="mysore" id="cell-mandya" onclick="inspectDistrict('mandya')">
+                            <path class="district-poly d-mandya" d="M 235,505 L 285,505 L 280,565 L 230,560 Z"/>
+                            <text class="district-lbl" x="258" y="538">ಮಂಡ್ಯ</text>
+                        </g>
+
+                        <!-- 29. Kodagu (Coorg) -->
+                        <g class="district-cell" data-div="malnad" id="cell-kodagu" onclick="inspectDistrict('kodagu')">
+                            <path class="district-poly d-kodagu" d="M 115,485 L 165,485 L 170,565 L 120,555 Z"/>
+                            <text class="district-lbl" x="142" y="528">ಕೊಡಗು</text>
+                        </g>
+
+                        <!-- 30. Mysuru -->
+                        <g class="district-cell" data-div="mysore" id="cell-mysuru" onclick="inspectDistrict('mysuru')">
+                            <path class="district-poly d-mysuru" d="M 185,545 L 245,545 L 240,615 L 180,610 Z"/>
+                            <text class="district-lbl" x="212" y="582" style="fill:#fef08a; font-weight:900;">ಮೈಸೂರು</text>
+                        </g>
+
+                        <!-- 31. Chamarajanagar -->
+                        <g class="district-cell" data-div="mysore" id="cell-chamarajanagar" onclick="inspectDistrict('chamarajanagar')">
+                            <path class="district-poly d-chamarajanagar" d="M 225,605 L 275,595 L 280,665 L 220,665 Z"/>
+                            <text class="district-lbl" x="250" y="635">ಚಾಮರಾಜನಗರ</text>
                         </g>
                     </svg>
+                </div>
 
-                    <!-- Floating Glass Card (Like Dubai Card in Reference) -->
-                    <div class="floating-spot-card" id="floatingSpotCard">
-                        <img id="spotThumb" class="spot-thumb" src="{% static 'users/images/mysore.jpg' %}" alt="Mysuru Palace">
-                        <div class="spot-info">
-                            <h4 id="spotTitle">Mysuru Palace</h4>
-                            <p id="spotStat">
-                                <span class="circuit-dot" style="background:#06b6d4;"></span>
-                                <span id="spotCount">18,392 active travelers</span>
-                            </p>
-                        </div>
+                <!-- Right Half: District Detail Inspector Card -->
+                <div class="district-inspector-card" id="districtInspector">
+                    <div class="inspector-photo-wrap">
+                        <img id="inspPhoto" class="inspector-photo" src="{% static 'users/images/mysore.jpg' %}" alt="District Landmark">
+                        <div id="inspDivTag" class="inspector-div-tag">Royal Heritage · Mysuru Division</div>
                     </div>
+
+                    <div class="inspector-names">
+                        <h3 id="inspTitle">ಮೈಸೂರು (Mysore)</h3>
+                        <span id="inspSubtitle">Palaces, Chamundi Hills &amp; Royal Culture</span>
+                    </div>
+
+                    <div class="inspector-row">
+                        <span class="inspector-row-label">Key Attractions</span>
+                        <p class="inspector-row-val" id="inspAttractions">Mysore Palace, Chamundi Hills, Brindavan Gardens, Zoo &amp; St. Philomena's</p>
+                    </div>
+
+                    <div class="transit-guarantee-pill">
+                        <i class="fa-solid fa-bus"></i>
+                        <span id="inspTransit">🌟 1st Preference: KSRTC Airavat Club Class Corridor</span>
+                    </div>
+
+                    <a id="inspLink" href="{% url 'places_by_district' 'mysore' %}" class="btn-inspect-explore">
+                        <span>🧭 Explore Places in <span id="inspBtnName">Mysuru</span></span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
                 </div>
 
             </div>
 
             <!-- Bottom Live State Bar -->
-            <div class="vis-footer-bar">
+            <div class="atlas-footer-bar">
                 <div class="pulse-live-indicator">
                     <div class="live-dot"></div>
-                    <span>Live Transit Synchronized: 31 Districts · KSRTC 1st Preference Active</span>
+                    <span>Click or hover any of the 31 districts to inspect authentic Karnataka routes</span>
                 </div>
                 <div style="font-size: 11.5px; color: #10b981; font-weight: 800; background: rgba(16, 185, 129, 0.15); padding: 4px 10px; border-radius: 999px;">
-                    Shakti Scheme 🟢
+                    Shakti Scheme Zero-Fare Active 🟢
                 </div>
             </div>
 
@@ -1099,16 +950,8 @@
 
             <!-- Form Content Header -->
             <div class="form-header">
-                <h1 class="form-title">
-                    {% if step == "otp" %}Email Verification{% else %}Sign In to Tourist{% endif %}
-                </h1>
-                <p class="form-sub">
-                    {% if step == "otp" %}
-                        Enter the 6-digit code sent to <strong>{{ masked_email }}</strong>
-                    {% else %}
-                        Access your travel passport, multi-leg budget, and public routes
-                    {% endif %}
-                </p>
+                <h1 class="form-title">Sign In to Tourist</h1>
+                <p class="form-sub">Access your travel passport, multi-leg budget, and public routes</p>
             </div>
 
             <!-- Notifications -->
@@ -1123,13 +966,6 @@
                 <div class="alert-box alert-success">
                     <i class="fa-solid fa-circle-check"></i>
                     <div>{{ success }}</div>
-                </div>
-            {% endif %}
-
-            {% if info %}
-                <div class="alert-box alert-info">
-                    <i class="fa-solid fa-circle-info"></i>
-                    <div>{{ info }}</div>
                 </div>
             {% endif %}
 
@@ -1172,9 +1008,8 @@
                         </div>
                     </div>
 
-                    <!-- Direct Instant Login -->
                     <button type="submit" class="btn-submit-main">
-                        <span>Sign In & Open Dashboard</span>
+                        <span>Sign In &amp; Open Dashboard</span>
                         <i class="fa-solid fa-arrow-right"></i>
                     </button>
 
@@ -1184,7 +1019,6 @@
                         </button>
                     </div>
 
-                    <!-- Quick Fill for Tester -->
                     <div class="quick-fill-bar">
                         <span class="quick-fill-text">Test account: ans1</span>
                         <button type="button" class="btn-fill-pill" onclick="autoFillAns1()">
@@ -1227,7 +1061,7 @@
                     </div>
 
                     <button type="submit" class="btn-submit-main">
-                        <span>Verify & Sign In</span>
+                        <span>Verify &amp; Sign In</span>
                         <i class="fa-solid fa-compass"></i>
                     </button>
                 </form>
@@ -1247,7 +1081,6 @@
                 </div>
             {% endif %}
 
-            <!-- Footer -->
             <div class="auth-footer-row">
                 Don't have an account yet?
                 <a href="{% url 'register' %}">Create an Account</a>
@@ -1257,124 +1090,376 @@
 
     </div>
 
-    <!-- Interactive Map & Filter Logic -->
+    <!-- Interactive 31 District Atlas Engine -->
     <script>
-        var destinations = {
-            'mysore': {
-                title: 'Mysuru Palace Corridor',
-                stat: '18,392 active travelers',
-                thumb: '{% static "users/images/mysore.jpg" %}'
+        var districtRegistry = {
+            'mysuru': {
+                name: 'ಮೈಸೂರು · Mysuru (Mysore)',
+                sub: 'Palaces, Chamundi Hills & Royal Dasara Culture',
+                tag: 'Royal Heritage · Mysuru Division',
+                photo: '{% static "users/images/mysore.jpg" %}',
+                attractions: 'Mysore Palace, Chamundi Hills, Brindavan Gardens, Zoo & Karanji Lake',
+                transit: '🌟 1st Preference: KSRTC Airavat Club Class Corridor',
+                url: '/places/mysore/',
+                btn: 'Mysuru'
             },
-            'bengaluru': {
-                title: 'Majestic Central Terminal',
-                stat: '34,120 active travelers',
-                thumb: '{% static "users/images/mysore.jpg" %}'
+            'kodagu': {
+                name: 'ಕೊಡಗು · Kodagu (Madikeri / Coorg)',
+                sub: 'Misty Coffee Highlands, Abbey Falls & Rainforests',
+                tag: 'Western Ghats · Coorg Mist',
+                photo: '{% static "users/images/madikeri.jpg" %}',
+                attractions: 'Abbey Falls, Raja Seat, Talakaveri, Dubare Elephant Camp, Mandalpatti',
+                transit: '🌟 1st Preference: KSRTC Rajahamsa Ghat Service · Shakti Scheme',
+                url: '/places/kodagu/',
+                btn: 'Kodagu (Coorg)'
             },
-            'coorg': {
-                title: 'Madikeri & Abbey Falls',
-                stat: '12,850 active travelers',
-                thumb: '{% static "users/images/madikeri.jpg" %}'
+            'chikkamagaluru': {
+                name: 'ಚಿಕ್ಕಮಗಳೂರು · Chikkamagaluru',
+                sub: 'Mullayanagiri, Baba Budangiri & Coffee Cradle',
+                tag: 'Highest Peaks · Malnad Rainforest',
+                photo: '{% static "users/images/chikmagalur.jpg" %}',
+                attractions: 'Mullayanagiri Peak (1,930m), Baba Budangiri, Kemmangundi, Hebbe Falls',
+                transit: '🌟 1st Preference: KSRTC Malnad Express & NWKRTC Feeder',
+                url: '/places/Chikkamagaluru/',
+                btn: 'Chikkamagaluru'
             },
-            'chikmagalur': {
-                title: 'Mullayanagiri Peak',
-                stat: '9,420 active travelers',
-                thumb: '{% static "users/images/chikmagalur.jpg" %}'
-            },
-            'hampi': {
-                title: 'Vijayanagara Stone Chariot',
-                stat: '14,630 active travelers',
-                thumb: '{% static "users/images/hampi.jpg" %}'
+            'vijayanagara': {
+                name: 'ಹಂಪಿ · Hampi (Vijayanagara)',
+                sub: 'UNESCO World Heritage, Virupaksha & Stone Chariot',
+                tag: 'UNESCO Heritage · Tungabhadra Basin',
+                photo: '{% static "users/images/hampi.jpg" %}',
+                attractions: 'Virupaksha Temple, Stone Chariot, Vittala Temple, Lotus Mahal, Tungabhadra River',
+                transit: '🌟 1st Preference: KSRTC Heritage Sleepers & Airavat Express',
+                url: '/places/Hampi/',
+                btn: 'Hampi'
             },
             'udupi': {
-                title: 'Malpe & St. Marys Island',
-                stat: '11,210 active travelers',
-                thumb: '{% static "users/images/udupi.jpg" %}'
+                name: 'ಉಡುಪಿ · Udupi',
+                sub: 'Sri Krishna Matha, Malpe Beach & St. Mary\'s Island',
+                tag: 'Coastal Canara · Arabian Ocean',
+                photo: '{% static "users/images/udupi.jpg" %}',
+                attractions: 'Sri Krishna Temple, Malpe Beach, St. Marys Island, Kaup Lighthouse',
+                transit: '🌟 1st Preference: KSRTC Coastal Sarige & Kundapura Sleeper',
+                url: '/places/Udupi/',
+                btn: 'Udupi'
+            },
+            'uttara_kannada': {
+                name: 'ಉತ್ತರ ಕನ್ನಡ · Uttara Kannada (Gokarna)',
+                sub: 'Om Beach, Murudeshwar Shiva & Dandeli Woods',
+                tag: 'North Karavali Coast · Forest Reserve',
+                photo: '{% static "users/images/uttara-kannada.jpg" %}',
+                attractions: 'Om Beach, Kudle Beach, Murudeshwar Shiva Temple, Dandeli River Rafting',
+                transit: '🌟 1st Preference: NWKRTC Karavali Express & KSRTC Night Service',
+                url: '/places/uttara%20kannada/',
+                btn: 'Uttara Kannada'
             },
             'shivamogga': {
-                title: 'Jog Falls Cascades',
-                stat: '8,950 active travelers',
-                thumb: '{% static "users/images/shivamogga.jpg" %}'
+                name: 'ಶಿವಮೊಗ್ಗ · Shivamogga (Shimoga)',
+                sub: 'Majestic Jog Falls, Agumbe Sunset & Malnad Woods',
+                tag: 'Waterfalls & Malnad · Western Ghats',
+                photo: '{% static "users/images/shivamogga.jpg" %}',
+                attractions: 'Jog Falls, Agumbe Sunset Point, Sharavathi Valley, Kodachadri Trek',
+                transit: '🌟 1st Preference: KSRTC Malnad Feeder & Sagar Express',
+                url: '/places/Shivamogga/',
+                btn: 'Shivamogga'
+            },
+            'hassan': {
+                name: 'ಹಾಸನ · Hassan (Belur & Halebidu)',
+                sub: 'Hoysala Soapstone Architecture & Shravanabelagola',
+                tag: 'Hoysala Art · Central Heritage',
+                photo: '{% static "users/images/hassan.jpg" %}',
+                attractions: 'Chennakeshava Temple Belur, Hoysaleswara Temple Halebidu, Gommateshwara',
+                transit: '🌟 1st Preference: KSRTC Express Hub & Bangalore Corridor',
+                url: '/places/hassan/',
+                btn: 'Hassan'
+            },
+            'mandya': {
+                name: 'ಮಂಡ್ಯ · Mandya',
+                sub: 'Srirangapatna, Shivanasamudra Falls & Kaveri Basin',
+                tag: 'Kaveri Valley · Sugar Country',
+                photo: '{% static "users/images/mandya.jpg" %}',
+                attractions: 'Srirangapatna Ranganathaswamy, Shivanasamudra Twin Falls, Ranganathittu Bird Sanctuary',
+                transit: '🌟 1st Preference: KSRTC EV-Power Plus Electric Expressway',
+                url: '/places/Mandya/',
+                btn: 'Mandya'
+            },
+            'dakshina_kannada': {
+                name: 'ಮಂಗಳೂರು · Mangaluru (Dakshina Kannada)',
+                sub: 'Port City, Panambur Beach & Kadri Manjunatha',
+                tag: 'South Canara · Major Port',
+                photo: '{% static "users/images/mangaluru.jpg" %}',
+                attractions: 'Panambur Beach, Kadri Manjunatha Temple, Pilikula Nisargadhama, Tannirbhavi',
+                transit: '🌟 1st Preference: KSRTC Multi-Axle Volvo & Ghat Corridors',
+                url: '/places/Mangaluru/',
+                btn: 'Mangaluru'
+            },
+            'bengaluru_urban': {
+                name: 'ಬೆಂಗಳೂರು · Bengaluru Urban (Capital)',
+                sub: 'Garden City, Vidhana Soudha & Central Transit Hub',
+                tag: 'Capital City · Bengaluru Division',
+                photo: '{% static "users/images/mysore.jpg" %}',
+                attractions: 'Vidhana Soudha, Lalbagh Botanical Garden, Cubbon Park, Bangalore Palace',
+                transit: '🌟 BMTC & KSRTC Central Majestic & Satellite Terminals',
+                url: '/places/mysore/',
+                btn: 'Bengaluru'
+            },
+            'bengaluru_rural': {
+                name: 'ಬೆಂಗಳೂರು ಗ್ರಾಮಾಂತರ · Bengaluru Rural',
+                sub: 'Devanahalli Fort, Shivagange Hill & Silk Weaving',
+                tag: 'Bengaluru Division',
+                photo: '{% static "users/images/mysore.jpg" %}',
+                attractions: 'Devanahalli Fort, Shivagange Peak, Ghati Subramanya',
+                transit: '🌟 KSRTC & BMTC Airport & Regional Express',
+                url: '/places/mysore/',
+                btn: 'Bengaluru Rural'
+            },
+            'ramanagara': {
+                name: 'ರಾಮನಗರ · Ramanagara',
+                sub: 'Sholay Ramadevara Betta, Silk City & Janapada Loka',
+                tag: 'Silk City · Kaveri Basin',
+                photo: '{% static "users/images/mandya.jpg" %}',
+                attractions: 'Ramadevara Betta Sanctuary, Janapada Loka Folk Museum, Kanakapura',
+                transit: '🌟 KSRTC Southern Express Corridor',
+                url: '/places/Mandya/',
+                btn: 'Ramanagara'
+            },
+            'tumakuru': {
+                name: 'ತುಮಕೂರು · Tumakuru',
+                sub: 'Siddaganga Matha, Devarayanadurga & Pavagada',
+                tag: 'Gateway to South · Bengaluru Division',
+                photo: '{% static "users/images/hassan.jpg" %}',
+                attractions: 'Devarayanadurga Hills, Siddaganga Matha, Namada Chilume, Pavagada Fort',
+                transit: '🌟 KSRTC & NWKRTC Highway Junction',
+                url: '/places/hassan/',
+                btn: 'Tumakuru'
+            },
+            'chikkaballapura': {
+                name: 'ಚಿಕ್ಕಬಳ್ಳಾಪುರ · Chikkaballapura',
+                sub: 'Nandi Hills, Bhoga Nandeeshwara & Skandagiri Sunrise',
+                tag: 'Highlands · Eastern Boundary',
+                photo: '{% static "users/images/chikmagalur.jpg" %}',
+                attractions: 'Nandi Hills Sunrise Point, Bhoga Nandeeshwara Temple, Skandagiri Night Trek',
+                transit: '🌟 KSRTC Nandi Hills Non-Stop Schedules',
+                url: '/places/mysore/',
+                btn: 'Chikkaballapura'
+            },
+            'kolar': {
+                name: 'ಕೋಲಾರ · Kolar',
+                sub: 'KGF Gold Fields, Someshwara Temple & Anthargange Caves',
+                tag: 'Land of Gold · Eastern Horn',
+                photo: '{% static "users/images/hampi.jpg" %}',
+                attractions: 'Kolar Gold Fields (KGF), Anthargange Volcanic Caves, Someshwara Temple',
+                transit: '🌟 KSRTC Kolar Gold Corridor',
+                url: '/places/mysore/',
+                btn: 'Kolar'
+            },
+            'chamarajanagar': {
+                name: 'ಚಾಮರಾಜನಗರ · Chamarajanagar',
+                sub: 'Bandipur Tiger Reserve, MM Hills & BR Hills',
+                tag: 'Wildlife Sanctuary · Southern Frontier',
+                photo: '{% static "users/images/mysore.jpg" %}',
+                attractions: 'Bandipur National Park, Male Mahadeshwara Betta, Biligirirangana Hills',
+                transit: '🌟 KSRTC Wildlife Forest Corridor Services',
+                url: '/places/mysore/',
+                btn: 'Chamarajanagar'
+            },
+            'chitradurga': {
+                name: 'ಚಿತ್ರದುರ್ಗ · Chitradurga',
+                sub: 'Elu Suttina Kote (7-Ring Fort) & Onake Obavva',
+                tag: 'Fortress City · Central Plains',
+                photo: '{% static "users/images/hampi.jpg" %}',
+                attractions: 'Chitradurga Stone Fort, Vani Vilasa Sagara Dam, Chandravalli Caves',
+                transit: '🌟 KSRTC National Highway Hub',
+                url: '/places/Hampi/',
+                btn: 'Chitradurga'
+            },
+            'davanagere': {
+                name: 'ದಾವಣಗೆರೆ · Davanagere',
+                sub: 'Culinary Butter Dosa Capital, Kunduvada Kere & Shanti Sagara',
+                tag: 'Central Hub · Cotton City',
+                photo: '{% static "users/images/shivamogga.jpg" %}',
+                attractions: 'Shanti Sagara (Asia\'s 2nd Largest Tank), Kunduvada Lake, Anjaneya Temple',
+                transit: '🌟 KSRTC Central Express Depot',
+                url: '/places/Shivamogga/',
+                btn: 'Davanagere'
+            },
+            'ballari': {
+                name: 'ಬಳ್ಳಾರಿ · Ballari (Bellary)',
+                sub: 'Monolithic Rock Fort, Mining Landscapes & Kurugodu',
+                tag: 'Mining & Heritage · Kalyana Karnataka',
+                photo: '{% static "users/images/hampi.jpg" %}',
+                attractions: 'Ballari Rock Fort, Kumaraswamy Temple Sandur, Daroji Sloth Bear Sanctuary',
+                transit: '🌟 KSRTC & NEKRTC Direct Schedules',
+                url: '/places/Hampi/',
+                btn: 'Ballari'
+            },
+            'koppal': {
+                name: 'ಕೊಪ್ಪಳ · Koppal',
+                sub: 'Anegundi Kishkindha, Kinnal Toys & Mahadeva Temple',
+                tag: 'Kalyana Karnataka',
+                photo: '{% static "users/images/hampi.jpg" %}',
+                attractions: 'Anegundi Kishkindha, Mahadeva Temple Itagi, Pampa Sarovar',
+                transit: '🌟 KSRTC & NEKRTC Heritage Routes',
+                url: '/places/Hampi/',
+                btn: 'Koppal'
+            },
+            'raichur': {
+                name: 'ರಾಯಚೂರು · Raichur',
+                sub: 'Krishna-Tungabhadra Doab, Raichur Fort & Thermal Hub',
+                tag: 'Doab Basin · Kalyana Karnataka',
+                photo: '{% static "users/images/hampi.jpg" %}',
+                attractions: 'Raichur Stone Fort, Krishna-Tungabhadra Sangama, Gabbur Temples',
+                transit: '🌟 NEKRTC Doab Express',
+                url: '/places/Hampi/',
+                btn: 'Raichur'
+            },
+            'yadgir': {
+                name: 'ಯಾದಗಿರಿ · Yadgir',
+                sub: 'Yadgir Hill Fort, Bonal Bird Sanctuary & Shore Temples',
+                tag: 'Kalyana Karnataka',
+                photo: '{% static "users/images/hampi.jpg" %}',
+                attractions: 'Yadgir Hill Fort, Bonal Bird Sanctuary, Sleeping Buddha Hill Shahapur',
+                transit: '🌟 NEKRTC Regional Feeder',
+                url: '/places/Hampi/',
+                btn: 'Yadgir'
+            },
+            'kalaburagi': {
+                name: 'ಕಲಬುರಗಿ · Kalaburagi (Gulbarga)',
+                sub: 'Bahmani Fort, Khwaja Bande Nawaz Dargah & Sharanabasaveshwara',
+                tag: 'Sufi & Bahmani · Kalyana Karnataka',
+                photo: '{% static "users/images/hampi.jpg" %}',
+                attractions: 'Gulbarga Fort & Jama Masjid, Khwaja Bande Nawaz Dargah, Sannati Buddhist Site',
+                transit: '🌟 KSRTC Airavat & NEKRTC Division Hub',
+                url: '/places/Hampi/',
+                btn: 'Kalaburagi'
+            },
+            'bidar': {
+                name: 'ಬೀದರ್ · Bidar (Crown of Karnataka)',
+                sub: 'Majestic Bidar Fort, Gurudwara Nanak Jhira & Mahmud Gawan Madrasa',
+                tag: 'Crown of Karnataka · Bidri Art',
+                photo: '{% static "users/images/hampi.jpg" %}',
+                attractions: 'Bidar Fort & Rangeen Mahal, Gurudwara Nanak Jhira, Bahmani Tombs, Mahmud Gawan',
+                transit: '🌟 KSRTC Non-Stop Airavat & NEKRTC Express',
+                url: '/places/Hampi/',
+                btn: 'Bidar'
+            },
+            'belagavi': {
+                name: 'ಬೆಳಗಾವಿ · Belagavi (Belgaum)',
+                sub: 'Suvarna Soudha, Kittur Chennamma Fort & Gokak Falls',
+                tag: 'Kittur Karnataka · Border Splendour',
+                photo: '{% static "users/images/shivamogga.jpg" %}',
+                attractions: 'Gokak Waterfalls, Belagavi Fort & Kamal Basti, Kittur Chennamma Palace, Suvarna Soudha',
+                transit: '🌟 NWKRTC Headquarters & KSRTC Sleeper Corridors',
+                url: '/places/Shivamogga/',
+                btn: 'Belagavi'
+            },
+            'dharwad': {
+                name: 'ಧಾರವಾಡ · Dharwad & Hubballi',
+                sub: 'Cultural Capital, Dharwad Peda, Glass House & Unkal Lake',
+                tag: 'Kittur Karnataka · Cultural Capital',
+                photo: '{% static "users/images/hassan.jpg" %}',
+                attractions: 'Unkal Lake, Chandramouleshwara Temple, Nrupatunga Betta, Glass House',
+                transit: '🌟 NWKRTC Hubballi-Dharwad BRTS & KSRTC Luxury',
+                url: '/places/hassan/',
+                btn: 'Dharwad'
+            },
+            'gadag': {
+                name: 'ಗದಗ · Gadag',
+                sub: 'Veera Narayana Temple, Trikuteshwara & Printing Heritage',
+                tag: 'Kalyana Chalukya Architecture',
+                photo: '{% static "users/images/hampi.jpg" %}',
+                attractions: 'Trikuteshwara Temple, Veera Narayana Temple, Lakkundi Heritage Temples, Magadi Bird Sanctuary',
+                transit: '🌟 NWKRTC Central Depot',
+                url: '/places/Hampi/',
+                btn: 'Gadag'
+            },
+            'bagalkote': {
+                name: 'ಬಾಗಲಕೋಟೆ · Bagalkote',
+                sub: 'Badami Rock-Cut Caves, Pattadakal & Aihole Cradle of Temples',
+                tag: 'Chalukya Heritage · UNESCO Circuit',
+                photo: '{% static "users/images/hampi.jpg" %}',
+                attractions: 'Badami Cave Temples & Agastya Lake, Pattadakal UNESCO Group, Aihole Durga Temple',
+                transit: '🌟 NWKRTC Chalukya Heritage Circuit',
+                url: '/places/Hampi/',
+                btn: 'Bagalkote'
+            },
+            'vijayapura': {
+                name: 'ವಿಜಯಪುರ · Vijayapura (Bijapur)',
+                sub: 'Magnificent Gol Gumbaz, Whispering Gallery & Ibrahim Rauza',
+                tag: 'Adil Shahi Dynasty · Monumental Heritage',
+                photo: '{% static "users/images/mysore.jpg" %}',
+                attractions: 'Gol Gumbaz (World\'s 2nd Largest Acoustic Dome), Ibrahim Rauza, Malik-e-Maidan Cannon',
+                transit: '🌟 KSRTC Airavat & NWKRTC Heritage Corridor',
+                url: '/places/mysore/',
+                btn: 'Vijayapura'
+            },
+            'haveri': {
+                name: 'ಹಾವೇರಿ · Haveri',
+                sub: 'Kaginele Kanaka Dasa, Ranebennur Blackbuck Sanctuary & Cardamom',
+                tag: 'Kittur Karnataka',
+                photo: '{% static "users/images/shivamogga.jpg" %}',
+                attractions: 'Ranebennur Blackbuck Sanctuary, Kaginele Kanaka Guru Peetha, Siddheshwara Temple',
+                transit: '🌟 NWKRTC Highway Express',
+                url: '/places/Shivamogga/',
+                btn: 'Haveri'
             }
         };
 
-        function selectDestination(key) {
-            var item = destinations[key];
-            if (!item) return;
-            var card = document.getElementById('floatingSpotCard');
-            card.style.transform = 'scale(0.95)';
-            card.style.opacity = '0.5';
+        function inspectDistrict(key) {
+            var data = districtRegistry[key];
+            if (!data) return;
+
+            // Highlight in SVG
+            document.querySelectorAll('.district-cell').forEach(function(c) {
+                c.classList.remove('is-selected');
+            });
+            var targetCell = document.getElementById('cell-' + key);
+            if (targetCell) targetCell.classList.add('is-selected');
+
+            // Update Inspector Card
+            var card = document.getElementById('districtInspector');
+            card.style.opacity = '0.7';
+            card.style.transform = 'scale(0.98)';
+
             setTimeout(function() {
-                document.getElementById('spotTitle').textContent = item.title;
-                document.getElementById('spotCount').textContent = item.stat;
-                document.getElementById('spotThumb').src = item.thumb;
-                card.style.transform = 'scale(1)';
+                document.getElementById('inspTitle').textContent = data.name;
+                document.getElementById('inspSubtitle').textContent = data.sub;
+                document.getElementById('inspDivTag').textContent = data.tag;
+                document.getElementById('inspPhoto').src = data.photo;
+                document.getElementById('inspAttractions').textContent = data.attractions;
+                document.getElementById('inspTransit').textContent = data.transit;
+                document.getElementById('inspLink').href = data.url;
+                document.getElementById('inspBtnName').textContent = data.btn;
+
                 card.style.opacity = '1';
-            }, 150);
+                card.style.transform = 'scale(1)';
+            }, 120);
         }
 
-        var filterData = {
-            'all': {
-                number: '4,532,234',
-                label: 'Users Travelled',
-                sub: 'Public transit & verified passenger journeys',
-                b1: '88%', b1v: '1,654,000',
-                b2: '76%', b2v: '1,234,000',
-                b3: '64%', b3v: '884,500',
-                b4: '52%', b4v: '759,734'
-            },
-            'heritage': {
-                number: '2,538,500',
-                label: 'Heritage Explorers',
-                sub: 'UNESCO monuments & Royal Mysore circuits',
-                b1: '95%', b1v: '1,654,000',
-                b2: '45%', b2v: '420,000',
-                b3: '82%', b3v: '884,500',
-                b4: '20%', b4v: '180,000'
-            },
-            'ghats': {
-                number: '1,874,200',
-                label: 'Highland Voyagers',
-                sub: 'Coffee plantations & Western Ghats peaks',
-                b1: '40%', b1v: '450,000',
-                b2: '92%', b2v: '1,234,000',
-                b3: '25%', b3v: '190,200',
-                b4: '35%', b4v: '290,000'
-            },
-            'coastal': {
-                number: '1,120,450',
-                label: 'Coastal Travelers',
-                sub: 'Karavali sands, Udupi & Gokarna ocean routes',
-                b1: '30%', b1v: '360,000',
-                b2: '48%', b2v: '510,000',
-                b3: '15%', b3v: '120,000',
-                b4: '96%', b4v: '759,734'
-            }
-        };
-
-        function switchFilter(key, btn) {
-            document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+        function filterDivision(div, btn) {
+            document.querySelectorAll('.div-btn').forEach(function(b) { b.classList.remove('active'); });
             btn.classList.add('active');
-            var d = filterData[key];
-            if (!d) return;
 
-            document.getElementById('metricNumber').textContent = d.number;
-            document.getElementById('metricLabel').textContent = d.label;
-            document.getElementById('metricSub').textContent = d.sub;
+            var cells = document.querySelectorAll('.district-cell');
+            cells.forEach(function(c) {
+                var cDiv = c.getAttribute('data-div');
+                if (div === 'all') {
+                    c.classList.remove('dimmed');
+                } else if (div === 'north' && (cDiv === 'kalyana' || cDiv === 'kittur')) {
+                    c.classList.remove('dimmed');
+                } else if (cDiv === div) {
+                    c.classList.remove('dimmed');
+                } else {
+                    c.classList.add('dimmed');
+                }
+            });
 
-            document.getElementById('bar1').style.width = d.b1;
-            document.getElementById('barVal1').textContent = d.b1v;
-            document.getElementById('bar2').style.width = d.b2;
-            document.getElementById('barVal2').textContent = d.b2v;
-            document.getElementById('bar3').style.width = d.b3;
-            document.getElementById('barVal3').textContent = d.b3v;
-            document.getElementById('bar4').style.width = d.b4;
-            document.getElementById('barVal4').textContent = d.b4v;
-
-            // Highlight corresponding key destination
-            if (key === 'heritage') selectDestination('mysore');
-            else if (key === 'ghats') selectDestination('coorg');
-            else if (key === 'coastal') selectDestination('udupi');
-            else selectDestination('bengaluru');
+            // Focus on first representative district
+            if (div === 'mysore') inspectDistrict('mysuru');
+            else if (div === 'malnad') inspectDistrict('kodagu');
+            else if (div === 'coastal') inspectDistrict('udupi');
+            else if (div === 'north') inspectDistrict('vijayanagara');
+            else inspectDistrict('mysuru');
         }
 
         function autoFillAns1() {
@@ -1387,6 +1472,11 @@
             document.getElementById('loginActionInput').value = 'request_otp';
             document.getElementById('loginForm').submit();
         }
+
+        // Initialize default view with Mysuru Palace
+        window.addEventListener('DOMContentLoaded', function() {
+            inspectDistrict('mysuru');
+        });
     </script>
 </body>
 </html>
