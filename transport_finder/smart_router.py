@@ -402,13 +402,85 @@ ORIGIN_NODES = {
     },
     "hassan": {
         "name": "Hassan Central KSRTC Bus Stand",
-        "short_name": "Hassan Central",
+        "short_name": "Hassan",
         "city": "Hassan",
         "district": "hassan",
         "lat": 13.0068,
         "lng": 76.1004,
         "is_primary_hub": True,
         "feeder_hub": None,
+    },
+    "arsikere": {
+        "name": "Arsikere KSRTC Bus Stand",
+        "short_name": "Arsikere",
+        "city": "Arsikere",
+        "district": "hassan",
+        "lat": 13.3130,
+        "lng": 76.2570,
+        "is_primary_hub": False,
+        "feeder_hub": "hassan",
+        "feeder_bus": {
+            "bus_number": "KSRTC-Sarige",
+            "provider": "KSRTC Hassan Division",
+            "provider_code": "KSRTC",
+            "boarding_point": "Arsikere KSRTC Bus Stand",
+            "drop_point": "Hassan Central KSRTC Bus Stand (B.M. Road)",
+            "stops_via": "NH-73 via Gandasi & Dudda → Hassan",
+            "distance_km": 44.0,
+            "duration": "55 mins",
+            "fare": "₹48",
+            "frequency": "Every 15 minutes",
+            "operating_hours": "05:30 AM – 10:30 PM",
+            "bus_type": "Karnataka Sarige",
+        },
+    },
+    "belur": {
+        "name": "Belur KSRTC Bus Stand",
+        "short_name": "Belur",
+        "city": "Belur",
+        "district": "hassan",
+        "lat": 13.1630,
+        "lng": 75.8600,
+        "is_primary_hub": False,
+        "feeder_hub": "hassan",
+        "feeder_bus": {
+            "bus_number": "KSRTC-Sarige",
+            "provider": "KSRTC Hassan Division",
+            "provider_code": "KSRTC",
+            "boarding_point": "Belur KSRTC Bus Stand",
+            "drop_point": "Hassan Central KSRTC Bus Stand (B.M. Road)",
+            "stops_via": "SH-57 via Hagare → Hassan",
+            "distance_km": 38.0,
+            "duration": "45 mins",
+            "fare": "₹42",
+            "frequency": "Every 15 minutes",
+            "operating_hours": "06:00 AM – 10:00 PM",
+            "bus_type": "Karnataka Sarige",
+        },
+    },
+    "sakleshpur": {
+        "name": "Sakleshpur KSRTC Bus Stand",
+        "short_name": "Sakleshpur",
+        "city": "Sakleshpur",
+        "district": "hassan",
+        "lat": 12.8980,
+        "lng": 75.7870,
+        "is_primary_hub": False,
+        "feeder_hub": "hassan",
+        "feeder_bus": {
+            "bus_number": "KSRTC-Sarige",
+            "provider": "KSRTC Hassan Division",
+            "provider_code": "KSRTC",
+            "boarding_point": "Sakleshpur KSRTC Bus Stand",
+            "drop_point": "Hassan Central KSRTC Bus Stand (B.M. Road)",
+            "stops_via": "NH-75 via Alur → Hassan",
+            "distance_km": 40.0,
+            "duration": "50 mins",
+            "fare": "₹45",
+            "frequency": "Every 20 minutes",
+            "operating_hours": "05:30 AM – 10:30 PM",
+            "bus_type": "Karnataka Sarige",
+        },
     },
     "shivamogga": {
         "name": "Shivamogga KSRTC Central Stand",
@@ -1079,7 +1151,7 @@ INTERCITY_CORRIDORS = {
         "operator": "Karnataka State Road Transport Corporation",
         "operator_code": "KSRTC",
         "from_terminal": "Mysuru KSRTC Central Stand",
-        "to_terminal": "Hassan Central Bus Stand",
+        "to_terminal": "Hassan Central KSRTC Bus Stand (B.M. Road)",
         "highway": "SH-57 via Holenarasipura",
         "distance_km": 115.0,
         "duration": "2h 30m",
@@ -1091,6 +1163,156 @@ INTERCITY_CORRIDORS = {
             [12.3168, 76.6578],
             [12.7840, 76.2410],  # Holenarasipura
             [13.0068, 76.1004],  # Hassan
+        ],
+    },
+
+    ("hassan", "mysore"): {
+        "service_name": "KSRTC Hassan-Mysuru Express",
+        "operator": "Karnataka State Road Transport Corporation",
+        "operator_code": "KSRTC",
+        "from_terminal": "Hassan Central KSRTC Bus Stand (B.M. Road)",
+        "to_terminal": "Mysuru KSRTC Central Stand",
+        "highway": "SH-57 & NH-373 via Holenarasipura & K.R. Nagar",
+        "distance_km": 115.0,
+        "duration": "2h 15m",
+        "fare_range": "₹135 – ₹220",
+        "frequency": "Every 20 minutes",
+        "operating_hours": "05:30 AM – 10:30 PM",
+        "bus_type": "Karnataka Sarige & Rajahamsa Express",
+        "waypoints": [
+            [13.0068, 76.1004],
+            [12.7840, 76.2410],
+            [12.5840, 76.4950],
+            [12.4237, 76.6953],
+            [12.3168, 76.6578],
+        ],
+    },
+
+    ("hassan", "Mandya"): {
+        "service_name": "KSRTC Hassan-Srirangapatna Express",
+        "operator": "Karnataka State Road Transport Corporation",
+        "operator_code": "KSRTC",
+        "from_terminal": "Hassan Central KSRTC Bus Stand (B.M. Road)",
+        "to_terminal": "Srirangapatna Bus Stand / Mandya Stand",
+        "highway": "SH-57 & NH-373 via Holenarasipura, K.R. Nagar & Srirangapatna",
+        "distance_km": 108.0,
+        "duration": "2h 10m",
+        "fare_range": "₹130 – ₹210",
+        "frequency": "Every 20 minutes",
+        "operating_hours": "05:30 AM – 10:00 PM",
+        "bus_type": "Karnataka Sarige",
+        "waypoints": [
+            [13.0068, 76.1004],
+            [12.7840, 76.2410],
+            [12.5840, 76.4950],
+            [12.4237, 76.6953],
+            [12.5238, 76.8967],
+        ],
+    },
+
+    ("hassan", "Bengaluru"): {
+        "service_name": "KSRTC Hassan-Bengaluru Superfast Express",
+        "operator": "Karnataka State Road Transport Corporation",
+        "operator_code": "KSRTC",
+        "from_terminal": "Hassan Central KSRTC Bus Stand (B.M. Road)",
+        "to_terminal": "Kempegowda Bus Station (Majestic)",
+        "highway": "NH-75 via Channarayapatna, Kunigal & Nelamangala",
+        "distance_km": 182.0,
+        "duration": "3h 30m",
+        "fare_range": "₹220 – ₹420",
+        "frequency": "Every 15 minutes",
+        "operating_hours": "24/7 Service",
+        "bus_type": "Airavat Club Class / Karnataka Sarige",
+        "waypoints": [
+            [13.0068, 76.1004],
+            [12.9038, 76.3934],
+            [13.0240, 77.0270],
+            [13.0980, 77.3910],
+            [12.9782, 77.5707],
+        ],
+    },
+
+    ("hassan", "Chikkamagaluru"): {
+        "service_name": "KSRTC Hassan-Chikkamagaluru Express",
+        "operator": "Karnataka State Road Transport Corporation",
+        "operator_code": "KSRTC",
+        "from_terminal": "Hassan Central KSRTC Bus Stand",
+        "to_terminal": "Chikkamagaluru KSRTC Central Stand",
+        "highway": "SH-57 via Belur",
+        "distance_km": 60.0,
+        "duration": "1h 15m",
+        "fare_range": "₹75 – ₹130",
+        "frequency": "Every 15 minutes",
+        "operating_hours": "06:00 AM – 10:30 PM",
+        "bus_type": "Karnataka Sarige & Suvarna Express",
+        "waypoints": [
+            [13.0068, 76.1004],
+            [13.1630, 75.8600],
+            [13.3161, 75.7720],
+        ],
+    },
+
+    ("hassan", "kodagu"): {
+        "service_name": "KSRTC Hassan-Madikeri Express",
+        "operator": "Karnataka State Road Transport Corporation",
+        "operator_code": "KSRTC",
+        "from_terminal": "Hassan Central KSRTC Bus Stand",
+        "to_terminal": "Madikeri KSRTC Bus Stand",
+        "highway": "SH-8 via Arkalgud, Shanivarasanthe & Somwarpet",
+        "distance_km": 110.0,
+        "duration": "2h 30m",
+        "fare_range": "₹140 – ₹230",
+        "frequency": "Every 30 minutes",
+        "operating_hours": "06:00 AM – 09:30 PM",
+        "bus_type": "Karnataka Sarige",
+        "waypoints": [
+            [13.0068, 76.1004],
+            [12.7680, 76.0590],
+            [12.6040, 75.8640],
+            [12.4244, 75.7382],
+        ],
+    },
+
+    ("hassan", "Mangaluru"): {
+        "service_name": "KSRTC Hassan-Mangaluru Ghat Express",
+        "operator": "Karnataka State Road Transport Corporation",
+        "operator_code": "KSRTC",
+        "from_terminal": "Hassan Central KSRTC Bus Stand",
+        "to_terminal": "Mangaluru KSRTC Central Stand (Bejai)",
+        "highway": "NH-75 via Sakleshpur, Shiradi Ghat & Uppinangady",
+        "distance_km": 170.0,
+        "duration": "4h 00m",
+        "fare_range": "₹210 – ₹380",
+        "frequency": "Every 20 minutes",
+        "operating_hours": "24/7 Service",
+        "bus_type": "Airavat Club Class / Karnataka Sarige",
+        "waypoints": [
+            [13.0068, 76.1004],
+            [12.8980, 75.7870],
+            [12.8360, 75.3900],
+            [12.8872, 74.8458],
+        ],
+    },
+
+    ("hassan", "Shivamogga"): {
+        "service_name": "KSRTC Hassan-Shivamogga Express",
+        "operator": "Karnataka State Road Transport Corporation",
+        "operator_code": "KSRTC",
+        "from_terminal": "Hassan Central KSRTC Bus Stand",
+        "to_terminal": "Shivamogga KSRTC Central Stand",
+        "highway": "NH-73 & NH-206 via Arsikere, Kadur, Tarikere & Bhadravati",
+        "distance_km": 145.0,
+        "duration": "3h 15m",
+        "fare_range": "₹170 – ₹290",
+        "frequency": "Every 30 minutes",
+        "operating_hours": "06:00 AM – 10:00 PM",
+        "bus_type": "Karnataka Sarige & Rajahamsa",
+        "waypoints": [
+            [13.0068, 76.1004],
+            [13.3130, 76.2570],
+            [13.5530, 75.9860],
+            [13.7020, 75.7060],
+            [13.9299, 75.5681],
         ],
     },
 }
@@ -1591,7 +1813,7 @@ REGIONAL_TRANSIT_HUBS = {
         "hub_name": "hassan",
         "city_name": "Hassan Region",
         "district_name": "hassan",
-        "hub_terminal": "Hassan Central KSRTC Bus Stand",
+        "hub_terminal": "Hassan Central KSRTC Bus Stand (B.M. Road)",
         "coord": [13.0068, 76.1004],
         "provider_code": "KSRTC",
         "provider_name": "KSRTC Hassan Division",
@@ -1816,6 +2038,12 @@ def resolve_user_origin(origin_text=None, origin_lat=None, origin_lng=None):
         return dict(ORIGIN_NODES["madikeri"])
     if "hassan" in q:
         return dict(ORIGIN_NODES["hassan"])
+    if "arsikere" in q:
+        return dict(ORIGIN_NODES["arsikere"])
+    if "belur" in q:
+        return dict(ORIGIN_NODES["belur"])
+    if "saklesh" in q:
+        return dict(ORIGIN_NODES["sakleshpur"])
     if "shivamogga" in q or "shimoga" in q or "sagar" in q:
         return dict(ORIGIN_NODES["shivamogga"])
     if "mangaluru" in q or "mangalore" in q:
@@ -1988,6 +2216,12 @@ def build_curated_fleet_options(dest_spec, origin=None, corridor=None, total_far
         rb["safety_rating"] = "4.9/5 · Official State Carrier"
         curated_routes.append(rb)
 
+    # Detect whether origin is actually Bengaluru
+    origin_text_str = ""
+    if origin:
+        origin_text_str = f"{origin.get('name', '')} {origin.get('city', '')} {origin.get('district', '')} {origin.get('short_name', '')}".lower()
+    is_origin_bengaluru = bool(not origin or any(w in origin_text_str for w in ["bengaluru", "bangalore", "majestic", "kbs", "kempegowda"]))
+
     # Intercity KSRTC Express
     corr_code = corridor.get("operator_code", "KSRTC") if corridor else "KSRTC"
     corr_op = corridor.get("operator", "Karnataka State Road Transport Corporation") if corridor else "Karnataka State Road Transport Corporation"
@@ -1995,15 +2229,55 @@ def build_curated_fleet_options(dest_spec, origin=None, corridor=None, total_far
     if total_fare_min > 0:
         corr_fare = f"₹{total_fare_min} – ₹{total_fare_max}" if total_fare_min != total_fare_max else f"₹{total_fare_min}"
 
+    # Boarding Point: Ensure non-Bengaluru origins (like Hassan) NEVER show Kempegowda Bus Station
+    raw_boarding = corridor.get("from_terminal", "") if corridor else ""
+    if (not is_origin_bengaluru) and any(w in raw_boarding.lower() for w in ["kempegowda", "satellite bus stand", "majestic"]):
+        if origin and origin.get("feeder_hub") and origin["feeder_hub"] in REGIONAL_TRANSIT_HUBS:
+            boarding_point = REGIONAL_TRANSIT_HUBS[origin["feeder_hub"]]["hub_terminal"]
+        elif origin:
+            boarding_point = origin.get("name") or f"{origin_name} KSRTC Central Stand"
+        else:
+            boarding_point = f"{origin_name} KSRTC Central Stand"
+    else:
+        boarding_point = raw_boarding or (f"{origin_name} KSRTC Central Stand" if origin else "KSRTC Central Terminal")
+
+    # Drop Point
+    raw_drop = corridor.get("to_terminal", "") if corridor else ""
+    if (not is_origin_bengaluru) and "mandya" in raw_drop.lower() and "srirangapatna" in dest_name.lower():
+        drop_point = "Srirangapatna Bus Stand / Mysuru Central Stand"
+    else:
+        drop_point = raw_drop or f"{hub_name} Central Bus Stand"
+
+    # Highway / Stops Via: Non-Bengaluru origins must not show Bengaluru Expressway
+    raw_highway = corridor.get("highway", "") if corridor else ""
+    if (not is_origin_bengaluru) and ("bengaluru" in raw_highway.lower() or not raw_highway):
+        if "hassan" in origin_text_str:
+            if any(w in dest_dist for w in ["mysore", "mandya"]):
+                highway_desc = "SH-57 & NH-373 via Holenarasipura & K.R. Nagar"
+            elif "kodagu" in dest_dist:
+                highway_desc = "SH-8 via Arkalgud & Shanivarasanthe"
+            elif "chikkamagaluru" in dest_dist:
+                highway_desc = "SH-57 via Belur"
+            elif any(w in dest_dist for w in ["mangaluru", "dakshina"]):
+                highway_desc = "NH-75 via Sakleshpur & Shiradi Ghat"
+            elif "shivamogga" in dest_dist:
+                highway_desc = "NH-73 & NH-206 via Arsikere & Kadur"
+            else:
+                highway_desc = f"Direct State Highway Corridor from Hassan to {dest_name}"
+        else:
+            highway_desc = f"Direct Regional Highway Corridor towards {dest_name}"
+    else:
+        highway_desc = raw_highway or f"Direct Highway Service to {dest_name}"
+
     ksrtc_intercity = {
         "bus_number": f"{corr_code} Intercity Express",
         "route_id": f"{corr_code}-CORR",
         "provider": corr_op,
         "provider_code": corr_code,
         "route_name": f"{origin_name} ⇔ {hub_name} / {dest_name} Express",
-        "boarding_point": corridor.get("from_terminal", f"{origin_name} KSRTC Stand") if corridor else f"{origin_name} KSRTC Central Terminal",
-        "drop_point": corridor.get("to_terminal", f"{hub_name} Central Stand") if corridor else f"{hub_name} Central Bus Stand",
-        "stops_via": corridor.get("highway", f"Via National & State Highway Corridor to {dest_name}") if corridor else f"Direct Highway Service to {dest_name}",
+        "boarding_point": boarding_point,
+        "drop_point": drop_point,
+        "stops_via": highway_desc,
         "frequency": corridor.get("frequency", "Every 20–30 minutes") if corridor else "Every 20–30 minutes (24/7)",
         "operating_hours": corridor.get("operating_hours", "Round the clock service") if corridor else "24 Hours Regular Service",
         "fare": corr_fare,
@@ -2021,15 +2295,26 @@ def build_curated_fleet_options(dest_spec, origin=None, corridor=None, total_far
     fare_base_min = total_fare_min if total_fare_min > 50 else 250
     fare_base_max = total_fare_max if total_fare_max > 50 else 450
 
+    if is_origin_bengaluru:
+        vrl_boarding = f"{origin_name} Private Travel Hub (Anand Rao Circle / Main Office)"
+        vrl_via = f"Direct Highway Corridor via {hub_name}"
+        srs_boarding = f"{origin_name} Kalasipalyam / Majestic Private Bay"
+        srs_via = "Bengaluru-Mysuru Expressway → Kushalnagar → Madikeri"
+    else:
+        vrl_boarding = f"{origin_name} Private Travel Terminal (B.M. Road / Highway Junction)" if "hassan" in origin_text_str else f"{origin_name} Private Travel Terminal"
+        vrl_via = "SH-57 & NH-373 via Holenarasipura" if "hassan" in origin_text_str else f"Direct Highway Corridor to {hub_name}"
+        srs_boarding = f"{origin_name} Highway Private Terminal (B.M. Road)" if "hassan" in origin_text_str else f"{origin_name} Highway Boarding Point"
+        srs_via = "SH-57 & NH-373 via Holenarasipura to Srirangapatna / Mysuru" if "hassan" in origin_text_str else f"Direct Highway Corridor to {dest_name}"
+
     vrl_bus = {
         "bus_number": "VRL I-Shift",
         "route_id": "VRL-EXP",
         "provider": "VRL Travels (Private Operator)",
         "provider_code": "VRL",
         "route_name": f"VRL Multi-Axle AC Sleeper: {origin_name} ⇔ {dest_name}",
-        "boarding_point": f"{origin_name} Private Travel Hub (Anand Rao Circle / Main Office)",
+        "boarding_point": vrl_boarding,
         "drop_point": f"{hub_name} Private Stand (Connecting to {dest_name})",
-        "stops_via": f"Direct Highway Corridor via {hub_name}",
+        "stops_via": vrl_via,
         "frequency": "Multiple Daily & Night Departures",
         "operating_hours": "07:30 PM – 11:30 PM (Night Services) & Day Express",
         "fare": f"₹{int(fare_base_min * 1.35)} – ₹{int(fare_base_max * 1.45)}",
@@ -2045,16 +2330,16 @@ def build_curated_fleet_options(dest_spec, origin=None, corridor=None, total_far
     curated_routes.append(vrl_bus)
 
     # Private Operator 2
-    if "kodagu" in dest_dist or "mysore" in dest_dist:
+    if "kodagu" in dest_dist or "mysore" in dest_dist or "mandya" in dest_dist:
         priv_op2 = {
             "bus_number": "SRS Executive",
             "route_id": "SRS-EXP",
             "provider": "SRS Travels (Private Operator)",
             "provider_code": "SRS",
             "route_name": f"SRS Intercity Sleeper: {origin_name} ⇔ Madikeri / Mysuru",
-            "boarding_point": f"{origin_name} Kalasipalyam / Majestic Private Bay",
-            "drop_point": f"Madikeri Private Bus Shelter / Mysuru Stand",
-            "stops_via": "Bengaluru-Mysuru Expressway → Kushalnagar → Madikeri",
+            "boarding_point": srs_boarding,
+            "drop_point": f"Srirangapatna / Mysuru Private Stand",
+            "stops_via": srs_via,
             "frequency": "Every evening (20:30, 21:45, 23:00)",
             "operating_hours": "Evening & Night Departures",
             "fare": f"₹{int(fare_base_min * 1.25)} – ₹{int(fare_base_max * 1.35)}",
@@ -2200,14 +2485,36 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
     # Detect user starting hub city
     origin_city_raw = (origin.get("city") or "").lower()
     origin_dist_raw = (origin.get("district") or "").lower()
-    if "mysur" in origin_city_raw or "mysor" in origin_city_raw or "mysur" in origin_dist_raw or "mysor" in origin_dist_raw:
+    origin_name_raw = (origin.get("name") or "").lower()
+    origin_short_raw = (origin.get("short_name") or "").lower()
+    all_origin_text = f"{origin_city_raw} {origin_dist_raw} {origin_name_raw} {origin_short_raw}"
+
+    if "hassan" in all_origin_text or "arsikere" in all_origin_text or "belur" in all_origin_text or "saklesh" in all_origin_text or "channarayapatna" in all_origin_text:
+        user_hub = "hassan"
+    elif "mysur" in all_origin_text or "mysor" in all_origin_text or "chamaraj" in all_origin_text:
         user_hub = "mysore"
-    elif "mangal" in origin_city_raw or "mangal" in origin_dist_raw:
+    elif "mangal" in all_origin_text or "dakshina" in all_origin_text or "bantwal" in all_origin_text or "puttur" in all_origin_text:
         user_hub = "Mangaluru"
-    elif "hubb" in origin_city_raw or "hubb" in origin_dist_raw or "dharwad" in origin_dist_raw or "gadag" in origin_dist_raw or "ron" in origin_city_raw:
-        user_hub = "Hubballi"
-    elif "shivam" in origin_city_raw or "shivam" in origin_dist_raw:
+    elif "udupi" in all_origin_text or "manipal" in all_origin_text or "kundapur" in all_origin_text:
+        user_hub = "Udupi"
+    elif "kodagu" in all_origin_text or "coorg" in all_origin_text or "madikeri" in all_origin_text or "kushalnagar" in all_origin_text:
+        user_hub = "kodagu"
+    elif "chikmagal" in all_origin_text or "chikkamagal" in all_origin_text or "mudigere" in all_origin_text:
+        user_hub = "Chikkamagaluru"
+    elif "shivam" in all_origin_text or "shimoga" in all_origin_text or "sagar" in all_origin_text or "bhadravati" in all_origin_text:
         user_hub = "Shivamogga"
+    elif "hubb" in all_origin_text or "dharwad" in all_origin_text or "gadag" in all_origin_text or "ron" in all_origin_text or "haveri" in all_origin_text:
+        user_hub = "Hubballi"
+    elif "belagavi" in all_origin_text or "belgaum" in all_origin_text:
+        user_hub = "Belagavi"
+    elif "hampi" in all_origin_text or "hosapete" in all_origin_text or "ballari" in all_origin_text or "bellary" in all_origin_text or "vijayanagar" in all_origin_text:
+        user_hub = "Hampi"
+    elif "kalaburagi" in all_origin_text or "gulbarga" in all_origin_text or "bidar" in all_origin_text or "yadgir" in all_origin_text or "raichur" in all_origin_text:
+        user_hub = "Kalaburagi"
+    elif "uttara" in all_origin_text or "karwar" in all_origin_text or "gokarna" in all_origin_text or "kumta" in all_origin_text or "bhatkal" in all_origin_text:
+        user_hub = "uttara kannada"
+    elif "mandya" in all_origin_text:
+        user_hub = "Mandya"
     else:
         user_hub = "Bengaluru"
 
@@ -2472,15 +2779,71 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
 
         target_dest_key = normalize_district_corridor_key(dest_district)
         corridor = None
-        for candidate_key in [(user_hub, target_dest_key), ("Bengaluru", target_dest_key), ("mysore", target_dest_key), ("Hubballi", target_dest_key)]:
+        for candidate_key in [
+            (user_hub, target_dest_key),
+            (user_hub, "mysore") if target_dest_key == "Mandya" else None,
+            (user_hub, "Mandya") if target_dest_key == "mysore" else None,
+            ("Bengaluru", target_dest_key),
+            ("mysore", target_dest_key),
+            ("Hubballi", target_dest_key),
+        ]:
+            if not candidate_key:
+                continue
             for ck in INTERCITY_CORRIDORS:
                 if str(ck[0]).lower() == str(candidate_key[0]).lower() and str(ck[1]).lower() == str(candidate_key[1]).lower():
-                    corridor = INTERCITY_CORRIDORS[ck]
+                    corridor = dict(INTERCITY_CORRIDORS[ck])
                     break
             if corridor:
                 break
+
+        # Check reverse corridor if not found
         if not corridor:
-            corridor = INTERCITY_CORRIDORS.get(("Bengaluru", "mysore"))
+            for ck in INTERCITY_CORRIDORS:
+                if str(ck[1]).lower() == str(user_hub).lower() and str(ck[0]).lower() in (str(target_dest_key).lower(), "mysore" if target_dest_key == "Mandya" else ""):
+                    rev = dict(INTERCITY_CORRIDORS[ck])
+                    corridor = {
+                        "service_name": f"KSRTC {origin.get('short_name', user_hub)}-{dest_spec.get('hub', target_dest_key)} Express",
+                        "operator": rev.get("operator", "Karnataka State Road Transport Corporation"),
+                        "operator_code": rev.get("operator_code", "KSRTC"),
+                        "from_terminal": rev.get("to_terminal", f"{origin.get('short_name', user_hub)} Central Bus Stand"),
+                        "to_terminal": rev.get("from_terminal", f"{dest_spec.get('hub', target_dest_key)} Central Stand"),
+                        "highway": rev.get("highway", f"Direct State Highway Corridor to {dest_spec.get('hub', target_dest_key)}"),
+                        "distance_km": rev.get("distance_km", 110.0),
+                        "duration": rev.get("duration", "2h 30m"),
+                        "fare_range": rev.get("fare_range", "₹140 – ₹240"),
+                        "frequency": rev.get("frequency", "Every 20–30 minutes"),
+                        "operating_hours": rev.get("operating_hours", "06:00 AM – 10:00 PM"),
+                        "bus_type": rev.get("bus_type", "Karnataka Sarige"),
+                        "waypoints": list(reversed(rev.get("waypoints", []))),
+                    }
+                    break
+
+        if not corridor:
+            # Dynamically construct synthetic direct corridor from user's regional hub to destination
+            hub_key = user_hub.lower() if user_hub.lower() in REGIONAL_TRANSIT_HUBS else "kempegowda-bus-station"
+            hub_info = REGIONAL_TRANSIT_HUBS.get(hub_key, REGIONAL_TRANSIT_HUBS["kempegowda-bus-station"])
+            hub_coord = hub_info["coord"]
+            dest_coord = [dest_spec["lat"], dest_spec["lng"]]
+            dist = round(haversine_distance(hub_coord[0], hub_coord[1], dest_coord[0], dest_coord[1]) * 1.25, 1)
+            dur_hrs = max(1, int(dist / 45))
+            dur_rem_mins = int((dist % 45) * 1.3)
+            f_lo = max(60, int(dist * 1.35))
+            f_hi = max(110, int(dist * 2.2))
+            corridor = {
+                "service_name": f"KSRTC {origin.get('short_name', hub_info['city_name'])}-{dest_spec.get('hub', dest_spec['name'])} Express",
+                "operator": hub_info.get("provider_name", "Karnataka State Road Transport Corporation"),
+                "operator_code": hub_info.get("provider_code", "KSRTC"),
+                "from_terminal": hub_info["hub_terminal"],
+                "to_terminal": f"{dest_spec.get('hub', dest_spec['name'])} Central Stand",
+                "highway": f"Direct Highway Corridor to {dest_spec.get('hub', dest_spec['name'])}",
+                "distance_km": dist,
+                "duration": f"{dur_hrs}h {dur_rem_mins}m" if dur_hrs > 0 else f"{dur_rem_mins} mins",
+                "fare_range": f"₹{f_lo} – ₹{f_hi}",
+                "frequency": "Every 25–30 minutes",
+                "operating_hours": "05:30 AM – 10:30 PM",
+                "bus_type": "Karnataka Sarige Express",
+                "waypoints": [hub_coord, dest_coord],
+            }
 
         step_idx = 1
         # 1. Feeder Leg
@@ -2491,6 +2854,7 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
             total_fare_max += feeder_fare
             total_duration_mins += feeder_dur
 
+            feeder_drop = feeder.get("drop_point") or corridor["from_terminal"]
             legs.append({
                 "step_number": step_idx,
                 "leg_type": "feeder",
@@ -2499,9 +2863,9 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
                 "provider_code": feeder.get("provider_code", "NWKRTC"),
                 "badge_class": f"badge-{feeder.get('provider_code', 'ksrtc').lower()}",
                 "bus_number": feeder.get("bus_number", "Feeder"),
-                "route_name": f"{origin['short_name']} ⇔ {corridor['from_terminal']}",
+                "route_name": f"{origin['short_name']} ⇔ {feeder_drop}",
                 "boarding_point": feeder.get("boarding_point", origin['name']),
-                "drop_point": corridor["from_terminal"],
+                "drop_point": feeder_drop,
                 "distance": f"{feeder.get('distance_km', 15.0)} km",
                 "duration": feeder.get("duration", "30 mins"),
                 "fare": feeder.get("fare", "₹25"),
@@ -2509,7 +2873,7 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
                 "operating_hours": feeder.get("operating_hours", "06:00 AM – 10:30 PM"),
                 "departure_status": f"Departures every 10–15 mins • Next in {dep_in_mins} mins",
                 "stops_via": feeder.get("stops_via", ""),
-                "instructions": f"Board {feeder.get('bus_number', 'Feeder')} from {feeder.get('boarding_point', origin['name'])}. Alight at {corridor['from_terminal']}.",
+                "instructions": f"Board {feeder.get('bus_number', 'Feeder')} from {feeder.get('boarding_point', origin['name'])}. Alight at {feeder_drop}.",
                 "alt_mode": feeder.get("alt_mode"),
                 "stroke_color": "#06b6d4",
             })
