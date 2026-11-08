@@ -112,6 +112,35 @@ def get_nearby_places_with_routes(current_place):
     return nearby_list
 
 
+def get_all_karnataka_places_data(current_place=None):
+    """
+    Returns rich serialized geodata for all Karnataka tourist destinations
+    to power the interactive Pipeline Map View across an extended geographic range.
+    """
+    all_places = []
+    try:
+        from transport_finder.smart_router import resolve_destination_spec
+        places_qs = Place.objects.select_related("district").all()
+        for p in places_qs:
+            spec = resolve_destination_spec(p)
+            all_places.append({
+                "id": p.id,
+                "name": p.name,
+                "slug": p.slug or "",
+                "district": p.district.name if p.district else "",
+                "category": p.category or "nature",
+                "speciality": p.speciality or "",
+                "lat": spec.get("lat"),
+                "lng": spec.get("lng"),
+                "hub": spec.get("hub", ""),
+                "is_current": bool(current_place and p.id == current_place.id),
+                "url": f"/explorer/{p.slug}/" if p.slug else f"/places/{p.district.name.lower()}/"
+            })
+    except Exception as e:
+        print("Error compiling all karnataka places:", e)
+    return all_places
+
+
 def place_detail(request, slug):
     place = get_object_or_404(
         Place.objects.select_related("district"),
@@ -155,6 +184,7 @@ def place_detail(request, slug):
         lng = None
         if request.headers.get("x-requested-with") == "XMLHttpRequest":
             transit_data = resolve_destination_transit(place, origin_name=None, origin_lat=None, origin_lng=None)
+            transit_data["all_places"] = get_all_karnataka_places_data(place)
             resp = JsonResponse(transit_data)
             resp.delete_cookie("tourist_user_lat")
             resp.delete_cookie("tourist_user_lng")
@@ -208,6 +238,7 @@ def place_detail(request, slug):
             if "map_data" in transit_data:
                 transit_data["map_data"]["is_origin_gps"] = True
                 transit_data["map_data"]["origin_coords"] = [lat, lng]
+        transit_data["all_places"] = get_all_karnataka_places_data(place)
         resp = JsonResponse(transit_data)
         if lat is not None and lng is not None:
             resp.set_cookie("tourist_user_lat", str(lat), max_age=604800, samesite="Lax")
@@ -256,6 +287,7 @@ def place_detail(request, slug):
             transit["map_data"]["is_origin_gps"] = True
             transit["map_data"]["origin_coords"] = [lat, lng]
 
+    all_places_data = get_all_karnataka_places_data(place)
     response = render(
         request,
         "explorer/dashboard.html",
@@ -267,6 +299,8 @@ def place_detail(request, slug):
             "transit": transit,
             "origin": origin,
             "nearby_places": get_nearby_places_with_routes(place),
+            "all_places_json": json.dumps(all_places_data),
+            "all_places_count": len(all_places_data),
         },
     )
     if lat is not None and lng is not None:

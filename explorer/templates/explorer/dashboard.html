@@ -597,6 +597,17 @@
             background: #ffffff; color: var(--forest);
             box-shadow: 0 2px 5px rgba(0,0,0,0.08);
         }
+        .map-theme-btn[data-theme="streets"].active {
+            background: #ffffff;
+            color: var(--forest);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .map-theme-btn[data-theme="satellite_pipeline"].active {
+            background: #0f172a;
+            color: #38bdf8;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+        }
         .map-theme-btn:hover:not(.active) { color: var(--ink); background: rgba(255,255,255,0.6); }
 
         .map-btn {
@@ -882,12 +893,22 @@
         .stop-pill-item.active .stop-pill-seq { background: rgba(255,255,255,0.25); color: #ffffff; }
         .stop-pill-arrow { color: #cbd5e1; font-size: 10px; flex-shrink: 0; }
 
-        /* Legend Bar */
+        /* Legend Bar & Pipeline Styling */
         .map-legend-bar {
             padding: 10px 18px; background: #fafbfa; border-top: 1px solid var(--line);
             display: flex; gap: 16px; font-size: 12px; color: var(--muted); flex-wrap: wrap; align-items: center;
         }
         .legend-indicator { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; color: var(--ink); }
+        .legend-pipeline-preview {
+            width: 26px; height: 8px; border-radius: 4px;
+            background: linear-gradient(90deg, #0284c7, #06b6d4, #10b981);
+            box-shadow: 0 0 8px rgba(6, 182, 212, 0.6);
+            display: inline-block; position: relative;
+        }
+        .legend-pipeline-preview::after {
+            content: ""; position: absolute; top: 3px; left: 2px; right: 2px; height: 2px;
+            background: #ffffff; border-radius: 1px;
+        }
         .legend-road-preview {
             width: 24px; height: 6px; background: #1e293b; border-radius: 3px; display: inline-block; position: relative;
         }
@@ -903,6 +924,204 @@
         .legend-stop-sample {
             width: 15px; height: 15px; border-radius: 50%; background: #ffffff; border: 1.5px solid #1e293b;
             display: inline-grid; place-items: center; font-size: 7px; color: #1e293b;
+        }
+        .legend-place-sample {
+            width: 16px; height: 16px; border-radius: 50%;
+            background: #0284c7; color: #ffffff; display: inline-grid; place-items: center; font-size: 8px;
+        }
+
+        /* Animated Directional Flow Pulse for Pipeline Polyline */
+        @keyframes pipelineFlowPulse {
+            0% { stroke-dashoffset: 40; }
+            100% { stroke-dashoffset: 0; }
+        }
+        .pipeline-flow-pulse {
+            animation: pipelineFlowPulse 1.2s linear infinite;
+        }
+
+        /* Dishank & Bhoomi Cadastral Survey & Building Clarity Styles */
+        .dishank-sy-badge {
+            background: rgba(15, 23, 42, 0.90);
+            color: #facc15;
+            font-size: 9.5px;
+            font-weight: 800;
+            padding: 1px 6px;
+            border-radius: 4px;
+            border: 1px solid #f59e0b;
+            white-space: nowrap;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+            pointer-events: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+            display: inline-block;
+        }
+        .dishank-bldg-badge {
+            background: rgba(30, 41, 59, 0.92);
+            color: #ffffff;
+            font-size: 8.5px;
+            font-weight: 700;
+            padding: 1px 5px;
+            border-radius: 3px;
+            border: 1px solid rgba(255,255,255,0.7);
+            white-space: nowrap;
+            pointer-events: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            display: inline-block;
+        }
+        .dishank-hud-badge {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.92);
+            color: #facc15;
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1.5px solid #f59e0b;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+            font-size: 11.5px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            backdrop-filter: blur(6px);
+        }
+        .dishank-popup-card {
+            padding: 12px 14px;
+            min-width: 230px;
+            max-width: 290px;
+        }
+        .dishank-popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+        .dishank-badge {
+            background: #14452f;
+            color: #facc15;
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 2px 6px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+        }
+        .dishank-status-tag {
+            font-size: 9px;
+            font-weight: 700;
+            color: #15803d;
+            background: #dcfce7;
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+        .dishank-popup-title {
+            margin: 2px 0 6px;
+            font-size: 13.5px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+        .dishank-meta-row {
+            font-size: 11px;
+            color: #475569;
+            margin: 2.5px 0;
+            line-height: 1.35;
+        }
+
+        /* Interactive Extended Karnataka Place Markers */
+        .interactive-place-marker {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            color: #ffffff;
+            font-size: 10.5px;
+            border: 2px solid #ffffff;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.32);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .interactive-place-marker:hover {
+            transform: scale(1.3) translateY(-2px);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45);
+            z-index: 9999 !important;
+        }
+        .interactive-place-marker.cat-watery { background: linear-gradient(135deg, #0284c7, #06b6d4); }
+        .interactive-place-marker.cat-religious { background: linear-gradient(135deg, #d97706, #b45309); }
+        .interactive-place-marker.cat-historical { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
+        .interactive-place-marker.cat-nature { background: linear-gradient(135deg, #15803d, #166534); }
+        .interactive-place-marker.is-active-dest {
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.5), 0 8px 20px rgba(0,0,0,0.4);
+            animation: destMarkerPulse 1.8s infinite;
+        }
+        @keyframes destMarkerPulse {
+            0% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(250, 204, 21, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0); }
+        }
+
+        .interactive-place-popup {
+            padding: 10px 12px;
+            min-width: 210px;
+            max-width: 270px;
+        }
+        .place-popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        .place-popup-category {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 2px 7px;
+            border-radius: 6px;
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+        .place-popup-dist {
+            font-size: 11px;
+            font-weight: 600;
+            color: #64748b;
+        }
+        .place-popup-title {
+            margin: 0 0 6px;
+            font-size: 14px;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.3;
+        }
+        .place-popup-desc {
+            font-size: 11.5px;
+            color: #475569;
+            margin: 0 0 10px;
+            line-height: 1.4;
+        }
+        .place-popup-actions {
+            border-top: 1px solid #f1f5f9;
+            padding-top: 8px;
+        }
+        .place-popup-route-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            padding: 6px 10px;
+            border-radius: 8px;
+            background: #14452f;
+            color: #ffffff !important;
+            font-size: 11.5px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background .15s;
+        }
+        .place-popup-route-btn:hover {
+            background: #10b981;
         }
 
         /* Leaflet Custom DivIcon Markers (Matching Reference Image) */
@@ -1561,26 +1780,29 @@
                         <div class="map-title-row">
                             <span class="live-pulse-dot"></span>
                             <div class="map-heading-group">
-                                <span class="map-heading-main">Live Travel Corridor Navigation Map</span>
-                                <span id="mapSubtitle" class="map-heading-sub">&bull; {% if transit.origin %}{{ transit.origin_short|default:transit.origin }} to {{ place.name }}{% else %}{{ place.name }} Destination Corridor{% endif %}</span>
+                                <span class="map-heading-main" id="mapMainHeading">Live Bus Route &amp; Transit Navigation Map</span>
+                                <span id="mapSubtitle" class="map-heading-sub">&bull; {% if transit.origin %}{{ transit.origin_short|default:transit.origin }} to {{ place.name }} Bus Corridor{% else %}{{ place.name }} Bus Route{% endif %}</span>
                             </div>
                         </div>
                         <div class="map-actions-toolbar">
-                            <!-- Basemap Theme Switcher -->
+                            <!-- Basemap Theme Switcher: Exactly 2 Distinct Views as requested -->
                             <div class="map-theme-group" id="mapThemeGroup">
-                                <button type="button" class="map-theme-btn active" data-theme="streets" title="Navigation map with clear cities, towns & district names">
+                                <button type="button" class="map-theme-btn active" data-theme="streets" title="Navigation map with clear streets, cities, towns &amp; highway bus routes">
                                     <i class="fa-solid fa-road"></i> Streets &amp; Cities
                                 </button>
-                                <button type="button" class="map-theme-btn" data-theme="satellite" title="High-res satellite view with city, district & road overlay">
-                                    <i class="fa-solid fa-satellite"></i> Satellite Hybrid
-                                </button>
-                                <button type="button" class="map-theme-btn" data-theme="infrastructure" title="3D building footprints, transit hubs & civic infrastructure">
-                                    <i class="fa-solid fa-city"></i> 3D Buildings &amp; Infra
+                                <button type="button" class="map-theme-btn" data-theme="satellite_pipeline" title="Satellite Pipeline &amp; Dishank Cadastral View: glowing transit pipeline with zoom-in clarity of buildings, houses &amp; land survey plots">
+                                    <i class="fa-solid fa-satellite"></i> Satellite &amp; Pipeline View
                                 </button>
                             </div>
 
+                            <!-- Toggle Extended Places Layer -->
+                            <button type="button" class="map-btn active" id="togglePlacesBtn" title="Toggle Karnataka tourist destinations &amp; regional places">
+                                <i class="fa-solid fa-map-pin"></i> <span>All Places</span>
+                                <span class="stops-count-badge" id="placesCountBadge">{% if all_places_count %}{{ all_places_count }}{% else %}87{% endif %}</span>
+                            </button>
+
                             <!-- Toggle Intermediate Bus Stops -->
-                            <button type="button" class="map-btn active" id="toggleStopsBtn" title="Toggle intermediate bus stops along the highway">
+                            <button type="button" class="map-btn active" id="toggleStopsBtn" title="Toggle intermediate bus stops along the corridor">
                                 <i class="fa-solid fa-signs-post"></i> <span id="toggleStopsText">Bus Stops</span>
                                 <span class="stops-count-badge" id="stopsCountBadge">{% if transit.map_data.transit_stops %}{{ transit.map_data.transit_stops|length }}{% else %}Stops{% endif %}</span>
                             </button>
@@ -1590,9 +1812,19 @@
                                 <i class="fa-solid fa-play"></i> <span id="simulateBtnText">Simulate Ride</span>
                             </button>
 
-                            <!-- Recenter / Fit Route -->
-                            <button type="button" class="map-btn" id="recenterMapBtn" title="Fit entire journey on map">
-                                <i class="fa-solid fa-expand"></i> Fit Route
+                            <!-- Dishank Cadastral Zoom-in Shortcut: Jump directly to building & house clarity level -->
+                            <button type="button" class="map-btn" id="dishankZoomBtn" title="Zoom in to see clear buildings, houses &amp; Dishank survey plots">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> <span id="dishankZoomBtnText">House Level (Dishank)</span>
+                            </button>
+
+                            <!-- Recenter / Fit View Point -->
+                            <button type="button" class="map-btn" id="recenterMapBtn" title="Fit active route in viewport">
+                                <i class="fa-solid fa-crosshairs"></i> Fit Route
+                            </button>
+
+                            <!-- Extended Karnataka State Overview -->
+                            <button type="button" class="map-btn" id="stateOverviewBtn" title="Zoom out to view all Karnataka places &amp; network">
+                                <i class="fa-solid fa-expand"></i> Whole State
                             </button>
                         </div>
                     </div>
@@ -1602,19 +1834,24 @@
                         <div id="transitRouteMap" class="transit-map-canvas"></div>
                         <!-- Floating Regional Context Badge on Map Canvas -->
                         <div class="map-region-badge" id="mapRegionBadge">
-                            <i class="fa-solid fa-map-location-dot"></i>
+                            <i class="fa-solid fa-location-dot"></i>
                             <span>{{ place.name }} &bull; <strong>{{ place.district.name }} District</strong></span>
+                        </div>
+                        <!-- Floating Dishank Cadastral Status Badge on Map Canvas -->
+                        <div class="dishank-hud-badge" id="dishankHudBadge" style="display: none;">
+                            <i class="fa-solid fa-layer-group"></i>
+                            <span id="dishankZoomText">Dishank Cadastral View Active</span>
                         </div>
                         <!-- Floating Google Maps 'My Location' FAB on Map Canvas -->
                         <button type="button" class="gmaps-fab-btn" id="gmapsFabBtn" title="Re-center on My Live GPS Location">
                             <i class="fa-solid fa-crosshairs"></i>
                         </button>
 
-                        <!-- Floating Modern "TRAVEL NAVIGATION" HUD Card (Styled after reference image) -->
+                        <!-- Floating Modern "BUS & TRANSIT NAVIGATION" HUD Card -->
                         <div class="travel-nav-hud" id="travelNavHud">
                             <div class="travel-nav-header">
-                                <div class="travel-nav-title">
-                                    <i class="fa-solid fa-diamond-turn-right"></i> TRAVEL NAVIGATION
+                                <div class="travel-nav-title" id="hudNavTitle">
+                                    <i class="fa-solid fa-bus"></i> BUS &amp; TRANSIT NAVIGATION
                                 </div>
                                 <button type="button" class="travel-nav-min-btn" id="toggleHudBtn" title="Minimize / Expand HUD">
                                     <i class="fa-solid fa-chevron-up"></i>
@@ -1638,15 +1875,15 @@
 
                                 <div class="travel-nav-meta-grid">
                                     <div class="travel-nav-meta-item">
-                                        <span class="hud-meta-label"><i class="fa-solid fa-route"></i> Distance</span>
+                                        <span class="hud-meta-label" id="hudDistanceLabel"><i class="fa-solid fa-route"></i> Road Distance</span>
                                         <span class="hud-meta-val" id="hudDistance">~{{ transit.journey_summary.total_distance_km|default:"--" }} km</span>
                                     </div>
                                     <div class="travel-nav-meta-item">
-                                        <span class="hud-meta-label"><i class="fa-regular fa-clock"></i> Duration</span>
+                                        <span class="hud-meta-label"><i class="fa-regular fa-clock"></i> Travel Time</span>
                                         <span class="hud-meta-val" id="hudDuration">{{ transit.journey_summary.total_duration|default:"--" }}</span>
                                     </div>
                                     <div class="travel-nav-meta-item">
-                                        <span class="hud-meta-label"><i class="fa-solid fa-signs-post"></i> Bus Halts</span>
+                                        <span class="hud-meta-label" id="hudStopsLabel"><i class="fa-solid fa-signs-post"></i> Bus Stops</span>
                                         <span class="hud-meta-val" id="hudStopCount">{% if transit.map_data.transit_stops %}{{ transit.map_data.transit_stops|length }} Stops{% else %}-- Stops{% endif %}</span>
                                     </div>
                                     <div class="travel-nav-meta-item">
@@ -1657,13 +1894,13 @@
 
                                 <div class="travel-nav-status-banner" id="hudStatusBanner">
                                     <div class="hud-pulse-ring"></div>
-                                    <span id="hudStatusText">Continuous Bus Service Operational</span>
+                                    <span id="hudStatusText">Active Public Bus Transit Operational</span>
                                 </div>
 
                                 <div class="travel-nav-sim-status" id="hudSimStatus" style="display: none;">
-                                    <div class="sim-bus-icon"><i class="fa-solid fa-bus"></i></div>
+                                    <div class="sim-bus-icon" id="simVehicleIcon"><i class="fa-solid fa-bus"></i></div>
                                     <div class="sim-text-group">
-                                        <strong id="simCurrentStopName">Approaching Next Stop...</strong>
+                                        <strong id="simCurrentStopName">Approaching Next Bus Stop...</strong>
                                         <span id="simProgressText">Progress: 0%</span>
                                     </div>
                                 </div>
@@ -1671,11 +1908,11 @@
                         </div>
                     </div>
 
-                    <!-- En-Route Bus Stops Interactive Timeline Ribbon -->
+                    <!-- En-Route Bus Stops & Transit Halts Interactive Ribbon -->
                     <div class="enroute-stops-timeline-strip" id="enrouteStopsStrip">
                         <div class="stops-strip-header">
-                            <span><i class="fa-solid fa-bus-simple"></i> En-Route Bus Stops & Transit Halts:</span>
-                            <small style="color:var(--muted);">(Click any stop to inspect platform & timings)</small>
+                            <span><i class="fa-solid fa-bus-simple"></i> En-Route Bus Stops &amp; Transit Halts:</span>
+                            <small style="color:var(--muted);">(Click any stop to inspect platform &amp; halt timings)</small>
                         </div>
                         <div class="stops-strip-track" id="stopsStripTrack">
                             {% if transit.map_data.transit_stops %}
@@ -1694,29 +1931,37 @@
 
                     <!-- Legend -->
                     <div class="map-legend-bar">
-                        <span class="legend-indicator">
+                        <span class="legend-indicator" id="legendRoadItem">
                             <span class="legend-road-preview"></span>
-                            Asphalt Navigation Highway
+                            Highway Bus Route
+                        </span>
+                        <span class="legend-indicator" id="legendPipelineItem" style="display:none;">
+                            <span class="legend-pipeline-preview"></span>
+                            Transit Pipeline Corridor
                         </span>
                         <span class="legend-indicator">
                             <span class="legend-pin-preview pin-origin-sample"><i class="fa-solid fa-location-dot"></i></span>
-                            Origin Feeder Stop
+                            Origin Bus Stand
                         </span>
                         <span class="legend-indicator">
                             <span class="legend-pin-preview pin-transfer-sample"><i class="fa-solid fa-shuffle"></i></span>
-                            Transit Interchange Hub
+                            Transit Hub
                         </span>
                         <span class="legend-indicator">
                             <span class="legend-stop-sample"><i class="fa-solid fa-bus"></i></span>
-                            Highway Bus Halt
+                            Bus Stop Halt
                         </span>
                         <span class="legend-indicator">
                             <span class="legend-pin-preview pin-dest-sample"><i class="fa-solid fa-flag-checkered"></i></span>
-                            Tourist Destination
+                            Destination
                         </span>
-                        <span class="legend-indicator" id="infraLegendIndicator" style="display:none;">
-                            <span style="display:inline-flex; width:16px; height:16px; border-radius:4px; background:#1e293b; color:#38bdf8; font-size:10px; align-items:center; justify-content:center;"><i class="fa-solid fa-city"></i></span>
-                            3D Buildings &amp; Infrastructure
+                        <span class="legend-indicator">
+                            <span class="legend-place-sample"><i class="fa-solid fa-mountain-sun"></i></span>
+                            Karnataka Tourist Places
+                        </span>
+                        <span class="legend-indicator" id="dishankLegendIndicator" style="display:none;">
+                            <span style="display:inline-flex; width:16px; height:16px; border-radius:4px; background:#14452f; color:#facc15; font-size:10px; align-items:center; justify-content:center;"><i class="fa-solid fa-layer-group"></i></span>
+                            Dishank &amp; Bhoomi Cadastral (Buildings &amp; Plots)
                         </span>
                     </div>
                 </div>
@@ -1869,6 +2114,9 @@
         {% if transit.journey_summary %}
             {{ transit.journey_summary|json_script:"transitSummaryData" }}
         {% endif %}
+        <script id="karnatakaPlacesData" type="application/json">
+            {{ all_places_json|default:"[]"|safe }}
+        </script>
 
         <!-- Nearby Places with Best Route Section -->
         {% if nearby_places %}

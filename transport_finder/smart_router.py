@@ -1520,6 +1520,38 @@ DESTINATION_SPECS = {
         ],
         "travel_tip": "Connect at Gokarna Bus Stand for the Om Beach shuttle or local shared auto-rickshaws (₹150 private).",
     },
+    "tannirbhavi-beach": {
+        "name": "Tannirbhavi Beach",
+        "district": "Dakshina Kannada",
+        "hub": "Mangaluru",
+        "hub_stop": "Mangaluru KSRTC Central Stand (Bejai) / State Bank Service Stand",
+        "lat": 12.8940,
+        "lng": 74.8150,
+        "direct_stop": "Tannirbhavi Beach Ferry & Bus Gate",
+        "distance_from_hub_km": 10.5,
+        "duration_from_hub": "25 mins",
+        "fare": "₹20",
+        "frequency": "Every 15 minutes",
+        "operating_hours": "06:00 AM – 08:30 PM",
+        "bus_type": "City Feeder & Ferry Shuttle",
+        "buses": [
+            {
+                "bus_number": "MLR-16",
+                "route_id": "MLR-TAN-16",
+                "provider": "Mangaluru City Bus Union / KSRTC",
+                "provider_code": "KSRTC",
+                "route_name": "State Bank Stand ⇔ Kuloor ⇔ Tannirbhavi Beach",
+                "boarding_point": "State Bank Main Terminal (Bay 4) / Bejai Stand",
+                "drop_point": "Tannirbhavi Beach Gate",
+                "stops_via": "State Bank → Ladyhill → Urwa Store → Kuloor Bridge → Tannirbhavi Beach",
+                "frequency": "Every 15 minutes",
+                "operating_hours": "06:00 AM – 08:30 PM",
+                "fare": "₹20",
+                "bus_type": "City Coastal Bus",
+            },
+        ],
+        "travel_tip": "Board Bus 16 from Mangaluru State Bank or take the scenic Sultan Battery river ferry across Gurupura River directly to Tannirbhavi Beach.",
+    },
 }
 
 
@@ -1811,11 +1843,18 @@ def resolve_user_origin(origin_text=None, origin_lat=None, origin_lng=None):
 
 def resolve_destination_spec(place):
     """
-    Look up or generate rich transit spec for any destination Place instance.
+    Look up or generate rich transit spec for any destination Place instance or slug string.
     """
-    slug = getattr(place, "slug", "") or ""
-    district_name = place.district.name if hasattr(place, "district") else "mysore"
-    place_name = getattr(place, "name", "Destination")
+    slug = (place.strip() if isinstance(place, str) else getattr(place, "slug", "")) or ""
+    district_name = place.district.name if hasattr(place, "district") else ("Dakshina Kannada" if "tannirbhavi" in slug else "mysore")
+    place_name = getattr(place, "name", None)
+    if not place_name:
+        if slug in DESTINATION_SPECS:
+            place_name = DESTINATION_SPECS[slug].get("name", "Destination")
+            if "district" in DESTINATION_SPECS[slug]:
+                district_name = DESTINATION_SPECS[slug]["district"]
+        else:
+            place_name = slug.replace("-", " ").title() if slug else "Destination"
 
     # Known spec
     if slug in DESTINATION_SPECS:
@@ -2240,13 +2279,52 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
     # ------------------------------------------------------------------------
     else:
         feeder = origin.get("feeder_bus")
-        intercity_key = (user_hub, dest_district)
-        if intercity_key not in INTERCITY_CORRIDORS:
-            intercity_key = ("Bengaluru", dest_district)
-            if intercity_key not in INTERCITY_CORRIDORS:
-                intercity_key = ("Bengaluru", "mysore")
+        
+        # Robust district-to-corridor alias mapping for all Karnataka destinations
+        def normalize_district_corridor_key(d_name):
+            d = (d_name or "").strip().lower()
+            mapping = {
+                "dakshina kannada": "Mangaluru",
+                "mangaluru": "Mangaluru",
+                "mangalore": "Mangaluru",
+                "udupi": "Udupi",
+                "kodagu": "kodagu",
+                "coorg": "kodagu",
+                "mysuru": "mysore",
+                "mysore": "mysore",
+                "hassan": "hassan",
+                "chikkamagaluru": "Chikkamagaluru",
+                "chikmagalur": "Chikkamagaluru",
+                "shivamogga": "Shivamogga",
+                "shimoga": "Shivamogga",
+                "hampi": "Hampi",
+                "vijayanagara": "Hampi",
+                "ballari": "Hampi",
+                "bellary": "Hampi",
+                "uttara kannada": "uttara kannada",
+                "karwar": "uttara kannada",
+                "gokarna": "uttara kannada",
+                "mandya": "Mandya",
+                "bengaluru": "Bengaluru",
+                "bengaluru urban": "Bengaluru",
+                "bengaluru rural": "Bengaluru",
+                "dharwad": "Hubballi",
+                "hubballi": "Hubballi",
+                "hubli": "Hubballi",
+            }
+            return mapping.get(d, d_name)
 
-        corridor = INTERCITY_CORRIDORS[intercity_key]
+        target_dest_key = normalize_district_corridor_key(dest_district)
+        corridor = None
+        for candidate_key in [(user_hub, target_dest_key), ("Bengaluru", target_dest_key), ("mysore", target_dest_key), ("Hubballi", target_dest_key)]:
+            for ck in INTERCITY_CORRIDORS:
+                if str(ck[0]).lower() == str(candidate_key[0]).lower() and str(ck[1]).lower() == str(candidate_key[1]).lower():
+                    corridor = INTERCITY_CORRIDORS[ck]
+                    break
+            if corridor:
+                break
+        if not corridor:
+            corridor = INTERCITY_CORRIDORS.get(("Bengaluru", "mysore"))
 
         step_idx = 1
         # 1. Feeder Leg
