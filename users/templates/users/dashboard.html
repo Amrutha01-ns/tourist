@@ -73,6 +73,141 @@
             </div>
         </div>
 
+        <!-- AUTHENTICATED USER PERSONALIZED COMMAND CENTER & EXPEDITION PASSPORT -->
+        {% if request.user.is_authenticated %}
+        <section class="user-command-center">
+            <!-- Welcome Header Card -->
+            <div class="user-welcome-card">
+                <div class="user-avatar-badge">
+                    {{ request.user.username|first|upper }}
+                </div>
+                <div class="user-welcome-info">
+                    <span class="user-tier-pill"><i class="fa-solid fa-crown" style="color:#fce79a;"></i> {{ user_stats.explorer_level }}</span>
+                    <h2>ನಮಸ್ಕಾರ / Welcome, {{ request.user.username }}! ✨</h2>
+                    <p>
+                        Your personal Karnataka journey headquarters. Route certified <strong>1st preference KSRTC government buses</strong> &amp; luxury private coaches, and manage live trip expenses across all 31 districts.
+                    </p>
+                </div>
+                <div class="user-quick-metrics">
+                    <div class="metric-pill">
+                        <strong>{{ user_stats.trips_count }}</strong>
+                        <span>Trips Logged</span>
+                    </div>
+                    <div class="metric-pill">
+                        <strong>{{ user_stats.districts_count }} / 31</strong>
+                        <span>Districts</span>
+                    </div>
+                    <div class="metric-pill">
+                        <strong>₹{{ user_stats.total_budget|floatformat:0 }}</strong>
+                        <span>Tracked Budget</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Action Command Launchpad -->
+            <div class="quick-launchpad">
+                <a href="#exploreDistrictsSection" class="launch-card">
+                    <div class="launch-icon" style="background:#e3f1e7; color:#14452f;"><i class="fa-solid fa-map-location-dot"></i></div>
+                    <div>
+                        <strong>Explore 31 Districts</strong>
+                        <span>District maps, temples &amp; waterfalls</span>
+                    </div>
+                </a>
+                <a href="{% url 'places_by_district' 'mysore' %}" class="launch-card">
+                    <div class="launch-icon" style="background:#fef3c7; color:#b45309;"><i class="fa-solid fa-bus"></i></div>
+                    <div>
+                        <strong>Bus Transit Router</strong>
+                        <span>1st Preference KSRTC + Private</span>
+                    </div>
+                </a>
+                <a href="{% url 'places_by_district' 'kodagu' %}" class="launch-card">
+                    <div class="launch-icon" style="background:#fee2e2; color:#b91c1c;"><i class="fa-solid fa-wallet"></i></div>
+                    <div>
+                        <strong>Trip Expense Tracker</strong>
+                        <span>Real budget breakdowns &amp; reports</span>
+                    </div>
+                </a>
+                <a href="#thematicTrailsSection" class="launch-card">
+                    <div class="launch-icon" style="background:#ede9fe; color:#6b21a8;"><i class="fa-solid fa-compass"></i></div>
+                    <div>
+                        <strong>Curated Themed Trails</strong>
+                        <span>UNESCO, Coffee Mist &amp; Coastlines</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- My Travel Passport & Active Journeys -->
+            <div class="my-trips-section">
+                <div class="my-trips-header">
+                    <div>
+                        <span class="section-badge"><i class="fa-solid fa-passport"></i> MY TRAVEL PASSPORT</span>
+                        <h3>My Active &amp; Recent Journeys</h3>
+                    </div>
+                    {% if user_trips %}
+                        <span class="active-badge">{{ user_trips|length }} Active Trip Sessions</span>
+                    {% endif %}
+                </div>
+
+                {% if user_trips %}
+                    <div class="trips-grid">
+                        {% for trip in user_trips %}
+                        <div class="user-trip-card">
+                            <div class="trip-card-header">
+                                <span class="trip-status-pill status-{{ trip.status }}">{{ trip.get_status_display }}</span>
+                                <span class="trip-dates"><i class="fa-regular fa-calendar"></i> {{ trip.start_date|date:"d M" }} – {{ trip.end_date|date:"d M Y" }}</span>
+                            </div>
+                            <h4 class="trip-place-name">{{ trip.place.name }}</h4>
+                            <p class="trip-district-sub"><i class="fa-solid fa-location-dot"></i> {{ trip.place.district.name|title }} District &bull; {{ trip.travellers }} {% if trip.travellers == 1 %}Traveller{% else %}Travellers{% endif %}</p>
+                            
+                            <div class="trip-budget-bar-wrap">
+                                <div class="trip-budget-labels">
+                                    <span>Expected: ₹{{ trip.expected_budget|floatformat:0 }}</span>
+                                    <span>Spent: ₹{{ trip.total_actual_expenses|floatformat:0 }}</span>
+                                </div>
+                                <div class="budget-progress-track">
+                                    <div class="budget-progress-fill" style="width: {% if trip.budget_consumed_percentage > 100 %}100{% else %}{{ trip.budget_consumed_percentage }}{% endif %}%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="trip-card-actions">
+                                <a href="{% url 'expenses:tracker_dashboard' trip.id %}" class="btn-trip-primary">
+                                    <i class="fa-solid fa-receipt"></i> Open Expense Tracker
+                                </a>
+                                <a href="{% url 'explorer:place_detail' trip.place.slug %}" class="btn-trip-secondary" title="View Bus Routes">
+                                    <i class="fa-solid fa-bus"></i> Routes
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <!-- Empty State with 1-Click Interactive Starters -->
+                    <div class="empty-trips-card">
+                        <div class="empty-icon"><i class="fa-solid fa-compass-drafting"></i></div>
+                        <div class="empty-text">
+                            <h4>Ready for your first Karnataka adventure?</h4>
+                            <p>Pick a popular heritage or nature destination below to start exploring with verified KSRTC bus routes &amp; smart expense tracking.</p>
+                        </div>
+                        <div class="trip-starter-pills">
+                            <a href="{% url 'explorer:place_detail' 'mysore' %}" class="starter-pill">
+                                <i class="fa-solid fa-crown" style="color:#f59e0b;"></i> Mysore Palace Royal Tour
+                            </a>
+                            <a href="{% url 'explorer:place_detail' 'abbey-falls' %}" class="starter-pill">
+                                <i class="fa-solid fa-mountain" style="color:#10b981;"></i> Coorg Mist &amp; Coffee
+                            </a>
+                            <a href="{% url 'explorer:place_detail' 'virupaksha-temple' %}" class="starter-pill">
+                                <i class="fa-solid fa-chess-rook" style="color:#8b5cf6;"></i> Hampi UNESCO Trail
+                            </a>
+                            <a href="{% url 'explorer:place_detail' 'om-beach-gokarna' %}" class="starter-pill">
+                                <i class="fa-solid fa-water" style="color:#06b6d4;"></i> Gokarna Beach Escape
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+        {% endif %}
+
         <!-- HERO SECTION -->
         <section class="hero">
             <div class="hero-content">
@@ -135,8 +270,113 @@
             </div>
         </section>
 
+        <!-- LIVE KARNATAKA TRANSIT PULSE & OPERATOR ADVISORY -->
+        <section class="transit-pulse-section">
+            <div class="transit-pulse-card">
+                <div class="pulse-header">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span class="pulse-live-indicator">
+                            <span class="pulse-dot"></span>
+                            LIVE TRANSIT PULSE
+                        </span>
+                        <strong style="color: #14452f; font-size: 14.5px;">{{ transit_pulse.status_text }}</strong>
+                    </div>
+                    <span style="font-size: 12px; color: #556c5e; font-weight: 600;">
+                        <i class="fa-solid fa-clock-rotate-left"></i> Verified State &amp; Private Network
+                    </span>
+                </div>
+
+                <!-- Operator Comparison: 1st Preference KSRTC + Private Buses -->
+                <div class="operator-comparison-grid">
+                    <!-- Government KSRTC 1st Preference -->
+                    <div class="op-box-govt">
+                        <div class="op-box-title">
+                            <span style="display: inline-flex; width: 26px; height: 26px; border-radius: 8px; background: #14452f; color: #f4b63f; align-items: center; justify-content: center; font-size: 12px;"><i class="fa-solid fa-star"></i></span>
+                            <strong>1st Preference: Government KSRTC Buses</strong>
+                        </div>
+                        <p class="op-box-desc">
+                            {{ transit_pulse.ksrtc_guarantee }}. Guaranteed scheduled departures from official KSRTC bus stands across all 31 districts.
+                        </p>
+                        <div class="op-perks-row">
+                            <span class="op-perk-tag govt-tag"><i class="fa-solid fa-award"></i> 1st Choice</span>
+                            <span class="op-perk-tag shakti-tag"><i class="fa-solid fa-certificate"></i> Shakti Scheme (Women Free)</span>
+                            <span class="op-perk-tag" style="background:#e0f2fe; color:#0369a1;"><i class="fa-solid fa-shield-halved"></i> Fixed State Tariffs</span>
+                        </div>
+                    </div>
+
+                    <!-- Private Bus Operators Option -->
+                    <div class="op-box-private">
+                        <div class="op-box-title">
+                            <span style="display: inline-flex; width: 26px; height: 26px; border-radius: 8px; background: #4338ca; color: #ffffff; align-items: center; justify-content: center; font-size: 12px;"><i class="fa-solid fa-bus"></i></span>
+                            <strong>Alternative Choice: Verified Private Operators</strong>
+                        </div>
+                        <p class="op-box-desc">
+                            {{ transit_pulse.private_advisory }}. Ideal for overnight luxury sleeper coaches, air-suspension, and personal charging.
+                        </p>
+                        <div class="op-perks-row">
+                            <span class="op-perk-tag private-tag"><i class="fa-solid fa-couch"></i> 2+1 AC Sleeper</span>
+                            <span class="op-perk-tag" style="background:#eef2ff; color:#3730a3;"><i class="fa-solid fa-wifi"></i> VRL &bull; SRS &bull; Seabird &bull; Durgamba</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Regional Weather Pulse -->
+                <div class="weather-highlights-strip">
+                    <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: #2f7d4f; padding: 6px 4px; display: inline-flex; align-items: center; gap: 5px;">
+                        <i class="fa-solid fa-temperature-half"></i> Live Weather:
+                    </span>
+                    {% for w in transit_pulse.destinations_weather %}
+                        <div class="weather-chip">
+                            <i class="fa-solid {{ w.icon }}"></i>
+                            <strong>{{ w.place }}:</strong>
+                            <span>{{ w.temp }} &bull; {{ w.condition }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- CURATED THEMATIC KARNATAKA TRAVEL TRAILS -->
+        <section class="thematic-trails-section" id="thematicTrailsSection">
+            <div class="thematic-section-top">
+                <span class="section-badge"><i class="fa-solid fa-compass"></i> CURATED ADVENTURES · ವಿಶೇಷ ಪ್ರವಾಸ ಮಾರ್ಗಗಳು</span>
+                <h2>Thematic Karnataka Travel Trails</h2>
+                <p style="margin: 4px 0 0; font-size: 14px; color: #556c5e;">Hand-picked circuits combining UNESCO heritage, cloud-kissed peaks, Arabian beaches, and cascading waterfalls.</p>
+            </div>
+
+            <div class="thematic-trails-grid">
+                {% for trail in thematic_trails %}
+                    <div class="theme-trail-card">
+                        <div class="theme-card-banner" style="background: {{ trail.bg_gradient }};">
+                            <span class="theme-tag-pill"><i class="fa-solid {{ trail.icon }}"></i> {{ trail.tag }}</span>
+                            <h3>{{ trail.title_english }}</h3>
+                            <p class="theme-kannada-sub">{{ trail.title_kannada }}</p>
+                        </div>
+                        <div class="theme-card-body">
+                            <p class="theme-desc">{{ trail.description }}</p>
+                            
+                            <div class="theme-meta-row">
+                                <span><i class="fa-regular fa-clock"></i> {{ trail.duration }}</span>
+                                <span><i class="fa-solid fa-bus"></i> {{ trail.best_bus }}</span>
+                            </div>
+
+                            <div class="theme-places-strip">
+                                <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: #2f7d4f; margin-bottom: 2px;">Featured Destinations:</span>
+                                {% for p in trail.places %}
+                                    <a href="{% url 'explorer:place_detail' p.slug %}" class="theme-place-link">
+                                        <span><i class="fa-solid fa-arrow-right-long" style="font-size: 10px; color: #f4b63f; margin-right: 4px;"></i> {{ p.name }}</span>
+                                        <small>{{ p.district }}</small>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
         <!-- POPULAR DESTINATIONS: PICTURE CARDS GRID (PREVIOUS STYLE) -->
-        <section class="popular-section">
+        <section class="popular-section" id="exploreDistrictsSection">
             <div class="section-top">
                 <div>
                     <p class="section-label">START EXPLORING · ಕರ್ನಾಟಕ ಪ್ರವಾಸೋದ್ಯಮ</p>

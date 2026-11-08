@@ -759,6 +759,134 @@ def dashboard(request):
     # 4. Construct recent_searches list with original authentic Karnataka map shapes
     recent_searches = [AUTHENTIC_DISTRICT_MAPS[k] for k in ordered_keys[:4]]
 
+    # 5. Fetch user active trips & personalized explorer stats (Super creative dashboard)
+    user_trips = []
+    user_stats = {
+        "trips_count": 0,
+        "total_budget": 0,
+        "districts_count": 0,
+        "explorer_level": "Karnataka Explorer · ಕರ್ನಾಟಕ ಯಾತ್ರಿಕ",
+    }
+    if request.user.is_authenticated:
+        try:
+            from expenses.models import TripTrackingSession
+            user_trips = list(
+                TripTrackingSession.objects.filter(user=request.user)
+                .select_related("place", "place__district")
+                .order_by("-start_date")[:4]
+            )
+            for s in user_trips:
+                s.refresh_status()
+
+            all_user_sessions = TripTrackingSession.objects.filter(user=request.user)
+            t_count = all_user_sessions.count()
+            t_budget = sum(s.expected_budget for s in all_user_sessions)
+            d_count = all_user_sessions.values("place__district").distinct().count()
+
+            user_stats["trips_count"] = t_count
+            user_stats["total_budget"] = int(t_budget)
+            user_stats["districts_count"] = max(d_count, min(t_count, 1))
+
+            if t_count >= 5:
+                user_stats["explorer_level"] = "Master Voyager · ಪಾರಂಗತ ಪ್ರವಾಸಿ"
+            elif t_count >= 2:
+                user_stats["explorer_level"] = "Heritage Trailblazer · ಪರಂಪರೆ ಯಾತ್ರಿ"
+            elif t_count >= 1:
+                user_stats["explorer_level"] = "Active Explorer · ಹೊಸ ಯಾತ್ರಿ"
+            else:
+                user_stats["explorer_level"] = "Karnataka Explorer · ಕರ್ನಾಟಕ ಯಾತ್ರಿಕ"
+        except Exception:
+            pass
+
+    # Curated Thematic Karnataka Travel Trails
+    thematic_trails = [
+        {
+            "id": "heritage",
+            "title_kannada": "ರಾಜ ಪರಂಪರೆ & ಶಿಲ್ಪಕಲೆ",
+            "title_english": "UNESCO Heritage & Royal Dynasties",
+            "tag": "UNESCO HERITAGE",
+            "tag_color": "#b45309",
+            "icon": "fa-landmark-dome",
+            "bg_gradient": "linear-gradient(135deg, #2a1407 0%, #5a270f 100%)",
+            "description": "Marvel at the stone chariot of Vijayanagara, Hoysala soapstone carvings, and opulent Mysore palaces.",
+            "duration": "4–5 Days Circuit",
+            "best_bus": "🌟 1st Preference: KSRTC Heritage Rajahamsa",
+            "places": [
+                {"name": "Mysore Palace", "district": "Mysuru", "slug": "mysore", "image": "/static/users/images/mysore.jpg"},
+                {"name": "Virupaksha Temple", "district": "Hampi", "slug": "virupaksha-temple", "image": "/static/users/images/hampi.jpg"},
+                {"name": "Chennakeshava Temple", "district": "Belur", "slug": "chennakeshava-temple", "image": "/static/users/images/belur.jpg"},
+                {"name": "Hoysaleswara Temple", "district": "Halebidu", "slug": "hoysaleswara-templehalebidu", "image": "/static/users/images/halebidu.jpg"},
+            ],
+        },
+        {
+            "id": "western_ghats",
+            "title_kannada": "ಮಲೆನಾಡು & ಗಿರಿಧಾಮಗಳು",
+            "title_english": "Misty Western Ghats & Coffee Highlands",
+            "tag": "HIGHLANDS & MIST",
+            "tag_color": "#047857",
+            "icon": "fa-mountain-sun",
+            "bg_gradient": "linear-gradient(135deg, #063e2f 0%, #065f46 100%)",
+            "description": "Breathe fresh Arabica coffee blossoms and trek along Karnataka's highest cloud-kissed peaks.",
+            "duration": "3–4 Days Getaway",
+            "best_bus": "🌟 1st: KSRTC Sarige • Option: VRL Sleeper",
+            "places": [
+                {"name": "Mullayanagiri & Baba Budan", "district": "Chikkamagaluru", "slug": "baba-budangiri", "image": "/static/users/images/chikmagalur.jpg"},
+                {"name": "Abbey Falls", "district": "Kodagu", "slug": "abbey-falls", "image": "/static/users/images/madikeri.jpg"},
+                {"name": "Agumbe Rainforest", "district": "Shivamogga", "slug": "agumbe", "image": "/static/users/images/shivamogga.jpg"},
+                {"name": "Iruppu Falls", "district": "Kodagu", "slug": "iruppu-falls", "image": "/static/users/images/madikeri.jpg"},
+            ],
+        },
+        {
+            "id": "coastal",
+            "title_kannada": "ಕರಾವಳಿ ತೀರ & ಪವಿತ್ರ ಕ್ಷೇತ್ರಗಳು",
+            "title_english": "Sacred Coastline & Golden Sands",
+            "tag": "ARABIAN SEA TRAILS",
+            "tag_color": "#0284c7",
+            "icon": "fa-umbrella-beach",
+            "bg_gradient": "linear-gradient(135deg, #083344 0%, #0369a1 100%)",
+            "description": "Walk along pristine Om Beach, visit sacred Krishna Mutt, and cruise to volcanic basalt sea islands.",
+            "duration": "3 Days Coastal Loop",
+            "best_bus": "🌟 1st: NWKRTC Coastal • Option: Seabird",
+            "places": [
+                {"name": "Om Beach Gokarna", "district": "Uttara Kannada", "slug": "om-beach-gokarna", "image": "/static/users/images/gokarna.jpg"},
+                {"name": "Sri Krishna Temple", "district": "Udupi", "slug": "sri-krishna-temple", "image": "/static/users/images/udupi.jpg"},
+                {"name": "Murudeshwar Temple", "district": "Uttara Kannada", "slug": "murudeshwar-temple", "image": "/static/users/images/gokarna.jpg"},
+                {"name": "Malpe Beach & St. Mary's", "district": "Udupi", "slug": "malpe-beach", "image": "/static/users/images/udupi.jpg"},
+            ],
+        },
+        {
+            "id": "waterfalls",
+            "title_kannada": "ರುದ್ರರಮಣೀಯ ಜಲಪಾತಗಳು",
+            "title_english": "Cascades & Kaveri River Basins",
+            "tag": "WATERFALLS & RIVER",
+            "tag_color": "#0f766e",
+            "icon": "fa-cloud-showers-heavy",
+            "bg_gradient": "linear-gradient(135deg, #0e3a38 0%, #0f766e 100%)",
+            "description": "Roaring Jog Falls, twin torrents of Shivanasamudra, and Kaveri bird sanctuary wetlands.",
+            "duration": "2–3 Days Weekend",
+            "best_bus": "🌟 1st Preference: KSRTC Express",
+            "places": [
+                {"name": "Jog Falls", "district": "Shivamogga", "slug": "jog-falls", "image": "/static/users/images/shivamogga.jpg"},
+                {"name": "Shivanasamudra Falls", "district": "Mandya", "slug": "shivanasamudra-falls", "image": "/static/users/images/mandya.jpg"},
+                {"name": "Ranganathittu Bird Sanctuary", "district": "Mandya", "slug": "ranganathittu-bird-sanctuary", "image": "/static/users/images/mandya.jpg"},
+                {"name": "Chunchanakatte Falls", "district": "Mysore", "slug": "chunchanakatte-falls", "image": "/static/users/images/mysore.jpg"},
+            ],
+        },
+    ]
+
+    transit_pulse = {
+        "status_text": "All Karnataka Intercity Bus Corridors Fully Operational",
+        "ksrtc_guarantee": "🌟 1st Preference: 8,500+ Daily KSRTC Govt Schedules • Fixed State Tariffs • Shakti Scheme Active for Women",
+        "private_advisory": "Alternative Option: Verified Private Luxury Sleepers (VRL, SRS, Seabird, Durgamba, Sugama) on Major Corridors",
+        "destinations_weather": [
+            {"place": "Madikeri (Coorg)", "temp": "21°C", "condition": "Misty & Pleasant", "icon": "fa-cloud"},
+            {"place": "Mysuru", "temp": "27°C", "condition": "Royal Sunshine", "icon": "fa-sun"},
+            {"place": "Gokarna", "temp": "29°C", "condition": "Coastal Breeze", "icon": "fa-wind"},
+            {"place": "Hampi", "temp": "31°C", "condition": "Warm Heritage Day", "icon": "fa-sun"},
+            {"place": "Chikkamagaluru", "temp": "22°C", "condition": "Cool Coffee Breeze", "icon": "fa-cloud-sun"},
+        ],
+    }
+
     return render(
         request,
         "users/dashboard.html",
@@ -768,6 +896,10 @@ def dashboard(request):
             "karnataka_cards": karnataka_cards,
             "recent_searches": recent_searches,
             "stats": stats,
+            "user_trips": user_trips,
+            "user_stats": user_stats,
+            "thematic_trails": thematic_trails,
+            "transit_pulse": transit_pulse,
         },
     )
 

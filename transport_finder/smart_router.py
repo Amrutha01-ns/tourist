@@ -1961,8 +1961,171 @@ def resolve_destination_spec(place):
 
 
 # ============================================================================
-# 6. MASTER MULTI-LEG JOURNEY PLANNER
+# 6. MASTER MULTI-LEG JOURNEY PLANNER & CURATED FLEET BUILDER
 # ============================================================================
+
+def build_curated_fleet_options(dest_spec, origin=None, corridor=None, total_fare_min=0, total_fare_max=0):
+    """
+    Builds a strictly sorted fleet of transit options for Karnataka travelers:
+    1st Preference: Government KSRTC (KSRTC, NWKRTC, BMTC, MITRA) with Shakti Scheme & State Tariffs
+    Mentioned Option: Verified Private Operators (VRL, SRS, Seabird, Durgamba, Sugama)
+    """
+    curated_routes = []
+    dest_dist = (dest_spec.get("district") or "").lower()
+    dest_name = dest_spec.get("name", "Destination")
+    hub_name = dest_spec.get("hub", "District Central")
+    origin_name = origin.get("short_name", "Bengaluru") if origin else "Major Karnataka Terminals"
+
+    # 1. Government Transit Services (1st Preference: KSRTC / NWKRTC / KKRTC / MITRA / BMTC)
+    base_buses = dest_spec.get("buses", [])
+    for b in base_buses:
+        rb = dict(b)
+        rb["is_government"] = True
+        rb["operator_type"] = "government"
+        rb["preference_rank"] = 1
+        rb["preference_badge"] = "🌟 1st Preference · Government KSRTC"
+        rb["shakti_eligible"] = any(w in rb.get("bus_type", "").lower() for w in ["ordinary", "sarige", "city", "suvarna", "shuttle", "hill"]) or rb.get("provider_code") in ["MITRA", "BMTC", "NWKRTC"]
+        rb["safety_rating"] = "4.9/5 · Official State Carrier"
+        curated_routes.append(rb)
+
+    # Intercity KSRTC Express
+    corr_code = corridor.get("operator_code", "KSRTC") if corridor else "KSRTC"
+    corr_op = corridor.get("operator", "Karnataka State Road Transport Corporation") if corridor else "Karnataka State Road Transport Corporation"
+    corr_fare = corridor.get("fare_range", "₹180 – ₹450") if corridor else "₹180 – ₹450"
+    if total_fare_min > 0:
+        corr_fare = f"₹{total_fare_min} – ₹{total_fare_max}" if total_fare_min != total_fare_max else f"₹{total_fare_min}"
+
+    ksrtc_intercity = {
+        "bus_number": f"{corr_code} Intercity Express",
+        "route_id": f"{corr_code}-CORR",
+        "provider": corr_op,
+        "provider_code": corr_code,
+        "route_name": f"{origin_name} ⇔ {hub_name} / {dest_name} Express",
+        "boarding_point": corridor.get("from_terminal", f"{origin_name} KSRTC Stand") if corridor else f"{origin_name} KSRTC Central Terminal",
+        "drop_point": corridor.get("to_terminal", f"{hub_name} Central Stand") if corridor else f"{hub_name} Central Bus Stand",
+        "stops_via": corridor.get("highway", f"Via National & State Highway Corridor to {dest_name}") if corridor else f"Direct Highway Service to {dest_name}",
+        "frequency": corridor.get("frequency", "Every 20–30 minutes") if corridor else "Every 20–30 minutes (24/7)",
+        "operating_hours": corridor.get("operating_hours", "Round the clock service") if corridor else "24 Hours Regular Service",
+        "fare": corr_fare,
+        "bus_type": corridor.get("bus_type", "KSRTC Karnataka Sarige & Rajahamsa") if corridor else "KSRTC Karnataka Sarige / Airavat",
+        "is_government": True,
+        "operator_type": "government",
+        "preference_rank": 1,
+        "preference_badge": "🌟 1st Preference · Government KSRTC",
+        "shakti_eligible": True,
+        "safety_rating": "4.9/5 · Official State Carrier",
+    }
+    curated_routes.insert(0, ksrtc_intercity)
+
+    # 2. Prominent Private Bus Operators (Mentioned as Alternative Choice)
+    fare_base_min = total_fare_min if total_fare_min > 50 else 250
+    fare_base_max = total_fare_max if total_fare_max > 50 else 450
+
+    vrl_bus = {
+        "bus_number": "VRL I-Shift",
+        "route_id": "VRL-EXP",
+        "provider": "VRL Travels (Private Operator)",
+        "provider_code": "VRL",
+        "route_name": f"VRL Multi-Axle AC Sleeper: {origin_name} ⇔ {dest_name}",
+        "boarding_point": f"{origin_name} Private Travel Hub (Anand Rao Circle / Main Office)",
+        "drop_point": f"{hub_name} Private Stand (Connecting to {dest_name})",
+        "stops_via": f"Direct Highway Corridor via {hub_name}",
+        "frequency": "Multiple Daily & Night Departures",
+        "operating_hours": "07:30 PM – 11:30 PM (Night Services) & Day Express",
+        "fare": f"₹{int(fare_base_min * 1.35)} – ₹{int(fare_base_max * 1.45)}",
+        "bus_type": "Multi-Axle Volvo / Scania 2+1 AC Sleeper",
+        "amenities": "Air-Suspension • 2+1 AC Sleeper • Charging Ports • Blankets • Live GPS",
+        "is_government": False,
+        "operator_type": "private",
+        "preference_rank": 2,
+        "preference_badge": "Alternative Option · Private Bus Operator",
+        "shakti_eligible": False,
+        "safety_rating": "4.5/5 · Private Fleet",
+    }
+    curated_routes.append(vrl_bus)
+
+    # Private Operator 2
+    if "kodagu" in dest_dist or "mysore" in dest_dist:
+        priv_op2 = {
+            "bus_number": "SRS Executive",
+            "route_id": "SRS-EXP",
+            "provider": "SRS Travels (Private Operator)",
+            "provider_code": "SRS",
+            "route_name": f"SRS Intercity Sleeper: {origin_name} ⇔ Madikeri / Mysuru",
+            "boarding_point": f"{origin_name} Kalasipalyam / Majestic Private Bay",
+            "drop_point": f"Madikeri Private Bus Shelter / Mysuru Stand",
+            "stops_via": "Bengaluru-Mysuru Expressway → Kushalnagar → Madikeri",
+            "frequency": "Every evening (20:30, 21:45, 23:00)",
+            "operating_hours": "Evening & Night Departures",
+            "fare": f"₹{int(fare_base_min * 1.25)} – ₹{int(fare_base_max * 1.35)}",
+            "bus_type": "Non-AC / AC 2+1 Sleeper",
+            "amenities": "Berth Cushions • Mineral Water • Reading Lamp",
+            "is_government": False,
+            "operator_type": "private",
+            "preference_rank": 2,
+            "preference_badge": "Alternative Option · Private Bus Operator",
+            "shakti_eligible": False,
+            "safety_rating": "4.3/5 · Private Fleet",
+        }
+    elif "uttara" in dest_dist or "udupi" in dest_dist or "mangaluru" in dest_dist:
+        priv_op2 = {
+            "bus_number": "Seabird Luxury",
+            "route_id": "SBR-EXP",
+            "provider": "Seabird Tourist (Private Operator)",
+            "provider_code": "SEABIRD",
+            "route_name": f"Seabird Coastal Express: {origin_name} ⇔ Gokarna / Karavali",
+            "boarding_point": f"{origin_name} Gandhinagar / Anand Rao Circle",
+            "drop_point": f"{hub_name} Main Bus Shelter / Highway Gate",
+            "stops_via": "NH-48 & NH-66 Coastal Corridor",
+            "frequency": "Overnight Daily Schedules (21:00, 22:30)",
+            "operating_hours": "08:00 PM – 11:30 PM",
+            "fare": f"₹{int(fare_base_min * 1.3)} – ₹{int(fare_base_max * 1.4)}",
+            "bus_type": "Coastal AC Air-Suspension Sleeper",
+            "amenities": "Luxury AC Sleeper • Water Bottle • Luggage Bay • Live Tracking",
+            "is_government": False,
+            "operator_type": "private",
+            "preference_rank": 2,
+            "preference_badge": "Alternative Option · Private Bus Operator",
+            "shakti_eligible": False,
+            "safety_rating": "4.4/5 · Private Fleet",
+        }
+    else:
+        priv_op2 = {
+            "bus_number": "SRS Executive",
+            "route_id": "SRS-EXP",
+            "provider": "SRS Travels (Private Operator)",
+            "provider_code": "SRS",
+            "route_name": f"SRS Intercity Sleeper: {origin_name} ⇔ {hub_name}",
+            "boarding_point": f"{origin_name} Kalasipalyam / Station Bay",
+            "drop_point": f"{hub_name} Private Travel Shelter",
+            "stops_via": f"National Highway Corridor to {hub_name}",
+            "frequency": "Daily Evening Departures",
+            "operating_hours": "08:00 PM – 11:15 PM",
+            "fare": f"₹{int(fare_base_min * 1.25)} – ₹{int(fare_base_max * 1.35)}",
+            "bus_type": "AC & Non-AC 2+1 Sleeper",
+            "amenities": "Sleeper Berths • Charging Points • Mineral Water",
+            "is_government": False,
+            "operator_type": "private",
+            "preference_rank": 2,
+            "preference_badge": "Alternative Option · Private Bus Operator",
+            "shakti_eligible": False,
+            "safety_rating": "4.3/5 · Private Fleet",
+        }
+    curated_routes.append(priv_op2)
+
+    # Normalize fields
+    for r in curated_routes:
+        if "route" not in r and "route_name" in r: r["route"] = r["route_name"]
+        if "route_name" not in r and "route" in r: r["route_name"] = r["route"]
+        if "from" not in r and "boarding_point" in r: r["from"] = r["boarding_point"]
+        if "boarding_point" not in r and "from" in r: r["boarding_point"] = r["from"]
+        if "to" not in r and "drop_point" in r: r["to"] = r["drop_point"]
+        if "drop_point" not in r and "to" in r: r["drop_point"] = r["to"]
+
+    # Guarantee: Rank 1 (Government KSRTC) strictly precedes Rank 2 (Private Operators)
+    curated_routes.sort(key=lambda r: (r.get("preference_rank", 1), 0 if r.get("is_government") else 1))
+    return curated_routes
+
 
 def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=None):
     """
@@ -1978,14 +2141,7 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
 
     # Never hardcode initial location: if unset, return clean destination overview & map
     if origin is None:
-        direct_buses = [dict(b) for b in dest_spec.get("buses", [])]
-        for r in direct_buses:
-            if "route" not in r and "route_name" in r: r["route"] = r["route_name"]
-            if "route_name" not in r and "route" in r: r["route_name"] = r["route"]
-            if "from" not in r and "boarding_point" in r: r["from"] = r["boarding_point"]
-            if "boarding_point" not in r and "from" in r: r["boarding_point"] = r["from"]
-            if "to" not in r and "drop_point" in r: r["to"] = r["drop_point"]
-            if "drop_point" not in r and "to" in r: r["drop_point"] = r["to"]
+        direct_buses = build_curated_fleet_options(dest_spec, origin=None)
 
         d_lat = dest_spec["lat"]
         d_lng = dest_spec["lng"]
@@ -2473,21 +2629,14 @@ def plan_complete_journey(place, origin_text=None, origin_lat=None, origin_lng=N
     mins = total_duration_mins % 60
     formatted_duration = f"{hours}h {mins}m" if hours > 0 else f"{mins} mins"
 
-    # All direct local routes for the destination card (for backward compatibility)
-    direct_buses = [dict(b) for b in dest_spec.get("buses", [])]
-    for r in direct_buses:
-        if "route" not in r and "route_name" in r:
-            r["route"] = r["route_name"]
-        if "route_name" not in r and "route" in r:
-            r["route_name"] = r["route"]
-        if "from" not in r and "boarding_point" in r:
-            r["from"] = r["boarding_point"]
-        if "boarding_point" not in r and "from" in r:
-            r["boarding_point"] = r["from"]
-        if "to" not in r and "drop_point" in r:
-            r["to"] = r["drop_point"]
-        if "drop_point" not in r and "to" in r:
-            r["drop_point"] = r["to"]
+    # Direct and Intercity Bus Options: KSRTC 1st Preference + Private Operators
+    direct_buses = build_curated_fleet_options(
+        dest_spec,
+        origin=origin,
+        corridor=locals().get("corridor"),
+        total_fare_min=total_fare_min,
+        total_fare_max=total_fare_max
+    )
 
     # Build complete sequential transit stops for visualization
     all_transit_stops = []

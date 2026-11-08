@@ -2039,49 +2039,150 @@
                     </div>
                 {% endif %}
 
-                <!-- Direct Available Bus Numbers & Routes -->
+                <!-- Direct Available Bus Numbers & Routes (1st Preference KSRTC + Mentioned Private Operators) -->
                 {% if transit.bus_routes %}
-                    <div id="directBusWrap">
-                        <h3 class="routes-group-title">
-                            <i class="fa-solid fa-bus"></i> Direct Available Bus Numbers & Routes ({{ transit.bus_routes|length }})
-                        </h3>
-                        <div class="routes-grid">
+                    <div id="directBusWrap" style="margin-top: 30px;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 14px; margin-bottom: 16px;">
+                            <div>
+                                <h3 class="routes-group-title" style="margin: 0;">
+                                    <i class="fa-solid fa-bus-simple" style="color: var(--leaf);"></i> Available Bus Routes &amp; Fleet Options ({{ transit.bus_routes|length }})
+                                </h3>
+                                <p style="margin: 4px 0 0; font-size: 13px; color: var(--muted);">
+                                    <strong style="color: var(--forest);"><i class="fa-solid fa-award" style="color: #f4b63f;"></i> 1st Preference:</strong> KSRTC Government Services (Fixed Tariffs &amp; Shakti Scheme) &bull; <span style="color: #4338ca;"><i class="fa-solid fa-couch"></i> Alternative Option:</span> Mentioned Private AC Sleepers.
+                                </p>
+                            </div>
+
+                            <!-- Interactive Bus Category Filter Tabs -->
+                            <div class="bus-operator-filter-tabs" id="busOperatorTabs" style="display: inline-flex; background: #eef4f0; padding: 4px; border-radius: 12px; gap: 4px; border: 1px solid #d4e3d9;">
+                                <button type="button" class="bus-filter-pill active" data-filter="all" style="padding: 6px 14px; border-radius: 9px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; background: #fff; color: var(--forest); box-shadow: 0 2px 6px rgba(0,0,0,0.08); transition: all 0.2s;">
+                                    All ({{ transit.bus_routes|length }})
+                                </button>
+                                <button type="button" class="bus-filter-pill" data-filter="government" style="padding: 6px 14px; border-radius: 9px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; background: transparent; color: #2d5a41; transition: all 0.2s;">
+                                    <i class="fa-solid fa-star" style="color: #f4b63f;"></i> 1st Preference: KSRTC Govt
+                                </button>
+                                <button type="button" class="bus-filter-pill" data-filter="private" style="padding: 6px 14px; border-radius: 9px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; background: transparent; color: #4338ca; transition: all 0.2s;">
+                                    <i class="fa-solid fa-bus"></i> Private Operators
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="routes-grid" id="busRoutesGrid">
                             {% for r in transit.bus_routes %}
-                                <article class="route-card" style="border-top: 4px solid var(--leaf);">
-                                    <div class="route-top">
-                                        <span class="transit-badge {% if r.provider_code == 'BMTC' %}badge-bmtc{% elif r.provider_code == 'MITRA' %}badge-mitra{% elif r.provider_code == 'NWKRTC' %}badge-hub{% else %}badge-ksrtc{% endif %}">
-                                            {{ r.provider_code|default:"BUS" }}
-                                        </span>
-                                        <span style="font-size: 13px; font-weight: 800; color: var(--forest); background: var(--mint); padding: 4px 12px; border-radius: 8px;">
-                                            <i class="fa-solid fa-bus-simple"></i> Bus {{ r.bus_number|default:r.route_id }}
+                                <article class="route-card bus-card-item" 
+                                         data-operator="{% if r.is_government or r.operator_type == 'government' %}government{% else %}private{% endif %}"
+                                         style="{% if r.is_government or r.operator_type == 'government' %}border-top: 4.5px solid #14452f; background: #fdfffe;{% else %}border-top: 4.5px solid #6366f1; background: #fbfbfe;{% endif %}">
+                                    
+                                    <!-- Priority & Operator Type Header -->
+                                    <div class="route-top" style="align-items: flex-start;">
+                                        <div>
+                                            {% if r.is_government or r.operator_type == 'government' %}
+                                                <span class="transit-badge badge-ksrtc" style="display: inline-flex; align-items: center; gap: 5px; font-weight: 800; font-size: 11px; background: #14452f; color: #f4b63f; border: 1px solid rgba(244, 182, 63, 0.4);">
+                                                    <i class="fa-solid fa-star"></i> 1st PREFERENCE &bull; KSRTC GOVT
+                                                </span>
+                                            {% else %}
+                                                <span class="transit-badge" style="display: inline-flex; align-items: center; gap: 5px; font-weight: 800; font-size: 11px; background: #eef2ff; color: #4338ca; border: 1px solid #c7d2fe;">
+                                                    <i class="fa-solid fa-bus"></i> PRIVATE OPERATOR OPTION
+                                                </span>
+                                            {% endif %}
+                                        </div>
+
+                                        <span style="font-size: 12.5px; font-weight: 800; {% if r.is_government or r.operator_type == 'government' %}color: var(--forest); background: var(--mint);{% else %}color: #3730a3; background: #e0e7ff;{% endif %} padding: 4px 10px; border-radius: 8px;">
+                                            <i class="fa-solid fa-bus-simple"></i> {{ r.bus_number|default:r.route_id }}
                                         </span>
                                     </div>
-                                    <h4 class="route-name" style="margin: 8px 0 4px; font-size: 16px; color: var(--forest);">
+
+                                    <h4 class="route-name" style="margin: 8px 0 3px; font-size: 16px; {% if r.is_government or r.operator_type == 'government' %}color: var(--forest);{% else %}color: #312e81;{% endif %} font-weight: 800;">
                                         {{ r.route_name|default:r.route }}
                                     </h4>
-                                    <div class="route-stops-flow" style="font-size: 13px; color: #2a3d31;">
-                                        <span><strong>From:</strong> {{ r.boarding_point|default:r.from }}</span>
-                                        <i class="fa-solid fa-arrow-right" style="color: var(--leaf); font-size: 12px;"></i>
-                                        <span><strong>To:</strong> {{ r.drop_point|default:r.to }}</span>
+
+                                    <p style="font-size: 12px; color: #526659; margin: 0 0 6px;">
+                                        <i class="fa-solid fa-building-shield" style="{% if r.is_government or r.operator_type == 'government' %}color: #14452f;{% else %}color: #6366f1;{% endif %}"></i>
+                                        <strong>Operator:</strong> {{ r.provider }}
+                                    </p>
+
+                                    <!-- Boarding and Alighting Flow -->
+                                    <div class="route-stops-flow" style="font-size: 13px; color: #2a3d31; background: {% if r.is_government or r.operator_type == 'government' %}#f4faf6{% else %}#f5f5ff{% endif %}; padding: 8px 12px; border-radius: 10px; margin: 6px 0;">
+                                        <span style="display: flex; align-items: center; gap: 5px;"><i class="fa-solid fa-circle-dot" style="color: #059669; font-size: 11px;"></i> <strong>Board:</strong> {{ r.boarding_point|default:r.from }}</span>
+                                        <i class="fa-solid fa-arrow-right" style="color: var(--leaf); font-size: 11px;"></i>
+                                        <span style="display: flex; align-items: center; gap: 5px;"><i class="fa-solid fa-location-dot" style="color: #d97706; font-size: 11px;"></i> <strong>Alight:</strong> {{ r.drop_point|default:r.to }}</span>
                                     </div>
+
                                     {% if r.stops_via %}
-                                        <p style="font-size: 12px; color: var(--muted); margin: 4px 0 8px;">
+                                        <p style="font-size: 12px; color: var(--muted); margin: 3px 0 6px;">
                                             <i class="fa-solid fa-route" style="color: var(--leaf);"></i> <em>{{ r.stops_via }}</em>
                                         </p>
                                     {% endif %}
-                                    <div class="route-meta">
+
+                                    <!-- Badges: Shakti Scheme for KSRTC / Amenities for Private -->
+                                    {% if r.is_government or r.operator_type == 'government' %}
+                                        <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px;">
+                                            {% if r.shakti_eligible %}
+                                                <span style="font-size: 11px; font-weight: 700; color: #047857; background: #dcfce7; padding: 2px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
+                                                    <i class="fa-solid fa-certificate"></i> Shakti Scheme Eligible (Free for Women)
+                                                </span>
+                                            {% endif %}
+                                            <span style="font-size: 11px; font-weight: 600; color: #1e3a8a; background: #dbeafe; padding: 2px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
+                                                <i class="fa-solid fa-shield-check"></i> State Depots &bull; Fixed Tariff
+                                            </span>
+                                        </div>
+                                    {% elif r.amenities %}
+                                        <div style="margin-top: 4px;">
+                                            <span style="font-size: 11px; font-weight: 600; color: #4338ca; background: #e0e7ff; padding: 3px 9px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
+                                                <i class="fa-solid fa-couch"></i> {{ r.amenities }}
+                                            </span>
+                                        </div>
+                                    {% endif %}
+
+                                    <!-- Footer Meta -->
+                                    <div class="route-meta" style="margin-top: auto; padding-top: 10px; border-top: 1px dashed #d5ded8;">
                                         <span>
                                             <i class="fa-regular fa-clock"></i>
                                             {{ r.frequency|default:"Frequent Schedule" }}
                                             {% if r.operating_hours %} &bull; {{ r.operating_hours }}{% endif %}
                                         </span>
-                                        <span style="font-size: 13px; font-weight: 700; color: var(--forest); background: #fdfaf2; padding: 2px 8px; border-radius: 6px;">
+                                        <span style="font-size: 13.5px; font-weight: 800; {% if r.is_government or r.operator_type == 'government' %}color: var(--forest); background: #fdfaf2;{% else %}color: #312e81; background: #f0f0ff;{% endif %} padding: 3px 10px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.06);">
                                             {{ r.fare|default:"Standard Tariff" }}
                                         </span>
                                     </div>
                                 </article>
                             {% endfor %}
                         </div>
+
+                        <!-- Client-side Tab Switcher Script for Bus Operators -->
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                const filterTabs = document.querySelectorAll("#busOperatorTabs .bus-filter-pill");
+                                const routeCards = document.querySelectorAll("#busRoutesGrid .bus-card-item");
+                                if (filterTabs.length && routeCards.length) {
+                                    filterTabs.forEach(function(tab) {
+                                        tab.addEventListener("click", function() {
+                                            filterTabs.forEach(function(t) {
+                                                t.classList.remove("active");
+                                                t.style.background = "transparent";
+                                                if (t.dataset.filter === "government") t.style.color = "#2d5a41";
+                                                else if (t.dataset.filter === "private") t.style.color = "#4338ca";
+                                                else t.style.color = "var(--forest)";
+                                                t.style.boxShadow = "none";
+                                            });
+                                            this.classList.add("active");
+                                            this.style.background = "#fff";
+                                            this.style.color = (this.dataset.filter === "private") ? "#4338ca" : "var(--forest)";
+                                            this.style.boxShadow = "0 2px 6px rgba(0,0,0,0.08)";
+
+                                            const targetFilter = this.getAttribute("data-filter");
+                                            routeCards.forEach(function(card) {
+                                                const op = card.getAttribute("data-operator");
+                                                if (targetFilter === "all" || op === targetFilter) {
+                                                    card.style.display = "flex";
+                                                } else {
+                                                    card.style.display = "none";
+                                                }
+                                            });
+                                        });
+                                    });
+                                }
+                            });
+                        </script>
                     </div>
                 {% endif %}
 
