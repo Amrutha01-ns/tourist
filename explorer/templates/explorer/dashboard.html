@@ -1741,7 +1741,7 @@
                         <div class="summary-top-row">
                             <div>
                                 <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; background: var(--sun); color: var(--forest); padding: 3px 9px; border-radius: 999px;">
-                                    Door-to-Destination Plan
+                                    Direct Bus Transit Plan
                                 </span>
                                 <h3 class="summary-corridor-title" style="margin-top: 6px;">
                                     {{ transit.journey_summary.origin_name }} &rarr; {{ transit.journey_summary.destination_name }}
@@ -1976,92 +1976,33 @@
                     </div>
                 {% endif %}
 
-                <!-- Step-by-Step Multi-Leg Journey Stepper ("Strikes & Lines") -->
-                {% if transit.journey_legs %}
-                    <div class="journey-stepper-wrap" id="journeyStepperWrap">
-                        <h3 class="routes-group-title">
-                            <i class="fa-solid fa-route"></i> Door-to-Destination Journey Stages ({{ transit.journey_legs|length }} Legs)
-                        </h3>
-
-                        <div class="stepper-timeline" id="stepperTimeline">
-                            {% for leg in transit.journey_legs %}
-                                <div class="stepper-leg-item">
-                                    <div class="stepper-node-dot" style="border-color: {{ leg.stroke_color|default:'#14452f' }};">
-                                        {{ leg.step_number }}
-                                    </div>
-                                    <article class="stepper-leg-card" style="border-left: 5px solid {{ leg.stroke_color|default:'#14452f' }};">
-                                        <div class="stepper-leg-header">
-                                            <div style="display:flex; align-items:center; gap:8px;">
-                                                <span class="transit-badge {{ leg.badge_class|default:'badge-ksrtc' }}">
-                                                    {{ leg.provider_code|default:"TRANSIT" }}
-                                                </span>
-                                                <span style="font-size: 13px; font-weight: 800; color: var(--forest); background: var(--mint); padding: 4px 10px; border-radius: 8px;">
-                                                    <i class="fa-solid fa-bus-simple"></i> {{ leg.bus_number }}
-                                                </span>
-                                            </div>
-                                            <span style="font-size: 13px; font-weight: 700; color: var(--forest); background: #fdfaf2; padding: 3px 9px; border-radius: 6px;">
-                                                {{ leg.fare }} &bull; {{ leg.duration }}
-                                            </span>
-                                        </div>
-
-                                        <h4 class="stepper-leg-title">{{ leg.title }}</h4>
-
-                                        <div class="stepper-flow-row">
-                                            <span><i class="fa-solid fa-circle-dot" style="color: #06b6d4; font-size: 11px;"></i> <strong>Board:</strong> {{ leg.boarding_point }}</span>
-                                            <i class="fa-solid fa-arrow-right" style="color: var(--leaf); font-size: 12px;"></i>
-                                            <span><i class="fa-solid fa-location-dot" style="color: #d97706; font-size: 11px;"></i> <strong>Alight:</strong> {{ leg.drop_point }}</span>
-                                        </div>
-
-                                        {% if leg.stops_via %}
-                                            <p style="font-size: 12px; color: var(--muted); margin: 4px 0 6px;">
-                                                <i class="fa-solid fa-road" style="color: var(--leaf);"></i> <em>{{ leg.stops_via }}</em>
-                                            </p>
-                                        {% endif %}
-
-                                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--muted); margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); flex-wrap: wrap; gap: 8px;">
-                                            <span>
-                                                <i class="fa-regular fa-clock" style="color: var(--leaf);"></i> {{ leg.departure_status|default:leg.frequency }}
-                                            </span>
-                                            <span style="font-size: 11px; background: #f3f4f6; padding: 2px 8px; border-radius: 4px; font-weight: 600;">
-                                                {{ leg.distance }}
-                                            </span>
-                                        </div>
-
-                                        {% if leg.instructions %}
-                                            <p style="font-size: 12px; color: #1e3a2b; margin: 8px 0 0; background: #f4faf6; padding: 6px 10px; border-radius: 6px;">
-                                                <i class="fa-solid fa-info-circle" style="color: var(--leaf);"></i> {{ leg.instructions }}
-                                            </p>
-                                        {% endif %}
-                                    </article>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endif %}
+                <!-- Hidden container for JS hook -->
+                <div id="journeyStepperWrap" style="display:none;"><div id="stepperTimeline"></div></div>
 
                 <!-- Direct Available Bus Numbers & Routes (1st Preference KSRTC + Mentioned Private Operators) -->
+                                <!-- Available Bus Routes Section -->
                 {% if transit.bus_routes %}
-                    <div id="directBusWrap" style="margin-top: 30px;">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 14px; margin-bottom: 16px;">
+                    <div id="directBusWrap" style="margin-top: 24px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 16px;">
                             <div>
-                                <h3 class="routes-group-title" style="margin: 0;">
-                                    <i class="fa-solid fa-bus-simple" style="color: var(--leaf);"></i> Available Bus Routes &amp; Fleet Options ({{ transit.bus_routes|length }})
+                                <h3 class="routes-group-title" style="margin: 0; font-size: 19px;">
+                                    <i class="fa-solid fa-bus-simple" style="color: var(--leaf);"></i> Available Buses ({{ transit.bus_routes|length }})
                                 </h3>
-                                <p style="margin: 4px 0 0; font-size: 13px; color: var(--muted);">
-                                    <strong style="color: var(--forest);"><i class="fa-solid fa-award" style="color: #f4b63f;"></i> 1st Preference:</strong> KSRTC Government Services (Fixed Tariffs &amp; Shakti Scheme) &bull; <span style="color: #4338ca;"><i class="fa-solid fa-couch"></i> Alternative Option:</span> Mentioned Private AC Sleepers.
+                                <p style="margin: 3px 0 0; font-size: 13px; color: var(--muted);">
+                                    Scheduled public transit routes, timings and fixed tariffs for this corridor.
                                 </p>
                             </div>
 
-                            <!-- Interactive Bus Category Filter Tabs -->
+                            <!-- Clean, Simple Bus Filter Tabs -->
                             <div class="bus-operator-filter-tabs" id="busOperatorTabs" style="display: inline-flex; background: #eef4f0; padding: 4px; border-radius: 12px; gap: 4px; border: 1px solid #d4e3d9;">
                                 <button type="button" class="bus-filter-pill active" data-filter="all" style="padding: 6px 14px; border-radius: 9px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; background: #fff; color: var(--forest); box-shadow: 0 2px 6px rgba(0,0,0,0.08); transition: all 0.2s;">
                                     All ({{ transit.bus_routes|length }})
                                 </button>
                                 <button type="button" class="bus-filter-pill" data-filter="government" style="padding: 6px 14px; border-radius: 9px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; background: transparent; color: #2d5a41; transition: all 0.2s;">
-                                    <i class="fa-solid fa-star" style="color: #f4b63f;"></i> 1st Preference: KSRTC Govt
+                                    <i class="fa-solid fa-building-columns" style="color: #10b981;"></i> KSRTC
                                 </button>
                                 <button type="button" class="bus-filter-pill" data-filter="private" style="padding: 6px 14px; border-radius: 9px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; background: transparent; color: #4338ca; transition: all 0.2s;">
-                                    <i class="fa-solid fa-bus"></i> Private Operators
+                                    <i class="fa-solid fa-bus"></i> Private Buses
                                 </button>
                             </div>
                         </div>
@@ -2070,38 +2011,37 @@
                             {% for r in transit.bus_routes %}
                                 <article class="route-card bus-card-item" 
                                          data-operator="{% if r.is_government or r.operator_type == 'government' %}government{% else %}private{% endif %}"
-                                         style="{% if r.is_government or r.operator_type == 'government' %}border-top: 4.5px solid #14452f; background: #fdfffe;{% else %}border-top: 4.5px solid #6366f1; background: #fbfbfe;{% endif %}">
+                                         style="{% if r.is_government or r.operator_type == 'government' %}border-top: 4px solid #14452f; background: #fdfffe;{% else %}border-top: 4px solid #6366f1; background: #fbfbfe;{% endif %}">
                                     
-                                    <!-- Priority & Operator Type Header -->
-                                    <div class="route-top" style="align-items: flex-start;">
+                                    <!-- Clear Operator & Bus Number Header -->
+                                    <div class="route-top" style="align-items: center; margin-bottom: 8px;">
                                         <div>
                                             {% if r.is_government or r.operator_type == 'government' %}
-                                                <span class="transit-badge badge-ksrtc" style="display: inline-flex; align-items: center; gap: 5px; font-weight: 800; font-size: 11px; background: #14452f; color: #f4b63f; border: 1px solid rgba(244, 182, 63, 0.4);">
-                                                    <i class="fa-solid fa-star"></i> 1st PREFERENCE &bull; KSRTC GOVT
+                                                <span class="transit-badge badge-ksrtc" style="display: inline-flex; align-items: center; gap: 5px; font-weight: 800; font-size: 11.5px; background: #14452f; color: #ffffff; padding: 4px 10px; border-radius: 6px;">
+                                                    <i class="fa-solid fa-building-columns" style="color: #34d399;"></i> KSRTC
                                                 </span>
                                             {% else %}
-                                                <span class="transit-badge" style="display: inline-flex; align-items: center; gap: 5px; font-weight: 800; font-size: 11px; background: #eef2ff; color: #4338ca; border: 1px solid #c7d2fe;">
-                                                    <i class="fa-solid fa-bus"></i> PRIVATE OPERATOR OPTION
+                                                <span class="transit-badge" style="display: inline-flex; align-items: center; gap: 5px; font-weight: 800; font-size: 11.5px; background: #eef2ff; color: #4338ca; border: 1px solid #c7d2fe; padding: 4px 10px; border-radius: 6px;">
+                                                    <i class="fa-solid fa-bus"></i> {{ r.provider|default:"Private Operator" }}
                                                 </span>
                                             {% endif %}
                                         </div>
 
                                         <span style="font-size: 12.5px; font-weight: 800; {% if r.is_government or r.operator_type == 'government' %}color: var(--forest); background: var(--mint);{% else %}color: #3730a3; background: #e0e7ff;{% endif %} padding: 4px 10px; border-radius: 8px;">
-                                            <i class="fa-solid fa-bus-simple"></i> {{ r.bus_number|default:r.route_id }}
+                                            <i class="fa-solid fa-bus-simple"></i> Bus {{ r.bus_number|default:r.route_id }}
                                         </span>
                                     </div>
 
-                                    <h4 class="route-name" style="margin: 8px 0 3px; font-size: 16px; {% if r.is_government or r.operator_type == 'government' %}color: var(--forest);{% else %}color: #312e81;{% endif %} font-weight: 800;">
+                                    <h4 class="route-name" style="margin: 6px 0 4px; font-size: 16px; {% if r.is_government or r.operator_type == 'government' %}color: var(--forest);{% else %}color: #312e81;{% endif %} font-weight: 800;">
                                         {{ r.route_name|default:r.route }}
                                     </h4>
 
-                                    <p style="font-size: 12px; color: #526659; margin: 0 0 6px;">
-                                        <i class="fa-solid fa-building-shield" style="{% if r.is_government or r.operator_type == 'government' %}color: #14452f;{% else %}color: #6366f1;{% endif %}"></i>
-                                        <strong>Operator:</strong> {{ r.provider }}
+                                    <p style="font-size: 12px; color: #526659; margin: 0 0 8px;">
+                                        <strong>Operator:</strong> {{ r.provider|default:"KSRTC" }}
                                     </p>
 
-                                    <!-- Boarding and Alighting Flow -->
-                                    <div class="route-stops-flow" style="font-size: 13px; color: #2a3d31; background: {% if r.is_government or r.operator_type == 'government' %}#f4faf6{% else %}#f5f5ff{% endif %}; padding: 8px 12px; border-radius: 10px; margin: 6px 0;">
+                                    <!-- Clean Boarding and Alighting Flow -->
+                                    <div class="route-stops-flow" style="font-size: 12.5px; color: #2a3d31; background: {% if r.is_government or r.operator_type == 'government' %}#f4faf6{% else %}#f5f5ff{% endif %}; padding: 8px 12px; border-radius: 10px; margin: 6px 0;">
                                         <span style="display: flex; align-items: center; gap: 5px;"><i class="fa-solid fa-circle-dot" style="color: #059669; font-size: 11px;"></i> <strong>Board:</strong> {{ r.boarding_point|default:r.from }}</span>
                                         <i class="fa-solid fa-arrow-right" style="color: var(--leaf); font-size: 11px;"></i>
                                         <span style="display: flex; align-items: center; gap: 5px;"><i class="fa-solid fa-location-dot" style="color: #d97706; font-size: 11px;"></i> <strong>Alight:</strong> {{ r.drop_point|default:r.to }}</span>
@@ -2113,25 +2053,23 @@
                                         </p>
                                     {% endif %}
 
-                                    <!-- Badges: Shakti Scheme for KSRTC / Amenities for Private -->
-                                    {% if r.is_government or r.operator_type == 'government' %}
-                                        <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px;">
+                                    <!-- Feature Badges: Shakti Scheme for Women / Amenities -->
+                                    <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px;">
+                                        {% if r.is_government or r.operator_type == 'government' %}
                                             {% if r.shakti_eligible %}
                                                 <span style="font-size: 11px; font-weight: 700; color: #047857; background: #dcfce7; padding: 2px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
-                                                    <i class="fa-solid fa-certificate"></i> Shakti Scheme Eligible (Free for Women)
+                                                    <i class="fa-solid fa-certificate"></i> Shakti Scheme (Women Free)
                                                 </span>
                                             {% endif %}
                                             <span style="font-size: 11px; font-weight: 600; color: #1e3a8a; background: #dbeafe; padding: 2px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
-                                                <i class="fa-solid fa-shield-check"></i> State Depots &bull; Fixed Tariff
+                                                <i class="fa-solid fa-shield-halved"></i> Fixed State Tariff
                                             </span>
-                                        </div>
-                                    {% elif r.amenities %}
-                                        <div style="margin-top: 4px;">
+                                        {% elif r.amenities %}
                                             <span style="font-size: 11px; font-weight: 600; color: #4338ca; background: #e0e7ff; padding: 3px 9px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
                                                 <i class="fa-solid fa-couch"></i> {{ r.amenities }}
                                             </span>
-                                        </div>
-                                    {% endif %}
+                                        {% endif %}
+                                    </div>
 
                                     <!-- Footer Meta -->
                                     <div class="route-meta" style="margin-top: auto; padding-top: 10px; border-top: 1px dashed #d5ded8;">
@@ -2148,7 +2086,7 @@
                             {% endfor %}
                         </div>
 
-                        <!-- Client-side Tab Switcher Script for Bus Operators -->
+                        <!-- Tab Switcher Script -->
                         <script>
                             document.addEventListener("DOMContentLoaded", function() {
                                 const filterTabs = document.querySelectorAll("#busOperatorTabs .bus-filter-pill");

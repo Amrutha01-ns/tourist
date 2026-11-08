@@ -1597,57 +1597,10 @@
                 initOrUpdateLeafletMap(data.map_data);
             }
 
-            // 3. Update Stepper Timeline
+            // 3. Update Stepper Timeline (Simplified - Unified)
             const stepperWrap = document.getElementById("journeyStepperWrap");
-            const stepperTimeline = document.getElementById("stepperTimeline");
-            const legs = data.journey_legs || [];
-
-            if (stepperWrap && stepperTimeline) {
-                if (legs.length > 0) {
-                    stepperWrap.style.display = "block";
-                    let stepperHtml = "";
-                    legs.forEach(leg => {
-                        const strokeColor = leg.stroke_color || "#14452f";
-                        const badgeClass = leg.badge_class || "badge-ksrtc";
-                        const stopsVia = leg.stops_via ? `<p style="font-size: 12px; color: var(--muted); margin: 4px 0 6px;"><i class="fa-solid fa-road" style="color: var(--leaf);"></i> <em>${leg.stops_via}</em></p>` : "";
-                        const instructions = leg.instructions ? `<p style="font-size: 12px; color: #1e3a2b; margin: 8px 0 0; background: #f4faf6; padding: 6px 10px; border-radius: 6px;"><i class="fa-solid fa-info-circle" style="color: var(--leaf);"></i> ${leg.instructions}</p>` : "";
-
-                        stepperHtml += `
-                            <div class="stepper-leg-item">
-                                <div class="stepper-node-dot" style="border-color: ${strokeColor};">
-                                    ${leg.step_number}
-                                </div>
-                                <article class="stepper-leg-card" style="border-left: 5px solid ${strokeColor};">
-                                    <div class="stepper-leg-header">
-                                        <div style="display:flex; align-items:center; gap:8px;">
-                                            <span class="transit-badge ${badgeClass}">${leg.provider_code || "TRANSIT"}</span>
-                                            <span style="font-size: 13px; font-weight: 800; color: var(--forest); background: var(--mint); padding: 4px 10px; border-radius: 8px;">
-                                                <i class="fa-solid fa-bus-simple"></i> ${leg.bus_number}
-                                            </span>
-                                        </div>
-                                        <span style="font-size: 13px; font-weight: 700; color: var(--forest); background: #fdfaf2; padding: 3px 9px; border-radius: 6px;">
-                                            ${leg.fare} &bull; ${leg.duration}
-                                        </span>
-                                    </div>
-                                    <h4 class="stepper-leg-title">${leg.title}</h4>
-                                    <div class="stepper-flow-row">
-                                        <span><i class="fa-solid fa-circle-dot" style="color: #06b6d4; font-size: 11px;"></i> <strong>Board:</strong> ${leg.boarding_point}</span>
-                                        <i class="fa-solid fa-arrow-right" style="color: var(--leaf); font-size: 12px;"></i>
-                                        <span><i class="fa-solid fa-location-dot" style="color: #d97706; font-size: 11px;"></i> <strong>Alight:</strong> ${leg.drop_point}</span>
-                                    </div>
-                                    ${stopsVia}
-                                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--muted); margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); flex-wrap: wrap; gap: 8px;">
-                                        <span><i class="fa-regular fa-clock" style="color: var(--leaf);"></i> ${leg.departure_status || leg.frequency}</span>
-                                        <span style="font-size: 11px; background: #f3f4f6; padding: 2px 8px; border-radius: 4px; font-weight: 600;">${leg.distance}</span>
-                                    </div>
-                                    ${instructions}
-                                </article>
-                            </div>`;
-                    });
-                    stepperTimeline.innerHTML = stepperHtml;
-                } else {
-                    stepperWrap.style.display = "none";
-                }
+            if (stepperWrap) {
+                stepperWrap.style.display = "none";
             }
 
             // 4. Update Direct Bus Numbers Cards
@@ -1668,24 +1621,37 @@
                     const hours = r.operating_hours ? ` &bull; ${r.operating_hours}` : "";
                     const fare = r.fare || "Standard Tariff";
 
+                    const isGovt = (r.is_government || r.operator_type === "government" || r.provider_code === "KSRTC" || r.provider_code === "NWKRTC");
+                    const operatorBadge = isGovt 
+                        ? `<span class="transit-badge badge-ksrtc"><i class="fa-solid fa-building-columns"></i> KSRTC</span>`
+                        : `<span class="transit-badge" style="background:#eef2ff; color:#4338ca; border:1px solid #c7d2fe;"><i class="fa-solid fa-bus"></i> ${r.provider || "Private"}</span>`;
+
+                    const shaktiBadge = r.shakti_eligible 
+                        ? `<span style="font-size: 11px; font-weight: 700; color: #047857; background: #dcfce7; padding: 2px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;"><i class="fa-solid fa-certificate"></i> Shakti Scheme (Women Free)</span>`
+                        : "";
+
                     busHtml += `
-                        <article class="route-card" style="border-top: 4px solid var(--leaf);">
+                        <article class="route-card bus-card-item" data-operator="${isGovt ? "government" : "private"}" style="border-top: 4px solid ${isGovt ? "#14452f" : "#6366f1"}; background: ${isGovt ? "#fdfffe" : "#fbfbfe"};">
                             <div class="route-top">
-                                <span class="transit-badge ${badgeClass}">${r.provider_code || "BUS"}</span>
-                                <span style="font-size: 13px; font-weight: 800; color: var(--forest); background: var(--mint); padding: 4px 12px; border-radius: 8px;">
+                                <div>${operatorBadge}</div>
+                                <span style="font-size: 12.5px; font-weight: 800; color: ${isGovt ? "var(--forest)" : "#3730a3"}; background: ${isGovt ? "var(--mint)" : "#e0e7ff"}; padding: 4px 10px; border-radius: 8px;">
                                     <i class="fa-solid fa-bus-simple"></i> Bus ${busNumber}
                                 </span>
                             </div>
-                            <h4 class="route-name" style="margin: 8px 0 4px; font-size: 16px; color: var(--forest);">${routeName}</h4>
-                            <div class="route-stops-flow" style="font-size: 13px; color: #2a3d31;">
-                                <span><strong>From:</strong> ${boardPoint}</span>
-                                <i class="fa-solid fa-arrow-right" style="color: var(--leaf); font-size: 12px;"></i>
-                                <span><strong>To:</strong> ${dropPoint}</span>
+                            <h4 class="route-name" style="margin: 8px 0 4px; font-size: 15.5px; color: ${isGovt ? "var(--forest)" : "#312e81"}; font-weight: 800;">${routeName}</h4>
+                            <p style="font-size: 12px; color: #526659; margin: 0 0 6px;">
+                                <strong>Operator:</strong> ${r.provider || (isGovt ? "KSRTC" : "Private Operator")}
+                            </p>
+                            <div class="route-stops-flow" style="font-size: 12.5px; color: #2a3d31; background: ${isGovt ? "#f4faf6" : "#f5f5ff"}; padding: 8px 12px; border-radius: 10px; margin: 6px 0;">
+                                <span style="display: flex; align-items: center; gap: 5px;"><i class="fa-solid fa-circle-dot" style="color: #059669; font-size: 11px;"></i> <strong>Board:</strong> ${boardPoint}</span>
+                                <i class="fa-solid fa-arrow-right" style="color: var(--leaf); font-size: 11px;"></i>
+                                <span style="display: flex; align-items: center; gap: 5px;"><i class="fa-solid fa-location-dot" style="color: #d97706; font-size: 11px;"></i> <strong>Alight:</strong> ${dropPoint}</span>
                             </div>
                             ${stopsVia}
-                            <div class="route-meta">
+                            ${shaktiBadge}
+                            <div class="route-meta" style="margin-top: auto; padding-top: 10px; border-top: 1px dashed #d5ded8;">
                                 <span><i class="fa-regular fa-clock"></i> ${freq}${hours}</span>
-                                <span style="font-size: 13px; font-weight: 700; color: var(--forest); background: #fdfaf2; padding: 2px 8px; border-radius: 6px;">${fare}</span>
+                                <span style="font-size: 13.5px; font-weight: 800; color: ${isGovt ? "var(--forest)" : "#312e81"}; background: #fdfaf2; padding: 3px 10px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.06);">${fare}</span>
                             </div>
                         </article>`;
                 });
