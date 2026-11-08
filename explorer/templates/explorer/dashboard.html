@@ -1981,28 +1981,26 @@
 
                 <!-- Direct Available Bus Numbers & Routes (1st Preference KSRTC + Mentioned Private Operators) -->
                                 <!-- Available Bus Routes Section -->
+                                <!-- Available Bus Routes Section -->
                 {% if transit.bus_routes %}
                     <div id="directBusWrap" style="margin-top: 24px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 16px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 18px;">
                             <div>
                                 <h3 class="routes-group-title" style="margin: 0; font-size: 19px;">
-                                    <i class="fa-solid fa-bus-simple" style="color: var(--leaf);"></i> Available Buses ({{ transit.bus_routes|length }})
+                                    <i class="fa-solid fa-bus-simple" style="color: var(--leaf);"></i> Available Bus Routes
                                 </h3>
                                 <p style="margin: 3px 0 0; font-size: 13px; color: var(--muted);">
-                                    Scheduled public transit routes, timings and fixed tariffs for this corridor.
+                                    Scheduled state network &amp; verified private operators.
                                 </p>
                             </div>
 
-                            <!-- Clean, Simple Bus Filter Tabs -->
-                            <div class="bus-operator-filter-tabs" id="busOperatorTabs" style="display: inline-flex; background: #eef4f0; padding: 4px; border-radius: 12px; gap: 4px; border: 1px solid #d4e3d9;">
-                                <button type="button" class="bus-filter-pill active" data-filter="all" style="padding: 6px 14px; border-radius: 9px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; background: #fff; color: var(--forest); box-shadow: 0 2px 6px rgba(0,0,0,0.08); transition: all 0.2s;">
-                                    All ({{ transit.bus_routes|length }})
+                            <!-- Exactly Two Clean Options: KSRTC & Private -->
+                            <div class="bus-operator-filter-tabs" id="busOperatorTabs" style="display: inline-flex; background: #eef4f0; padding: 4px; border-radius: 999px; gap: 4px; border: 1px solid #d4e3d9;">
+                                <button type="button" class="bus-filter-pill active" data-filter="government" style="padding: 7px 18px; border-radius: 999px; border: none; font-size: 12.5px; font-weight: 800; cursor: pointer; background: #14452f; color: #ffffff; box-shadow: 0 2px 8px rgba(20,69,47,0.25); transition: all 0.2s;">
+                                    <i class="fa-solid fa-building-columns" style="color: #34d399;"></i> KSRTC
                                 </button>
-                                <button type="button" class="bus-filter-pill" data-filter="government" style="padding: 6px 14px; border-radius: 9px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; background: transparent; color: #2d5a41; transition: all 0.2s;">
-                                    <i class="fa-solid fa-building-columns" style="color: #10b981;"></i> KSRTC
-                                </button>
-                                <button type="button" class="bus-filter-pill" data-filter="private" style="padding: 6px 14px; border-radius: 9px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; background: transparent; color: #4338ca; transition: all 0.2s;">
-                                    <i class="fa-solid fa-bus"></i> Private Buses
+                                <button type="button" class="bus-filter-pill" data-filter="private" style="padding: 7px 18px; border-radius: 999px; border: none; font-size: 12.5px; font-weight: 800; cursor: pointer; background: transparent; color: #4338ca; transition: all 0.2s;">
+                                    <i class="fa-solid fa-bus"></i> Private
                                 </button>
                             </div>
                         </div>
@@ -2011,9 +2009,9 @@
                             {% for r in transit.bus_routes %}
                                 <article class="route-card bus-card-item" 
                                          data-operator="{% if r.is_government or r.operator_type == 'government' %}government{% else %}private{% endif %}"
-                                         style="{% if r.is_government or r.operator_type == 'government' %}border-top: 4px solid #14452f; background: #fdfffe;{% else %}border-top: 4px solid #6366f1; background: #fbfbfe;{% endif %}">
+                                         style="{% if r.is_government or r.operator_type == 'government' %}border-top: 4px solid #14452f; background: #fdfffe; display: flex;{% else %}border-top: 4px solid #6366f1; background: #fbfbfe; display: none;{% endif %}">
                                     
-                                    <!-- Clear Operator & Bus Number Header -->
+                                    <!-- Header -->
                                     <div class="route-top" style="align-items: center; margin-bottom: 8px;">
                                         <div>
                                             {% if r.is_government or r.operator_type == 'government' %}
@@ -2022,7 +2020,7 @@
                                                 </span>
                                             {% else %}
                                                 <span class="transit-badge" style="display: inline-flex; align-items: center; gap: 5px; font-weight: 800; font-size: 11.5px; background: #eef2ff; color: #4338ca; border: 1px solid #c7d2fe; padding: 4px 10px; border-radius: 6px;">
-                                                    <i class="fa-solid fa-bus"></i> {{ r.provider|default:"Private Operator" }}
+                                                    <i class="fa-solid fa-bus"></i> {{ r.provider|default:"Private" }}
                                                 </span>
                                             {% endif %}
                                         </div>
@@ -2035,10 +2033,6 @@
                                     <h4 class="route-name" style="margin: 6px 0 4px; font-size: 16px; {% if r.is_government or r.operator_type == 'government' %}color: var(--forest);{% else %}color: #312e81;{% endif %} font-weight: 800;">
                                         {{ r.route_name|default:r.route }}
                                     </h4>
-
-                                    <p style="font-size: 12px; color: #526659; margin: 0 0 8px;">
-                                        <strong>Operator:</strong> {{ r.provider|default:"KSRTC" }}
-                                    </p>
 
                                     <!-- Clean Boarding and Alighting Flow -->
                                     <div class="route-stops-flow" style="font-size: 12.5px; color: #2a3d31; background: {% if r.is_government or r.operator_type == 'government' %}#f4faf6{% else %}#f5f5ff{% endif %}; padding: 8px 12px; border-radius: 10px; margin: 6px 0;">
@@ -2053,7 +2047,7 @@
                                         </p>
                                     {% endif %}
 
-                                    <!-- Feature Badges: Shakti Scheme for Women / Amenities -->
+                                    <!-- Feature Badges -->
                                     <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px;">
                                         {% if r.is_government or r.operator_type == 'government' %}
                                             {% if r.shakti_eligible %}
@@ -2062,7 +2056,7 @@
                                                 </span>
                                             {% endif %}
                                             <span style="font-size: 11px; font-weight: 600; color: #1e3a8a; background: #dbeafe; padding: 2px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
-                                                <i class="fa-solid fa-shield-halved"></i> Fixed State Tariff
+                                                <i class="fa-solid fa-shield-halved"></i> Fixed Tariff
                                             </span>
                                         {% elif r.amenities %}
                                             <span style="font-size: 11px; font-weight: 600; color: #4338ca; background: #e0e7ff; padding: 3px 9px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
@@ -2086,7 +2080,7 @@
                             {% endfor %}
                         </div>
 
-                        <!-- Tab Switcher Script -->
+                        <!-- 2-Option Tab Switcher Script (KSRTC default, Private on click) -->
                         <script>
                             document.addEventListener("DOMContentLoaded", function() {
                                 const filterTabs = document.querySelectorAll("#busOperatorTabs .bus-filter-pill");
@@ -2094,23 +2088,31 @@
                                 if (filterTabs.length && routeCards.length) {
                                     filterTabs.forEach(function(tab) {
                                         tab.addEventListener("click", function() {
+                                            const targetFilter = this.getAttribute("data-filter");
                                             filterTabs.forEach(function(t) {
                                                 t.classList.remove("active");
                                                 t.style.background = "transparent";
-                                                if (t.dataset.filter === "government") t.style.color = "#2d5a41";
-                                                else if (t.dataset.filter === "private") t.style.color = "#4338ca";
-                                                else t.style.color = "var(--forest)";
                                                 t.style.boxShadow = "none";
+                                                if (t.dataset.filter === "government") {
+                                                    t.style.color = "#2d5a41";
+                                                } else {
+                                                    t.style.color = "#4338ca";
+                                                }
                                             });
                                             this.classList.add("active");
-                                            this.style.background = "#fff";
-                                            this.style.color = (this.dataset.filter === "private") ? "#4338ca" : "var(--forest)";
-                                            this.style.boxShadow = "0 2px 6px rgba(0,0,0,0.08)";
+                                            if (targetFilter === "government") {
+                                                this.style.background = "#14452f";
+                                                this.style.color = "#ffffff";
+                                                this.style.boxShadow = "0 2px 8px rgba(20,69,47,0.25)";
+                                            } else {
+                                                this.style.background = "#4338ca";
+                                                this.style.color = "#ffffff";
+                                                this.style.boxShadow = "0 2px 8px rgba(67,56,202,0.25)";
+                                            }
 
-                                            const targetFilter = this.getAttribute("data-filter");
                                             routeCards.forEach(function(card) {
                                                 const op = card.getAttribute("data-operator");
-                                                if (targetFilter === "all" || op === targetFilter) {
+                                                if (op === targetFilter) {
                                                     card.style.display = "flex";
                                                 } else {
                                                     card.style.display = "none";
