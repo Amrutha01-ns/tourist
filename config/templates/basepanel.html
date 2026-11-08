@@ -194,3 +194,80 @@
         </div>
     </div>
 </div>
+
+{% if not request.user.is_authenticated %}
+<!-- TIMED & INTERACTIVE GUEST SIGN-IN / LOGIN POP-UP MODAL -->
+<div class="guest-signup-overlay" id="guestSignupModal" hidden>
+    <div class="guest-signup-card" role="dialog" aria-modal="true" aria-labelledby="guestModalTitle">
+        <!-- Close Button -->
+        <button type="button" class="guest-modal-close" id="guestModalCloseBtn" aria-label="Close dialog">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <!-- Decorative Top Bar -->
+        <div class="guest-modal-bar"></div>
+
+        <div class="guest-modal-body">
+            <!-- Icon Badge -->
+            <div class="guest-modal-badge">
+                <i class="fa-solid fa-compass"></i>
+            </div>
+
+            <span class="guest-modal-tag">KARNATAKA TRAVEL EXPLORER</span>
+            <h2 class="guest-modal-title" id="guestModalTitle">Welcome to Tourist Karnataka!</h2>
+            <p class="guest-modal-subtitle">
+                Sign in or create an account to unlock live bus transit routes, interactive satellite pipelines, and cadastral survey views.
+            </p>
+
+            <!-- Value Props List -->
+            <div class="guest-perks-list">
+                <div class="guest-perk-item">
+                    <div class="perk-icon"><i class="fa-solid fa-bus"></i></div>
+                    <div>
+                        <strong>Live Bus &amp; Transit Pipeline Corridors</strong>
+                        <p>Real-time bus timings, interchange hubs, and simulated travel routes.</p>
+                    </div>
+                </div>
+                <div class="guest-perk-item">
+                    <div class="perk-icon"><i class="fa-solid fa-layer-group"></i></div>
+                    <div>
+                        <strong>Dishank Cadastral Land &amp; House Clarity</strong>
+                        <p>High-resolution satellite view with survey numbers and building footprints.</p>
+                    </div>
+                </div>
+                <div class="guest-perk-item">
+                    <div class="perk-icon"><i class="fa-solid fa-calculator"></i></div>
+                    <div>
+                        <strong>Accurate Trip Expense Calculator</strong>
+                        <p>Calculate realistic transport fares, accommodation, and food tariffs.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions: Both Sign In & Register -->
+            <div class="guest-modal-actions">
+                <a href="{% url 'login' %}" class="guest-btn-primary" id="guestModalSignInBtn">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    <span>Sign In to Your Account</span>
+                </a>
+                <a href="{% url 'register' %}" class="guest-btn-secondary" id="guestModalSignUpBtn">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <span>New here? Create Free Account</span>
+                </a>
+            </div>
+
+            <button type="button" class="guest-btn-dismiss" id="guestModalDismissBtn">
+                Explore as guest for now &rarr;
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Guest Explorer Pill -->
+<div class="guest-floating-pill" id="guestFloatingPill">
+    <button type="button" class="guest-float-link" id="guestFloatBtn" title="Sign In or Create Account">
+        <i class="fa-solid fa-compass" style="color: #f4b63f;"></i>
+        <span>Sign In / Join</span>
+    </button>
+</div>
+{% endif %}
