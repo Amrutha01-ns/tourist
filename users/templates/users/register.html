@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Account | Tourist Karnataka</title>
+    <title>Create Account | Tourist Karnataka Dashboard</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,16 +13,16 @@
     
     <style>
         :root {
-            --brand-green-deep: #0e3725;
-            --brand-green-mid: #14452f;
-            --brand-green-light: #2f7d4f;
-            --brand-gold: #f4b63f;
-            --brand-gold-warm: #d97706;
-            --brand-cream: #faf8f5;
-            --text-dark: #13241b;
-            --text-muted: #52665a;
-            --border-soft: rgba(20, 69, 47, 0.12);
-            --card-radius: 24px;
+            --bg-night: #060e0a;
+            --glass-bg: rgba(10, 24, 18, 0.78);
+            --glass-card: rgba(18, 38, 29, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --neon-emerald: #10b981;
+            --neon-cyan: #06b6d4;
+            --neon-gold: #f59e0b;
+            --neon-rose: #f43f5e;
+            --text-main: #f3f7f4;
+            --text-dim: #94a39b;
         }
 
         * {
@@ -33,8 +33,8 @@
 
         body {
             font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: #091a12;
-            color: #1a2e22;
+            background: #040906;
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -44,373 +44,563 @@
             overflow-x: hidden;
         }
 
-        /* Ambient Background Lighting */
-        .ambient-glow-1 {
+        .ambient-blob-1 {
             position: fixed;
-            top: -15%;
-            left: -10%;
+            top: -20%;
+            left: -15%;
+            width: 65vw;
+            height: 65vw;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.28) 0%, rgba(6, 182, 212, 0.12) 40%, transparent 70%);
+            filter: blur(100px);
+            pointer-events: none;
+            z-index: 0;
+            animation: floatGlow 12s ease-in-out infinite alternate;
+        }
+
+        .ambient-blob-2 {
+            position: fixed;
+            bottom: -20%;
+            right: -15%;
             width: 60vw;
             height: 60vw;
-            background: radial-gradient(circle, rgba(47, 125, 79, 0.35) 0%, transparent 65%);
-            filter: blur(80px);
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.22) 0%, rgba(16, 185, 129, 0.12) 45%, transparent 70%);
+            filter: blur(110px);
             pointer-events: none;
             z-index: 0;
+            animation: floatGlow 15s ease-in-out infinite alternate-reverse;
         }
 
-        .ambient-glow-2 {
-            position: fixed;
-            bottom: -15%;
-            right: -10%;
-            width: 55vw;
-            height: 55vw;
-            background: radial-gradient(circle, rgba(244, 182, 63, 0.22) 0%, transparent 65%);
-            filter: blur(90px);
-            pointer-events: none;
-            z-index: 0;
+        @keyframes floatGlow {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(40px, -30px) scale(1.08); }
         }
 
-        /* Main Showcase Container */
-        .auth-container {
+        .dashboard-container {
             position: relative;
             z-index: 1;
             width: 100%;
-            max-width: 1160px;
-            min-height: 680px;
-            background: rgba(255, 255, 255, 0.96);
-            border-radius: var(--card-radius);
-            box-shadow: 0 35px 80px -20px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.2);
+            max-width: 1360px;
+            min-height: 720px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(28px) saturate(1.3);
+            -webkit-backdrop-filter: blur(28px) saturate(1.3);
+            border-radius: 28px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 35px 90px -20px rgba(0, 0, 0, 0.8), 0 0 50px rgba(16, 185, 129, 0.12);
             display: grid;
-            grid-template-columns: 1.15fr 1fr;
+            grid-template-columns: 1.55fr 1fr;
             overflow: hidden;
         }
 
-        /* LEFT SIDE: Cinematic Karnataka Showcase */
-        .showcase-pane {
-            position: relative;
-            background: linear-gradient(145deg, #072216 0%, #113825 50%, #184b33 100%);
-            color: #ffffff;
-            padding: 44px 44px;
+        /* LEFT PANE: Visualization */
+        .vis-pane {
+            padding: 36px 40px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            overflow: hidden;
-        }
-
-        /* Photo Montage Collage Background */
-        .showcase-bg-collage {
-            position: absolute;
-            inset: 0;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(2, 1fr);
-            opacity: 0.28;
-            filter: saturate(1.2) contrast(1.1);
-            pointer-events: none;
-        }
-
-        .showcase-bg-collage img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .showcase-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(7, 34, 22, 0.94) 0%, rgba(14, 55, 37, 0.88) 55%, rgba(20, 69, 47, 0.92) 100%);
-            pointer-events: none;
-        }
-
-        .showcase-content {
             position: relative;
-            z-index: 2;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            gap: 28px;
+            background: linear-gradient(135deg, rgba(8, 20, 15, 0.7) 0%, rgba(12, 30, 22, 0.5) 100%);
+            border-right: 1px solid var(--glass-border);
         }
 
-        .showcase-header {
+        .vis-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 24px;
         }
 
-        .brand-badge {
-            display: inline-flex;
+        .vis-brand-col {
+            display: flex;
             align-items: center;
             gap: 12px;
-            text-decoration: none;
-            color: #ffffff;
         }
 
-        .brand-logo-hex {
+        .brand-icon-box {
             width: 44px;
             height: 44px;
-            background: linear-gradient(135deg, #f4b63f, #d97706);
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #14452f;
             font-size: 20px;
-            box-shadow: 0 8px 20px rgba(244, 182, 63, 0.4);
+            color: #040906;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.45);
         }
 
-        .brand-text-col {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .brand-title-main {
-            font-family: "Cinzel", serif;
-            font-size: 22px;
+        .vis-title-col h2 {
+            font-size: 20px;
             font-weight: 800;
-            letter-spacing: 0.5px;
-            line-height: 1.1;
+            color: #ffffff;
+            letter-spacing: -0.3px;
         }
 
-        .brand-sub-kannada {
-            font-size: 11px;
-            color: #f4b63f;
+        .vis-title-col p {
+            font-size: 12.5px;
+            color: var(--text-dim);
+            font-weight: 500;
+        }
+
+        .filter-pills {
+            display: flex;
+            gap: 6px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 4px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            font-family: inherit;
+            font-size: 12px;
             font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            padding: 6px 14px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .showcase-hero {
+        .filter-btn.active, .filter-btn:hover {
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .vis-body {
+            display: grid;
+            grid-template-columns: 1fr 1.15fr;
+            gap: 28px;
+            align-items: center;
             margin: auto 0;
         }
 
-        .kannada-quote-banner {
+        .stats-col {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .hero-metric-card {
+            background: var(--glass-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 18px 22px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .metric-label-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .metric-label {
+            font-size: 12.5px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 700;
+        }
+
+        .metric-badge-trend {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            background: rgba(244, 182, 63, 0.15);
-            border: 1px solid rgba(244, 182, 63, 0.35);
-            padding: 6px 14px;
-            border-radius: 999px;
-            font-size: 12.5px;
-            color: #ffd88a;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-
-        .showcase-hero h2 {
-            font-size: 32px;
+            gap: 4px;
+            background: rgba(16, 185, 129, 0.18);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            color: #34d399;
+            font-size: 11.5px;
             font-weight: 800;
-            line-height: 1.25;
+            padding: 3px 8px;
+            border-radius: 999px;
+        }
+
+        .metric-value-huge {
+            font-size: 38px;
+            font-weight: 900;
             letter-spacing: -0.5px;
-            margin-bottom: 14px;
+            color: #ffffff;
+            line-height: 1.1;
+            font-feature-settings: "tnum";
+            text-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
         }
 
-        .showcase-hero h2 span {
-            background: linear-gradient(135deg, #f4b63f 0%, #ffe9a6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .metric-sub {
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-top: 5px;
         }
 
-        .showcase-hero p {
-            font-size: 15px;
-            color: #d1ded6;
-            line-height: 1.55;
-            max-width: 480px;
-            margin-bottom: 24px;
+        .circuits-bars-card {
+            background: var(--glass-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 18px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
         }
 
-        /* Feature Pills */
-        .feature-grid {
+        .circuit-bar-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .circuit-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .circuit-name {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-main);
+        }
+
+        .circuit-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .circuit-val {
+            color: var(--text-dim);
+            font-feature-settings: "tnum";
+        }
+
+        .progress-track {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 999px;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmerBar 2.5s infinite;
+        }
+
+        @keyframes shimmerBar {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .sparklines-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-bottom: 24px;
         }
 
-        .feature-item {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            padding: 12px 14px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all .2s ease;
-        }
-
-        .feature-item:hover {
-            background: rgba(255, 255, 255, 0.14);
-            transform: translateY(-2px);
-            border-color: rgba(244, 182, 63, 0.4);
-        }
-
-        .feature-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 10px;
-            background: rgba(244, 182, 63, 0.2);
-            color: #f4b63f;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            flex-shrink: 0;
-        }
-
-        .feature-text {
-            font-size: 12.5px;
-            font-weight: 600;
-            color: #f0f7f3;
-            line-height: 1.3;
-        }
-
-        /* Live Corridor Mini Preview Card */
-        .live-preview-card {
-            background: rgba(0, 0, 0, 0.35);
-            border: 1px solid rgba(244, 182, 63, 0.3);
+        .sparkline-card {
+            background: var(--glass-card);
+            border: 1px solid var(--glass-border);
             border-radius: 16px;
-            padding: 14px 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 14px;
-        }
-
-        .preview-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .pulse-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #10b981;
-            box-shadow: 0 0 10px #10b981;
-            animation: pulse-ring 2s infinite;
-        }
-
-        @keyframes pulse-ring {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-        }
-
-        .preview-title {
-            font-size: 13px;
-            font-weight: 700;
-            color: #ffffff;
-        }
-
-        .preview-sub {
-            font-size: 11.5px;
-            color: #9cd4b5;
-        }
-
-        .preview-badge {
-            background: linear-gradient(135deg, #f4b63f, #d97706);
-            color: #14452f;
-            font-size: 11px;
-            font-weight: 800;
-            padding: 5px 10px;
-            border-radius: 999px;
-            white-space: nowrap;
-        }
-
-        /* RIGHT SIDE: Auth Form Pane */
-        .auth-pane {
-            background: #ffffff;
-            padding: 44px 44px;
+            padding: 14px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.25s ease, border-color 0.25s ease;
         }
 
-        /* Top Bar: Back & Mode Switch */
+        .sparkline-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(16, 185, 129, 0.35);
+        }
+
+        .sparkline-title {
+            font-size: 11px;
+            color: var(--text-dim);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sparkline-val {
+            font-size: 20px;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 4px 0 2px;
+        }
+
+        .sparkline-svg {
+            width: 100%;
+            height: 38px;
+            margin-top: 4px;
+        }
+
+        /* Complete Karnataka Map */
+        .karnataka-map-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            min-height: 420px;
+        }
+
+        .map-svg-container {
+            width: 100%;
+            max-width: 380px;
+            height: auto;
+            filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.6));
+            position: relative;
+        }
+
+        .karnataka-silhouette {
+            fill: rgba(6, 20, 14, 0.85);
+            stroke: #10b981;
+            stroke-width: 2.5;
+            stroke-linejoin: round;
+            filter: drop-shadow(0 0 12px rgba(16, 185, 129, 0.45));
+            transition: all 0.4s ease;
+        }
+
+        .karnataka-silhouette:hover {
+            stroke: #34d399;
+            filter: drop-shadow(0 0 20px rgba(52, 211, 153, 0.65));
+        }
+
+        .map-contour {
+            fill: none;
+            stroke: rgba(16, 185, 129, 0.18);
+            stroke-width: 1;
+            stroke-dasharray: 4 4;
+        }
+
+        .transit-corridor-line {
+            fill: none;
+            stroke-linecap: round;
+            stroke-dasharray: 6 8;
+            animation: flowTransit 3s linear infinite;
+        }
+
+        .line-emerald { stroke: #10b981; stroke-width: 2.2; filter: drop-shadow(0 0 6px #10b981); }
+        .line-cyan { stroke: #06b6d4; stroke-width: 2; filter: drop-shadow(0 0 6px #06b6d4); }
+        .line-gold { stroke: #f59e0b; stroke-width: 2; filter: drop-shadow(0 0 6px #f59e0b); }
+
+        @keyframes flowTransit {
+            from { stroke-dashoffset: 140; }
+            to { stroke-dashoffset: 0; }
+        }
+
+        .map-node {
+            cursor: pointer;
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .map-node:hover {
+            transform: scale(1.35);
+        }
+
+        .node-pulse-ring {
+            animation: nodeBeacon 2.2s infinite cubic-bezier(0, 0.2, 0.8, 1);
+            transform-origin: center;
+        }
+
+        @keyframes nodeBeacon {
+            0% { r: 5px; opacity: 0.9; }
+            100% { r: 18px; opacity: 0; }
+        }
+
+        .node-center {
+            filter: drop-shadow(0 0 8px currentColor);
+        }
+
+        .node-label {
+            font-family: "DM Sans", sans-serif;
+            font-size: 11px;
+            font-weight: 800;
+            fill: #ffffff;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
+            pointer-events: none;
+        }
+
+        .floating-spot-card {
+            position: absolute;
+            bottom: 12px;
+            right: 0;
+            background: rgba(10, 26, 18, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            border-radius: 16px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 16px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(16, 185, 129, 0.2);
+            transition: all 0.3s ease;
+            z-index: 5;
+            max-width: 260px;
+        }
+
+        .spot-thumb {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
+        }
+
+        .spot-info h4 {
+            font-size: 13px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.2;
+        }
+
+        .spot-info p {
+            font-size: 11px;
+            color: #34d399;
+            font-weight: 700;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .vis-footer-bar {
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            padding: 10px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .pulse-live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            color: #d1ded6;
+            font-weight: 600;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 10px #10b981;
+            animation: livePulse 1.8s infinite;
+        }
+
+        @keyframes livePulse {
+            0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        /* RIGHT PANE: Auth Form */
+        .auth-pane {
+            background: rgba(14, 30, 22, 0.94);
+            padding: 40px 38px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
         .auth-top-bar {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 24px;
+            margin-bottom: 22px;
         }
 
         .back-link {
             display: inline-flex;
             align-items: center;
             gap: 7px;
-            color: #2f7d4f;
+            color: #34d399;
             text-decoration: none;
-            font-size: 13.5px;
+            font-size: 13px;
             font-weight: 700;
             padding: 6px 14px;
             border-radius: 999px;
-            background: #f0f7f3;
-            border: 1px solid rgba(47, 125, 79, 0.2);
-            transition: all .2s ease;
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            transition: all 0.2s ease;
         }
 
         .back-link:hover {
-            color: #14452f;
-            background: #e2efe7;
+            color: #ffffff;
+            background: rgba(16, 185, 129, 0.25);
             transform: translateX(-2px);
         }
 
-        /* Tab Switcher */
         .tab-switcher {
             display: flex;
-            background: #edf4ef;
+            background: rgba(0, 0, 0, 0.45);
             border-radius: 999px;
-            padding: 4px;
-            gap: 4px;
+            padding: 3px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .tab-btn {
             text-decoration: none;
             padding: 6px 16px;
             border-radius: 999px;
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 700;
-            color: #52665a;
-            transition: all .2s ease;
+            color: var(--text-dim);
+            transition: all 0.2s ease;
         }
 
         .tab-btn.active {
-            background: #14452f;
-            color: #ffffff;
-            box-shadow: 0 2px 8px rgba(20, 69, 47, 0.2);
+            background: #10b981;
+            color: #040906;
+            box-shadow: 0 2px 10px rgba(16, 185, 129, 0.4);
         }
 
-        .tab-btn:hover:not(.active) {
-            color: #14452f;
-        }
-
-        /* Form Header */
         .form-header {
-            margin-bottom: 22px;
+            margin-bottom: 24px;
         }
 
         .form-title {
             font-size: 26px;
             font-weight: 800;
-            color: #14452f;
+            color: #ffffff;
             letter-spacing: -0.4px;
             margin-bottom: 6px;
         }
 
         .form-sub {
-            font-size: 14px;
-            color: #556b5f;
-            line-height: 1.4;
+            font-size: 13.5px;
+            color: var(--text-dim);
+            line-height: 1.45;
         }
 
-        /* Notifications */
         .alert-box {
             padding: 12px 16px;
             border-radius: 12px;
-            font-size: 13.5px;
-            line-height: 1.45;
+            font-size: 13px;
+            line-height: 1.4;
             margin-bottom: 18px;
             display: flex;
             align-items: flex-start;
@@ -418,39 +608,27 @@
         }
 
         .alert-error {
-            background: #fef2f2;
-            color: #991b1b;
-            border: 1px solid #fecaca;
+            background: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.35);
         }
 
         .alert-success {
-            background: #f0fdf4;
-            color: #166534;
-            border: 1px solid #bbf7d0;
+            background: rgba(16, 185, 129, 0.15);
+            color: #86efac;
+            border: 1px solid rgba(16, 185, 129, 0.35);
         }
 
-        .alert-info {
-            background: #eff6ff;
-            color: #1e40af;
-            border: 1px solid #bfdbfe;
-        }
-
-        /* Form Elements */
         .form-group {
             margin-bottom: 16px;
         }
 
-        .form-label-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 6px;
-        }
-
         .form-label {
-            font-size: 13px;
+            display: block;
+            font-size: 12.5px;
             font-weight: 700;
-            color: #243b2d;
+            color: #d1ded6;
+            margin-bottom: 6px;
         }
 
         .input-wrap {
@@ -462,63 +640,61 @@
         .input-icon {
             position: absolute;
             left: 14px;
-            color: #83978b;
-            font-size: 15px;
+            color: #6ee7b7;
+            font-size: 14px;
             pointer-events: none;
         }
 
         .form-input {
             width: 100%;
             padding: 12px 14px 12px 42px;
-            border: 1.5px solid #d1ded6;
+            border: 1.5px solid rgba(255, 255, 255, 0.12);
             border-radius: 12px;
-            font-size: 14.5px;
+            font-size: 14px;
             font-family: inherit;
-            color: #14452f;
-            background: #fafcfb;
-            transition: all .2s ease;
+            color: #ffffff;
+            background: rgba(0, 0, 0, 0.4);
+            transition: all 0.2s ease;
         }
 
         .form-input:focus {
             outline: none;
-            border-color: #2f7d4f;
-            background: #ffffff;
-            box-shadow: 0 0 0 3px rgba(47, 125, 79, 0.15);
+            border-color: #10b981;
+            background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
         }
 
-        /* Buttons */
         .btn-submit-main {
             width: 100%;
             padding: 13px 20px;
-            background: linear-gradient(135deg, #14452f 0%, #2f7d4f 100%);
-            color: #ffffff;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #040906;
             border: none;
             border-radius: 12px;
             font-size: 15px;
-            font-weight: 700;
+            font-weight: 800;
             font-family: inherit;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            box-shadow: 0 8px 20px rgba(20, 69, 47, 0.25);
-            transition: all .2s ease;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+            transition: all 0.2s ease;
             margin-top: 8px;
         }
 
         .btn-submit-main:hover {
-            background: linear-gradient(135deg, #0e3725 0%, #23653f 100%);
             transform: translateY(-2px);
-            box-shadow: 0 12px 24px rgba(20, 69, 47, 0.32);
+            box-shadow: 0 12px 30px rgba(16, 185, 129, 0.55);
+            background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
         }
 
-        /* Demo Quick-Fill Bar */
         .quick-fill-bar {
             margin-top: 14px;
             padding: 10px 14px;
-            background: #f7faf8;
-            border: 1px dashed #b8d4c3;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px dashed rgba(16, 185, 129, 0.3);
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -527,29 +703,28 @@
         }
 
         .quick-fill-text {
-            font-size: 12.5px;
-            color: #486152;
+            font-size: 12px;
+            color: var(--text-dim);
             font-weight: 600;
         }
 
         .btn-fill-pill {
-            background: #edf7f0;
-            color: #14452f;
-            border: 1px solid #b8d4c3;
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.4);
             padding: 4px 10px;
             border-radius: 999px;
-            font-size: 12px;
-            font-weight: 700;
+            font-size: 11.5px;
+            font-weight: 800;
             cursor: pointer;
-            transition: all .15s ease;
+            transition: all 0.15s ease;
         }
 
         .btn-fill-pill:hover {
-            background: #14452f;
-            color: #ffffff;
+            background: #10b981;
+            color: #040906;
         }
 
-        /* Secondary OTP Option Link */
         .otp-fallback-row {
             margin-top: 12px;
             text-align: center;
@@ -558,77 +733,38 @@
         .btn-link-otp {
             background: none;
             border: none;
-            color: #2f7d4f;
+            color: #34d399;
             font-size: 12.5px;
             font-weight: 700;
             cursor: pointer;
             text-decoration: underline;
         }
 
-        .btn-link-otp:hover {
-            color: #14452f;
-        }
-
-        /* OTP Input Form */
-        .otp-input-wrap {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .otp-input {
-            width: 220px;
-            padding: 14px;
-            font-size: 26px;
-            font-weight: 800;
-            letter-spacing: 8px;
-            text-align: center;
-            border: 2px solid #2f7d4f;
-            border-radius: 14px;
-            background: #fafcfb;
-            color: #14452f;
-            outline: none;
-            box-shadow: 0 4px 14px rgba(47, 125, 79, 0.15);
-        }
-
-        .dev-otp-banner {
-            background: #fffbeb;
-            border: 1px solid #fef3c7;
-            padding: 10px 14px;
-            border-radius: 12px;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        /* Footer */
         .auth-footer-row {
             margin-top: 20px;
             padding-top: 14px;
-            border-top: 1px solid #edf2ef;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
             text-align: center;
-            font-size: 13.5px;
-            color: #61776b;
+            font-size: 13px;
+            color: var(--text-dim);
         }
 
         .auth-footer-row a {
-            color: #2f7d4f;
+            color: #34d399;
             font-weight: 700;
             text-decoration: none;
         }
 
         .auth-footer-row a:hover {
             text-decoration: underline;
-            color: #14452f;
         }
 
-        /* Responsive Breakpoints */
-        @media (max-width: 920px) {
-            .auth-container {
+        @media (max-width: 1080px) {
+            .dashboard-container {
                 grid-template-columns: 1fr;
-                max-width: 520px;
+                max-width: 600px;
             }
-            .showcase-pane {
+            .vis-pane {
                 display: none;
             }
             .auth-pane {
@@ -639,105 +775,260 @@
 </head>
 <body>
 
-    <!-- Ambient Glowing Backgrounds -->
-    <div class="ambient-glow-1"></div>
-    <div class="ambient-glow-2"></div>
+    <div class="ambient-blob-1"></div>
+    <div class="ambient-blob-2"></div>
 
-    <div class="auth-container">
+    <div class="dashboard-container">
 
-        <!-- LEFT PANE: Cinematic Karnataka Showcase -->
-        <div class="showcase-pane">
-            <div class="showcase-bg-collage">
-                <img src="{% static 'users/images/mysore.jpg' %}" alt="Mysore Palace">
-                <img src="{% static 'users/images/hampi.jpg' %}" alt="Hampi Heritage">
-                <img src="{% static 'users/images/madikeri.jpg' %}" alt="Coorg Hills">
-                <img src="{% static 'users/images/shivamogga.jpg' %}" alt="Jog Falls">
-            </div>
-            <div class="showcase-overlay"></div>
+        <!-- LEFT PANE: Complete Karnataka Map & Tourism Analytics -->
+        <div class="vis-pane">
 
-            <div class="showcase-content">
-                <!-- Brand Header -->
-                <div class="showcase-header">
-                    <a href="{% url 'dashboard' %}" class="brand-badge">
-                        <div class="brand-logo-hex">
-                            <i class="fa-solid fa-compass"></i>
-                        </div>
-                        <div class="brand-text-col">
-                            <span class="brand-title-main">Tourist</span>
-                            <span class="brand-sub-kannada">Karnataka Journeys</span>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Showcase Centerpiece -->
-                <div class="showcase-hero">
-                    <div class="kannada-quote-banner">
-                        <i class="fa-solid fa-crown"></i>
-                        <span>ಕರ್ನಾಟಕದ ಪರಂಪರೆ & ಮಂಜಿನ ಗಿರಿಧಾಮಗಳು</span>
+            <!-- Top Header -->
+            <div class="vis-header">
+                <div class="vis-brand-col">
+                    <div class="brand-icon-box">
+                        <i class="fa-solid fa-compass"></i>
                     </div>
-                    <h2>Explore Karnataka With <span>Official Transit</span> & Precision Maps</h2>
-                    <p>
-                        Your gateway to UNESCO world heritage monuments, misty coffee highlands, and verified KSRTC government routes connecting all 31 districts.
-                    </p>
-
-                    <!-- Features Grid -->
-                    <div class="feature-grid">
-                        <div class="feature-item">
-                            <div class="feature-icon"><i class="fa-solid fa-bus"></i></div>
-                            <div class="feature-text">
-                                <strong>1st Preference KSRTC</strong><br>
-                                Airavat, Rajahamsa & Shakti
-                            </div>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon"><i class="fa-solid fa-map-location-dot"></i></div>
-                            <div class="feature-text">
-                                <strong>Dishank & Bhoomi</strong><br>
-                                Building & Sy. No. Cadastral
-                            </div>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon"><i class="fa-solid fa-wallet"></i></div>
-                            <div class="feature-text">
-                                <strong>Expense Tracker</strong><br>
-                                Multi-leg budget tracker
-                            </div>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon"><i class="fa-solid fa-route"></i></div>
-                            <div class="feature-text">
-                                <strong>31 Districts</strong><br>
-                                Curated authentic circuits
-                            </div>
-                        </div>
+                    <div class="vis-title-col">
+                        <h2>Tourism Statistics</h2>
+                        <p>Data visualization & analytics of Karnataka tourism</p>
                     </div>
                 </div>
 
-                <!-- Live Transit Pulse Card -->
-                <div class="live-preview-card">
-                    <div class="preview-left">
-                        <div class="pulse-dot"></div>
-                        <div>
-                            <div class="preview-title">Live Karnataka Transit Corridor Active</div>
-                            <div class="preview-sub">KSRTC, NWKRTC & Verified Private Fleets</div>
-                        </div>
-                    </div>
-                    <div class="preview-badge">Shakti Scheme 🌟</div>
+                <!-- Filter Pills -->
+                <div class="filter-pills">
+                    <button type="button" class="filter-btn active" onclick="switchFilter('all', this)">All</button>
+                    <button type="button" class="filter-btn" onclick="switchFilter('heritage', this)">Heritage</button>
+                    <button type="button" class="filter-btn" onclick="switchFilter('ghats', this)">Western Ghats</button>
+                    <button type="button" class="filter-btn" onclick="switchFilter('coastal', this)">Coastal</button>
                 </div>
             </div>
+
+            <!-- Main Data Visual Body -->
+            <div class="vis-body">
+
+                <!-- Left Column: Metrics & Progress Bars & Mini Wave Charts -->
+                <div class="stats-col">
+
+                    <!-- Big Hero Metric -->
+                    <div class="hero-metric-card">
+                        <div class="metric-label-row">
+                            <span class="metric-label" id="metricLabel">Users Travelled</span>
+                            <span class="metric-badge-trend">▲ 14.8%</span>
+                        </div>
+                        <div class="metric-value-huge" id="metricNumber">4,532,234</div>
+                        <div class="metric-sub" id="metricSub">Public transit & verified passenger journeys</div>
+                    </div>
+
+                    <!-- Circuit Progress Breakdown -->
+                    <div class="circuits-bars-card">
+                        <!-- Mysore -->
+                        <div class="circuit-bar-item">
+                            <div class="circuit-meta">
+                                <span class="circuit-name">
+                                    <span class="circuit-dot" style="background:#06b6d4;"></span>
+                                    <span>Mysuru Heritage Corridor</span>
+                                </span>
+                                <span class="circuit-val" id="barVal1">1,654,000</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" id="bar1" style="width: 88%; background: linear-gradient(90deg, #06b6d4, #3b82f6);"></div>
+                            </div>
+                        </div>
+
+                        <!-- Coorg -->
+                        <div class="circuit-bar-item">
+                            <div class="circuit-meta">
+                                <span class="circuit-name">
+                                    <span class="circuit-dot" style="background:#10b981;"></span>
+                                    <span>Coorg & Western Ghats</span>
+                                </span>
+                                <span class="circuit-val" id="barVal2">1,234,000</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" id="bar2" style="width: 76%; background: linear-gradient(90deg, #10b981, #059669);"></div>
+                            </div>
+                        </div>
+
+                        <!-- Hampi -->
+                        <div class="circuit-bar-item">
+                            <div class="circuit-meta">
+                                <span class="circuit-name">
+                                    <span class="circuit-dot" style="background:#f59e0b;"></span>
+                                    <span>Hampi & Vijayanagara</span>
+                                </span>
+                                <span class="circuit-val" id="barVal3">884,500</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" id="bar3" style="width: 64%; background: linear-gradient(90deg, #f59e0b, #d97706);"></div>
+                            </div>
+                        </div>
+
+                        <!-- Coastal -->
+                        <div class="circuit-bar-item">
+                            <div class="circuit-meta">
+                                <span class="circuit-name">
+                                    <span class="circuit-dot" style="background:#ec4899;"></span>
+                                    <span>Karavali & Udupi Coast</span>
+                                </span>
+                                <span class="circuit-val" id="barVal4">759,734</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" id="bar4" style="width: 52%; background: linear-gradient(90deg, #ec4899, #8b5cf6);"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Sparkline Cards -->
+                    <div class="sparklines-row">
+                        <div class="sparkline-card">
+                            <div>
+                                <div class="sparkline-title">Live Transit Flow</div>
+                                <div class="sparkline-val">24,850</div>
+                            </div>
+                            <svg class="sparkline-svg" viewBox="0 0 120 40">
+                                <defs>
+                                    <linearGradient id="cyanWaveGradReg" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.5"/>
+                                        <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.0"/>
+                                    </linearGradient>
+                                </defs>
+                                <path d="M 0,35 Q 20,10 40,24 T 80,12 T 120,5 L 120,40 L 0,40 Z" fill="url(#cyanWaveGradReg)"/>
+                                <path d="M 0,35 Q 20,10 40,24 T 80,12 T 120,5" fill="none" stroke="#06b6d4" stroke-width="2.5"/>
+                            </svg>
+                        </div>
+
+                        <div class="sparkline-card">
+                            <div>
+                                <div class="sparkline-title">KSRTC Priority</div>
+                                <div class="sparkline-val">98.4%</div>
+                            </div>
+                            <svg class="sparkline-svg" viewBox="0 0 120 40">
+                                <defs>
+                                    <linearGradient id="amberWaveGradReg" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.5"/>
+                                        <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.0"/>
+                                    </linearGradient>
+                                </defs>
+                                <path d="M 0,30 Q 30,5 60,18 T 100,8 T 120,2 L 120,40 L 0,40 Z" fill="url(#amberWaveGradReg)"/>
+                                <path d="M 0,30 Q 30,5 60,18 T 100,8 T 120,2" fill="none" stroke="#f59e0b" stroke-width="2.5"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right Column: Complete Interactive Karnataka Map -->
+                <div class="karnataka-map-wrapper">
+                    <svg class="map-svg-container" viewBox="0 0 400 500">
+                        <defs>
+                            <linearGradient id="karnatakaGlassGradReg" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#082015" stop-opacity="0.95"/>
+                                <stop offset="50%" stop-color="#0d2e20" stop-opacity="0.85"/>
+                                <stop offset="100%" stop-color="#06180f" stop-opacity="0.95"/>
+                            </linearGradient>
+                        </defs>
+
+                        <!-- Smooth Complete Karnataka Boundary Silhouette -->
+                        <path class="karnataka-silhouette"
+                              d="M 250,30 C 260.0,29.2 270.0,34.2 280,45 C 290.0,55.8 306.7,80.0 310,95 C 313.3,110.0 297.5,124.2 300,135 C 302.5,145.8 326.7,150.0 325,160 C 323.3,170.0 299.2,185.8 290,195 C 280.8,204.2 270.8,205.0 270,215 C 269.2,225.0 287.5,242.5 285,255 C 282.5,267.5 255.8,276.7 255,290 C 254.2,303.3 270.0,324.2 280,335 C 290.0,345.8 301.7,349.2 315,355 C 328.3,360.8 355.0,363.3 360,370 C 365.0,376.7 354.2,389.2 345,395 C 335.8,400.8 315.0,400.0 305,405 C 295.0,410.0 294.2,415.0 285,425 C 275.8,435.0 260.0,455.0 250,465 C 240.0,475.0 233.3,485.8 225,485 C 216.7,484.2 208.3,468.3 200,460 C 191.7,451.7 184.2,442.5 175,435 C 165.8,427.5 153.3,423.3 145,415 C 136.7,406.7 130.0,397.5 125,385 C 120.0,372.5 118.3,355.8 115,340 C 111.7,324.2 108.3,306.7 105,290 C 101.7,273.3 97.8,255.0 95,240 C 92.2,225.0 87.2,213.3 88,200 C 88.8,186.7 95.5,171.7 100,160 C 104.5,148.3 107.5,139.2 115,130 C 122.5,120.8 134.2,114.2 145,105 C 155.8,95.8 167.5,84.2 180,75 C 192.5,65.8 208.3,57.5 220,50 C 231.7,42.5 240.0,30.8 250,30 Z"
+                              fill="url(#karnatakaGlassGradReg)"/>
+
+                        <!-- Internal Contour Grid Lines -->
+                        <path class="map-contour" d="M 100,160 Q 200,180 290,195"/>
+                        <path class="map-contour" d="M 105,290 Q 180,310 280,335"/>
+                        <path class="map-contour" d="M 125,385 Q 210,400 305,405"/>
+
+                        <!-- Animated Transit Trajectory Arcs -->
+                        <path class="transit-corridor-line line-cyan" d="M 295,385 Q 260,395 210,430"/>
+                        <path class="transit-corridor-line line-emerald" d="M 210,430 Q 185,415 155,410"/>
+                        <path class="transit-corridor-line line-gold" d="M 295,385 Q 285,300 255,215"/>
+                        <path class="transit-corridor-line line-emerald" d="M 295,385 Q 235,360 165,330"/>
+                        <path class="transit-corridor-line line-cyan" d="M 165,330 Q 135,315 115,310"/>
+                        <path class="transit-corridor-line line-gold" d="M 255,215 Q 205,235 160,260"/>
+
+                        <!-- Destination Pins with Radar Beacons -->
+                        <g class="map-node" transform="translate(210, 430)" onclick="selectDestination('mysore')">
+                            <circle class="node-pulse-ring" r="8" fill="rgba(6, 182, 212, 0.45)"/>
+                            <circle class="node-center" r="5.5" fill="#06b6d4"/>
+                            <text class="node-label" x="8" y="4">Mysuru</text>
+                        </g>
+
+                        <g class="map-node" transform="translate(295, 385)" onclick="selectDestination('bengaluru')">
+                            <circle class="node-pulse-ring" r="9" fill="rgba(16, 185, 129, 0.55)"/>
+                            <circle class="node-center" r="6" fill="#10b981"/>
+                            <text class="node-label" x="-60" y="4">Bengaluru</text>
+                        </g>
+
+                        <g class="map-node" transform="translate(155, 410)" onclick="selectDestination('coorg')">
+                            <circle class="node-pulse-ring" r="7" fill="rgba(16, 185, 129, 0.45)"/>
+                            <circle class="node-center" r="5" fill="#10b981"/>
+                            <text class="node-label" x="-42" y="4">Coorg</text>
+                        </g>
+
+                        <g class="map-node" transform="translate(165, 330)" onclick="selectDestination('chikmagalur')">
+                            <circle class="node-pulse-ring" r="7" fill="rgba(52, 211, 153, 0.45)"/>
+                            <circle class="node-center" r="5" fill="#34d399"/>
+                            <text class="node-label" x="8" y="4">Chikmagalur</text>
+                        </g>
+
+                        <g class="map-node" transform="translate(255, 215)" onclick="selectDestination('hampi')">
+                            <circle class="node-pulse-ring" r="8" fill="rgba(245, 158, 11, 0.5)"/>
+                            <circle class="node-center" r="5.5" fill="#f59e0b"/>
+                            <text class="node-label" x="8" y="4">Hampi</text>
+                        </g>
+
+                        <g class="map-node" transform="translate(115, 310)" onclick="selectDestination('udupi')">
+                            <circle class="node-pulse-ring" r="7" fill="rgba(236, 72, 153, 0.45)"/>
+                            <circle class="node-center" r="5" fill="#ec4899"/>
+                            <text class="node-label" x="-42" y="4">Udupi</text>
+                        </g>
+
+                        <g class="map-node" transform="translate(160, 260)" onclick="selectDestination('shivamogga')">
+                            <circle class="node-pulse-ring" r="6" fill="rgba(16, 185, 129, 0.4)"/>
+                            <circle class="node-center" r="4.5" fill="#10b981"/>
+                            <text class="node-label" x="8" y="4">Jog Falls</text>
+                        </g>
+                    </svg>
+
+                    <!-- Floating Glass Card -->
+                    <div class="floating-spot-card" id="floatingSpotCard">
+                        <img id="spotThumb" class="spot-thumb" src="{% static 'users/images/mysore.jpg' %}" alt="Mysuru Palace">
+                        <div class="spot-info">
+                            <h4 id="spotTitle">Mysuru Palace</h4>
+                            <p id="spotStat">
+                                <span class="circuit-dot" style="background:#06b6d4;"></span>
+                                <span id="spotCount">18,392 active travelers</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Bottom Live State Bar -->
+            <div class="vis-footer-bar">
+                <div class="pulse-live-indicator">
+                    <div class="live-dot"></div>
+                    <span>Live Transit Synchronized: 31 Districts · KSRTC 1st Preference Active</span>
+                </div>
+                <div style="font-size: 11.5px; color: #10b981; font-weight: 800; background: rgba(16, 185, 129, 0.15); padding: 4px 10px; border-radius: 999px;">
+                    Shakti Scheme 🟢
+                </div>
+            </div>
+
         </div>
 
-        <!-- RIGHT PANE: Modern Auth Form -->
+        <!-- RIGHT PANE: Register Auth Form -->
         <div class="auth-pane">
 
-            <!-- Top Navigation Bar -->
+            <!-- Top Navigation -->
             <div class="auth-top-bar">
                 <a href="{% url 'dashboard' %}" class="back-link">
                     <i class="fa-solid fa-arrow-left"></i>
                     <span>Back to Dashboard</span>
                 </a>
 
-                <!-- Tab Switcher -->
                 <div class="tab-switcher">
                     <a href="{% url 'register' %}" class="tab-btn active">Create Account</a>
                     <a href="{% url 'login' %}" class="tab-btn">Sign In</a>
@@ -753,12 +1044,12 @@
                     {% if step == "otp" %}
                         Enter the 6-digit code sent to <strong>{{ masked_email }}</strong>
                     {% else %}
-                        Join thousands of travelers exploring Karnataka's rich culture and hills
+                        Unlock Karnataka's royal corridors, waterfalls, and public transit navigation
                     {% endif %}
                 </p>
             </div>
 
-            <!-- Alerts -->
+            <!-- Notifications -->
             {% if error %}
                 <div class="alert-box alert-error">
                     <i class="fa-solid fa-circle-exclamation"></i>
@@ -784,14 +1075,11 @@
             {% if step != "otp" %}
                 <form method="POST" action="{% url 'register' %}" id="regForm">
                     {% csrf_token %}
-                    <!-- Default to instant register for immediate access -->
                     <input type="hidden" name="action" id="formAction" value="instant_register">
 
                     <!-- Username -->
                     <div class="form-group">
-                        <div class="form-label-row">
-                            <label class="form-label" for="regUsername">Choose Username</label>
-                        </div>
+                        <label class="form-label" for="regUsername">Choose Username</label>
                         <div class="input-wrap">
                             <i class="fa-solid fa-user input-icon"></i>
                             <input
@@ -799,7 +1087,7 @@
                                 id="regUsername"
                                 name="username"
                                 class="form-input"
-                                placeholder="e.g. amrutha_traveler"
+                                placeholder="Choose a username"
                                 value="nsadmin"
                                 required
                                 autofocus
@@ -809,9 +1097,7 @@
 
                     <!-- Email Address -->
                     <div class="form-group">
-                        <div class="form-label-row">
-                            <label class="form-label" for="regEmail">Email Address</label>
-                        </div>
+                        <label class="form-label" for="regEmail">Email Address</label>
                         <div class="input-wrap">
                             <i class="fa-solid fa-envelope input-icon"></i>
                             <input
@@ -828,9 +1114,7 @@
 
                     <!-- Password -->
                     <div class="form-group">
-                        <div class="form-label-row">
-                            <label class="form-label" for="regPassword">Password</label>
-                        </div>
+                        <label class="form-label" for="regPassword">Password</label>
                         <div class="input-wrap">
                             <i class="fa-solid fa-lock input-icon"></i>
                             <input
@@ -838,15 +1122,15 @@
                                 id="regPassword"
                                 name="password"
                                 class="form-input"
-                                placeholder="Create a secure password"
+                                placeholder="Create a password"
                                 value="pass1234"
                                 required
                             >
                         </div>
                     </div>
 
-                    <!-- Primary Action Button: 1-Click Instant Start -->
-                    <button type="submit" class="btn-submit-main" id="btnMainCreate">
+                    <!-- Primary 1-Click Action -->
+                    <button type="submit" class="btn-submit-main">
                         <span>🚀 Create Account & Start Exploring</span>
                         <i class="fa-solid fa-arrow-right"></i>
                     </button>
@@ -870,8 +1154,8 @@
             <!-- STEP 2: EMAIL OTP VERIFICATION -->
             {% else %}
                 {% if debug_otp %}
-                    <div class="dev-otp-banner">
-                        <div style="font-size: 13px; color: #92400e; font-weight: 700;">
+                    <div style="background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); padding: 10px 14px; border-radius: 12px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;">
+                        <div style="font-size: 12.5px; color: #fcd34d; font-weight: 700;">
                             <i class="fa-solid fa-terminal"></i> Testing OTP: <strong>{{ debug_otp }}</strong>
                         </div>
                         <button type="button" class="btn-fill-pill" onclick="document.getElementById('otpField').value='{{ debug_otp }}'">
@@ -884,13 +1168,13 @@
                     {% csrf_token %}
                     <input type="hidden" name="action" value="verify_otp">
 
-                    <div class="otp-input-wrap">
+                    <div style="text-align: center; margin: 20px 0;">
                         <input
                             type="text"
                             id="otpField"
                             name="otp"
                             maxlength="6"
-                            class="otp-input"
+                            style="width: 200px; padding: 12px; font-size: 26px; font-weight: 800; letter-spacing: 8px; text-align: center; border: 2px solid #10b981; border-radius: 14px; background: rgba(0,0,0,0.5); color: #ffffff; outline: none;"
                             placeholder="------"
                             value="{{ debug_otp|default:'' }}"
                             autofocus
@@ -915,7 +1199,7 @@
                         </button>
                     </form>
 
-                    <a href="{% url 'register' %}?cancel_otp=1" style="font-size:12.5px; color:#61776b; text-decoration:none;">
+                    <a href="{% url 'register' %}?cancel_otp=1" style="font-size:12px; color:var(--text-dim); text-decoration:none;">
                         <i class="fa-solid fa-pen"></i> Edit details
                     </a>
                 </div>
@@ -928,9 +1212,128 @@
             </div>
 
         </div>
+
     </div>
 
+    <!-- Interactive Map & Filter Logic -->
     <script>
+        var destinations = {
+            'mysore': {
+                title: 'Mysuru Palace Corridor',
+                stat: '18,392 active travelers',
+                thumb: '{% static "users/images/mysore.jpg" %}'
+            },
+            'bengaluru': {
+                title: 'Majestic Central Terminal',
+                stat: '34,120 active travelers',
+                thumb: '{% static "users/images/mysore.jpg" %}'
+            },
+            'coorg': {
+                title: 'Madikeri & Abbey Falls',
+                stat: '12,850 active travelers',
+                thumb: '{% static "users/images/madikeri.jpg" %}'
+            },
+            'chikmagalur': {
+                title: 'Mullayanagiri Peak',
+                stat: '9,420 active travelers',
+                thumb: '{% static "users/images/chikmagalur.jpg" %}'
+            },
+            'hampi': {
+                title: 'Vijayanagara Stone Chariot',
+                stat: '14,630 active travelers',
+                thumb: '{% static "users/images/hampi.jpg" %}'
+            },
+            'udupi': {
+                title: 'Malpe & St. Marys Island',
+                stat: '11,210 active travelers',
+                thumb: '{% static "users/images/udupi.jpg" %}'
+            },
+            'shivamogga': {
+                title: 'Jog Falls Cascades',
+                stat: '8,950 active travelers',
+                thumb: '{% static "users/images/shivamogga.jpg" %}'
+            }
+        };
+
+        function selectDestination(key) {
+            var item = destinations[key];
+            if (!item) return;
+            var card = document.getElementById('floatingSpotCard');
+            card.style.transform = 'scale(0.95)';
+            card.style.opacity = '0.5';
+            setTimeout(function() {
+                document.getElementById('spotTitle').textContent = item.title;
+                document.getElementById('spotCount').textContent = item.stat;
+                document.getElementById('spotThumb').src = item.thumb;
+                card.style.transform = 'scale(1)';
+                card.style.opacity = '1';
+            }, 150);
+        }
+
+        var filterData = {
+            'all': {
+                number: '4,532,234',
+                label: 'Users Travelled',
+                sub: 'Public transit & verified passenger journeys',
+                b1: '88%', b1v: '1,654,000',
+                b2: '76%', b2v: '1,234,000',
+                b3: '64%', b3v: '884,500',
+                b4: '52%', b4v: '759,734'
+            },
+            'heritage': {
+                number: '2,538,500',
+                label: 'Heritage Explorers',
+                sub: 'UNESCO monuments & Royal Mysore circuits',
+                b1: '95%', b1v: '1,654,000',
+                b2: '45%', b2v: '420,000',
+                b3: '82%', b3v: '884,500',
+                b4: '20%', b4v: '180,000'
+            },
+            'ghats': {
+                number: '1,874,200',
+                label: 'Highland Voyagers',
+                sub: 'Coffee plantations & Western Ghats peaks',
+                b1: '40%', b1v: '450,000',
+                b2: '92%', b2v: '1,234,000',
+                b3: '25%', b3v: '190,200',
+                b4: '35%', b4v: '290,000'
+            },
+            'coastal': {
+                number: '1,120,450',
+                label: 'Coastal Travelers',
+                sub: 'Karavali sands, Udupi & Gokarna ocean routes',
+                b1: '30%', b1v: '360,000',
+                b2: '48%', b2v: '510,000',
+                b3: '15%', b3v: '120,000',
+                b4: '96%', b4v: '759,734'
+            }
+        };
+
+        function switchFilter(key, btn) {
+            document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            var d = filterData[key];
+            if (!d) return;
+
+            document.getElementById('metricNumber').textContent = d.number;
+            document.getElementById('metricLabel').textContent = d.label;
+            document.getElementById('metricSub').textContent = d.sub;
+
+            document.getElementById('bar1').style.width = d.b1;
+            document.getElementById('barVal1').textContent = d.b1v;
+            document.getElementById('bar2').style.width = d.b2;
+            document.getElementById('barVal2').textContent = d.b2v;
+            document.getElementById('bar3').style.width = d.b3;
+            document.getElementById('barVal3').textContent = d.b3v;
+            document.getElementById('bar4').style.width = d.b4;
+            document.getElementById('barVal4').textContent = d.b4v;
+
+            if (key === 'heritage') selectDestination('mysore');
+            else if (key === 'ghats') selectDestination('coorg');
+            else if (key === 'coastal') selectDestination('udupi');
+            else selectDestination('bengaluru');
+        }
+
         function autoFillDemo() {
             var rand = Math.floor(100 + Math.random() * 900);
             document.getElementById('regUsername').value = 'nsadmin_' + rand;
