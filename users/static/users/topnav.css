@@ -53,9 +53,12 @@ body.dark-mode .tnav {
 .tnav-link:hover, .tnav-link.is-active, .tnav-link[aria-expanded="true"] { color: var(--tn-text); }
 .tnav-blob {
   position: absolute; z-index: 0; top: 0; left: 0; height: 100%; width: 0;
-  border-radius: 999px; background: var(--tn-blob); opacity: 0;
+  border-radius: 999px; background: var(--tn-blob); opacity: 0; visibility: hidden;
   transition: transform .35s cubic-bezier(.3,1.2,.4,1), width .35s cubic-bezier(.3,1.2,.4,1), opacity .2s;
   pointer-events: none;
+}
+.tnav-blob.is-visible {
+  opacity: 1; visibility: visible;
 }
 .tnav-caret { font-size: 11px; transition: transform .25s; }
 .tnav-drop-btn[aria-expanded="true"] .tnav-caret { transform: rotate(180deg); }

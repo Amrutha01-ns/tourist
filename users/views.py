@@ -160,8 +160,46 @@ def register(request):
                         error = f"The username '{username}' or email '{email}' already exists. Please choose another username or sign in."
                         step = "form"
 
+        elif action == "instant_register" or request.POST.get("direct_signup") == "1":
+            # Direct 1-click registration bypassing OTP hurdles
+            username = (request.POST.get("reg_username") or request.POST.get("username") or "").strip()
+            email = (request.POST.get("reg_email") or request.POST.get("email") or "").strip().lower()
+            password = request.POST.get("reg_password") or request.POST.get("password") or ""
+
+            if not username or not password:
+                error = "Please enter both username and password."
+                step = "form"
+            elif User.objects.filter(username__iexact=username).exists():
+                error = f"The username '{username}' is already taken. Please choose another username or sign in."
+                step = "form"
+            elif email and User.objects.filter(email__iexact=email).exists():
+                error = f"An account with email '{email}' is already registered. Please sign in."
+                step = "form"
+            elif len(password) < 4:
+                error = "Password must be at least 4 characters long."
+                step = "form"
+            else:
+                try:
+                    with transaction.atomic():
+                        user = User.objects.create_user(
+                            username=username,
+                            email=email or f"{username}@tourist.local",
+                            password=password,
+                            is_active=True
+                        )
+                        profile, _ = UserProfile.objects.get_or_create(user=user)
+                        profile.is_email_verified = True
+                        profile.email_verified_at = timezone.now()
+                        profile.save()
+
+                    login(request, user)
+                    return redirect("dashboard")
+                except IntegrityError:
+                    error = f"The username '{username}' already exists. Please choose another username or sign in."
+                    step = "form"
+
         else:
-            # Form submission to start registration
+            # Form submission to start registration with optional OTP verification
             username = (request.POST.get("reg_username") or request.POST.get("username") or "").strip()
             email = (request.POST.get("reg_email") or request.POST.get("email") or "").strip().lower()
             password = request.POST.get("reg_password") or request.POST.get("password") or ""
@@ -369,8 +407,8 @@ def user_login(request):
 
                 if user is not None:
                     user_email = user.email.strip() if user.email else ""
-                    if not user_email:
-                        # User without email bypasses OTP
+                    if action == "instant_login" or request.POST.get("direct_login") == "1" or not user_email:
+                        # Direct password sign-in without OTP bottleneck
                         login(request, user)
                         return redirect("dashboard")
 

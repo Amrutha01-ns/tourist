@@ -8,10 +8,23 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&family=Cinzel:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
+        :root {
+            --brand-green-deep: #0e3725;
+            --brand-green-mid: #14452f;
+            --brand-green-light: #2f7d4f;
+            --brand-gold: #f4b63f;
+            --brand-gold-warm: #d97706;
+            --brand-cream: #faf8f5;
+            --text-dark: #13241b;
+            --text-muted: #52665a;
+            --border-soft: rgba(20, 69, 47, 0.12);
+            --card-radius: 24px;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -20,110 +33,385 @@
 
         body {
             font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: linear-gradient(135deg, #f0f7f3 0%, #e2efe7 100%);
-            min-height: 100vh;
+            background: #091a12;
             color: #1a2e22;
-            padding-top: 100px;
-            padding-bottom: 40px;
+            min-height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
+            padding: 24px 16px;
+            position: relative;
+            overflow-x: hidden;
         }
 
-        .auth-wrapper {
+        /* Ambient Background Lighting */
+        .ambient-glow-1 {
+            position: fixed;
+            top: -15%;
+            left: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(47, 125, 79, 0.35) 0%, transparent 65%);
+            filter: blur(80px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .ambient-glow-2 {
+            position: fixed;
+            bottom: -15%;
+            right: -10%;
+            width: 55vw;
+            height: 55vw;
+            background: radial-gradient(circle, rgba(244, 182, 63, 0.22) 0%, transparent 65%);
+            filter: blur(90px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Main Showcase Container */
+        .auth-container {
+            position: relative;
+            z-index: 1;
             width: 100%;
-            max-width: 440px;
-            padding: 0 16px;
+            max-width: 1160px;
+            min-height: 680px;
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: var(--card-radius);
+            box-shadow: 0 35px 80px -20px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.2);
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            overflow: hidden;
         }
 
-        .nav-back-row {
-            margin-bottom: 14px;
+        /* LEFT SIDE: Cinematic Karnataka Showcase */
+        .showcase-pane {
+            position: relative;
+            background: linear-gradient(145deg, #072216 0%, #113825 50%, #184b33 100%);
+            color: #ffffff;
+            padding: 44px 44px;
             display: flex;
-            justify-content: flex-start;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
         }
 
-        .back-home-link {
+        /* Photo Montage Collage Background */
+        .showcase-bg-collage {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            opacity: 0.28;
+            filter: saturate(1.2) contrast(1.1);
+            pointer-events: none;
+        }
+
+        .showcase-bg-collage img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .showcase-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(7, 34, 22, 0.94) 0%, rgba(14, 55, 37, 0.88) 55%, rgba(20, 69, 47, 0.92) 100%);
+            pointer-events: none;
+        }
+
+        .showcase-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 28px;
+        }
+
+        .showcase-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #ffffff;
+        }
+
+        .brand-logo-hex {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #f4b63f, #d97706);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #14452f;
+            font-size: 20px;
+            box-shadow: 0 8px 20px rgba(244, 182, 63, 0.4);
+        }
+
+        .brand-text-col {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-title-main {
+            font-family: "Cinzel", serif;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            line-height: 1.1;
+        }
+
+        .brand-sub-kannada {
+            font-size: 11px;
+            color: #f4b63f;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .showcase-hero {
+            margin: auto 0;
+        }
+
+        .kannada-quote-banner {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(244, 182, 63, 0.15);
+            border: 1px solid rgba(244, 182, 63, 0.35);
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 12.5px;
+            color: #ffd88a;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .showcase-hero h2 {
+            font-size: 32px;
+            font-weight: 800;
+            line-height: 1.25;
+            letter-spacing: -0.5px;
+            margin-bottom: 14px;
+        }
+
+        .showcase-hero h2 span {
+            background: linear-gradient(135deg, #f4b63f 0%, #ffe9a6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .showcase-hero p {
+            font-size: 15px;
+            color: #d1ded6;
+            line-height: 1.55;
+            max-width: 480px;
+            margin-bottom: 24px;
+        }
+
+        /* Feature Pills */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 12px 14px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all .2s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(255, 255, 255, 0.14);
+            transform: translateY(-2px);
+            border-color: rgba(244, 182, 63, 0.4);
+        }
+
+        .feature-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: rgba(244, 182, 63, 0.2);
+            color: #f4b63f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .feature-text {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #f0f7f3;
+            line-height: 1.3;
+        }
+
+        /* Live Corridor Mini Preview Card */
+        .live-preview-card {
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(244, 182, 63, 0.3);
+            border-radius: 16px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+        }
+
+        .preview-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pulse-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 10px #10b981;
+            animation: pulse-ring 2s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .preview-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .preview-sub {
+            font-size: 11.5px;
+            color: #9cd4b5;
+        }
+
+        .preview-badge {
+            background: linear-gradient(135deg, #f4b63f, #d97706);
+            color: #14452f;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 5px 10px;
+            border-radius: 999px;
+            white-space: nowrap;
+        }
+
+        /* RIGHT SIDE: Auth Form Pane */
+        .auth-pane {
+            background: #ffffff;
+            padding: 44px 44px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Top Bar: Back & Mode Switch */
+        .auth-top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .back-link {
             display: inline-flex;
             align-items: center;
             gap: 7px;
             color: #2f7d4f;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13.5px;
             font-weight: 700;
-            transition: all .2s ease;
-            background: rgba(255, 255, 255, 0.7);
             padding: 6px 14px;
             border-radius: 999px;
+            background: #f0f7f3;
             border: 1px solid rgba(47, 125, 79, 0.2);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: all .2s ease;
         }
 
-        .back-home-link:hover {
+        .back-link:hover {
             color: #14452f;
+            background: #e2efe7;
             transform: translateX(-2px);
-            background: #ffffff;
         }
 
-        .auth-card {
-            background: #ffffff;
-            border-radius: 24px;
-            padding: 36px 32px;
-            box-shadow: 0 20px 45px -15px rgba(20, 69, 47, 0.18), 0 0 0 1px rgba(20, 69, 47, 0.06);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .auth-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 6px;
-            background: linear-gradient(90deg, #14452f, #2f7d4f, #f4b63f);
-        }
-
-        .auth-header {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .auth-icon-badge {
-            width: 54px;
-            height: 54px;
-            margin: 0 auto 14px;
-            border-radius: 16px;
-            background: #edf7f0;
-            color: #2f7d4f;
+        /* Tab Switcher */
+        .tab-switcher {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            box-shadow: 0 8px 18px rgba(47, 125, 79, 0.15);
+            background: #edf4ef;
+            border-radius: 999px;
+            padding: 4px;
+            gap: 4px;
         }
 
-        .auth-title {
-            font-size: 24px;
+        .tab-btn {
+            text-decoration: none;
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #52665a;
+            transition: all .2s ease;
+        }
+
+        .tab-btn.active {
+            background: #14452f;
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(20, 69, 47, 0.2);
+        }
+
+        .tab-btn:hover:not(.active) {
+            color: #14452f;
+        }
+
+        /* Form Header */
+        .form-header {
+            margin-bottom: 22px;
+        }
+
+        .form-title {
+            font-size: 26px;
             font-weight: 800;
             color: #14452f;
-            letter-spacing: -0.3px;
+            letter-spacing: -0.4px;
             margin-bottom: 6px;
         }
 
-        .auth-subtitle {
+        .form-sub {
             font-size: 14px;
             color: #556b5f;
             line-height: 1.4;
         }
 
-        /* Alert Notifications */
+        /* Notifications */
         .alert-box {
             padding: 12px 16px;
             border-radius: 12px;
             font-size: 13.5px;
             line-height: 1.45;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             display: flex;
             align-items: flex-start;
             gap: 10px;
@@ -147,23 +435,22 @@
             border: 1px solid #bfdbfe;
         }
 
-        .alert-box i {
-            margin-top: 2px;
-            font-size: 15px;
-            flex-shrink: 0;
-        }
-
-        /* Form elements */
+        /* Form Elements */
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
 
-        .form-group label {
-            display: block;
-            font-size: 13.5px;
+        .form-label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .form-label {
+            font-size: 13px;
             font-weight: 700;
-            color: #2c3e34;
-            margin-bottom: 7px;
+            color: #243b2d;
         }
 
         .input-wrap {
@@ -182,10 +469,10 @@
 
         .form-input {
             width: 100%;
-            padding: 13px 14px 13px 40px;
+            padding: 12px 14px 12px 42px;
             border: 1.5px solid #d1ded6;
             border-radius: 12px;
-            font-size: 15px;
+            font-size: 14.5px;
             font-family: inherit;
             color: #14452f;
             background: #fafcfb;
@@ -199,203 +486,279 @@
             box-shadow: 0 0 0 3px rgba(47, 125, 79, 0.15);
         }
 
-        /* Large numeric OTP input */
-        .otp-input-wrap {
-            margin: 18px 0;
-        }
-
-        .otp-input {
+        /* Buttons */
+        .btn-submit-main {
             width: 100%;
-            padding: 16px;
-            text-align: center;
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: 12px;
-            color: #14452f;
-            border: 2px solid #2f7d4f;
-            border-radius: 14px;
-            background: #f7fbf9;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
-            transition: all .2s ease;
-        }
-
-        .otp-input:focus {
-            outline: none;
-            background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(47, 125, 79, 0.2);
-        }
-
-        .otp-hint {
-            text-align: center;
-            font-size: 13px;
-            color: #63776b;
-            margin-top: 8px;
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 14px 20px;
+            padding: 13px 20px;
+            background: linear-gradient(135deg, #14452f 0%, #2f7d4f 100%);
+            color: #ffffff;
             border: none;
-            border-radius: 999px;
-            font-size: 15.5px;
+            border-radius: 12px;
+            font-size: 15px;
             font-weight: 700;
             font-family: inherit;
             cursor: pointer;
-            background: linear-gradient(135deg, #14452f 0%, #226743 100%);
-            color: #ffffff;
-            display: inline-flex;
+            display: flex;
             align-items: center;
             justify-content: center;
-            gap: 9px;
+            gap: 10px;
             box-shadow: 0 8px 20px rgba(20, 69, 47, 0.25);
             transition: all .2s ease;
+            margin-top: 8px;
         }
 
-        .btn-primary:hover {
-            transform: translateY(-1px);
-            background: linear-gradient(135deg, #0e3523 0%, #1a5737 100%);
-            box-shadow: 0 10px 24px rgba(20, 69, 47, 0.32);
+        .btn-submit-main:hover {
+            background: linear-gradient(135deg, #0e3725 0%, #23653f 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(20, 69, 47, 0.32);
         }
 
-        .btn-resend {
+        /* Demo Quick-Fill Bar */
+        .quick-fill-bar {
+            margin-top: 14px;
+            padding: 10px 14px;
+            background: #f7faf8;
+            border: 1px dashed #b8d4c3;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .quick-fill-text {
+            font-size: 12.5px;
+            color: #486152;
+            font-weight: 600;
+        }
+
+        .btn-fill-pill {
+            background: #edf7f0;
+            color: #14452f;
+            border: 1px solid #b8d4c3;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all .15s ease;
+        }
+
+        .btn-fill-pill:hover {
+            background: #14452f;
+            color: #ffffff;
+        }
+
+        /* Secondary OTP Option Link */
+        .otp-fallback-row {
+            margin-top: 12px;
+            text-align: center;
+        }
+
+        .btn-link-otp {
             background: none;
             border: none;
             color: #2f7d4f;
-            font-size: 13.5px;
+            font-size: 12.5px;
             font-weight: 700;
             cursor: pointer;
             text-decoration: underline;
-            padding: 4px;
-            display: inline-block;
-            transition: color .15s;
         }
 
-        .btn-resend:hover {
+        .btn-link-otp:hover {
             color: #14452f;
         }
 
-        .otp-actions {
-            margin-top: 16px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
+        /* OTP Input Form */
+        .otp-input-wrap {
+            text-align: center;
+            margin: 20px 0;
         }
 
-        /* Dev OTP Helper Box */
-        .dev-otp-box {
-            background: #fdf6ec;
-            border: 1.5px dashed #f59e0b;
-            border-radius: 14px;
-            padding: 12px 14px;
-            margin-bottom: 16px;
-            text-align: center;
-        }
-        .dev-otp-header {
-            font-size: 12px;
-            font-weight: 700;
-            color: #b45309;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 6px;
-        }
-        .dev-otp-code-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin: 4px 0;
-        }
-        .dev-otp-val {
-            font-size: 20px;
+        .otp-input {
+            width: 220px;
+            padding: 14px;
+            font-size: 26px;
             font-weight: 800;
-            letter-spacing: 4px;
-            color: #92400e;
-            background: #fff;
-            padding: 3px 12px;
-            border-radius: 8px;
-            border: 1px solid #fde68a;
-        }
-        .dev-autofill-btn {
-            background: #f59e0b;
-            color: #fff;
-            border: none;
-            padding: 5px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background .15s;
-        }
-        .dev-autofill-btn:hover {
-            background: #d97706;
-        }
-        .dev-otp-sub {
-            display: block;
-            font-size: 11.5px;
-            color: #78350f;
-            margin-top: 6px;
-            line-height: 1.35;
-        }
-
-        .auth-footer {
-            margin-top: 24px;
+            letter-spacing: 8px;
             text-align: center;
-            font-size: 14px;
-            color: #556b5f;
-            border-top: 1px solid #edf2ef;
-            padding-top: 18px;
+            border: 2px solid #2f7d4f;
+            border-radius: 14px;
+            background: #fafcfb;
+            color: #14452f;
+            outline: none;
+            box-shadow: 0 4px 14px rgba(47, 125, 79, 0.15);
         }
 
-        .auth-footer a {
+        .dev-otp-banner {
+            background: #fffbeb;
+            border: 1px solid #fef3c7;
+            padding: 10px 14px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Footer */
+        .auth-footer-row {
+            margin-top: 20px;
+            padding-top: 14px;
+            border-top: 1px solid #edf2ef;
+            text-align: center;
+            font-size: 13.5px;
+            color: #61776b;
+        }
+
+        .auth-footer-row a {
             color: #2f7d4f;
             font-weight: 700;
             text-decoration: none;
         }
 
-        .auth-footer a:hover {
+        .auth-footer-row a:hover {
             text-decoration: underline;
             color: #14452f;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 920px) {
+            .auth-container {
+                grid-template-columns: 1fr;
+                max-width: 520px;
+            }
+            .showcase-pane {
+                display: none;
+            }
+            .auth-pane {
+                padding: 32px 24px;
+            }
         }
     </style>
 </head>
 <body>
-    {% include "users/_topnav.html" %}
 
-    <div class="auth-wrapper">
-        <div class="nav-back-row">
-            <a href="{% url 'dashboard' %}" class="back-home-link">
-                <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
-            </a>
+    <!-- Ambient Glowing Backgrounds -->
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+
+    <div class="auth-container">
+
+        <!-- LEFT PANE: Cinematic Karnataka Showcase -->
+        <div class="showcase-pane">
+            <div class="showcase-bg-collage">
+                <img src="{% static 'users/images/mysore.jpg' %}" alt="Mysore Palace">
+                <img src="{% static 'users/images/hampi.jpg' %}" alt="Hampi Heritage">
+                <img src="{% static 'users/images/madikeri.jpg' %}" alt="Coorg Hills">
+                <img src="{% static 'users/images/shivamogga.jpg' %}" alt="Jog Falls">
+            </div>
+            <div class="showcase-overlay"></div>
+
+            <div class="showcase-content">
+                <!-- Brand Header -->
+                <div class="showcase-header">
+                    <a href="{% url 'dashboard' %}" class="brand-badge">
+                        <div class="brand-logo-hex">
+                            <i class="fa-solid fa-compass"></i>
+                        </div>
+                        <div class="brand-text-col">
+                            <span class="brand-title-main">Tourist</span>
+                            <span class="brand-sub-kannada">Karnataka Journeys</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Showcase Centerpiece -->
+                <div class="showcase-hero">
+                    <div class="kannada-quote-banner">
+                        <i class="fa-solid fa-crown"></i>
+                        <span>ಕರ್ನಾಟಕದ ಪರಂಪರೆ & ಮಂಜಿನ ಗಿರಿಧಾಮಗಳು</span>
+                    </div>
+                    <h2>Explore Karnataka With <span>Official Transit</span> & Precision Maps</h2>
+                    <p>
+                        Your gateway to UNESCO world heritage monuments, misty coffee highlands, and verified KSRTC government routes connecting all 31 districts.
+                    </p>
+
+                    <!-- Features Grid -->
+                    <div class="feature-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fa-solid fa-bus"></i></div>
+                            <div class="feature-text">
+                                <strong>1st Preference KSRTC</strong><br>
+                                Airavat, Rajahamsa & Shakti
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+                            <div class="feature-text">
+                                <strong>Dishank & Bhoomi</strong><br>
+                                Building & Sy. No. Cadastral
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fa-solid fa-wallet"></i></div>
+                            <div class="feature-text">
+                                <strong>Expense Tracker</strong><br>
+                                Multi-leg budget tracker
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fa-solid fa-route"></i></div>
+                            <div class="feature-text">
+                                <strong>31 Districts</strong><br>
+                                Curated authentic circuits
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Transit Pulse Card -->
+                <div class="live-preview-card">
+                    <div class="preview-left">
+                        <div class="pulse-dot"></div>
+                        <div>
+                            <div class="preview-title">Live Karnataka Transit Corridor Active</div>
+                            <div class="preview-sub">KSRTC, NWKRTC & Verified Private Fleets</div>
+                        </div>
+                    </div>
+                    <div class="preview-badge">Shakti Scheme 🌟</div>
+                </div>
+            </div>
         </div>
 
-        <div class="auth-card">
-            <!-- Header -->
-            <div class="auth-header">
-                <div class="auth-icon-badge">
-                    {% if step == "otp" %}
-                        <i class="fa-solid fa-envelope-circle-check"></i>
-                    {% else %}
-                        <i class="fa-solid fa-user-plus"></i>
-                    {% endif %}
+        <!-- RIGHT PANE: Modern Auth Form -->
+        <div class="auth-pane">
+
+            <!-- Top Navigation Bar -->
+            <div class="auth-top-bar">
+                <a href="{% url 'dashboard' %}" class="back-link">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Back to Dashboard</span>
+                </a>
+
+                <!-- Tab Switcher -->
+                <div class="tab-switcher">
+                    <a href="{% url 'register' %}" class="tab-btn active">Create Account</a>
+                    <a href="{% url 'login' %}" class="tab-btn">Sign In</a>
                 </div>
-                <h1 class="auth-title">
-                    {% if step == "otp" %}Verify Your Email{% else %}Create Account{% endif %}
+            </div>
+
+            <!-- Form Content Header -->
+            <div class="form-header">
+                <h1 class="form-title">
+                    {% if step == "otp" %}Verify Your Email{% else %}Create Your Account{% endif %}
                 </h1>
-                <p class="auth-subtitle">
+                <p class="form-sub">
                     {% if step == "otp" %}
-                        We sent a 6-digit verification code to <strong>{{ masked_email }}</strong>
+                        Enter the 6-digit code sent to <strong>{{ masked_email }}</strong>
                     {% else %}
-                        Start planning your authentic Karnataka travel journeys
+                        Join thousands of travelers exploring Karnataka's rich culture and hills
                     {% endif %}
                 </p>
             </div>
 
-            <!-- Notifications -->
+            <!-- Alerts -->
             {% if error %}
                 <div class="alert-box alert-error">
                     <i class="fa-solid fa-circle-exclamation"></i>
@@ -417,14 +780,18 @@
                 </div>
             {% endif %}
 
-            <!-- STEP 1: REGISTRATION FORM -->
+            <!-- STEP 1: CREATE ACCOUNT FORM -->
             {% if step != "otp" %}
-                <form method="POST" action="{% url 'register' %}">
+                <form method="POST" action="{% url 'register' %}" id="regForm">
                     {% csrf_token %}
-                    <input type="hidden" name="action" value="submit_details">
+                    <!-- Default to instant register for immediate access -->
+                    <input type="hidden" name="action" id="formAction" value="instant_register">
 
+                    <!-- Username -->
                     <div class="form-group">
-                        <label for="regUsername">Username</label>
+                        <div class="form-label-row">
+                            <label class="form-label" for="regUsername">Choose Username</label>
+                        </div>
                         <div class="input-wrap">
                             <i class="fa-solid fa-user input-icon"></i>
                             <input
@@ -432,15 +799,19 @@
                                 id="regUsername"
                                 name="username"
                                 class="form-input"
-                                placeholder="Choose a username"
-                                autofocus
+                                placeholder="e.g. amrutha_traveler"
+                                value="nsadmin"
                                 required
+                                autofocus
                             >
                         </div>
                     </div>
 
+                    <!-- Email Address -->
                     <div class="form-group">
-                        <label for="regEmail">Email Address</label>
+                        <div class="form-label-row">
+                            <label class="form-label" for="regEmail">Email Address</label>
+                        </div>
                         <div class="input-wrap">
                             <i class="fa-solid fa-envelope input-icon"></i>
                             <input
@@ -449,13 +820,17 @@
                                 name="email"
                                 class="form-input"
                                 placeholder="name@example.com"
+                                value="nsadmin@tourist.local"
                                 required
                             >
                         </div>
                     </div>
 
+                    <!-- Password -->
                     <div class="form-group">
-                        <label for="regPassword">Password</label>
+                        <div class="form-label-row">
+                            <label class="form-label" for="regPassword">Password</label>
+                        </div>
                         <div class="input-wrap">
                             <i class="fa-solid fa-lock input-icon"></i>
                             <input
@@ -464,39 +839,44 @@
                                 name="password"
                                 class="form-input"
                                 placeholder="Create a secure password"
+                                value="pass1234"
                                 required
                             >
                         </div>
                     </div>
 
-                    <button type="submit" class="btn-primary">
-                        <span>Send Email Verification Code</span>
-                        <i class="fa-solid fa-paper-plane"></i>
+                    <!-- Primary Action Button: 1-Click Instant Start -->
+                    <button type="submit" class="btn-submit-main" id="btnMainCreate">
+                        <span>🚀 Create Account & Start Exploring</span>
+                        <i class="fa-solid fa-arrow-right"></i>
                     </button>
+
+                    <!-- Secondary Option: Email OTP -->
+                    <div class="otp-fallback-row">
+                        <button type="button" class="btn-link-otp" onclick="submitWithOtp()">
+                            <i class="fa-solid fa-shield-halved"></i> Or verify with 6-digit Email OTP Code
+                        </button>
+                    </div>
+
+                    <!-- Quick Demo Fill -->
+                    <div class="quick-fill-bar">
+                        <span class="quick-fill-text">Testing locally or on phone?</span>
+                        <button type="button" class="btn-fill-pill" onclick="autoFillDemo()">
+                            ⚡ 1-Click Fill
+                        </button>
+                    </div>
                 </form>
 
-                <div class="auth-footer">
-                    Already have an account?
-                    <a href="{% url 'login' %}">Sign In</a>
-                </div>
-
-            <!-- STEP 2: EMAIL OTP VERIFICATION & DIRECT GO TO DASHBOARD -->
+            <!-- STEP 2: EMAIL OTP VERIFICATION -->
             {% else %}
                 {% if debug_otp %}
-                    <div class="dev-otp-box">
-                        <div class="dev-otp-header">
-                            <i class="fa-solid fa-code"></i>
-                            <span>Localhost Testing Mode OTP</span>
+                    <div class="dev-otp-banner">
+                        <div style="font-size: 13px; color: #92400e; font-weight: 700;">
+                            <i class="fa-solid fa-terminal"></i> Testing OTP: <strong>{{ debug_otp }}</strong>
                         </div>
-                        <div class="dev-otp-code-row">
-                            <span class="dev-otp-val">{{ debug_otp }}</span>
-                            <button type="button" class="dev-autofill-btn" onclick="document.querySelector('.otp-input').value='{{ debug_otp }}'">
-                                Auto-Fill Code
-                            </button>
-                        </div>
-                        <small class="dev-otp-sub">
-                            Logged to terminal console. To deliver real emails to your Gmail inbox, add <code>EMAIL_HOST_USER</code> and <code>EMAIL_HOST_PASSWORD</code> to your <code>.env</code> file.
-                        </small>
+                        <button type="button" class="btn-fill-pill" onclick="document.getElementById('otpField').value='{{ debug_otp }}'">
+                            Auto-Fill
+                        </button>
                     </div>
                 {% endif %}
 
@@ -505,11 +885,9 @@
                     <input type="hidden" name="action" value="verify_otp">
 
                     <div class="otp-input-wrap">
-                        <label style="display:block; text-align:center; font-weight:700; margin-bottom:8px; font-size:14px;">
-                            Enter 6-Digit Email Verification Code
-                        </label>
                         <input
                             type="text"
+                            id="otpField"
                             name="otp"
                             maxlength="6"
                             class="otp-input"
@@ -519,32 +897,51 @@
                             required
                             pattern="[0-9]{6}"
                             inputmode="numeric"
-                            autocomplete="one-time-code"
                         >
-                        <p class="otp-hint">Code expires in 10 minutes</p>
                     </div>
 
-                    <button type="submit" class="btn-primary">
-                        <span>Verify & Go to Dashboard</span>
+                    <button type="submit" class="btn-submit-main">
+                        <span>Verify Code & Go to Dashboard</span>
                         <i class="fa-solid fa-compass"></i>
                     </button>
                 </form>
 
-                <div class="otp-actions">
-                    <form method="POST" action="{% url 'register' %}" style="display:inline;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
+                    <form method="POST" action="{% url 'register' %}">
                         {% csrf_token %}
                         <input type="hidden" name="action" value="resend_otp">
-                        <button type="submit" class="btn-resend">
-                            <i class="fa-solid fa-rotate-right"></i> Didn't receive email? Resend OTP
+                        <button type="submit" class="btn-link-otp">
+                            <i class="fa-solid fa-rotate-right"></i> Resend code
                         </button>
                     </form>
 
-                    <a href="{% url 'register' %}?cancel_otp=1" style="font-size:13px; color:#63776b; text-decoration:none;">
-                        <i class="fa-solid fa-pen-to-square"></i> Change registration details
+                    <a href="{% url 'register' %}?cancel_otp=1" style="font-size:12.5px; color:#61776b; text-decoration:none;">
+                        <i class="fa-solid fa-pen"></i> Edit details
                     </a>
                 </div>
             {% endif %}
+
+            <!-- Footer -->
+            <div class="auth-footer-row">
+                Already have an account?
+                <a href="{% url 'login' %}">Sign In to Dashboard</a>
+            </div>
+
         </div>
     </div>
+
+    <script>
+        function autoFillDemo() {
+            var rand = Math.floor(100 + Math.random() * 900);
+            document.getElementById('regUsername').value = 'nsadmin_' + rand;
+            document.getElementById('regEmail').value = 'nsadmin' + rand + '@tourist.local';
+            document.getElementById('regPassword').value = 'pass1234';
+        }
+
+        function submitWithOtp() {
+            document.getElementById('formAction').value = 'submit_details';
+            document.getElementById('regForm').submit();
+        }
+    </script>
 </body>
 </html>

@@ -54,12 +54,18 @@
     if (!blob || !el || window.innerWidth <= 820) return;
     blob.style.width = el.offsetWidth + "px";
     blob.style.transform = "translateX(" + (el.offsetLeft - menu.offsetLeft) + "px)";
+    blob.classList.add("is-visible");
     blob.style.opacity = "1";
   }
   function restBlob() {
     var active = menu && menu.querySelector(".tnav-link.is-active");
-    if (active) moveBlob(active);
-    else if (blob) blob.style.opacity = "0";
+    if (active) {
+      moveBlob(active);
+    } else if (blob) {
+      blob.classList.remove("is-visible");
+      blob.style.opacity = "0";
+      blob.style.width = "0";
+    }
   }
   if (menu && blob) {
     menu.querySelectorAll(".tnav-link").forEach(function (l) {
