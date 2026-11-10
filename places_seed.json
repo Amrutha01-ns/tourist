@@ -1,0 +1,2478 @@
+[
+{
+  "model": "places.district",
+  "pk": 1,
+  "fields": {
+    "name": "mysore"
+  }
+},
+{
+  "model": "places.district",
+  "pk": 2,
+  "fields": {
+    "name": "kodagu"
+  }
+},
+{
+  "model": "places.district",
+  "pk": 3,
+  "fields": {
+    "name": "hassan"
+  }
+},
+{
+  "model": "places.district",
+  "pk": 4,
+  "fields": {
+    "name": "uttara kannada"
+  }
+},
+{
+  "model": "places.district",
+  "pk": 5,
+  "fields": {
+    "name": "Chikkamagaluru"
+  }
+},
+{
+  "model": "places.district",
+  "pk": 6,
+  "fields": {
+    "name": "Hampi"
+  }
+},
+{
+  "model": "places.district",
+  "pk": 7,
+  "fields": {
+    "name": "Udupi"
+  }
+},
+{
+  "model": "places.district",
+  "pk": 8,
+  "fields": {
+    "name": "Mangaluru"
+  }
+},
+{
+  "model": "places.district",
+  "pk": 9,
+  "fields": {
+    "name": "Shivamogga"
+  }
+},
+{
+  "model": "places.district",
+  "pk": 10,
+  "fields": {
+    "name": "Mandya"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 1,
+  "fields": {
+    "district": 1,
+    "name": "mysore",
+    "slug": "mysore",
+    "category": "historical",
+    "speciality": "Royal Palace,,which reflects history",
+    "description": "Symbol of Karnataka’s Heritage\r\nMysore Palace is not just a royal residence; it is a cultural emblem of Karnataka, representing architectural mastery, historical depth, and the enduring spirit of the Wodeyars. It seamlessly captivates audiences with its grandeur, artistry, and stories of a bygone era, making it one of India’s most visited and photographed heritage landmarks. Its magic lies in the perfect blend of history, spirituality, and visual splendor, leaving visitors enthralled and inspired.",
+    "image": "places/myspalace.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 2,
+  "fields": {
+    "district": 1,
+    "name": "KRS Dam",
+    "slug": "krs-dam",
+    "category": "watery",
+    "speciality": "waterway,evening musical fountain show",
+    "description": "this is Laid out below the Krishnaraja sagar Dam,these terrace gardens are one of the most popular scenic spots for evening recreation and photography.",
+    "image": "places/krs.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 3,
+  "fields": {
+    "district": 1,
+    "name": "Chunchanakatte falls",
+    "slug": "chunchanakatte-falls",
+    "category": "watery",
+    "speciality": "a massive waterfall where the kaveri river drops nearl 60feet",
+    "description": "the scenic spot is steeped in myrhology,legend states of Rama stayed here during his forest tenure,and we can see hydraulic power generating station installed as well",
+    "image": "places/chunchanakatte.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 4,
+  "fields": {
+    "district": 1,
+    "name": "Sri Chmundeshwari Temple",
+    "slug": "sri-chmundeshwari-temple",
+    "category": "religious",
+    "speciality": "one of 18 maha shakthi peethas,guardian deity od mysore royal fam",
+    "description": "visitors can climb a historic stone staircase of 1,008 steps,the hilltop offers a breathtaking 360degree aerial view of Mysuru city",
+    "image": "places/ch_hill.webp"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 5,
+  "fields": {
+    "district": 2,
+    "name": "abbey falls",
+    "slug": "abbey-falls",
+    "category": "watery",
+    "speciality": "a beautiful waterfull where the kaveri river drop around 70feet through the torest",
+    "description": "abbey falls is one of the most popular water falls in kodagu, located near  madikeri .visitors can enjoy  the waterfalls  view from a hanging bridge surrounded by green forest and coffe plantations.",
+    "image": "places/abb.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 6,
+  "fields": {
+    "district": 2,
+    "name": "barapole river",
+    "slug": "barapole-river",
+    "category": "watery",
+    "speciality": "a famous destination for white water river rafting",
+    "description": "barapole river flows through the beautiful  forest of  kodagu and is popular among  adventure lovers.",
+    "image": "places/bp.webp"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 7,
+  "fields": {
+    "district": 2,
+    "name": "harangi dam",
+    "slug": "harangi-dam",
+    "category": "watery",
+    "speciality": "a scenic reservoir surrounded b greenery and hills",
+    "description": "harangi dam is located near kushalnagar  and is a peacefull place to enjoy the beauty and nature.",
+    "image": "places/h_dam.webp"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 8,
+  "fields": {
+    "district": 2,
+    "name": "talakaveri temple",
+    "slug": "talakaveri-temple",
+    "category": "religious",
+    "speciality": "talakaveri is traditionallyy regarded as the source of the sacred river cauvery",
+    "description": "located in the brahmagiri hills , talakaveri hills is an important pilgrimage site with a temple and scenic mountain surroundings",
+    "image": "places/tala.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 9,
+  "fields": {
+    "district": 2,
+    "name": "omkareshwara temple",
+    "slug": "omkareshwara-temple",
+    "category": "religious",
+    "speciality": "a historic shiva temple in madikeri built in 1820 with a distinctive combination of architectural styles",
+    "description": "the temple features a shiva shrine , a water filled temple tank and architecture influenced by both kerala and islamic styles",
+    "image": "places/oma.webp"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 10,
+  "fields": {
+    "district": 2,
+    "name": "bhagamandala",
+    "slug": "bhagamandala",
+    "category": "religious",
+    "speciality": "bhagamandala is famous for the sacred confluence of the cauvery ,kannike and the traitionally believed underground sujyoti",
+    "description": "it is an important piligrimage centre were visitors traditionall takes a holybath and visit bhagandeshwara temple before proceeding to thalakaveri",
+    "image": "places/bh.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 11,
+  "fields": {
+    "district": 2,
+    "name": "madikeri fort",
+    "slug": "madikeri-fort",
+    "category": "historical",
+    "speciality": "a  histroric fort that refelects the political history",
+    "description": "tipu sultan and british period the fort complex contains historic structures including a temple,chapel, museum and old administrative",
+    "image": "places/Madikeri-Fort.avif"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 12,
+  "fields": {
+    "district": 2,
+    "name": "raja ,s tomb",
+    "slug": "raja-s-tomb",
+    "category": "historical",
+    "speciality": "gaddige is a historic tomb",
+    "description": "complex of associated with the kodagu royal family  the tombs have distinctive domed architecture with islamic influences while also featuring carvings of hindu deities",
+    "image": "places/raj.webp"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 13,
+  "fields": {
+    "district": 2,
+    "name": "nalknad palace",
+    "slug": "nalknad-palace",
+    "category": "historical",
+    "speciality": "nalkand palace was the summer residence  of the kodagu kings",
+    "description": "located near tadiandamol , this historic palace is known for its traditional architecture , murals and connection to the kodagu royal  family",
+    "image": "places/nal.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 14,
+  "fields": {
+    "district": 2,
+    "name": "nagarahole tiger reserve",
+    "slug": "nagarahole-tiger-reserve",
+    "category": "nature",
+    "speciality": "a major wildlife reserve known for its rich forests and animals",
+    "description": "including tigers, elephanths and other wildlife, the reserve extends across parts of kodagu and mysuru and  forms an important part of the western ghats forest landscape",
+    "image": "places/tiger.webp"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 15,
+  "fields": {
+    "district": 2,
+    "name": "dubare elephant camp",
+    "slug": "dubare-elephant-camp",
+    "category": "nature",
+    "speciality": "dubare is famous for the association with eleplants and its reverside forest environment",
+    "description": "the camp is loacted along the cauvery river and has traditionally been a popular destination for visitors intrested in elephants and  outdoor activities",
+    "image": "places/elephnt.webp"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 16,
+  "fields": {
+    "district": 2,
+    "name": "nisargadhama reserve",
+    "slug": "nisargadhama-reserve",
+    "category": "nature",
+    "speciality": "nisargadhama  is a picturesque forested island surrounded byb the cauvery river",
+    "description": "the nature reserve is known for its bamboo groves, greenery river surroundings and peaceful natural atmosphere.",
+    "image": "places/nisr.webp"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 17,
+  "fields": {
+    "district": 3,
+    "name": "chennakeshava Temple",
+    "slug": "chennakeshava-temple",
+    "category": "religious",
+    "speciality": "grand 12th century monument",
+    "description": "This grand 12th-century monument is renowned for its extraordinarily intricate soapstone carvings and perfectly balanced gravity-defying pillars.A breathtaking architectural masterpiece of the ancient Hoysala Empire that is covered in detailed stone art and continues to function as an active worship site.",
+    "image": "places/beluru.avif"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 18,
+  "fields": {
+    "district": 3,
+    "name": "Hoysaleswara Temple(Halebidu)",
+    "slug": "hoysaleswara-templehalebidu",
+    "category": "religious",
+    "speciality": "This twin-shrined temple",
+    "description": "This twin-shrined temple complex features thousands of finely detailed stone friezes depicting Hindu mythology, animals, and ancient battles.The magnificent ruins of an ancient capital showcasing star-shaped architecture and some of the most complex stone craftsmanship in Indian history.",
+    "image": "places/hoy.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 19,
+  "fields": {
+    "district": 3,
+    "name": "Bisle Ghat and Reserve Forest",
+    "slug": "bisle-ghat-and-reserve-forest",
+    "category": "nature",
+    "speciality": "This biodiversity hotspot",
+    "description": "This biodiversity hotspot offers sweeping panoramic views of three distinct mountain ranges blanketed by thick, untouched rainforest.A dense, undisturbed jungle habitat rich with rare botanical species, wild elephants, monkeys, and diverse birdlife.",
+    "image": "places/Bisle-Ghat-.webp"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 20,
+  "fields": {
+    "district": 3,
+    "name": "Gorur Dam (Hemavathi Reservoir)",
+    "slug": "gorur-dam-hemavathi-reservoir",
+    "category": "watery",
+    "speciality": "This massive dam spans the Hemavathi river",
+    "description": "This massive dam spans the Hemavathi river, offering spectacular views of rushing water when the massive crest gates are opened.A vast and scenic man-made lake environment that provides a cooling atmosphere and beautiful views of the river's heavy flow during monsoons.",
+    "image": "places/Gorur-Dam.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 21,
+  "fields": {
+    "district": 3,
+    "name": "Yagachi Dam and Water Sports Centre",
+    "slug": "yagachi-dam-and-water-sports-centre",
+    "category": "watery",
+    "speciality": "This scenic reservoir",
+    "description": "his scenic reservoir provides a calm water surface specifically designated for adventure activities like kayaking, jet skiing, and speed boating.A recreational water body surrounded by lush greenery, perfect for thrill-seekers looking for aquatic activities.",
+    "image": "places/yo.webp"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 22,
+  "fields": {
+    "district": 4,
+    "name": "Om Beach (Gokarna)",
+    "slug": "om-beach-gokarna",
+    "category": "watery",
+    "speciality": "Hindu symbol 'Om' right where the golden sands meet the Arabian Sea.",
+    "description": "This naturally curved coastline perfectly forms the shape of the auspicious Hindu symbol 'Om' right where the golden sands meet the Arabian Sea.",
+    "image": "places/gok.webp"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 23,
+  "fields": {
+    "district": 4,
+    "name": "Vibhuti Falls",
+    "slug": "vibhuti-falls",
+    "category": "watery",
+    "speciality": "This beautiful multi-tiered waterfall",
+    "description": "This beautiful multi-tiered waterfall is hidden deep inside the forests and features crystal-clear water flowing over limestone rocks into a natural pool.A refreshing freshwater cascade tumbling through the jungle, offering a cool, natural swimming area away from the heat.",
+    "image": "places/vib.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 24,
+  "fields": {
+    "district": 4,
+    "name": "Mirjan Fort",
+    "slug": "mirjan-fort",
+    "category": "historical",
+    "speciality": "This magnificent 16th-century laterite stone fort",
+    "description": "This magnificent 16th-century laterite stone fort, famously ruled by the \"Pepper Queen,\" is known for its high bastions, moat, and secret passageways.A massive, moss-covered medieval fortification that showcases the region's rich trading history and ancient defensive architecture.",
+    "image": "places/mir.webp"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 25,
+  "fields": {
+    "district": 4,
+    "name": "Dandeli Wildlife Sanctuary",
+    "slug": "dandeli-wildlife-sanctuary",
+    "category": "nature",
+    "speciality": "massive tropical forest reserve",
+    "description": "This massive tropical forest reserve is a thrilling haven for rare wildlife, including the elusive black panther, hornbills, and Malabar giant squirrels.,A dense, untamed jungle environment offering thrilling wildlife safaris and rich zoological diversity for animal lovers.",
+    "image": "places/dandeli.webp"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 26,
+  "fields": {
+    "district": 4,
+    "name": "Anshi National Park",
+    "slug": "anshi-national-park",
+    "category": "nature",
+    "speciality": "highly protected evergreen broadleaf forest",
+    "description": "This highly protected evergreen broadleaf forest is a dedicated tiger reserve that also provides sanctuary for wild elephants, sloth bears, and diverse botanical plant life.A rugged, undisturbed natural habitat that serves as a crucial conservation area for India's big cats and native flora.",
+    "image": "places/park.webp"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 27,
+  "fields": {
+    "district": 1,
+    "name": "Mysore Zoo",
+    "slug": "mysore-zoo",
+    "category": "nature",
+    "speciality": "One of India's oldest and best-kept zoos",
+    "description": "Officially the Sri Chamarajendra Zoological Gardens, this heritage zoo is spread over shaded, landscaped grounds and is easy to combine with a Mysuru city day.",
+    "image": "places/mysore-zoo.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 28,
+  "fields": {
+    "district": 1,
+    "name": "Jaganmohan Palace",
+    "slug": "jaganmohan-palace",
+    "category": "historical",
+    "speciality": "Royal palace turned art gallery",
+    "description": "Built for the Wadiyar rulers, the palace now houses the Sri Jayachamarajendra Art Gallery with paintings, artefacts and royal memorabilia.",
+    "image": "places/jaganmohan-palace.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 29,
+  "fields": {
+    "district": 1,
+    "name": "St. Philomena's Church",
+    "slug": "st-philomenas-church",
+    "category": "religious",
+    "speciality": "Neo-Gothic cathedral with twin spires",
+    "description": "One of the largest churches in the region, known for its tall twin spires, stained glass and a peaceful crypt.",
+    "image": "places/st-philomenas-church.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 30,
+  "fields": {
+    "district": 1,
+    "name": "Karanji Lake",
+    "slug": "karanji-lake",
+    "category": "watery",
+    "speciality": "Lakeside nature park and butterfly garden",
+    "description": "A calm lake beside Chamundi Hill with a walk-through aviary and butterfly park, popular for relaxed evening visits.",
+    "image": "places/karanji-lake.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 31,
+  "fields": {
+    "district": 1,
+    "name": "Somanathapura Chennakesava Temple",
+    "slug": "somanathapura-chennakesava-temple",
+    "category": "religious",
+    "speciality": "Finely carved Hoysala temple",
+    "description": "A star-shaped Hoysala temple covered in detailed sculpture, a short drive from Mysuru and a favourite with history lovers.",
+    "image": "places/somanathapura-chennakesava-temple.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 32,
+  "fields": {
+    "district": 1,
+    "name": "Namdroling Monastery (Golden Temple)",
+    "slug": "namdroling-monastery-golden-temple",
+    "category": "religious",
+    "speciality": "Tibetan Buddhist monastery at Bylakuppe",
+    "description": "A large Tibetan settlement with a golden-hued monastery, colourful murals and monks in daily prayer.",
+    "image": "places/namdroling-monastery-golden-temple.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 33,
+  "fields": {
+    "district": 2,
+    "name": "Iruppu Falls",
+    "slug": "iruppu-falls",
+    "category": "watery",
+    "speciality": "Sacred waterfall in the Brahmagiri hills",
+    "description": "A forest waterfall near Srimangala, linked to the Rameshwara temple on its bank and best seen in and just after the monsoon.",
+    "image": "places/iruppu-falls.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 34,
+  "fields": {
+    "district": 2,
+    "name": "Mandalpatti Viewpoint",
+    "slug": "mandalpatti-viewpoint",
+    "category": "nature",
+    "speciality": "Misty hilltop viewpoint above the clouds",
+    "description": "A scenic peak in the Pushpagiri range reached by a rough jeep track, loved for sunrise views over rolling green hills.",
+    "image": "places/mandalpatti-viewpoint.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 35,
+  "fields": {
+    "district": 2,
+    "name": "Tadiandamol Peak",
+    "slug": "tadiandamol-peak",
+    "category": "nature",
+    "speciality": "Highest peak in Kodagu",
+    "description": "A rewarding trek through grassland and shola forest with wide views across the Western Ghats.",
+    "image": "places/tadiandamol-peak.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 36,
+  "fields": {
+    "district": 2,
+    "name": "Chelavara Falls",
+    "slug": "chelavara-falls",
+    "category": "watery",
+    "speciality": "Waterfall amid coffee and cardamom hills",
+    "description": "A beautiful cascade near Cheyyandane, best visited in the rainy season and often paired with a trip to nearby viewpoints.",
+    "image": "places/chelavara-falls.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 37,
+  "fields": {
+    "district": 2,
+    "name": "Mallalli Falls",
+    "slug": "mallalli-falls",
+    "category": "watery",
+    "speciality": "Powerful falls in the Pushpagiri foothills",
+    "description": "A tall waterfall near Somwarpet reached by a short walk through plantations, at its best after good rain.",
+    "image": "places/mallalli-falls.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 38,
+  "fields": {
+    "district": 5,
+    "name": "Baba Budangiri",
+    "slug": "baba-budangiri",
+    "category": "nature",
+    "speciality": "Rolling hills and a revered shrine",
+    "description": "A hill range associated with the early coffee story of India, with cave shrines, grassy slopes and sweeping views.",
+    "image": "places/baba-budangiri.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 39,
+  "fields": {
+    "district": 5,
+    "name": "Kemmanagundi",
+    "slug": "kemmanagundi",
+    "category": "nature",
+    "speciality": "Hill station with rose garden and sunset views",
+    "description": "A quiet hill station in the Baba Budan range, known for its gardens, viewpoints and nearby waterfalls.",
+    "image": "places/kemmanagundi.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 40,
+  "fields": {
+    "district": 5,
+    "name": "Hebbe Falls",
+    "slug": "hebbe-falls",
+    "category": "watery",
+    "speciality": "Two-stage waterfall in dense forest",
+    "description": "A scenic fall near Kemmanagundi, usually reached by a jeep ride followed by a walk through coffee estates.",
+    "image": "places/hebbe-falls.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 41,
+  "fields": {
+    "district": 5,
+    "name": "Sringeri Sharadamba Temple",
+    "slug": "sringeri-sharadamba-temple",
+    "category": "religious",
+    "speciality": "Historic seat of learning on the Tunga river",
+    "description": "A major pilgrimage town with the Sharada Peetha, riverside ghats and temple architecture.",
+    "image": "places/sringeri-sharadamba-temple.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 42,
+  "fields": {
+    "district": 5,
+    "name": "Kudremukh National Park",
+    "slug": "kudremukh-national-park",
+    "category": "nature",
+    "speciality": "Shola grasslands and Western Ghats forest",
+    "description": "A protected highland area famous for its horse-face shaped peak, rich biodiversity and trekking routes (permissions required).",
+    "image": "places/kudremukh-national-park.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 43,
+  "fields": {
+    "district": 5,
+    "name": "Kalhatti Falls",
+    "slug": "kalhatti-falls",
+    "category": "watery",
+    "speciality": "Waterfall near Kemmanagundi",
+    "description": "A seasonal waterfall reached by a short walk, often visited together with the Kalhathigiri temple.",
+    "image": "places/kalhatti-falls.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 44,
+  "fields": {
+    "district": 6,
+    "name": "Virupaksha Temple",
+    "slug": "virupaksha-temple",
+    "category": "religious",
+    "speciality": "Living temple in the heart of Hampi",
+    "description": "A 7th-century-origin temple still in daily worship, with a towering gopuram facing the busy Hampi Bazaar.",
+    "image": "places/virupaksha-temple.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 45,
+  "fields": {
+    "district": 6,
+    "name": "Vittala Temple",
+    "slug": "vittala-temple",
+    "category": "historical",
+    "speciality": "Home of the famous Stone Chariot",
+    "description": "A UNESCO World Heritage monument known for its musical pillars, sculpted halls and the iconic stone chariot.",
+    "image": "places/vittala-temple.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 46,
+  "fields": {
+    "district": 6,
+    "name": "Lotus Mahal",
+    "slug": "lotus-mahal",
+    "category": "historical",
+    "speciality": "Elegant Indo-Islamic pavilion",
+    "description": "A symmetrical, lotus-shaped pavilion inside the Zenana Enclosure, notable for its arched openings.",
+    "image": "places/lotus-mahal.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 47,
+  "fields": {
+    "district": 6,
+    "name": "Elephant Stables",
+    "slug": "elephant-stables",
+    "category": "historical",
+    "speciality": "Domed royal stables",
+    "description": "A long row of domed chambers that once housed the royal elephants, showing a blend of architectural styles.",
+    "image": "places/elephant-stables.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 48,
+  "fields": {
+    "district": 6,
+    "name": "Matanga Hill",
+    "slug": "matanga-hill",
+    "category": "nature",
+    "speciality": "Best sunrise viewpoint in Hampi",
+    "description": "A short but steep climb to a rocky summit with panoramic views over the ruins, the river and the banana fields.",
+    "image": "places/matanga-hill.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 49,
+  "fields": {
+    "district": 6,
+    "name": "Tungabhadra Dam",
+    "slug": "tungabhadra-dam",
+    "category": "watery",
+    "speciality": "Large reservoir with a landscaped garden",
+    "description": "A major dam near Hosapete with a garden, viewpoints and a pleasant evening atmosphere.",
+    "image": "places/tungabhadra-dam.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 50,
+  "fields": {
+    "district": 6,
+    "name": "Sanapur Lake",
+    "slug": "sanapur-lake",
+    "category": "watery",
+    "speciality": "Quiet lake with coracle rides",
+    "description": "A calm reservoir surrounded by boulder hills near Hampi, popular for coracle rides and sunsets.",
+    "image": "places/sanapur-lake.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 51,
+  "fields": {
+    "district": 7,
+    "name": "Sri Krishna Temple",
+    "slug": "sri-krishna-temple",
+    "category": "religious",
+    "speciality": "Famous temple with the Kanakana Kindi window",
+    "description": "A renowned 13th-century temple where Lord Krishna is worshipped through a silver-plated window, known for its Udupi cuisine tradition.",
+    "image": "places/sri-krishna-temple.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 52,
+  "fields": {
+    "district": 7,
+    "name": "Malpe Beach",
+    "slug": "malpe-beach",
+    "category": "watery",
+    "speciality": "Wide beach with water sports",
+    "description": "A clean, lively beach with watersports, seafood stalls and boats to St. Mary's Island.",
+    "image": "places/malpe-beach.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 53,
+  "fields": {
+    "district": 7,
+    "name": "St. Mary's Island",
+    "slug": "st-marys-island",
+    "category": "watery",
+    "speciality": "Island of unusual hexagonal basalt columns",
+    "description": "A small island off Malpe with striking columnar rock formations, reached by a short ferry (seasonal).",
+    "image": "places/st-marys-island.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 54,
+  "fields": {
+    "district": 7,
+    "name": "Kaup Beach and Lighthouse",
+    "slug": "kaup-beach-and-lighthouse",
+    "category": "watery",
+    "speciality": "Beach with a historic lighthouse",
+    "description": "A beautiful stretch of coast with a red-and-white lighthouse that you can climb for sea views.",
+    "image": "places/kaup-beach-and-lighthouse.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 55,
+  "fields": {
+    "district": 7,
+    "name": "Kollur Mookambika Temple",
+    "slug": "kollur-mookambika-temple",
+    "category": "religious",
+    "speciality": "Pilgrimage site at the foot of the Western Ghats",
+    "description": "A well-known Shakti temple located near the Souparnika river, surrounded by forested hills.",
+    "image": "places/kollur-mookambika-temple.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 56,
+  "fields": {
+    "district": 7,
+    "name": "Maravanthe Beach",
+    "slug": "maravanthe-beach",
+    "category": "watery",
+    "speciality": "Road squeezed between sea and river",
+    "description": "A scenic highway stretch with the Arabian Sea on one side and the Souparnika river on the other.",
+    "image": "places/maravanthe-beach.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 57,
+  "fields": {
+    "district": 8,
+    "name": "Panambur Beach",
+    "slug": "panambur-beach",
+    "category": "watery",
+    "speciality": "Popular city beach with sunset views",
+    "description": "A well-kept beach near the port, known for camel and boat rides, parasailing and evening crowds.",
+    "image": "places/panambur-beach.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 58,
+  "fields": {
+    "district": 8,
+    "name": "Tannirbhavi Beach",
+    "slug": "tannirbhavi-beach",
+    "category": "watery",
+    "speciality": "Quieter beach with a tree park",
+    "description": "A calm beach at the Netravathi estuary with a nearby tree park, ideal for a relaxed evening.",
+    "image": "places/tannirbhavi-beach.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 59,
+  "fields": {
+    "district": 8,
+    "name": "Kadri Manjunath Temple",
+    "slug": "kadri-manjunath-temple",
+    "category": "religious",
+    "speciality": "Ancient temple with bronze sculptures",
+    "description": "A hillside temple dating back many centuries, noted for its bronze images and spring-fed ponds.",
+    "image": "places/kadri-manjunath-temple.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 60,
+  "fields": {
+    "district": 8,
+    "name": "Sultan Battery",
+    "slug": "sultan-battery",
+    "category": "historical",
+    "speciality": "Watchtower built by Tipu Sultan",
+    "description": "A black-stone watchtower overlooking the Gurupura river, built to guard the river mouth.",
+    "image": "places/sultan-battery.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 61,
+  "fields": {
+    "district": 8,
+    "name": "Pilikula Nisargadhama",
+    "slug": "pilikula-nisargadhama",
+    "category": "nature",
+    "speciality": "Biological park with a lake and heritage village",
+    "description": "A multi-attraction park with a zoo, botanical garden, boating and a museum-style heritage village.",
+    "image": "places/pilikula-nisargadhama.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 62,
+  "fields": {
+    "district": 8,
+    "name": "St. Aloysius Chapel",
+    "slug": "st-aloysius-chapel",
+    "category": "religious",
+    "speciality": "Chapel covered in Italian-style paintings",
+    "description": "A heritage chapel whose walls and ceiling are covered in colourful paintings by an Italian Jesuit artist.",
+    "image": "places/st-aloysius-chapel.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 63,
+  "fields": {
+    "district": 8,
+    "name": "Mangaladevi Temple",
+    "slug": "mangaladevi-temple",
+    "category": "religious",
+    "speciality": "Temple that gave the city its name",
+    "description": "A centuries-old temple dedicated to Goddess Mangaladevi in the heart of Mangaluru.",
+    "image": "places/mangaladevi-temple.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 64,
+  "fields": {
+    "district": 9,
+    "name": "Jog Falls",
+    "slug": "jog-falls",
+    "category": "watery",
+    "speciality": "One of India's highest plunge waterfalls",
+    "description": "The Sharavathi river drops in four distinct streams; the view is most dramatic from July to October.",
+    "image": "places/jog-falls.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 65,
+  "fields": {
+    "district": 9,
+    "name": "Agumbe",
+    "slug": "agumbe",
+    "category": "nature",
+    "speciality": "Rainforest village known for sunsets",
+    "description": "A misty Western Ghats village famous for its sunset point, rainforest research station and wildlife.",
+    "image": "places/agumbe.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 66,
+  "fields": {
+    "district": 9,
+    "name": "Kodachadri",
+    "slug": "kodachadri",
+    "category": "nature",
+    "speciality": "Forested peak with a shrine and treks",
+    "description": "A scenic hill near Kollur with trekking trails, a hilltop shrine and views over the Western Ghats.",
+    "image": "places/kodachadri.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 67,
+  "fields": {
+    "district": 9,
+    "name": "Keladi Rameshwara Temple",
+    "slug": "keladi-rameshwara-temple",
+    "category": "historical",
+    "speciality": "Historic Keladi Nayaka-era temple",
+    "description": "A temple complex from the Keladi Nayaka dynasty combining Hoysala and Dravidian influences.",
+    "image": "places/keladi-rameshwara-temple.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 68,
+  "fields": {
+    "district": 9,
+    "name": "Sakrebailu Elephant Camp",
+    "slug": "sakrebailu-elephant-camp",
+    "category": "nature",
+    "speciality": "Elephant camp on the Tunga river",
+    "description": "A forest-department camp where elephants are bathed and fed beside the river, best seen in the morning.",
+    "image": "places/sakrebailu-elephant-camp.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 69,
+  "fields": {
+    "district": 9,
+    "name": "Lion and Tiger Safari, Tyavarekoppa",
+    "slug": "lion-and-tiger-safari-tyavarekoppa",
+    "category": "nature",
+    "speciality": "Safari park near Shivamogga",
+    "description": "A safari park offering bus rides through lion and tiger enclosures.",
+    "image": "places/lion-and-tiger-safari-tyavarekoppa.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 70,
+  "fields": {
+    "district": 9,
+    "name": "Honnemaradu",
+    "slug": "honnemaradu",
+    "category": "watery",
+    "speciality": "Backwater island in the Sharavathi reservoir",
+    "description": "A scenic reservoir area known for water sports, camping and kayaking.",
+    "image": "places/honnemaradu.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 71,
+  "fields": {
+    "district": 4,
+    "name": "Mahabaleshwar Temple, Gokarna",
+    "slug": "mahabaleshwar-temple-gokarna",
+    "category": "religious",
+    "speciality": "Ancient temple housing the Atmalinga",
+    "description": "A major pilgrimage temple by the sea, known for its Dravidian style and its Shivaratri festival.",
+    "image": "places/mahabaleshwar-temple-gokarna.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 72,
+  "fields": {
+    "district": 4,
+    "name": "Om Beach",
+    "slug": "om-beach",
+    "category": "watery",
+    "speciality": "Beach shaped like the 'Om' symbol",
+    "description": "Two curved bays that together form the Om shape, with calm water, cafes and watersports.",
+    "image": "places/om-beach.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 73,
+  "fields": {
+    "district": 4,
+    "name": "Kudle Beach",
+    "slug": "kudle-beach",
+    "category": "watery",
+    "speciality": "Long, relaxed beach with shacks",
+    "description": "A wide beach popular with backpackers, with a laid-back vibe, sunsets and beach shacks.",
+    "image": "places/kudle-beach.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 74,
+  "fields": {
+    "district": 4,
+    "name": "Murudeshwar Temple",
+    "slug": "murudeshwar-temple",
+    "category": "religious",
+    "speciality": "Giant Shiva statue by the sea",
+    "description": "A coastal temple with one of the world's tallest Shiva statues and a towering gopuram.",
+    "image": "places/murudeshwar-temple.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 75,
+  "fields": {
+    "district": 4,
+    "name": "Yana Caves",
+    "slug": "yana-caves",
+    "category": "nature",
+    "speciality": "Black limestone rock pillars in the forest",
+    "description": "Two giant crystalline limestone formations in dense forest, reached by a short trek.",
+    "image": "places/yana-caves.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 76,
+  "fields": {
+    "district": 4,
+    "name": "Magod Falls",
+    "slug": "magod-falls",
+    "category": "watery",
+    "speciality": "Waterfall that splits into two streams",
+    "description": "A scenic cascade where the Bedti river falls from a great height into a valley, best after the monsoon.",
+    "image": "places/magod-falls.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 77,
+  "fields": {
+    "district": 3,
+    "name": "Shravanabelagola",
+    "slug": "shravanabelagola",
+    "category": "religious",
+    "speciality": "Colossal monolithic statue of Gommateshwara",
+    "description": "A major Jain pilgrimage site where a monolithic statue stands atop Vindhyagiri hill, reached by a climb of many steps.",
+    "image": "places/shravanabelagola.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 78,
+  "fields": {
+    "district": 3,
+    "name": "Manjarabad Fort",
+    "slug": "manjarabad-fort",
+    "category": "historical",
+    "speciality": "Star-shaped fort built by Tipu Sultan",
+    "description": "An 18th-century star-shaped fort near Sakleshpur with views of the surrounding hills.",
+    "image": "places/manjarabad-fort.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 79,
+  "fields": {
+    "district": 3,
+    "name": "Doddagaddavalli Lakshmi Devi Temple",
+    "slug": "doddagaddavalli-lakshmi-devi-temple",
+    "category": "religious",
+    "speciality": "Early Hoysala temple",
+    "description": "A beautiful early Hoysala temple known for its unusual four-shrine design.",
+    "image": "places/doddagaddavalli-lakshmi-devi-temple.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 80,
+  "fields": {
+    "district": 10,
+    "name": "Ranganathittu Bird Sanctuary",
+    "slug": "ranganathittu-bird-sanctuary",
+    "category": "nature",
+    "speciality": "Riverside bird sanctuary with boat rides",
+    "description": "A bird sanctuary on small islands in the Kaveri where visitors can see crocodiles and migratory and resident birds on a boat tour.",
+    "image": "places/ranganathittu-bird-sanctuary.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 81,
+  "fields": {
+    "district": 10,
+    "name": "Sri Ranganathaswamy Temple, Srirangapatna",
+    "slug": "sri-ranganathaswamy-temple-srirangapatna",
+    "category": "religious",
+    "speciality": "Island temple on the Kaveri",
+    "description": "A temple on the Srirangapatna island dedicated to Lord Ranganatha, built in Hoysala and Vijayanagara styles.",
+    "image": "places/sri-ranganathaswamy-temple-srirangapatna.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 82,
+  "fields": {
+    "district": 10,
+    "name": "Dariya Daulat Bagh",
+    "slug": "dariya-daulat-bagh",
+    "category": "historical",
+    "speciality": "Tipu Sultan's summer palace",
+    "description": "A beautiful Indo-Islamic palace set in a garden, decorated with murals depicting battles and court scenes.",
+    "image": "places/dariya-daulat-bagh.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 83,
+  "fields": {
+    "district": 10,
+    "name": "Gumbaz, Srirangapatna",
+    "slug": "gumbaz-srirangapatna",
+    "category": "historical",
+    "speciality": "Mausoleum of Tipu Sultan and Hyder Ali",
+    "description": "A domed mausoleum with ornate doors and black marble pillars.",
+    "image": "places/gumbaz-srirangapatna.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 84,
+  "fields": {
+    "district": 10,
+    "name": "Shivanasamudra Falls",
+    "slug": "shivanasamudra-falls",
+    "category": "watery",
+    "speciality": "Twin falls: Gaganachukki and Bharachukki",
+    "description": "Two spectacular falls of the Kaveri, seen best after the monsoon.",
+    "image": "places/shivanasamudra-falls.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 85,
+  "fields": {
+    "district": 10,
+    "name": "Melukote",
+    "slug": "melukote",
+    "category": "religious",
+    "speciality": "Hill temple town with a Yoga Narasimha shrine",
+    "description": "A hill town with the Cheluvanarayana Swamy temple, a Yoga Narasimha shrine and traditional Vaishnava culture.",
+    "image": "places/melukote.jpg"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 86,
+  "fields": {
+    "district": 10,
+    "name": "KRS Dam",
+    "slug": "krs-dam-test",
+    "category": "",
+    "speciality": "",
+    "description": "",
+    "image": ""
+  }
+},
+{
+  "model": "places.place",
+  "pk": 87,
+  "fields": {
+    "district": 9,
+    "name": "Jog Falls",
+    "slug": "jog-falls-alanahalli",
+    "category": "",
+    "speciality": "",
+    "description": "",
+    "image": ""
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 27,
+  "fields": {
+    "place": 1,
+    "opening_hours": "Palace: 10:00 AM - 5:30 PM daily. Evening illumination: Sundays and public holidays, about 7:00-7:45 PM (palace interior closed then).",
+    "weekly_holidays": "None reported.",
+    "holiday_notes": "Special timings and programmes during Dasara. Light and sound show runs on other evenings; its timing changes by day. Official site to confirm: mysorepalace.gov.in",
+    "ticket_price": "About Rs 100 adults, Rs 50 children 10-18, free under 10. Foreign visitors reported around Rs 300 (traveller-reported, not confirmed). Outside viewing of grounds is free.",
+    "crowd_guidance": "Mornings are calmer. Sunday/holiday evenings and Dasara are very busy. Ticket counters stop selling and visitors are cleared shortly before closing.",
+    "facilities": "Footwear storage outside the palace, parking nearby, museum inside. Photography is not allowed inside the palace.",
+    "source_url": "https://www.mapsofindia.com/mysore/tourist-attractions/palace.html",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 28,
+  "fields": {
+    "place": 4,
+    "opening_hours": "Darshan about 7:30 AM - 9:00 PM. Timings change on festival days; confirm locally.",
+    "weekly_holidays": "None. Special abhisheka on Fridays.",
+    "holiday_notes": "Ashada Fridays, Chamundeshwari Vardhanti and Dasara bring very long queues. In 2026 the Ashada period had no footwear stand on the hill (counters at the base).",
+    "ticket_price": "General darshan free. Paid special darshan: Rs 100 / Rs 300 (traveller-reported) and Rs 2,000 on peak days (announced by the authority for 2026 Ashada and Vardhanti).",
+    "crowd_guidance": "Go on a weekday soon after opening. Avoid Fridays, weekends, Ashada month and Dasara if you dislike queues. Ignore touts offering paid fast darshan.",
+    "facilities": "KSRTC buses to the hill, wheelchair-accessible premises, free daily meals, Mahabaleshwara temple a short walk away, hilltop views.",
+    "source_url": "https://shubhpanchang.com/temples/chamundeshwari-temple",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 29,
+  "fields": {
+    "place": 2,
+    "opening_hours": "VERIFY LOCALLY. Dam promenade about 8:00 AM - 6:00 PM. Brindavan Gardens roughly 6:30/8:00 AM - 8:00 PM weekdays, to 9:00 PM weekends. Musical fountain about 6:30-7:30 PM weekdays, to about 8:30 PM weekends (seasonal).",
+    "weekly_holidays": "None reported.",
+    "holiday_notes": "VERIFY LOCALLY: the fountain show can be cancelled in heavy rain, for technical faults or by government order. Videography is restricted in the gardens.",
+    "ticket_price": "VERIFY LOCALLY: sources disagree. Gardens adult entry quoted anywhere from Rs 15 to Rs 50; camera about Rs 100. Dam promenade usually free.",
+    "crowd_guidance": "Arrive by 4-5 PM to see the gardens in daylight and get a fountain spot. Weekends and holidays are crowded.",
+    "facilities": "Terraced gardens, boating, musical fountain, children's park, parking.",
+    "source_url": "https://www.mapsofindia.com/mysore/tourist-attractions/brindavan-gardens.html",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 30,
+  "fields": {
+    "place": 3,
+    "opening_hours": "No official hours. One source says open 24 hours; visit in daylight only.",
+    "weekly_holidays": "None.",
+    "holiday_notes": "SAFETY: flow can rise suddenly when water is released upstream, and rocks are slippery. Do not enter the water. Best in monsoon, but extra risky then. Kodandarama Temple is next to the falls.",
+    "ticket_price": "VERIFY LOCALLY: one source says Rs 30, another reports no ticket.",
+    "crowd_guidance": "Usually less crowded than other falls. Weekends after rain draw more people.",
+    "facilities": "Very limited food nearby (carry snacks), narrow and patchy access road, small temple.",
+    "source_url": "https://en.wikipedia.org/wiki/Chunchanakatte_Falls",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 31,
+  "fields": {
+    "place": 18,
+    "opening_hours": "VERIFY LOCALLY: most sources say about 6:30 AM - 6:30 PM; a few list till 9:00 PM. Adjacent ASI museum 9:00 AM - 5:00 PM.",
+    "weekly_holidays": "Museum closed on Fridays. Temple open daily.",
+    "holiday_notes": "Active ASI-protected UNESCO site. Dress modestly. Tripod or professional video may need ASI permission.",
+    "ticket_price": "Free for Indian citizens. Foreign visitors pay an ASI fee (a travel site quotes Rs 600 - unconfirmed). Small charge to store footwear.",
+    "crowd_guidance": "Early morning is quietest. Often combined with Belur on one day, so afternoons get tour groups.",
+    "facilities": "Footwear stand near entrance, garden, museum, Kedareshwara temple and Jain basadis nearby.",
+    "source_url": "https://traveltriangle.com/blog/halebidu/",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 32,
+  "fields": {
+    "place": 17,
+    "opening_hours": "7:30 AM - 7:30 PM daily (Karnataka Tourism).",
+    "weekly_holidays": "None.",
+    "holiday_notes": "Deity is worshipped daily, so puja breaks and festival days can limit access to the sanctum. Footwear must be left outside.",
+    "ticket_price": "Free entry. Small fee for footwear storage.",
+    "crowd_guidance": "Mornings are calmer. Festival days and weekends are busier.",
+    "facilities": "Leave-footwear area, several smaller shrines inside the complex, near Belur bus stand (about 0.5 km).",
+    "source_url": "https://karnatakatourism.org/skc-beluru",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 33,
+  "fields": {
+    "place": 20,
+    "opening_hours": "Not officially published. Visit in daylight.",
+    "weekly_holidays": "Not officially published.",
+    "holiday_notes": "Permission from the authorities is needed to go on top of the dam. Floods and gate releases can restrict access. Shettihalli Rosary Church nearby is submerged in monsoon and visible mainly in summer.",
+    "ticket_price": "Not officially published.",
+    "crowd_guidance": "Best after monsoon when gates are open and water is full. Otherwise quiet.",
+    "facilities": "Dam gardens and nearby Gorur temple. Limited tourist infrastructure.",
+    "source_url": "https://en.wikipedia.org/wiki/Gorur_dam",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 34,
+  "fields": {
+    "place": 21,
+    "opening_hours": "VERIFY LOCALLY: dam and water sports about 9:00 AM - 5:00 PM. Water sports run seasonally, roughly late October to June depending on water level.",
+    "weekly_holidays": "Not officially published.",
+    "holiday_notes": "Activities depend on water level and weather. Book on site or via local operators.",
+    "ticket_price": "Entry and activity prices not officially published. Ask at the counter.",
+    "crowd_guidance": "Weekends and school holidays are busiest. Dam looks best after monsoon when water is released.",
+    "facilities": "Jet ski, banana boat, kayaking, speed boat, bumper rides, life jackets, park along the dam. About 2.5 km from Belur bus stand.",
+    "source_url": "https://karnatakatourism.org/en/experiences/yagachi-dam-watersports",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 35,
+  "fields": {
+    "place": 19,
+    "opening_hours": "No fixed timings or gate reported. Visit in daylight.",
+    "weekly_holidays": "None.",
+    "holiday_notes": "Inside a reserve forest. Fog and rain reduce views in monsoon. Road is suitable for light vehicles only.",
+    "ticket_price": "No entry fee reported.",
+    "crowd_guidance": "Usually quiet; a quick stop between Sakleshpur and Kukke Subramanya.",
+    "facilities": "About 1 km walk from parking to the multi-level watchtower. No restrooms, shops or other facilities. Carry water.",
+    "source_url": "https://enidhi.net/2021/03/bisile-ghat-viewpoint-view-3-districts.html",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 36,
+  "fields": {
+    "place": 5,
+    "opening_hours": "About 9:00 AM - 5:00 PM daily; entrance closes at 5 PM.",
+    "weekly_holidays": "None reported.",
+    "holiday_notes": "Barriers keep visitors from the falls. Steps and paths are slippery in rain; the hanging bridge has been reported closed at times.",
+    "ticket_price": "About Rs 15-20 per person (sources vary). Parking about Rs 10-50 depending on vehicle.",
+    "crowd_guidance": "Weekends are crowded and parking fills up. Best July-October for water flow.",
+    "facilities": "Parking, pay-and-use toilets, refreshment stalls near the entrance, stairs with railings (about 200 steps).",
+    "source_url": "https://www.veenaworld.com/blog/abbey-falls-coorg-timings-entry-fee-things-to-do",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 37,
+  "fields": {
+    "place": 6,
+    "opening_hours": "No fixed hours. Rafting is run by private operators, in the monsoon season (roughly mid-June to mid-October).",
+    "weekly_holidays": "Not officially published.",
+    "holiday_notes": "VERIFY LOCALLY: season is ending/over now. A 2021 visitor found rafting not running because of low water despite online bookings. Use registered operators only; Kodagu has a rafting monitoring committee.",
+    "ticket_price": "Rafting typically Rs 600-1,200 per person (operator-quoted, varies by year).",
+    "crowd_guidance": "Pre-booking is usually needed in season. Confirm the operator is actually running before travelling.",
+    "facilities": "Base near T. Shettigeri (Kutta-Nagarahole route) run by private groups: raft gear, guides, kayaking.",
+    "source_url": "https://karnatakatourism.org/en/experiences/barapole-adventures",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 38,
+  "fields": {
+    "place": 10,
+    "opening_hours": "Bhagandeshwara temple about 6:30 AM - 1:30 PM and 3:00 - 8:30 PM (traveller-reported; confirm).",
+    "weekly_holidays": "None.",
+    "holiday_notes": "Tula Sankramana (17 Oct in 2026) fair and bathing draws huge crowds. Triveni Sangama can flood in heavy rain, and police restrict access at high water.",
+    "ticket_price": "Free.",
+    "crowd_guidance": "Very crowded around Tula Sankramana, weekends and Maha Shivaratri. Weekday mornings are calmer.",
+    "facilities": "Temple, Triveni Sangama confluence, lake opposite the temple. About 8 km below Talakaveri.",
+    "source_url": "https://wanderlog.com/tp/5779/bhagamandala-trip-planner",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 39,
+  "fields": {
+    "place": 15,
+    "opening_hours": "Reopened 20 Sep 2026 after a closure. For now: 9:30 AM - 11:30 AM only, in batches of up to 150 for about 45 minutes. May be extended later.",
+    "weekly_holidays": "One report says camps usually have a weekly rest day (often Tuesday) - not confirmed by the Forest Dept.",
+    "holiday_notes": "New safety rules: no touching, feeding, bathing or selfies; keep about 10 m from elephants; groups of 25 with guides; only some elephants shown. Older guides listing bathing, feeding or afternoon sessions are out of date.",
+    "ticket_price": "Rs 140 on regular days, Rs 160 on weekends and holidays (Deccan Herald, Sept 2026).",
+    "crowd_guidance": "Slots are capped, so arrive early. Weekends fill first.",
+    "facilities": "Boat crossing of the Kaveri to the camp, guides, barricaded viewing zones. Rafting nearby only when river flow is safe.",
+    "source_url": "https://www.deccanherald.com/india/karnataka/karnataka-dubare-elephant-camp-will-reopen-for-tourists-from-september-20-4152171",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 40,
+  "fields": {
+    "place": 7,
+    "opening_hours": "VERIFY LOCALLY: dam about 8:00 AM - 6:00 PM. Harangi Elephant Camp and Tree Park reopened in early Sept 2026; its current slot times are unconfirmed (earlier about 9-11 AM and 4-6 PM).",
+    "weekly_holidays": "Not officially published.",
+    "holiday_notes": "Elephant camp now runs under the new SOP: no touching, feeding or bathing, 10 m buffer. Swimming and unauthorised boating at the dam are prohibited.",
+    "ticket_price": "Dam entry about Rs 10-30 per person (varies; carry cash). Camp fee not officially published.",
+    "crowd_guidance": "Crowded on weekends. Best August-September when full.",
+    "facilities": "Viewpoint with benches, tree park, pedal boating and jet ski reported in the backwaters.",
+    "source_url": "https://www.thrillophilia.com/attractions/harangi-dam",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 41,
+  "fields": {
+    "place": 11,
+    "opening_hours": "About 10:00 AM - 5:30 PM.",
+    "weekly_holidays": "Fort and museum reported closed on Mondays.",
+    "holiday_notes": "The palace building houses the Deputy Commissioner's office, so its interior is not open. Museum is in the old St Mark's church.",
+    "ticket_price": "Fort grounds free. Museum small fee reported by some sources (about Rs 10 Indian / Rs 50 foreign) - unconfirmed.",
+    "crowd_guidance": "Evening is popular. Weekends and holidays are busier.",
+    "facilities": "Small museum, church, temple, elephant statues at the gate, views over Madikeri, parking nearby.",
+    "source_url": "https://www.captureatrip.com/blog/things-to-do-in-madikeri",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 42,
+  "fields": {
+    "place": 14,
+    "opening_hours": "Forest Department safaris about 6-8 AM and 3-5 PM (Karnataka Tourism). Timings were revised from 1 June; check the current schedule.",
+    "weekly_holidays": "Not officially published.",
+    "holiday_notes": "Safaris can be cancelled for weather, vehicle or staff reasons. Kodagu-side gate is Nanachi (Kutta); other gate is Veeranahosahalli.",
+    "ticket_price": "VERIFY LOCALLY: fees vary by vehicle type and nationality and were recently revised. Check with the Forest Dept or Jungle Lodges.",
+    "crowd_guidance": "Slots are limited, so book ahead. Staying a night nearby is advised over a day trip.",
+    "facilities": "Jeep, bus and boat safaris (Kabini side), forest stays by advance booking.",
+    "source_url": "https://www.karnatakatourism.org/tour-item/nagarahole-national-park",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 43,
+  "fields": {
+    "place": 13,
+    "opening_hours": "Not officially published.",
+    "weekly_holidays": "Not officially published.",
+    "holiday_notes": "Protected monument under Karnataka's Directorate of Archaeology and Museums, with a caretaker only. Access may be informal; call locally first. Food is not allowed in the garden.",
+    "ticket_price": "Not officially published.",
+    "crowd_guidance": "Remote and quiet. About 2.5 km detour from the Virajpet-Talakaveri road at Kakkabe.",
+    "facilities": "Garden, durbar hall and wall paintings (some damaged by graffiti). Few facilities; homestays nearby.",
+    "source_url": "https://en.wikipedia.org/wiki/Nalknad_Palace",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 44,
+  "fields": {
+    "place": 16,
+    "opening_hours": "VERIFY LOCALLY: about 9:00 AM - 5:00 PM per one source; another says 6:00 AM - 6:00 PM.",
+    "weekly_holidays": "Not officially published.",
+    "holiday_notes": "Reached by a hanging bridge. Check for river-level closures.",
+    "ticket_price": "About Rs 10 adult / Rs 5 child (older figures; may have risen). Extra for activities such as zip line.",
+    "crowd_guidance": "Weekends are crowded, especially around the entrance shops. Plan 3-4 hours.",
+    "facilities": "Deer park, bamboo groves, bird park, ample parking. No medical facilities and weak mobile network.",
+    "source_url": "https://www.sotc.in/tourism/coorg-tourism/places-to-visit-in-coorg/cauvery-nisargdhama/906",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 45,
+  "fields": {
+    "place": 9,
+    "opening_hours": "VERIFY LOCALLY: about 6:00 AM - 12:00 PM and 5:00 - 8:00 PM per one source; another lists 6:00 AM - 8:30 PM.",
+    "weekly_holidays": "None.",
+    "holiday_notes": "Timings change on festival days. Dress modestly.",
+    "ticket_price": "Free.",
+    "crowd_guidance": "Quiet most of the day. 30-45 minutes is enough.",
+    "facilities": "Temple pond with fish, limited roadside parking, no food stalls inside.",
+    "source_url": "https://chalbanjare.com/karnataka/tourist-attraction/shri-omkareshwara-swamy-temple-madikeri",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 46,
+  "fields": {
+    "place": 12,
+    "opening_hours": "About 9:30 AM - 5:30/6:00 PM.",
+    "weekly_holidays": "Not officially published.",
+    "holiday_notes": "Visitors report that the tombs cannot be entered; only the garden is open. Some report poor upkeep.",
+    "ticket_price": "VERIFY LOCALLY: nominal Rs 10-20 reported; one source says free.",
+    "crowd_guidance": "Short stop (30-60 minutes), usually combined with Raja's Seat and Madikeri Fort.",
+    "facilities": "Garden, limited roadside parking, no food stalls. Outdoor areas are wheelchair accessible.",
+    "source_url": "https://www.captureatrip.com/blog/places-to-visit-in-madikeri",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 47,
+  "fields": {
+    "place": 8,
+    "opening_hours": "6:00 AM - 6:00 PM daily (Karnataka Tourism).",
+    "weekly_holidays": "None. Open all year.",
+    "holiday_notes": "Tula Sankramana (17 Oct in 2026) is the main festival when the spring is believed to rise; expect extreme crowds. Avoid the hill road after dark.",
+    "ticket_price": "Free.",
+    "crowd_guidance": "Weekday mornings are best. Very crowded on Tula Sankramana, weekends and holidays.",
+    "facilities": "Temple, Brahma Kundike tank, steps up Brahmagiri for views. No shops near the summit, so carry food and water.",
+    "source_url": "https://karnatakatourism.org/en/destinations/tala-kaveri",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 48,
+  "fields": {
+    "place": 26,
+    "opening_hours": "Safaris in Kali Tiger Reserve (which includes Anshi): about 6-8 AM and 4-6 PM (Karnataka Tourism).",
+    "weekly_holidays": "Not officially published.",
+    "holiday_notes": "VERIFY LOCALLY: Anshi-range access details were not found separately; information is from the Kali Tiger Reserve listing. Reservations: 08284 231585 (Karnataka Tourism listing).",
+    "ticket_price": "Safari Rs 450 per person (Karnataka Tourism); other sources quote higher figures. Confirm before booking.",
+    "crowd_guidance": "Book ahead for weekends and holidays. Tiger sightings are rare; hornbills and birds are the draw.",
+    "facilities": "Forest Department safaris and nature camps; limited facilities inside. Camera fees may apply.",
+    "source_url": "https://karnatakatourism.org/en/experiences/kali-tiger-reserve",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 49,
+  "fields": {
+    "place": 25,
+    "opening_hours": "Safaris about 6:00-8:00 AM and 4:00-6:00 PM.",
+    "weekly_holidays": "Not officially published.",
+    "holiday_notes": "Entry is via Kulgi Nature Camp (about 11 km from Dandeli) or Phansoli. Reservations: 08284 231585 (Karnataka Tourism listing).",
+    "ticket_price": "Safari Rs 450 per person (Karnataka Tourism). Older listings show Rs 40 entry plus guide fee; recent travel guides quote Rs 650-950.",
+    "crowd_guidance": "Book ahead on weekends and holidays. Sightings are rare, so go for birdlife and forest.",
+    "facilities": "Forest Department jeep safaris, Kulgi Nature Camp accommodation, trekking and birdwatching nearby.",
+    "source_url": "https://karnatakatourism.org/en/experiences/kali-tiger-reserve",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 50,
+  "fields": {
+    "place": 24,
+    "opening_hours": "VERIFY LOCALLY: about 8:00/9:00 AM - 5:30/6:00 PM daily; sources differ slightly.",
+    "weekly_holidays": "None reported.",
+    "holiday_notes": "ASI-maintained ruin. Avoid climbing unstable sections. About 8 km north of Kumta.",
+    "ticket_price": "Free entry.",
+    "crowd_guidance": "Usually quiet. Best in the cooler, drier months.",
+    "facilities": "Basic: laterite walls, wells, steps. No major visitor facilities. Carry water and sun protection.",
+    "source_url": "https://www.karnatakatourism.org/tour-item/mirjan-fort/",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 51,
+  "fields": {
+    "place": 22,
+    "opening_hours": "Open all day; best visited in daylight.",
+    "weekly_holidays": "None.",
+    "holiday_notes": "SAFETY: signs prohibit swimming in rough weather and drownings have occurred. Monsoon seas are rough. Lifeguards are mostly in peak season only.",
+    "ticket_price": "Free entry. Water sports and boat trips are charged by local operators (for example about Rs 300 per head for a boat view of nearby beaches).",
+    "crowd_guidance": "Busy in peak season and weekends. Early morning and sunset are calmer.",
+    "facilities": "Parking (informal and limited), toilets, cafes, boat jetty, water-sports operators. About 6 km from Gokarna town.",
+    "source_url": "https://chalbanjare.com/karnataka/tourist-attraction/om-beach-gokarna",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 52,
+  "fields": {
+    "place": 23,
+    "opening_hours": "VERIFY LOCALLY: about 9:00 AM - 5:00/5:30 PM (2020 report).",
+    "weekly_holidays": "Not officially published.",
+    "holiday_notes": "Rough road for the last 15-18 km when coming from Sirsi. About a 1-1.5 km walk from parking. Do not swim when flow is high.",
+    "ticket_price": "Local panchayat fee about Rs 10-20 per person (reports vary).",
+    "crowd_guidance": "Usually quiet. Often combined with Yana Rocks.",
+    "facilities": "Parking, walking trail. No canteens near the falls, so bring food and water.",
+    "source_url": "https://www.enidhi.net/2020/09/vibhoothi-waterfalls-near-yana-details.html",
+    "last_verified": "2026-10-24"
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 53,
+  "fields": {
+    "place": 27,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 54,
+  "fields": {
+    "place": 28,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 55,
+  "fields": {
+    "place": 29,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 56,
+  "fields": {
+    "place": 30,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 57,
+  "fields": {
+    "place": 31,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 58,
+  "fields": {
+    "place": 32,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 59,
+  "fields": {
+    "place": 33,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 60,
+  "fields": {
+    "place": 34,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 61,
+  "fields": {
+    "place": 35,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 62,
+  "fields": {
+    "place": 36,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 63,
+  "fields": {
+    "place": 37,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 64,
+  "fields": {
+    "place": 38,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 65,
+  "fields": {
+    "place": 39,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 66,
+  "fields": {
+    "place": 40,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 67,
+  "fields": {
+    "place": 41,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 68,
+  "fields": {
+    "place": 42,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 69,
+  "fields": {
+    "place": 43,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 70,
+  "fields": {
+    "place": 44,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 71,
+  "fields": {
+    "place": 45,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 72,
+  "fields": {
+    "place": 46,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 73,
+  "fields": {
+    "place": 47,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 74,
+  "fields": {
+    "place": 48,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 75,
+  "fields": {
+    "place": 49,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 76,
+  "fields": {
+    "place": 50,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 77,
+  "fields": {
+    "place": 51,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 78,
+  "fields": {
+    "place": 52,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 79,
+  "fields": {
+    "place": 53,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 80,
+  "fields": {
+    "place": 54,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 81,
+  "fields": {
+    "place": 55,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 82,
+  "fields": {
+    "place": 56,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 83,
+  "fields": {
+    "place": 57,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 84,
+  "fields": {
+    "place": 58,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 85,
+  "fields": {
+    "place": 59,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 86,
+  "fields": {
+    "place": 60,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 87,
+  "fields": {
+    "place": 61,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 88,
+  "fields": {
+    "place": 62,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 89,
+  "fields": {
+    "place": 63,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 90,
+  "fields": {
+    "place": 64,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 91,
+  "fields": {
+    "place": 65,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 92,
+  "fields": {
+    "place": 66,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 93,
+  "fields": {
+    "place": 67,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 94,
+  "fields": {
+    "place": 68,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 95,
+  "fields": {
+    "place": 69,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 96,
+  "fields": {
+    "place": 70,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 97,
+  "fields": {
+    "place": 71,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 98,
+  "fields": {
+    "place": 72,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 99,
+  "fields": {
+    "place": 73,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 100,
+  "fields": {
+    "place": 74,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 101,
+  "fields": {
+    "place": 75,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 102,
+  "fields": {
+    "place": 76,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 103,
+  "fields": {
+    "place": 77,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 104,
+  "fields": {
+    "place": 78,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 105,
+  "fields": {
+    "place": 79,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 106,
+  "fields": {
+    "place": 80,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 107,
+  "fields": {
+    "place": 81,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 108,
+  "fields": {
+    "place": 82,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 109,
+  "fields": {
+    "place": 83,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 110,
+  "fields": {
+    "place": 84,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+},
+{
+  "model": "places.placedetails",
+  "pk": 111,
+  "fields": {
+    "place": 85,
+    "opening_hours": "06:00 AM – 06:30 PM",
+    "weekly_holidays": "Open 7 days a week",
+    "holiday_notes": "Timings may vary on major state festivals and public holidays.",
+    "ticket_price": "₹30 – ₹100 per visitor",
+    "crowd_guidance": "Moderate footfall. Visiting early morning or late afternoon is recommended.",
+    "facilities": "Restrooms, drinking water, parking area, and local guidance available.",
+    "source_url": "https://karnatakatourism.org/",
+    "last_verified": null
+  }
+}
+]
