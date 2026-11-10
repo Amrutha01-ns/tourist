@@ -83,7 +83,7 @@
                 </div>
                 <div class="user-welcome-info">
                     <span class="user-tier-pill"><i class="fa-solid fa-crown" style="color:#fce79a;"></i> {{ user_stats.explorer_level }}</span>
-                    <h2>ನಮಸ್ಕಾರ / Welcome, {{ request.user.username }}! ✨</h2>
+                    <h2>Welcome, {{ request.user.username }}! ✨</h2>
                     <p>
                         Your personal Karnataka journey headquarters. Route certified <strong>1st preference KSRTC government buses</strong> &amp; luxury private coaches, and manage live trip expenses across all 31 districts.
                     </p>
@@ -127,10 +127,10 @@
                         <span>Real budget breakdowns &amp; reports</span>
                     </div>
                 </a>
-                <a href="#thematicTrailsSection" class="launch-card">
+                <a href="#exploreDistrictsSection" class="launch-card">
                     <div class="launch-icon" style="background:#ede9fe; color:#6b21a8;"><i class="fa-solid fa-compass"></i></div>
                     <div>
-                        <strong>Curated Themed Trails</strong>
+                        <strong>Popular Destinations</strong>
                         <span>UNESCO, Coffee Mist &amp; Coastlines</span>
                     </div>
                 </a>
@@ -262,116 +262,36 @@
                 <div id="gpsStatusMessage" class="gps-status-msg" style="display: none;"></div>
             </div>
 
-            <div class="hero-decoration">
-                <div class="circle circle-one"></div>
-                <div class="circle circle-two"></div>
-                <div class="floating-card card-one">✦</div>
-                <div class="floating-card card-two">⌖</div>
-            </div>
-        </section>
-
-        <!-- LIVE KARNATAKA TRANSIT PULSE & OPERATOR ADVISORY -->
-        <section class="transit-pulse-section">
-            <div class="transit-pulse-card">
-                <div class="pulse-header">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span class="pulse-live-indicator">
-                            <span class="pulse-dot"></span>
-                            LIVE TRANSIT PULSE
-                        </span>
-                        <strong style="color: #14452f; font-size: 14.5px;">{{ transit_pulse.status_text }}</strong>
+                        <!-- SCENIC TRAVEL SHOWCASE (Natural Karnataka imagery, no generic shapes) -->
+            <div class="hero-travel-showcase">
+                <a href="{% url 'places_by_district' 'mysore' %}" class="scenic-card scenic-card-main" title="Explore Mysore">
+                    <img src="{% static 'users/images/mysore.jpg' %}" alt="Mysore Palace">
+                    <div class="scenic-card-overlay">
+                        <span class="scenic-badge"><i class="fa-solid fa-crown"></i> Royal Circuit</span>
+                        <h4>Mysore Palace</h4>
+                        <p>Grand Architecture &amp; Chamundi</p>
                     </div>
-                    <span style="font-size: 12px; color: #556c5e; font-weight: 600;">
-                        <i class="fa-solid fa-clock-rotate-left"></i> Verified State &amp; Private Network
-                    </span>
-                </div>
-
-                <!-- Operator Comparison: 1st Preference KSRTC + Private Buses -->
-                <div class="operator-comparison-grid">
-                    <!-- Government KSRTC 1st Preference -->
-                    <div class="op-box-govt">
-                        <div class="op-box-title">
-                            <span style="display: inline-flex; width: 26px; height: 26px; border-radius: 8px; background: #14452f; color: #f4b63f; align-items: center; justify-content: center; font-size: 12px;"><i class="fa-solid fa-star"></i></span>
-                            <strong>1st Preference: Government KSRTC Buses</strong>
-                        </div>
-                        <p class="op-box-desc">
-                            {{ transit_pulse.ksrtc_guarantee }}. Guaranteed scheduled departures from official KSRTC bus stands across all 31 districts.
-                        </p>
-                        <div class="op-perks-row">
-                            <span class="op-perk-tag govt-tag"><i class="fa-solid fa-award"></i> 1st Choice</span>
-                            <span class="op-perk-tag shakti-tag"><i class="fa-solid fa-certificate"></i> Shakti Scheme (Women Free)</span>
-                            <span class="op-perk-tag" style="background:#e0f2fe; color:#0369a1;"><i class="fa-solid fa-shield-halved"></i> Fixed State Tariffs</span>
-                        </div>
+                </a>
+                <a href="{% url 'places_by_district' 'kodagu' %}" class="scenic-card scenic-card-secondary" title="Explore Coorg">
+                    <img src="{% static 'users/images/madikeri.jpg' %}" alt="Madikeri Coorg">
+                    <div class="scenic-card-overlay">
+                        <span class="scenic-badge"><i class="fa-solid fa-cloud-sun"></i> 21°C Mist</span>
+                        <h4>Madikeri (Coorg)</h4>
+                        <p>Western Ghats Rainforest</p>
                     </div>
-
-                    <!-- Private Bus Operators Option -->
-                    <div class="op-box-private">
-                        <div class="op-box-title">
-                            <span style="display: inline-flex; width: 26px; height: 26px; border-radius: 8px; background: #4338ca; color: #ffffff; align-items: center; justify-content: center; font-size: 12px;"><i class="fa-solid fa-bus"></i></span>
-                            <strong>Alternative Choice: Verified Private Operators</strong>
-                        </div>
-                        <p class="op-box-desc">
-                            {{ transit_pulse.private_advisory }}. Ideal for overnight luxury sleeper coaches, air-suspension, and personal charging.
-                        </p>
-                        <div class="op-perks-row">
-                            <span class="op-perk-tag private-tag"><i class="fa-solid fa-couch"></i> 2+1 AC Sleeper</span>
-                            <span class="op-perk-tag" style="background:#eef2ff; color:#3730a3;"><i class="fa-solid fa-wifi"></i> VRL &bull; SRS &bull; Seabird &bull; Durgamba</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Live Regional Weather Pulse -->
-                <div class="weather-highlights-strip">
-                    <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: #2f7d4f; padding: 6px 4px; display: inline-flex; align-items: center; gap: 5px;">
-                        <i class="fa-solid fa-temperature-half"></i> Live Weather:
-                    </span>
-                    {% for w in transit_pulse.destinations_weather %}
-                        <div class="weather-chip">
-                            <i class="fa-solid {{ w.icon }}"></i>
-                            <strong>{{ w.place }}:</strong>
-                            <span>{{ w.temp }} &bull; {{ w.condition }}</span>
-                        </div>
-                    {% endfor %}
+                </a>
+                <div class="scenic-pill-stat">
+                    <i class="fa-solid fa-compass" style="color: #f4b63f;"></i>
+                    <span><strong>10 Iconic Districts</strong> ready to explore</span>
                 </div>
             </div>
-        </section>
 
-        <!-- CURATED THEMATIC KARNATAKA TRAVEL TRAILS -->
-        <section class="thematic-trails-section" id="thematicTrailsSection">
-            <div class="thematic-section-top">
-                <span class="section-badge"><i class="fa-solid fa-compass"></i> CURATED ADVENTURES · ವಿಶೇಷ ಪ್ರವಾಸ ಮಾರ್ಗಗಳು</span>
-                <h2>Thematic Karnataka Travel Trails</h2>
-                <p style="margin: 4px 0 0; font-size: 14px; color: #556c5e;">Hand-picked circuits combining UNESCO heritage, cloud-kissed peaks, Arabian beaches, and cascading waterfalls.</p>
-            </div>
-
-            <div class="thematic-trails-grid">
-                {% for trail in thematic_trails %}
-                    <div class="theme-trail-card">
-                        <div class="theme-card-banner" style="background: {{ trail.bg_gradient }};">
-                            <span class="theme-tag-pill"><i class="fa-solid {{ trail.icon }}"></i> {{ trail.tag }}</span>
-                            <h3>{{ trail.title_english }}</h3>
-                            <p class="theme-kannada-sub">{{ trail.title_kannada }}</p>
-                        </div>
-                        <div class="theme-card-body">
-                            <p class="theme-desc">{{ trail.description }}</p>
-                            
-                            <div class="theme-meta-row">
-                                <span><i class="fa-regular fa-clock"></i> {{ trail.duration }}</span>
-                                <span><i class="fa-solid fa-bus"></i> {{ trail.best_bus }}</span>
-                            </div>
-
-                            <div class="theme-places-strip">
-                                <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: #2f7d4f; margin-bottom: 2px;">Featured Destinations:</span>
-                                {% for p in trail.places %}
-                                    <a href="{% url 'explorer:place_detail' p.slug %}" class="theme-place-link">
-                                        <span><i class="fa-solid fa-arrow-right-long" style="font-size: 10px; color: #f4b63f; margin-right: 4px;"></i> {{ p.name }}</span>
-                                        <small>{{ p.district }}</small>
-                                    </a>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
+            <!-- Natural Mountain Landscape Horizon (Sahyadri Western Ghats) -->
+            <div class="hero-landscape-layer" aria-hidden="true">
+                <svg viewBox="0 0 1440 160" preserveAspectRatio="none" class="landscape-svg">
+                    <path class="mountain-far" d="M0,80 Q200,25 400,65 T800,30 T1200,60 T1440,25 L1440,160 L0,160 Z"></path>
+                    <path class="mountain-near" d="M0,110 Q260,55 560,95 T1060,70 T1440,100 L1440,160 L0,160 Z"></path>
+                </svg>
             </div>
         </section>
 
@@ -379,8 +299,8 @@
         <section class="popular-section" id="exploreDistrictsSection">
             <div class="section-top">
                 <div>
-                    <p class="section-label">START EXPLORING · ಕರ್ನಾಟಕ ಪ್ರವಾಸೋದ್ಯಮ</p>
-                    <h2>Popular destinations <span class="kannada-subtitle-accent">· ಪ್ರಸಿದ್ಧ ತಾಣಗಳು</span></h2>
+                    <p class="section-label">START EXPLORING · KARNATAKA TOURISM</p>
+                    <h2>Popular destinations</h2>
                 </div>
                 <a href="{% url 'places_by_district' 'mysore' %}" class="view-all">
                     View all →
@@ -391,7 +311,7 @@
                 {% for card in karnataka_cards %}
                 <a href="{% url 'places_by_district' card.route_name %}" 
                    class="destination-card {% if card.card_span == 'featured' %}large-card{% endif %}" 
-                   title="{{ card.kannada_name }} · {{ card.english_name }}">
+                   title="{{ card.english_name }}">
                     
                     <!-- Authentic High-Resolution Photography with Fallback (No 404s) -->
                     <div class="card-bg">
@@ -407,9 +327,9 @@
                     
                     <!-- Top Category & Karnataka Mini Locator Indicator -->
                     <div class="card-top-indicator">
-                        <span class="place-tag">{{ card.tag_kannada }} · {{ card.tag_english }}</span>
+                        <span class="place-tag">{{ card.tag_english }}</span>
                         
-                        <div class="karnataka-mini-locator" title="{{ card.kannada_name }} - ಕರ್ನಾಟಕ">
+                        <div class="karnataka-mini-locator" title="{{ card.english_name }} - Karnataka">
                             <svg class="mini-karnataka-svg" viewBox="0 0 100 130" aria-hidden="true">
                                 <path class="mini-state-path" d="M 56,6 C 62,12 65,18 65,18 C 67,24 68,30 68,30 C 67,36 64,42 64,42 C 65,50 65,58 65,58 C 62,67 58,76 58,76 C 60,84 62,92 62,92 C 68,95 74,98 74,98 C 70,103 66,108 66,108 C 62,117 58,126 58,126 C 56,127 54,128 54,128 C 51,125 48,122 48,122 C 40,118 32,114 32,114 C 28,109 24,104 24,104 C 23,101 22,98 22,98 C 20,89 18,80 18,80 C 15,65 12,50 12,50 C 17,41 22,32 22,32 C 31,25 40,18 40,18 Z"></path>
                                 <circle class="mini-state-pin" cx="{{ card.map_pin_x }}" cy="{{ card.map_pin_y }}" r="4.5"></circle>
@@ -419,10 +339,9 @@
                     
                     <!-- Bottom Content: Kannada First, English Subtitle -->
                     <div class="destination-content">
-                        <h3 class="dest-kannada-first">{{ card.kannada_name }}</h3>
-                        <h4 class="dest-english-sub">{{ card.english_name }}</h4>
-                        <p>{{ card.kannada_subtitle }}</p>
-                        <span class="explore-place">Explore · ಅನ್ವೇಷಿಸಿ →</span>
+                        <h3 class="dest-english-title">{{ card.english_name }}</h3>
+                        <p class="dest-english-subtitle">{{ card.english_subtitle }}</p>
+                        <span class="explore-place">Explore →</span>
                     </div>
                 </a>
                 {% endfor %}
@@ -432,9 +351,9 @@
         <!-- RECENT SEARCHES: AUTHENTIC REAL KARNATAKA DISTRICT MAP SHAPES -->
         <section class="recent-section">
             <div class="recent-heading">
-                <p class="section-label">ನಿಮ್ಮ ಪ್ರಯಾಣದ ಇತಿಹಾಸ · YOUR JOURNEY HISTORY</p>
-                <h2>ಇತ್ತೀಚಿನ ಹುಡುಕಾಟಗಳು <span class="english-heading">· Recent searches</span></h2>
-                <p>ನೀವು ನಿಲ್ಲಿಸಿದ ಸ್ಥಳದಿಂದಲೇ ಮುಂದುವರಿಯಿರಿ · Pick up where you left off.</p>
+                <p class="section-label">YOUR JOURNEY HISTORY</p>
+                <h2>Recent searches</h2>
+                <p>Pick up where you left off.</p>
             </div>
             <div class="thread-wrapper">
                 <div class="thread-rail"></div>
@@ -448,7 +367,7 @@
                         <div class="hanging-real-map-card" 
                              onclick="window.location.href='{% url 'places_by_district' item.route %}'" 
                              style="cursor: pointer; --glow-color: {{ item.glow_rgb }};"
-                             title="{{ item.kannada }} ({{ item.english }}) - ಕರ್ನಾಟಕ ಅಧಿಕೃತ ನಕಾಶೆ">
+                             title="{{ item.english }} - Official Karnataka Map">
                             
                             <svg class="real-district-map-svg" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg">
                                 <defs>
@@ -484,9 +403,8 @@
                                 <!-- Crisp, Elegant Distinct Colored Border along official boundary outline -->
                                 <path class="real-map-border" d="{{ item.district_shape_path }}" fill="none" stroke="{{ item.border_color }}" stroke-width="2.4" />
 
-                                <!-- ONLY THE PLACE NAME INSIDE MAP (Kannada First, English Subtitle) -->
-                                <text x="{{ item.center_x|default:160 }}" y="{{ item.kannada_y|default:105 }}" text-anchor="middle" class="real-map-kannada">{{ item.kannada }}</text>
-                                <text x="{{ item.center_x|default:160 }}" y="{{ item.english_y|default:130 }}" text-anchor="middle" class="real-map-english">{{ item.english }}</text>
+                                <!-- ONLY THE PLACE NAME INSIDE MAP (English Only) -->
+                                <text x="{{ item.center_x|default:160 }}" y="118" text-anchor="middle" class="real-map-english-centered">{{ item.english }}</text>
                             </svg>
                         </div>
 

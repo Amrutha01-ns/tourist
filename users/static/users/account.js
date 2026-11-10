@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", function () {
     const accountBtn = document.getElementById("accountBtn");
     const accountWrapper = document.querySelector(".account-wrapper");
@@ -188,7 +187,7 @@ document.addEventListener("DOMContentLoaded", function () {
     applyDarkMode(savedTheme === "dark");
 
     // =========================================================
-    // GUEST REGISTRATION & SIGN-IN POPUP MODAL (3-DAY PERSISTENCE)
+    // GUEST REGISTRATION & SIGN-IN POPUP MODAL (DAILY RESET)
     // =========================================================
     const guestModal = document.getElementById("guestSignupModal");
     const guestClose = document.getElementById("guestModalCloseBtn");
@@ -204,16 +203,19 @@ document.addEventListener("DOMContentLoaded", function () {
         if (guestFloat) guestFloat.style.display = "none";
     }
 
-    function closeGuestModal(dismissForever = false) {
+    function closeGuestModal(dismissForToday = false) {
         if (!guestModal) return;
         guestModal.classList.remove("active");
         setTimeout(function () {
             guestModal.setAttribute("hidden", "");
         }, 300);
-        if (dismissForever) {
+        if (dismissForToday) {
             try {
-                // 3-day dismissal persistence
-                localStorage.setItem("tourist_guest_dismissed_time", String(Date.now()));
+                // Daily persistence: only dismisses for the current calendar day
+                const todayStr = new Date().toDateString();
+                localStorage.setItem("tourist_guest_dismissed_day", todayStr);
+                // Clear obsolete 3-day lock if present
+                localStorage.removeItem("tourist_guest_dismissed_time");
             } catch (_) {}
         }
         if (guestFloat) guestFloat.style.display = "block";
@@ -249,23 +251,26 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        let lastDismissed = 0;
+        // Daily eligibility check
+        let dismissedDay = "";
         try {
-            lastDismissed = parseInt(localStorage.getItem("tourist_guest_dismissed_time") || "0", 10);
+            // Remove legacy 3-day restriction
+            localStorage.removeItem("tourist_guest_dismissed_time");
+            dismissedDay = localStorage.getItem("tourist_guest_dismissed_day") || "";
         } catch (_) {}
 
-        const threeDays = 3 * 24 * 60 * 60 * 1000;
-        const isEligible = (Date.now() - lastDismissed) > threeDays;
+        const todayStr = new Date().toDateString();
+        const isEligible = (dismissedDay !== todayStr);
 
         if (isEligible) {
-            // Auto open popup after 8 seconds of browsing
-            let timerId = setTimeout(openGuestModal, 8000);
+            // Promptly display daily sign-in popup after 2.5 seconds
+            let timerId = setTimeout(openGuestModal, 2500);
             let scrollTriggered = false;
             window.addEventListener("scroll", function onScroll() {
-                if (!scrollTriggered && window.scrollY > 350) {
+                if (!scrollTriggered && window.scrollY > 200) {
                     scrollTriggered = true;
                     clearTimeout(timerId);
-                    setTimeout(openGuestModal, 800);
+                    setTimeout(openGuestModal, 400);
                     window.removeEventListener("scroll", onScroll);
                 }
             });

@@ -803,7 +803,7 @@ def dashboard(request):
         "trips_count": 0,
         "total_budget": 0,
         "districts_count": 0,
-        "explorer_level": "Karnataka Explorer · ಕರ್ನಾಟಕ ಯಾತ್ರಿಕ",
+        "explorer_level": "Karnataka Explorer",
     }
     if request.user.is_authenticated:
         try:
@@ -826,13 +826,13 @@ def dashboard(request):
             user_stats["districts_count"] = max(d_count, min(t_count, 1))
 
             if t_count >= 5:
-                user_stats["explorer_level"] = "Master Voyager · ಪಾರಂಗತ ಪ್ರವಾಸಿ"
+                user_stats["explorer_level"] = "Master Voyager"
             elif t_count >= 2:
-                user_stats["explorer_level"] = "Heritage Trailblazer · ಪರಂಪರೆ ಯಾತ್ರಿ"
+                user_stats["explorer_level"] = "Heritage Trailblazer"
             elif t_count >= 1:
-                user_stats["explorer_level"] = "Active Explorer · ಹೊಸ ಯಾತ್ರಿ"
+                user_stats["explorer_level"] = "Active Explorer"
             else:
-                user_stats["explorer_level"] = "Karnataka Explorer · ಕರ್ನಾಟಕ ಯಾತ್ರಿಕ"
+                user_stats["explorer_level"] = "Karnataka Explorer"
         except Exception:
             pass
 
@@ -840,7 +840,7 @@ def dashboard(request):
     thematic_trails = [
         {
             "id": "heritage",
-            "title_kannada": "ರಾಜ ಪರಂಪರೆ & ಶಿಲ್ಪಕಲೆ",
+            "subtitle_english": "Royal Heritage & Architecture",
             "title_english": "UNESCO Heritage & Royal Dynasties",
             "tag": "UNESCO HERITAGE",
             "tag_color": "#b45309",
@@ -858,7 +858,7 @@ def dashboard(request):
         },
         {
             "id": "western_ghats",
-            "title_kannada": "ಮಲೆನಾಡು & ಗಿರಿಧಾಮಗಳು",
+            "subtitle_english": "Malnad Peaks & Coffee Hills",
             "title_english": "Misty Western Ghats & Coffee Highlands",
             "tag": "HIGHLANDS & MIST",
             "tag_color": "#047857",
@@ -876,7 +876,7 @@ def dashboard(request):
         },
         {
             "id": "coastal",
-            "title_kannada": "ಕರಾವಳಿ ತೀರ & ಪವಿತ್ರ ಕ್ಷೇತ್ರಗಳು",
+            "subtitle_english": "Coastal Shores & Sacred Shrines",
             "title_english": "Sacred Coastline & Golden Sands",
             "tag": "ARABIAN SEA TRAILS",
             "tag_color": "#0284c7",
@@ -894,7 +894,7 @@ def dashboard(request):
         },
         {
             "id": "waterfalls",
-            "title_kannada": "ರುದ್ರರಮಣೀಯ ಜಲಪಾತಗಳು",
+            "subtitle_english": "Cascading Falls & River Valleys",
             "title_english": "Cascades & Kaveri River Basins",
             "tag": "WATERFALLS & RIVER",
             "tag_color": "#0f766e",
