@@ -50,6 +50,12 @@ def send_otp_email(to_email: str, otp_code: str, purpose: str = "sign in") -> bo
             email_delivered = True
         except Exception as e:
             logger.warning(f"Failed to send email: {e}")
+    else:
+        logger.info(
+            "EMAIL_HOST_PASSWORD is not set in environment. "
+            "To deliver live emails to user inboxes via Gmail, configure EMAIL_HOST_PASSWORD in .env or Render. "
+            "The OTP has been printed below for development/testing."
+        )
 
     # Always log/print cleanly to terminal console so developer/user sees it immediately
     try:

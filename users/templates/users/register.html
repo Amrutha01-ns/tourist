@@ -926,11 +926,9 @@
             {% if step != "otp" %}
                 <form method="POST" action="{% url 'register' %}" id="regForm">
                     {% csrf_token %}
-                    <input type="hidden" name="direct_register" id="directRegInput" value="1">
-                    <input type="hidden" name="action" id="regActionInput" value="instant_register">
 
                     <div class="form-group">
-                        <label class="form-label" for="regUsername">Choose Username</label>
+                        <label class="form-label" for="regUsername">Username</label>
                         <div class="input-wrap">
                             <i class="fa-solid fa-user input-icon"></i>
                             <input
@@ -938,8 +936,8 @@
                                 id="regUsername"
                                 name="username"
                                 class="form-input"
-                                placeholder="e.g. explorer_karnataka"
-                                value="nsadmin"
+                                placeholder="Choose a username"
+                                value="{{ pending_username|default:'' }}"
                                 required
                                 autofocus
                             >
@@ -955,8 +953,8 @@
                                 id="regEmail"
                                 name="email"
                                 class="form-input"
-                                placeholder="name@example.com"
-                                value="nsadmin@tourist.local"
+                                placeholder="Enter your valid email"
+                                value="{{ pending_email|default:'' }}"
                                 required
                             >
                         </div>
@@ -972,37 +970,45 @@
                                 name="password"
                                 class="form-input"
                                 placeholder="Create a secure password"
-                                value="Explorer@2026"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="regConfirmPassword">Confirm Password</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-lock-open input-icon"></i>
+                            <input
+                                type="password"
+                                id="regConfirmPassword"
+                                name="confirm_password"
+                                class="form-input"
+                                placeholder="Re-enter password"
                                 required
                             >
                         </div>
                     </div>
 
                     <button type="submit" class="btn-submit-main">
-                        <span>🚀 Create Account &amp; Start Exploring</span>
+                        <span>Send Email Verification OTP</span>
                         <i class="fa-solid fa-arrow-right"></i>
                     </button>
-
-                    <div class="otp-fallback-row">
-                        <button type="button" class="btn-link-otp" onclick="submitWithOtpRegister()">
-                            <i class="fa-solid fa-shield-halved"></i> Or verify with 6-digit Email OTP Code
-                        </button>
-                    </div>
-
-                    <div class="quick-fill-bar">
-                        <span class="quick-fill-text">Testing locally or on phone?</span>
-                        <button type="button" class="btn-fill-pill" onclick="autoFillDemoUser()">
-                            ⚡ 1-Click Fill
-                        </button>
-                    </div>
                 </form>
 
             <!-- STEP 2: OTP VERIFICATION -->
             {% else %}
+                <div class="otp-notice-card" style="background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.28); border-radius: 14px; padding: 14px; margin-bottom: 20px;">
+                    <div style="font-size: 13.5px; color: #a7f3d0; line-height: 1.5;">
+                        <i class="fa-solid fa-envelope-circle-check" style="color: #10b981; margin-right: 6px;"></i>
+                        We've sent a 6-digit verification code to <strong>{{ masked_email }}</strong>. Please check your inbox and enter it below.
+                    </div>
+                </div>
+
                 {% if debug_otp %}
                     <div style="background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); padding: 10px 14px; border-radius: 12px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;">
                         <div style="font-size: 12.5px; color: #fcd34d; font-weight: 700;">
-                            <i class="fa-solid fa-terminal"></i> Your Verification Code: <strong>{{ debug_otp }}</strong>
+                            <i class="fa-solid fa-terminal"></i> Verification Code: <strong>{{ debug_otp }}</strong>
                         </div>
                         <button type="button" class="btn-fill-pill" onclick="document.getElementById('otpField').value='{{ debug_otp }}'">
                             Auto-Fill
@@ -1020,24 +1026,35 @@
                             name="otp"
                             id="otpField"
                             class="form-input"
-                            placeholder="Enter 6-digit verification code"
+                            placeholder="• • • • • •"
                             maxlength="6"
-                            style="text-align: center; font-size: 22px; letter-spacing: 6px; font-weight: 800;"
+                            pattern="[0-9]{6}"
+                            style="text-align: center; font-size: 26px; letter-spacing: 8px; font-weight: 800;"
                             required
                             autofocus
                         >
                     </div>
 
                     <button type="submit" class="btn-submit-main">
-                        Verify Code &amp; Finish Setup
+                        <i class="fa-solid fa-check"></i>
+                        <span>Verify OTP &amp; Create Account</span>
                     </button>
-
-                    <div style="text-align: center; margin-top: 14px;">
-                        <a href="{% url 'register' %}?cancel_otp=1" style="color: #92a49a; font-size: 12.5px; text-decoration: none;">
-                            ← Go back to change details
-                        </a>
-                    </div>
                 </form>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 18px; font-size: 13px;">
+                    <form method="POST" action="{% url 'register' %}" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="resend_otp">
+                        <button type="submit" style="background: none; border: none; color: #f59e0b; cursor: pointer; font-size: 13px; font-weight: 600; text-decoration: underline;">
+                            <i class="fa-solid fa-rotate-right"></i> Resend Code
+                        </button>
+                    </form>
+
+                    <a href="{% url 'register' %}?cancel_otp=1" style="color: #92a49a; text-decoration: none;">
+                        ← Edit Details
+                    </a>
+                </div>
+            {% endif %}
             {% endif %}
 
             <!-- Switch to Login -->
@@ -1091,23 +1108,6 @@
         const route = DISTRICT_ROUTES[key] || key;
         window.location.href = '/places/' + encodeURIComponent(route) + '/';
     }
-
-    function autoFillDemoUser() {
-        const rand = Math.floor(100 + Math.random() * 900);
-        document.getElementById('regUsername').value = 'explorer_' + rand;
-        document.getElementById('regEmail').value = 'explorer' + rand + '@tourist.karnataka';
-        document.getElementById('regPassword').value = 'Pass@' + rand + '2026';
-        const btn = document.querySelector('.btn-submit-main');
-        btn.style.transform = 'scale(1.03)';
-        setTimeout(() => { btn.style.transform = 'scale(1)'; }, 200);
-    }
-
-    function submitWithOtpRegister() {
-        document.getElementById('directRegInput').value = '0';
-        document.getElementById('regActionInput').value = 'send_otp';
-        document.getElementById('regForm').submit();
-    }
-
     </script>
 </body>
 </html>

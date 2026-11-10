@@ -160,65 +160,30 @@ def register(request):
                         error = f"The username '{username}' or email '{email}' already exists. Please choose another username or sign in."
                         step = "form"
 
-        elif action == "instant_register" or request.POST.get("direct_signup") == "1":
-            # Direct 1-click registration bypassing OTP hurdles
-            username = (request.POST.get("reg_username") or request.POST.get("username") or "").strip()
-            email = (request.POST.get("reg_email") or request.POST.get("email") or "").strip().lower()
-            password = request.POST.get("reg_password") or request.POST.get("password") or ""
+        else:
+            # Form submission to start registration with Email OTP verification
+            username = (request.POST.get("username") or request.POST.get("reg_username") or "").strip()
+            email = (request.POST.get("email") or request.POST.get("reg_email") or "").strip().lower()
+            password = request.POST.get("password") or request.POST.get("reg_password") or ""
+            confirm_password = request.POST.get("confirm_password") or request.POST.get("reg_confirm_password") or ""
 
-            if not username or not password:
-                error = "Please enter both username and password."
+            if not username or not email or not password:
+                error = "Please fill in all required fields (username, email, password)."
                 step = "form"
-            elif User.objects.filter(username__iexact=username).exists():
-                error = f"The username '{username}' is already taken. Please choose another username or sign in."
-                step = "form"
-            elif email and User.objects.filter(email__iexact=email).exists():
-                error = f"An account with email '{email}' is already registered. Please sign in."
+            elif len(username) < 3:
+                error = "Username must be at least 3 characters long."
                 step = "form"
             elif len(password) < 4:
                 error = "Password must be at least 4 characters long."
                 step = "form"
-            else:
-                try:
-                    with transaction.atomic():
-                        user = User.objects.create_user(
-                            username=username,
-                            email=email or f"{username}@tourist.local",
-                            password=password,
-                            is_active=True
-                        )
-                        profile, _ = UserProfile.objects.get_or_create(user=user)
-                        profile.is_email_verified = True
-                        profile.email_verified_at = timezone.now()
-                        profile.save()
-
-                    login(request, user)
-                    return redirect("dashboard")
-                except IntegrityError:
-                    error = f"The username '{username}' already exists. Please choose another username or sign in."
-                    step = "form"
-
-        else:
-            # Form submission to start registration with optional OTP verification
-            username = (request.POST.get("reg_username") or request.POST.get("username") or "").strip()
-            email = (request.POST.get("reg_email") or request.POST.get("email") or "").strip().lower()
-            password = request.POST.get("reg_password") or request.POST.get("password") or ""
-            confirm_password = request.POST.get("reg_confirm_password") or request.POST.get("confirm_password") or ""
-
-            if not username or not email or not password:
-                error = "Please fill in all required fields."
-                step = "form"
             elif confirm_password and password != confirm_password:
-                error = "Passwords do not match. Please ensure both password fields match."
+                error = "Passwords do not match. Please ensure both passwords match."
                 step = "form"
             elif User.objects.filter(username__iexact=username).exists():
                 error = f"The username '{username}' is already taken. Please choose another username or sign in."
                 step = "form"
             elif User.objects.filter(email__iexact=email).exists():
                 error = f"An account with email '{email}' is already registered. Please sign in."
-                step = "form"
-            elif len(password) < 4:
-                error = "Password must be at least 4 characters long."
                 step = "form"
             else:
                 # Generate verification OTP and persist to database model
@@ -252,7 +217,7 @@ def register(request):
             "info": info,
             "masked_email": mask_email(pending_email),
             "pending_email": pending_email,
-            "debug_otp": request.session.get("reg_otp"),
+            "debug_otp": request.session.get("reg_otp") if settings.DEBUG else None,
         }
     )
 
@@ -357,84 +322,76 @@ def user_login(request):
                         request.session.pop(key, None)
                     return redirect("dashboard")
 
-        else:
-            # Credentials or Instant OTP submission
-            login_mode = request.POST.get("login_mode", "password")
+        elif action == "request_otp":
+            # Passwordless Email OTP Login
+            email_input = (request.POST.get("email") or request.POST.get("username") or "").strip().lower()
+            user = User.objects.filter(email__iexact=email_input).first()
+            if not user and "@" not in email_input:
+                user = User.objects.filter(username__iexact=email_input).first()
 
-            if login_mode == "otp_only" or action == "request_otp":
-                # Instant Email OTP Login (Passwordless)
-                email_input = request.POST.get("email", "").strip().lower()
-                user = User.objects.filter(email__iexact=email_input).first() if email_input else None
-
-                if not email_input:
-                    error = "Please enter your registered email address."
-                    step = "credentials"
-                elif not user:
-                    error = f"No account found with email '{email_input}'. Please check your spelling or create an account."
-                    step = "credentials"
-                else:
-                    otp_obj = EmailOTP.create_otp(
-                        email=user.email,
-                        purpose='login',
-                        user=user,
-                        validity_minutes=10,
-                        ip_address=get_client_ip(request)
-                    )
-                    request.session["pending_login_user_id"] = user.id
-                    request.session["pending_login_email"] = user.email
-                    request.session["login_otp"] = otp_obj.otp_code
-                    request.session["login_otp_id"] = otp_obj.id
-                    request.session["login_otp_time"] = time.time()
-                    request.session["login_mode"] = "otp_only"
-
-                    send_otp_email(user.email, otp_obj.otp_code, purpose="sign in")
-
-                    step = "otp"
-                    pending_email = user.email
-                    info = f"We sent a 6-digit one-time sign-in code to {mask_email(user.email)}. Enter it below to sign in."
+            if not email_input:
+                error = "Please enter your registered username or email address."
+                step = "credentials"
+            elif not user:
+                error = f"No account found for '{email_input}'. Please check your spelling or create an account."
+                step = "credentials"
+            elif not user.email:
+                error = "This account does not have an email address associated with it. Please sign in with password."
+                step = "credentials"
             else:
-                # Password login
-                identifier = request.POST.get("username", "").strip()
-                password = request.POST.get("password", "")
+                otp_obj = EmailOTP.create_otp(
+                    email=user.email,
+                    purpose='login',
+                    user=user,
+                    validity_minutes=10,
+                    ip_address=get_client_ip(request)
+                )
+                request.session["pending_login_user_id"] = user.id
+                request.session["pending_login_email"] = user.email
+                request.session["login_otp"] = otp_obj.otp_code
+                request.session["login_otp_id"] = otp_obj.id
+                request.session["login_otp_time"] = time.time()
+                request.session["login_mode"] = "otp_only"
 
-                user = None
-                if identifier and password:
-                    user = authenticate(request, username=identifier, password=password)
-                    if user is None and "@" in identifier:
-                        matched_user = User.objects.filter(email__iexact=identifier).first()
-                        if matched_user:
-                            user = authenticate(request, username=matched_user.username, password=password)
+                send_otp_email(user.email, otp_obj.otp_code, purpose="sign in")
 
-                if user is not None:
-                    user_email = user.email.strip() if user.email else ""
-                    if action == "instant_login" or request.POST.get("direct_login") == "1" or not user_email:
-                        # Direct password sign-in without OTP bottleneck
-                        login(request, user)
-                        return redirect("dashboard")
+                step = "otp"
+                pending_email = user.email
+                info = f"We sent a 6-digit one-time sign-in code to {mask_email(user.email)}. Enter it below to sign in."
 
-                    otp_obj = EmailOTP.create_otp(
-                        email=user_email,
-                        purpose='login',
-                        user=user,
-                        validity_minutes=10,
-                        ip_address=get_client_ip(request)
-                    )
+        else:
+            # Standard Username/Email + Password Login
+            identifier = request.POST.get("username", "").strip()
+            password = request.POST.get("password", "")
 
-                    request.session["pending_login_user_id"] = user.id
-                    request.session["login_otp"] = otp_obj.otp_code
-                    request.session["login_otp_id"] = otp_obj.id
-                    request.session["login_otp_time"] = time.time()
-                    request.session["pending_login_email"] = user_email
-                    request.session["login_mode"] = "password"
+            user = None
+            if identifier and password:
+                user = authenticate(request, username=identifier, password=password)
+                if user is None and "@" in identifier:
+                    matched_user = User.objects.filter(email__iexact=identifier).first()
+                    if matched_user:
+                        user = authenticate(request, username=matched_user.username, password=password)
 
-                    send_otp_email(user_email, otp_obj.otp_code, purpose="sign in")
+            if user is not None:
+                login(request, user)
+                return redirect("dashboard")
+            else:
+                error = "Invalid username or password. Please enter valid credentials or sign in with Email OTP."
+                step = "credentials"
 
-                    step = "otp"
-                    pending_email = user_email
-                    info = f"Security verification: We sent a 6-digit OTP to {mask_email(user_email)}. Please enter it below to sign in."
-                else:
-                    error = "You have entered wrong username or password. Please enter valid credentials."
-                    step = "credentials"
+    return render(
+        request,
+        "users/login.html",
+        {
+            "step": step,
+            "error": error,
+            "success": success,
+            "info": info,
+            "masked_email": mask_email(pending_email),
+            "pending_email": pending_email,
+            "debug_otp": request.session.get("login_otp") if settings.DEBUG else None,
+        }
+    )
 
     return render(
         request,

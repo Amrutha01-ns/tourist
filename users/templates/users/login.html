@@ -926,8 +926,6 @@
             {% if step != "otp" %}
                 <form method="POST" action="{% url 'login' %}" id="loginForm">
                     {% csrf_token %}
-                    <input type="hidden" name="direct_login" id="directLoginInput" value="1">
-                    <input type="hidden" name="action" id="loginActionInput" value="instant_login">
 
                     <div class="form-group">
                         <label class="form-label" for="loginUsername">Username or Email</label>
@@ -938,15 +936,14 @@
                                 id="loginUsername"
                                 name="username"
                                 class="form-input"
-                                placeholder="Enter username or email"
-                                value="ans1"
+                                placeholder="Enter your username or email"
                                 required
                                 autofocus
                             >
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" id="passwordGroup">
                         <label class="form-label" for="loginPassword">Password</label>
                         <div class="input-wrap">
                             <i class="fa-solid fa-lock input-icon"></i>
@@ -956,33 +953,32 @@
                                 name="password"
                                 class="form-input"
                                 placeholder="Enter your password"
-                                value="amrutha01"
                                 required
                             >
                         </div>
                     </div>
 
-                    <button type="submit" class="btn-submit-main">
+                    <button type="submit" class="btn-submit-main" id="submitBtn">
                         <span>Sign In &amp; Open Dashboard</span>
                         <i class="fa-solid fa-arrow-right"></i>
                     </button>
 
                     <div class="otp-fallback-row">
-                        <button type="button" class="btn-link-otp" onclick="submitWithOtpLogin()">
-                            <i class="fa-solid fa-key"></i> Or sign in with Email OTP code
-                        </button>
-                    </div>
-
-                    <div class="quick-fill-bar">
-                        <span class="quick-fill-text">Test account: ans1</span>
-                        <button type="button" class="btn-fill-pill" onclick="autoFillAns1()">
-                            ⚡ Quick Fill
+                        <button type="button" class="btn-link-otp" onclick="requestEmailOtpLogin()">
+                            <i class="fa-solid fa-envelope"></i> Forgot password or prefer Email OTP? Sign In via OTP
                         </button>
                     </div>
                 </form>
 
             <!-- STEP 2: OTP VERIFICATION -->
             {% else %}
+                <div class="otp-notice-card" style="background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.28); border-radius: 14px; padding: 14px; margin-bottom: 20px;">
+                    <div style="font-size: 13.5px; color: #a7f3d0; line-height: 1.5;">
+                        <i class="fa-solid fa-envelope-circle-check" style="color: #10b981; margin-right: 6px;"></i>
+                        A 6-digit sign-in code has been sent to <strong>{{ masked_email }}</strong>. Please check your inbox and enter it below.
+                    </div>
+                </div>
+
                 {% if debug_otp %}
                     <div style="background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); padding: 10px 14px; border-radius: 12px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;">
                         <div style="font-size: 12.5px; color: #fcd34d; font-weight: 700;">
@@ -1004,24 +1000,34 @@
                             name="otp"
                             id="otpField"
                             class="form-input"
-                            placeholder="Enter 6-digit verification code"
+                            placeholder="• • • • • •"
                             maxlength="6"
-                            style="text-align: center; font-size: 22px; letter-spacing: 6px; font-weight: 800;"
+                            pattern="[0-9]{6}"
+                            style="text-align: center; font-size: 26px; letter-spacing: 8px; font-weight: 800;"
                             required
                             autofocus
                         >
                     </div>
 
                     <button type="submit" class="btn-submit-main">
-                        Verify Code &amp; Continue
+                        <i class="fa-solid fa-check"></i>
+                        <span>Verify Code &amp; Continue</span>
                     </button>
-
-                    <div style="text-align: center; margin-top: 14px;">
-                        <a href="{% url 'login' %}?cancel_otp=1" style="color: #92a49a; font-size: 12.5px; text-decoration: none;">
-                            ← Use Regular Password
-                        </a>
-                    </div>
                 </form>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 18px; font-size: 13px;">
+                    <form method="POST" action="{% url 'login' %}" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="resend_otp">
+                        <button type="submit" style="background: none; border: none; color: #f59e0b; cursor: pointer; font-size: 13px; font-weight: 600; text-decoration: underline;">
+                            <i class="fa-solid fa-rotate-right"></i> Resend Code
+                        </button>
+                    </form>
+
+                    <a href="{% url 'login' %}?cancel_otp=1" style="color: #92a49a; text-decoration: none;">
+                        ← Use Regular Password
+                    </a>
+                </div>
             {% endif %}
 
             <!-- Switch to Register -->
@@ -1076,19 +1082,25 @@
         window.location.href = '/places/' + encodeURIComponent(route) + '/';
     }
 
-    function autoFillAns1() {
-        document.getElementById('loginUsername').value = 'ans1';
-        document.getElementById('loginPassword').value = 'amrutha01';
-        const btn = document.querySelector('.btn-submit-main');
-        btn.style.transform = 'scale(1.03)';
-        setTimeout(() => { btn.style.transform = 'scale(1)'; }, 200);
-    }
+    function requestEmailOtpLogin() {
+        const usernameInput = document.getElementById('loginUsername');
+        const usernameVal = usernameInput ? usernameInput.value.trim() : '';
+        if (!usernameVal) {
+            alert('Please enter your username or email above first, then click this button to receive an OTP.');
+            if (usernameInput) usernameInput.focus();
+            return;
+        }
+        const form = document.getElementById('loginForm');
+        const actionInput = document.createElement('input');
+        actionInput.type = 'hidden';
+        actionInput.name = 'action';
+        actionInput.value = 'request_otp';
+        form.appendChild(actionInput);
 
-    function submitWithOtpLogin() {
-        document.getElementById('directLoginInput').value = '0';
-        document.getElementById('loginActionInput').value = 'send_otp';
-        document.getElementById('loginPassword').required = false;
-        document.getElementById('loginForm').submit();
+        const passwordInput = document.getElementById('loginPassword');
+        if (passwordInput) passwordInput.required = false;
+
+        form.submit();
     }
 
     </script>
