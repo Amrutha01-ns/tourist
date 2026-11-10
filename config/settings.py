@@ -36,12 +36,25 @@ if env_path.exists():
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-i-v28*q@nfox%ah)oxfzqyhe-9i4wf%stqhjt)#^ts$)@wvwpl'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-i-v28*q@nfox%ah)oxfzqyhe-9i4wf%stqhjt)#^ts$)@wvwpl')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 'yes', 't')
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'testserver', '*']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'testserver', '.onrender.com']
+render_external_host = os.getenv('RENDER_EXTERNAL_HOSTNAME')
+if render_external_host:
+    ALLOWED_HOSTS.append(render_external_host)
+if DEBUG:
+    ALLOWED_HOSTS.append('*')
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.onrender.com',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+]
+if render_external_host:
+    CSRF_TRUSTED_ORIGINS.append(f"https://{render_external_host}")
 
 
 # Application definition
@@ -66,6 +79,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -98,16 +112,39 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'tourist_db',
-        'USER': 'postgres',
-        'PASSWORD': 'pg202905',
-        'HOST': 'localhost',
-        'PORT': '5432',
+DATABASE_URL = os.getenv('DATABASE_URL')
+if DATABASE_URL:
+    try:
+        import dj_database_url
+        DATABASES = {
+            'default': dj_database_url.config(
+                default=DATABASE_URL,
+                conn_max_age=600,
+                conn_health_checks=True,
+            )
+        }
+    except ImportError:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': 'tourist_db',
+                'USER': 'postgres',
+                'PASSWORD': 'pg202905',
+                'HOST': 'localhost',
+                'PORT': '5432',
+            }
+        }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'tourist_db',
+            'USER': 'postgres',
+            'PASSWORD': 'pg202905',
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
     }
-}
 
 
 # Password validation
@@ -144,6 +181,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [BASE_DIR / 'static'] if (BASE_DIR / 'static').exists() else []
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Email Configuration
 # Uses Port 587 (universal submission port with STARTTLS) to ensure compatibility
