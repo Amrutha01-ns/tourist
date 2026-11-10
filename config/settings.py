@@ -38,15 +38,17 @@ if env_path.exists():
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-i-v28*q@nfox%ah)oxfzqyhe-9i4wf%stqhjt)#^ts$)@wvwpl')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 'yes', 't')
+# In development / localhost, DEBUG defaults to True.
+# On Render (where RENDER env var is set), it automatically defaults to False.
+IS_RENDER = os.getenv('RENDER') is not None
+DEBUG = os.getenv('DEBUG', 'False' if IS_RENDER else 'True').lower() in ('true', '1', 'yes', 't')
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'testserver', '.onrender.com']
 render_external_host = os.getenv('RENDER_EXTERNAL_HOSTNAME')
 if render_external_host:
     ALLOWED_HOSTS.append(render_external_host)
 if DEBUG:
-    ALLOWED_HOSTS.append('*')
+    ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
     'https://*.onrender.com',
