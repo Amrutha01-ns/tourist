@@ -22,6 +22,36 @@ def _dispatch_email_async(subject: str, message: str, from_email: str, to_email:
     2. Falls back to standard SMTP port 587.
     3. Catches all errors gracefully without ever interrupting or freezing the web UI.
     """
+    # 1. Brevo HTTPS API (Port 443 - Can send to ANY email address in the world from Render)
+    brevo_key = os.getenv("BREVO_API_KEY", "").strip()
+    if brevo_key:
+        try:
+            payload = json.dumps({
+                "sender": {"name": "Tourist Karnataka", "email": getattr(settings, "EMAIL_HOST_USER", "studentmanagebyns@gmail.com")},
+                "to": [{"email": to_email}],
+                "subject": subject,
+                "textContent": message,
+            }).encode("utf-8")
+            req = urllib.request.Request(
+                "https://api.brevo.com/v3/smtp/email",
+                data=payload,
+                headers={
+                    "accept": "application/json",
+                    "api-key": brevo_key,
+                    "content-type": "application/json",
+                    "User-Agent": "Tourist-Web/1.0",
+                },
+                method="POST"
+            )
+            with urllib.request.urlopen(req, timeout=5) as resp:
+                if resp.status in (200, 201):
+                    print(f"[LIVE EMAIL DELIVERED VIA BREVO HTTPS PORT 443] to {to_email}")
+                    logger.info(f"Delivered via Brevo HTTPS to {to_email}")
+                    return
+        except Exception as brevo_err:
+            logger.warning(f"Brevo HTTPS dispatch failed: {brevo_err}")
+
+    # 2. Resend HTTPS API (Port 443)
     resend_key = os.getenv("RESEND_API_KEY", "").strip()
     if resend_key:
         try:
