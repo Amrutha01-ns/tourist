@@ -1,18 +1,8 @@
 import math
 import time
-from django.http import JsonResponse
-from django.db import IntegrityError
-from django.contrib.auth.models import User
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from places.models import District, Place
-from transport_finder.models import TransitStop, Route, TransportProvider
-from .services import generate_otp, send_otp_email, mask_email
-
-
-import time
 import logging
+from django.conf import settings
+from django.http import JsonResponse
 from django.db import IntegrityError, transaction
 from django.db.models import Q
 from django.contrib.auth.models import User
@@ -399,21 +389,6 @@ def user_login(request):
             "pending_email": pending_email,
             "next_url": next_url,
             "debug_otp": request.session.get("login_otp") if settings.DEBUG else None,
-        }
-    )
-
-    return render(
-        request,
-        "users/login.html",
-        {
-            "step": step,
-            "error": error,
-            "success": success,
-            "info": info,
-            "masked_email": mask_email(pending_email),
-            "pending_email": pending_email,
-            "debug_otp": request.session.get("login_otp"),
-            "login_mode": request.session.get("login_mode", "password"),
         }
     )
 
