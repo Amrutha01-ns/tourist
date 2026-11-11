@@ -43,7 +43,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-i-v28*q@nfox%ah)oxfzqyhe-9
 IS_RENDER = os.getenv('RENDER') is not None
 DEBUG = os.getenv('DEBUG', 'False' if IS_RENDER else 'True').lower() in ('true', '1', 'yes', 't')
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'testserver', '.onrender.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'testserver', '.onrender.com', '.lhr.life', '.loca.lt']
 render_external_host = os.getenv('RENDER_EXTERNAL_HOSTNAME')
 if render_external_host:
     ALLOWED_HOSTS.append(render_external_host)
@@ -54,6 +54,11 @@ CSRF_TRUSTED_ORIGINS = [
     'https://*.onrender.com',
     'http://localhost:8000',
     'http://127.0.0.1:8000',
+    'https://*.lhr.life',
+    'http://*.lhr.life',
+    'https://*.loca.lt',
+    'http://*.loca.lt',
+    'https://*.ngrok-free.app',
 ]
 if render_external_host:
     CSRF_TRUSTED_ORIGINS.append(f"https://{render_external_host}")

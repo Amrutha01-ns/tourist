@@ -18,10 +18,59 @@ def generate_otp(length=6) -> str:
 def _dispatch_email_async(subject: str, message: str, from_email: str, to_email: str):
     """
     Worker function executed in a background daemon thread.
-    1. First tries HTTPS Port 443 API (Resend) if RESEND_API_KEY is available (never blocked on Render Free tier).
-    2. Falls back to standard SMTP port 587.
-    3. Catches all errors gracefully without ever interrupting or freezing the web UI.
+    1. First tries Mail Relay Webhook if MAIL_RELAY_URL is set (relays from Render over Port 443).
+    2. Tries Google Apps Script Webhook if GOOGLE_SCRIPT_MAIL_URL is set.
+    3. Tries Brevo HTTPS API if BREVO_API_KEY is available (Port 443).
+    4. Tries Resend HTTPS API if RESEND_API_KEY is available (Port 443).
+    5. Falls back to standard SMTP port 587.
+    6. Catches all errors gracefully without ever interrupting or freezing the web UI.
     """
+    # 0. Mail Relay Webhook (Port 443 HTTPS - forwards to local relay bridge)
+    relay_url = os.getenv("MAIL_RELAY_URL", "").strip()
+    if relay_url:
+        try:
+            target = relay_url.rstrip("/") + "/send-email" if not relay_url.endswith("/send-email") else relay_url
+            payload = json.dumps({
+                "to": to_email,
+                "subject": subject,
+                "message": message,
+            }).encode("utf-8")
+            req = urllib.request.Request(
+                target,
+                data=payload,
+                headers={"Content-Type": "application/json", "User-Agent": "Tourist-Web/1.0"},
+                method="POST"
+            )
+            with urllib.request.urlopen(req, timeout=6) as resp:
+                if resp.status == 200:
+                    print(f"[LIVE EMAIL DELIVERED VIA MAIL RELAY] to {to_email}")
+                    logger.info(f"Delivered via Mail Relay to {to_email}")
+                    return
+        except Exception as relay_err:
+            logger.warning(f"Mail Relay dispatch failed: {relay_err}")
+
+    # 0b. Google Apps Script Webhook (Port 443 HTTPS)
+    gas_url = os.getenv("GOOGLE_SCRIPT_MAIL_URL", "").strip()
+    if gas_url:
+        try:
+            payload = json.dumps({
+                "to": to_email,
+                "subject": subject,
+                "message": message,
+            }).encode("utf-8")
+            req = urllib.request.Request(
+                gas_url,
+                data=payload,
+                headers={"Content-Type": "application/json", "User-Agent": "Tourist-Web/1.0"},
+                method="POST"
+            )
+            with urllib.request.urlopen(req, timeout=8) as resp:
+                print(f"[LIVE EMAIL DELIVERED VIA GOOGLE APPS SCRIPT WEBHOOK] to {to_email}")
+                logger.info(f"Delivered via Google Apps Script to {to_email}")
+                return
+        except Exception as gas_err:
+            logger.warning(f"Google Apps Script dispatch failed: {gas_err}")
+
     # 1. Brevo HTTPS API (Port 443 - Can send to ANY email address in the world from Render)
     brevo_key = os.getenv("BREVO_API_KEY", "").strip()
     if brevo_key:
