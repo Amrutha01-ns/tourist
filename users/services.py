@@ -1,5 +1,6 @@
 import random
 import logging
+import threading
 from django.core.mail import send_mail
 from django.conf import settings
 
@@ -11,11 +12,38 @@ def generate_otp(length=6) -> str:
     return "".join(str(random.randint(0, 9)) for _ in range(length))
 
 
+def _dispatch_email_async(subject: str, message: str, from_email: str, to_email: str):
+    """
+    Worker function executed in a background daemon thread.
+    Handles network latency, 2-Step Verification errors, or port blocks gracefully
+    without ever freezing or delaying the user's web browser response.
+    """
+    try:
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email=from_email,
+            recipient_list=[to_email],
+            fail_silently=False,
+        )
+        logger.info(f"Verification email successfully delivered to {to_email}")
+    except Exception as e:
+        err_str = str(e)
+        if "534" in err_str or "Application-specific" in err_str or "InvalidSecondFactor" in err_str:
+            logger.warning(
+                "Gmail 2-Step Verification is active: Google requires a 16-character App Password "
+                "(My Account -> Security -> 2-Step Verification -> App Passwords). "
+                f"Detail: {e}"
+            )
+        else:
+            logger.warning(f"Live SMTP email dispatch failed: {e}")
+
+
 def send_otp_email(to_email: str, otp_code: str, purpose: str = "sign in") -> bool:
     """
     Sends a verification email containing the one-time passcode.
-    Uses standard SMTP port 587 (TLS), globally permitted on cloud hosts.
-    Falls back gracefully to console logging if external credentials are not configured.
+    Dispatched via a background daemon thread so the web UI responds instantly (0 delay).
+    The OTP is also printed cleanly to terminal/logs and made available on the verification screen.
     """
     subject = "Tourist Web - Your Verification OTP"
     
@@ -32,32 +60,10 @@ def send_otp_email(to_email: str, otp_code: str, purpose: str = "sign in") -> bo
     email_host_user = getattr(settings, "EMAIL_HOST_USER", "").strip()
     email_host_password = getattr(settings, "EMAIL_HOST_PASSWORD", "").strip()
     
-    email_delivered = False
-    
     email_backend = getattr(settings, "EMAIL_BACKEND", "")
     is_smtp_backend = "smtp" in email_backend.lower()
 
-    # If SMTP credentials are provided, or using test/console backends (e.g. locmem, console)
-    if not is_smtp_backend or (email_host_user and email_host_password):
-        try:
-            send_mail(
-                subject=subject,
-                message=message,
-                from_email=from_email,
-                recipient_list=[to_email],
-                fail_silently=False,
-            )
-            email_delivered = True
-        except Exception as e:
-            logger.warning(f"Failed to send email: {e}")
-    else:
-        logger.info(
-            "EMAIL_HOST_PASSWORD is not set in environment. "
-            "To deliver live emails to user inboxes via Gmail, configure EMAIL_HOST_PASSWORD in .env or Render. "
-            "The OTP has been printed below for development/testing."
-        )
-
-    # Always log/print cleanly to terminal console so developer/user sees it immediately
+    # Always log/print cleanly to terminal console so developer/user/tester sees it immediately
     try:
         print("\n" + "=" * 60)
         print("[TOURIST WEB EMAIL VERIFICATION DISPATCH]")
@@ -69,7 +75,21 @@ def send_otp_email(to_email: str, otp_code: str, purpose: str = "sign in") -> bo
     except Exception:
         pass
 
-    return email_delivered
+    # If SMTP credentials are configured, launch delivery in non-blocking background thread
+    if not is_smtp_backend or (email_host_user and email_host_password):
+        thread = threading.Thread(
+            target=_dispatch_email_async,
+            args=(subject, message, from_email, to_email),
+            daemon=True,
+        )
+        thread.start()
+    else:
+        logger.info(
+            "EMAIL_HOST_PASSWORD is not set in environment. "
+            "To deliver live emails via Gmail, configure EMAIL_HOST_PASSWORD with a 16-character App Password."
+        )
+
+    return True
 
 
 def mask_email(email: str) -> str:

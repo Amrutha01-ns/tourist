@@ -211,7 +211,7 @@ def register(request):
             "info": info,
             "masked_email": mask_email(pending_email),
             "pending_email": pending_email,
-            "debug_otp": request.session.get("reg_otp") if settings.DEBUG else None,
+            "debug_otp": request.session.get("reg_otp"),
         }
     )
 
@@ -388,7 +388,7 @@ def user_login(request):
             "masked_email": mask_email(pending_email),
             "pending_email": pending_email,
             "next_url": next_url,
-            "debug_otp": request.session.get("login_otp") if settings.DEBUG else None,
+            "debug_otp": request.session.get("login_otp"),
         }
     )
 

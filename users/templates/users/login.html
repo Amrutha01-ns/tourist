@@ -1002,20 +1002,25 @@
 
             <!-- STEP 2: OTP VERIFICATION -->
             {% else %}
-                <div class="otp-notice-card" style="background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.28); border-radius: 14px; padding: 14px; margin-bottom: 20px;">
+                <div class="otp-notice-card" style="background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.28); border-radius: 14px; padding: 14px; margin-bottom: 16px;">
                     <div style="font-size: 13.5px; color: #a7f3d0; line-height: 1.5;">
                         <i class="fa-solid fa-envelope-circle-check" style="color: #10b981; margin-right: 6px;"></i>
-                        A 6-digit sign-in code has been sent to <strong>{{ masked_email }}</strong>. Please check your inbox and enter it below.
+                        A 6-digit sign-in code has been dispatched to <strong>{{ masked_email }}</strong>.
                     </div>
                 </div>
 
                 {% if debug_otp %}
-                    <div style="background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); padding: 10px 14px; border-radius: 12px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;">
-                        <div style="font-size: 12.5px; color: #fcd34d; font-weight: 700;">
-                            <i class="fa-solid fa-terminal"></i> Sign-In OTP: <strong>{{ debug_otp }}</strong>
+                    <div style="background: rgba(245, 158, 11, 0.18); border: 1.5px solid rgba(245, 158, 11, 0.45); padding: 12px 16px; border-radius: 14px; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.12);">
+                        <div>
+                            <div style="font-size: 11.5px; color: #fde68a; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+                                <i class="fa-solid fa-shield-halved" style="color: #f59e0b; margin-right: 5px;"></i> Instant Sign-In Code
+                            </div>
+                            <div style="font-size: 21px; font-weight: 800; color: #ffffff; letter-spacing: 4px; margin-top: 3px; font-family: monospace;">
+                                {{ debug_otp }}
+                            </div>
                         </div>
-                        <button type="button" class="btn-fill-pill" onclick="document.getElementById('otpField').value='{{ debug_otp }}'">
-                            Auto-Fill
+                        <button type="button" class="btn-fill-pill" onclick="document.getElementById('otpField').value='{{ debug_otp }}'" style="background: #f59e0b; color: #111; font-weight: 800; border: none; border-radius: 8px; padding: 8px 16px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 13px;">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Auto-Fill
                         </button>
                     </div>
                 {% endif %}
