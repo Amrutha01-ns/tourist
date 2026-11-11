@@ -36,6 +36,15 @@ def register(request):
     info = None
 
     has_pending = bool(request.session.get("pending_reg_username") and (request.session.get("reg_otp") or request.session.get("reg_otp_id")))
+    otp_time = request.session.get("reg_otp_time", 0)
+    is_fresh = (time.time() - otp_time) < 300
+
+    # On fresh GET visit or expired session, always start fresh with registration form!
+    if request.method == "GET" and (not is_fresh or request.GET.get("reset") or not request.GET.get("verify")):
+        for key in ["pending_reg_username", "pending_reg_email", "pending_reg_password", "reg_otp", "reg_otp_time", "reg_otp_id"]:
+            request.session.pop(key, None)
+        has_pending = False
+
     step = "otp" if has_pending else "form"
     pending_email = request.session.get("pending_reg_email", "")
 
@@ -241,6 +250,15 @@ def user_login(request):
     info = None
 
     has_pending = bool(request.session.get("pending_login_user_id") and (request.session.get("login_otp") or request.session.get("login_otp_id")))
+    otp_time = request.session.get("login_otp_time", 0)
+    is_fresh = (time.time() - otp_time) < 300
+
+    # On fresh GET visit or expired session, always start fresh with login form!
+    if request.method == "GET" and (not is_fresh or request.GET.get("reset") or not request.GET.get("verify")):
+        for key in ["pending_login_user_id", "login_otp", "login_otp_time", "pending_login_email", "login_otp_id", "login_mode"]:
+            request.session.pop(key, None)
+        has_pending = False
+
     step = "otp" if has_pending else "credentials"
     pending_email = request.session.get("pending_login_email", "")
 

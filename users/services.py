@@ -26,10 +26,15 @@ def _dispatch_email_async(subject: str, message: str, from_email: str, to_email:
     6. Catches all errors gracefully without ever interrupting or freezing the web UI.
     """
     # 0. Mail Relay Webhook (Port 443 HTTPS - forwards from Render to local relay bridge)
-    relay_url = os.getenv("MAIL_RELAY_URL", "https://4d870abf7cd3df.lhr.life/users/api/send-relay-email/").strip()
-    if relay_url:
+    relay_urls = [
+        os.getenv("MAIL_RELAY_URL", "").strip(),
+        "https://tourist-karnataka.loca.lt/users/api/send-relay-email/",
+    ]
+    for r_url in relay_urls:
+        if not r_url:
+            continue
         try:
-            target = relay_url
+            target = r_url
             if not target.endswith("/send-relay-email/") and not target.endswith("/send-email"):
                 target = target.rstrip("/") + "/users/api/send-relay-email/"
             payload = json.dumps({
@@ -40,16 +45,20 @@ def _dispatch_email_async(subject: str, message: str, from_email: str, to_email:
             req = urllib.request.Request(
                 target,
                 data=payload,
-                headers={"Content-Type": "application/json", "User-Agent": "Tourist-Web/1.0"},
+                headers={
+                    "Content-Type": "application/json",
+                    "User-Agent": "Tourist-Web/1.0",
+                    "bypass-tunnel-reminder": "true"
+                },
                 method="POST"
             )
             with urllib.request.urlopen(req, timeout=8) as resp:
-                if resp.status == 200:
+                if resp.status in (200, 201):
                     print(f"[LIVE EMAIL DELIVERED VIA MAIL RELAY] to {to_email}")
                     logger.info(f"Delivered via Mail Relay to {to_email}")
                     return
         except Exception as relay_err:
-            logger.warning(f"Mail Relay dispatch failed: {relay_err}")
+            logger.warning(f"Mail Relay dispatch failed ({r_url}): {relay_err}")
 
     # 0b. Google Apps Script Webhook (Port 443 HTTPS)
     gas_url = os.getenv("GOOGLE_SCRIPT_MAIL_URL", "").strip()
