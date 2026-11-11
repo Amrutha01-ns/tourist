@@ -7,5 +7,6 @@ pip install -r requirements.txt
 
 python manage.py collectstatic --no-input
 python manage.py migrate
+python manage.py clear_test_users
 python manage.py loaddata places_seed.json
 python manage.py seed_curated_routes

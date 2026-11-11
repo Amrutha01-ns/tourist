@@ -117,11 +117,21 @@ def register(request):
                     # Valid OTP! Atomically create User and UserProfile in database
                     try:
                         with transaction.atomic():
-                            if User.objects.filter(username__iexact=username).exists():
-                                error = f"The username '{username}' is already taken. Please choose another username or sign in."
+                            matched_by_email = User.objects.filter(email__iexact=email).first()
+                            matched_by_user = User.objects.filter(username__iexact=username).first()
+
+                            user = None
+                            if matched_by_user and matched_by_email and matched_by_user.id != matched_by_email.id:
+                                error = f"The username '{username}' is already taken by a different account. Please choose another username."
                                 step = "form"
-                            elif User.objects.filter(email__iexact=email).exists():
-                                error = f"An account with email '{email}' is already registered. Please sign in."
+                            elif matched_by_email:
+                                user = matched_by_email
+                                user.username = username
+                                user.set_password(password)
+                                user.is_active = True
+                                user.save()
+                            elif matched_by_user:
+                                error = f"The username '{username}' is already taken. Please choose another username or sign in."
                                 step = "form"
                             else:
                                 user = User.objects.create_user(
@@ -130,6 +140,8 @@ def register(request):
                                     password=password,
                                     is_active=True
                                 )
+
+                            if user:
                                 # Ensure UserProfile is marked verified
                                 profile, _ = UserProfile.objects.get_or_create(user=user)
                                 profile.is_email_verified = True
@@ -173,11 +185,8 @@ def register(request):
             elif confirm_password and password != confirm_password:
                 error = "Passwords do not match. Please ensure both passwords match."
                 step = "form"
-            elif User.objects.filter(username__iexact=username).exists():
+            elif User.objects.filter(username__iexact=username).exists() and User.objects.filter(username__iexact=username).exclude(email__iexact=email).exists():
                 error = f"The username '{username}' is already taken. Please choose another username or sign in."
-                step = "form"
-            elif User.objects.filter(email__iexact=email).exists():
-                error = f"An account with email '{email}' is already registered. Please sign in."
                 step = "form"
             else:
                 # Generate verification OTP and persist to database model
