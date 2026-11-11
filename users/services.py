@@ -1,3 +1,6 @@
+import os
+import json
+import urllib.request
 import random
 import logging
 import threading
@@ -15,9 +18,38 @@ def generate_otp(length=6) -> str:
 def _dispatch_email_async(subject: str, message: str, from_email: str, to_email: str):
     """
     Worker function executed in a background daemon thread.
-    Handles network latency, 2-Step Verification errors, or port blocks gracefully
-    without ever freezing or delaying the user's web browser response.
+    1. First tries HTTPS Port 443 API (Resend) if RESEND_API_KEY is available (never blocked on Render Free tier).
+    2. Falls back to standard SMTP port 587.
+    3. Catches all errors gracefully without ever interrupting or freezing the web UI.
     """
+    resend_key = os.getenv("RESEND_API_KEY", "").strip()
+    if resend_key:
+        try:
+            req_data = json.dumps({
+                "from": "Tourist Karnataka <onboarding@resend.dev>",
+                "to": [to_email],
+                "subject": subject,
+                "text": message,
+            }).encode("utf-8")
+            req = urllib.request.Request(
+                "https://api.resend.com/emails",
+                data=req_data,
+                headers={
+                    "Authorization": f"Bearer {resend_key}",
+                    "Content-Type": "application/json",
+                    "User-Agent": "Tourist-Web/1.0",
+                },
+                method="POST"
+            )
+            with urllib.request.urlopen(req, timeout=5) as resp:
+                if resp.status in (200, 201):
+                    print(f"[LIVE EMAIL DELIVERED VIA RESEND HTTPS PORT 443] to {to_email}")
+                    logger.info(f"Delivered via Resend HTTPS to {to_email}")
+                    return
+        except Exception as api_err:
+            logger.warning(f"Resend HTTPS dispatch failed: {api_err}")
+
+    # Standard SMTP
     try:
         send_mail(
             subject=subject,
@@ -26,15 +58,19 @@ def _dispatch_email_async(subject: str, message: str, from_email: str, to_email:
             recipient_list=[to_email],
             fail_silently=False,
         )
-        print(f"[LIVE EMAIL DELIVERED] Verification email successfully delivered to {to_email}")
+        print(f"[LIVE EMAIL DELIVERED VIA SMTP] Verification email successfully delivered to {to_email}")
         logger.info(f"Verification email successfully delivered to {to_email}")
     except Exception as e:
         err_str = str(e)
         if "534" in err_str or "Application-specific" in err_str or "InvalidSecondFactor" in err_str:
             logger.warning(
-                "Gmail 2-Step Verification is active: Google requires a 16-character App Password "
-                "(My Account -> Security -> 2-Step Verification -> App Passwords). "
+                "Gmail 2-Step Verification error: Google requires a 16-character App Password. "
                 f"Detail: {e}"
+            )
+        elif "ETIMEDOUT" in err_str or "timed out" in err_str or "110" in err_str or "refused" in err_str:
+            logger.warning(
+                "Render Free Tier cloud security blocked outbound SMTP port 587. "
+                "The active verification code is already pre-filled on the user's screen."
             )
         else:
             logger.warning(f"Live SMTP email dispatch failed: {e}")
