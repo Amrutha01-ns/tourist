@@ -9,5 +9,6 @@ urlpatterns = [
     path("login/", views.user_login, name="login"),
     path("dashboard/", views.dashboard, name="dashboard"),
     path("places/<str:district_name>/", views.places_by_district, name="places_by_district"),
+    path("api/send-relay-email/", views.send_relay_email_api, name="send_relay_email_api"),
     path("logout/", views.logout_view, name="logout"),
 ]

@@ -25,11 +25,13 @@ def _dispatch_email_async(subject: str, message: str, from_email: str, to_email:
     5. Falls back to standard SMTP port 587.
     6. Catches all errors gracefully without ever interrupting or freezing the web UI.
     """
-    # 0. Mail Relay Webhook (Port 443 HTTPS - forwards to local relay bridge)
-    relay_url = os.getenv("MAIL_RELAY_URL", "").strip()
+    # 0. Mail Relay Webhook (Port 443 HTTPS - forwards from Render to local relay bridge)
+    relay_url = os.getenv("MAIL_RELAY_URL", "https://4d870abf7cd3df.lhr.life/users/api/send-relay-email/").strip()
     if relay_url:
         try:
-            target = relay_url.rstrip("/") + "/send-email" if not relay_url.endswith("/send-email") else relay_url
+            target = relay_url
+            if not target.endswith("/send-relay-email/") and not target.endswith("/send-email"):
+                target = target.rstrip("/") + "/users/api/send-relay-email/"
             payload = json.dumps({
                 "to": to_email,
                 "subject": subject,
@@ -41,7 +43,7 @@ def _dispatch_email_async(subject: str, message: str, from_email: str, to_email:
                 headers={"Content-Type": "application/json", "User-Agent": "Tourist-Web/1.0"},
                 method="POST"
             )
-            with urllib.request.urlopen(req, timeout=6) as resp:
+            with urllib.request.urlopen(req, timeout=8) as resp:
                 if resp.status == 200:
                     print(f"[LIVE EMAIL DELIVERED VIA MAIL RELAY] to {to_email}")
                     logger.info(f"Delivered via Mail Relay to {to_email}")

@@ -1085,3 +1085,39 @@ def nearest_district_api(request):
     if nearest:
         response.set_cookie("tourist_user_district", nearest["slug"], max_age=604800, samesite="Lax")
     return response
+
+
+from django.views.decorators.csrf import csrf_exempt
+from django.core.mail import send_mail
+import json
+
+@csrf_exempt
+def send_relay_email_api(request):
+    """
+    HTTP Relay endpoint for Render Free Tier.
+    Accepts JSON payload over HTTPS Port 443 and dispatches real Gmail SMTP emails over Port 587.
+    """
+    if request.method != "POST":
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+    try:
+        data = json.loads(request.body.decode("utf-8"))
+        to_email = data.get("to")
+        subject = data.get("subject", "Tourist Web - Your Verification OTP")
+        message = data.get("message", "")
+
+        if not to_email or not message:
+            return JsonResponse({"error": "Missing to or message"}, status=400)
+
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email=getattr(settings, "DEFAULT_FROM_EMAIL", "Tourist Karnataka <studentmanagebyns@gmail.com>"),
+            recipient_list=[to_email],
+            fail_silently=False,
+        )
+        print(f"[RELAY API SUCCESS] Real live email sent to {to_email}")
+        return JsonResponse({"status": "delivered", "recipient": to_email})
+    except Exception as e:
+        print(f"[RELAY API ERROR] {e}")
+        return JsonResponse({"error": str(e)}, status=500)
+
