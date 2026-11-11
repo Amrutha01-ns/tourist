@@ -26,6 +26,7 @@ def _dispatch_email_async(subject: str, message: str, from_email: str, to_email:
             recipient_list=[to_email],
             fail_silently=False,
         )
+        print(f"[LIVE EMAIL DELIVERED] Verification email successfully delivered to {to_email}")
         logger.info(f"Verification email successfully delivered to {to_email}")
     except Exception as e:
         err_str = str(e)
@@ -56,7 +57,7 @@ def send_otp_email(to_email: str, otp_code: str, purpose: str = "sign in") -> bo
         f"Amrutha & Tourist Karnataka Journeys Team"
     )
     
-    from_email = getattr(settings, "DEFAULT_FROM_EMAIL", "tourist.web.app@gmail.com")
+    from_email = getattr(settings, "DEFAULT_FROM_EMAIL", "Tourist Karnataka <studentmanagebyns@gmail.com>")
     email_host_user = getattr(settings, "EMAIL_HOST_USER", "").strip()
     email_host_password = getattr(settings, "EMAIL_HOST_PASSWORD", "").strip()
     
