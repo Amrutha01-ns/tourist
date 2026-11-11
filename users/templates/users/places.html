@@ -178,7 +178,7 @@
                                     <img src="{{ place.image.url }}"
                                          alt="{{ place.name }}"
                                          loading="lazy"
-                                         onerror="this.onerror=null; this.src='{% static 'users/images/mysore.jpg' %}';">
+                                         onerror="this.onerror=null; this.src='{% static district_fallback_image|default:'users/images/mysore.jpg' %}';">
                                 </a>
 
                             {% else %}

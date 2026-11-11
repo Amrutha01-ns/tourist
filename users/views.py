@@ -987,14 +987,32 @@ def places_by_district(request, district_name):
 
     background_place = all_places.exclude(image="").first()
 
+    dist_slug = (district.name or "").strip().lower() if district else "mysore"
+    district_fallback_image = DISTRICT_FALLBACK_IMAGES.get(dist_slug, "users/images/mysore.jpg")
+
     context = {
         "district": district,
         "places": places,
         "background_place": background_place,
         "selected_category": selected_category,
+        "district_fallback_image": district_fallback_image,
     }
 
     return render(request, "users/places.html", context)
+
+
+DISTRICT_FALLBACK_IMAGES = {
+    "mysore": "users/images/mysore.jpg",
+    "kodagu": "users/images/madikeri.jpg",
+    "hassan": "users/images/hassan.jpg",
+    "uttara kannada": "users/images/uttara-kannada.jpg",
+    "chikkamagaluru": "users/images/chikmagalur.jpg",
+    "hampi": "users/images/hampi.jpg",
+    "udupi": "users/images/udupi.jpg",
+    "mangaluru": "users/images/mangaluru.jpg",
+    "shivamogga": "users/images/shivamogga.jpg",
+    "mandya": "users/images/mandya.jpg",
+}
 
 
 def logout_view(request):

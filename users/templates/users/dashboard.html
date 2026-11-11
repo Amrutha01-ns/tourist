@@ -277,6 +277,72 @@
                 {% endfor %}
             </div>
         </section>
+
+        <!-- RECENT SEARCHES: AUTHENTIC REAL KARNATAKA DISTRICT MAP SHAPES -->
+        <section class="recent-section">
+            <div class="recent-heading">
+                <p class="section-label">YOUR JOURNEY HISTORY</p>
+                <h2>Recent searches</h2>
+                <p>Pick up where you left off.</p>
+            </div>
+            <div class="thread-wrapper">
+                <div class="thread-rail"></div>
+                <div class="hanging-list">
+                    {% for item in recent_searches %}
+                    <div class="hanging-item {% if forloop.counter|divisibleby:2 %}down{% endif %}">
+                        <div class="pin-node"></div>
+                        <div class="hanging-line"></div>
+                        
+                        <!-- CLICKABLE AUTHENTIC KARNATAKA DISTRICT MAP SHAPE -->
+                        <div class="hanging-real-map-card" 
+                             onclick="window.location.href='{% url 'places_by_district' item.route %}'" 
+                             style="cursor: pointer; --glow-color: {{ item.glow_rgb }};"
+                             title="{{ item.english }} - Official Karnataka Map">
+                            
+                            <svg class="real-district-map-svg" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <!-- Cool, Vibrant Jewel-Tone Background Gradient for each district -->
+                                    <linearGradient id="cool-bg-{{ item.route }}" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="{{ item.bg_start }}" />
+                                        <stop offset="50%" stop-color="{{ item.bg_mid }}" />
+                                        <stop offset="100%" stop-color="{{ item.bg_end }}" />
+                                    </linearGradient>
+
+                                    <!-- Exact Official Karnataka Geographic Boundary ClipPath -->
+                                    <clipPath id="real-clip-{{ item.route }}">
+                                        <path d="{{ item.district_shape_path }}" />
+                                    </clipPath>
+                                    
+                                    <!-- Subtle radial depth -->
+                                    <radialGradient id="vignette-{{ item.route }}" cx="50%" cy="50%" r="55%">
+                                        <stop offset="55%" stop-color="transparent" />
+                                        <stop offset="100%" stop-color="rgba(0, 0, 0, 0.4)" />
+                                    </radialGradient>
+                                </defs>
+
+                                <!-- Colorful, Radiant Map Body with Photo Texture -->
+                                <g clip-path="url(#real-clip-{{ item.route }})">
+                                    <!-- Cool Rich Background Fill -->
+                                    <rect x="0" y="0" width="320" height="220" fill="url(#cool-bg-{{ item.route }})" />
+                                    <!-- Place Landmark Photo Layer -->
+                                    <image class="map-inner-photo" href="{{ item.image }}" x="0" y="0" width="320" height="220" preserveAspectRatio="xMidYMid slice" opacity="0.28" />
+                                    <!-- Depth Shading -->
+                                    <rect x="0" y="0" width="320" height="220" fill="url(#vignette-{{ item.route }})" />
+                                </g>
+
+                                <!-- Crisp, Elegant Distinct Colored Border along official boundary outline -->
+                                <path class="real-map-border" d="{{ item.district_shape_path }}" fill="none" stroke="{{ item.border_color }}" stroke-width="2.4" />
+
+                                <!-- ONLY THE PLACE NAME INSIDE MAP (English Only) -->
+                                <text x="{{ item.center_x|default:160 }}" y="118" text-anchor="middle" class="real-map-english-centered">{{ item.english }}</text>
+                            </svg>
+                        </div>
+
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
         </main>
 
     {% include "footer.html" %}
