@@ -16,12 +16,63 @@ from .services.feedback_engine import generate_trip_feedback
 
 
 @login_required(login_url="login")
+def expense_hub(request):
+    """
+    Direct launchpad entrypoint for the Trip Expense Tracker.
+    If the user has an active or recent tracking session, opens it immediately.
+    Otherwise seamlessly starts tracking for their chosen/most recent destination.
+    """
+    # 1. Look for an active or upcoming session for this user
+    active_session = TripTrackingSession.objects.filter(
+        user=request.user,
+        status__in=["active", "upcoming"],
+    ).order_by("-updated_at").first()
+
+    if active_session:
+        return redirect("expenses:tracker_dashboard", session_id=active_session.id)
+
+    # 2. Look for any existing session (e.g. completed)
+    latest_session = TripTrackingSession.objects.filter(
+        user=request.user
+    ).order_by("-updated_at").first()
+
+    if latest_session:
+        return redirect("expenses:tracker_dashboard", session_id=latest_session.id)
+
+    # 3. If new user without any sessions, find destination from recent searches or fallback to Mysore
+    chosen_slug = "mysore"
+    search_history = request.session.get("recent_searches", [])
+    if search_history:
+        for term in search_history:
+            matched_place = (
+                Place.objects.filter(slug__iexact=term).first()
+                or Place.objects.filter(district__name__iexact=term).first()
+            )
+            if matched_place:
+                chosen_slug = matched_place.slug
+                break
+    else:
+        first_place = Place.objects.first()
+        if first_place:
+            chosen_slug = first_place.slug
+
+    return redirect("expenses:start_session", slug=chosen_slug)
+
+
+@login_required(login_url="login")
 def start_or_resume_session(request, slug):
     """
     Initiates or resumes a tracking session for a destination.
     Captures trip budget, duration, and travellers from the destination planner with zero retyping.
     """
-    place = get_object_or_404(Place, slug=slug)
+    clean_slug = (slug or "").strip().lower()
+    place = Place.objects.filter(slug__iexact=clean_slug).first()
+    if not place:
+        place = Place.objects.filter(name__iexact=clean_slug).first()
+    if not place:
+        place = Place.objects.filter(district__name__iexact=clean_slug).first()
+    if not place:
+        place = get_object_or_404(Place, slug=slug)
     today = timezone.now().astimezone(IST_ZONE).date()
 
     # Look for an active or upcoming session for this user and place

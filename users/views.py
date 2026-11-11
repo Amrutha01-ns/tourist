@@ -20,6 +20,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from django.utils.http import url_has_allowed_host_and_scheme
 from places.models import District, Place
 from transport_finder.models import TransitStop, Route, TransportProvider
 from .models import EmailOTP, UserProfile
@@ -29,8 +30,10 @@ logger = logging.getLogger(__name__)
 
 
 def register(request):
+    next_url = (request.POST.get("next") or request.GET.get("next") or "").strip()
     if request.user.is_authenticated:
-        return redirect("dashboard")
+        target = next_url if (next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()})) else "dashboard"
+        return redirect(target)
 
     # Handle cancel / reset OTP
     if request.GET.get("cancel_otp"):
@@ -153,9 +156,10 @@ def register(request):
                                 for key in ["pending_reg_username", "pending_reg_email", "pending_reg_password", "reg_otp", "reg_otp_time", "reg_otp_id"]:
                                     request.session.pop(key, None)
 
-                                # Log the newly verified user in and navigate straight to dashboard
+                                # Log the newly verified user in and navigate straight to destination / next
                                 login(request, user)
-                                return redirect("dashboard")
+                                target = next_url if (next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()})) else "dashboard"
+                                return redirect(target)
                     except IntegrityError:
                         error = f"The username '{username}' or email '{email}' already exists. Please choose another username or sign in."
                         step = "form"
@@ -223,8 +227,10 @@ def register(request):
 
 
 def user_login(request):
+    next_url = (request.POST.get("next") or request.GET.get("next") or "").strip()
     if request.user.is_authenticated:
-        return redirect("dashboard")
+        target = next_url if (next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()})) else "dashboard"
+        return redirect(target)
 
     # Handle cancel / reset OTP
     if request.GET.get("cancel_otp"):
@@ -320,7 +326,8 @@ def user_login(request):
                     login(request, user)
                     for key in ["pending_login_user_id", "login_otp", "login_otp_time", "pending_login_email", "login_otp_id", "login_mode"]:
                         request.session.pop(key, None)
-                    return redirect("dashboard")
+                    target = next_url if (next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()})) else "dashboard"
+                    return redirect(target)
 
         elif action == "request_otp":
             # Passwordless Email OTP Login
@@ -374,7 +381,8 @@ def user_login(request):
 
             if user is not None:
                 login(request, user)
-                return redirect("dashboard")
+                target = next_url if (next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()})) else "dashboard"
+                return redirect(target)
             else:
                 error = "Invalid username or password. Please enter valid credentials or sign in with Email OTP."
                 step = "credentials"
@@ -389,6 +397,7 @@ def user_login(request):
             "info": info,
             "masked_email": mask_email(pending_email),
             "pending_email": pending_email,
+            "next_url": next_url,
             "debug_otp": request.session.get("login_otp") if settings.DEBUG else None,
         }
     )

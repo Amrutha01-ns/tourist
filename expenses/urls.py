@@ -4,6 +4,7 @@ from . import views
 app_name = "expenses"
 
 urlpatterns = [
+    path("", views.expense_hub, name="hub"),
     path("start/<slug:slug>/", views.start_or_resume_session, name="start_session"),
     path("tracker/<uuid:session_id>/", views.tracker_dashboard, name="tracker_dashboard"),
     path("tracker/<uuid:session_id>/add/", views.add_expense, name="add_expense"),

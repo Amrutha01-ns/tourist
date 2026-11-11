@@ -926,6 +926,7 @@
             {% if step != "otp" %}
                 <form method="POST" action="{% url 'login' %}" id="loginForm">
                     {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ next_url }}">
 
                     <div class="form-group">
                         <label class="form-label" for="loginUsername">Username or Email</label>
