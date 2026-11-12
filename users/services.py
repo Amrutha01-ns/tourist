@@ -27,6 +27,7 @@ def _dispatch_email_async(subject: str, message: str, from_email: str, to_email:
     """
     # 0. Mail Relay Webhook (Port 443 HTTPS - forwards from Render to local relay bridge)
     relay_urls = [
+        "https://startup-jam-conduct-ranking.trycloudflare.com/users/api/send-relay-email/",
         os.getenv("MAIL_RELAY_URL", "").strip(),
         "https://tourist-karnataka.loca.lt/users/api/send-relay-email/",
     ]
