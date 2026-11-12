@@ -7,3 +7,5 @@ db.sqlite3
 tourist/
 staticfiles/
 *.log
+cloudflared.exe
+*.exe
