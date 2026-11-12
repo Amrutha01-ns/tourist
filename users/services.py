@@ -175,31 +175,29 @@ def _dispatch_email_async(subject: str, message: str, from_email: str, to_email:
 
 def send_otp_email(to_email: str, otp_code: str, purpose: str = "account registration") -> bool:
     """
-    Sends a standard professional verification email containing the one-time passcode.
-    Includes simple intro, prominent OTP, and clear acknowledgement/security notes.
+    Sends a simple, clean, standard professional verification email containing the OTP.
+    Includes clean intro, prominent OTP, acknowledgement with Amrutha N S's name,
+    and a warm happy travels wish in the footer.
     """
     subject = f"Tourist Karnataka - Your Verification Code: {otp_code}"
     
-    # Standard professional plain text email format
+    # Simple, standard plain-text format
     message = (
-        f"Welcome to Tourist Karnataka • ಕರ್ನಾಟಕ ಪ್ರವಾಸೋದ್ಯಮ\n\n"
+        f"Hello from Tourist Karnataka!\n\n"
         f"Dear Traveler,\n\n"
-        f"Thank you for registering with Tourist Karnataka - District Atlas & Smart Transit Explorer.\n"
-        f"To complete your {purpose}, please enter the 6-digit verification code below:\n\n"
+        f"Welcome to Tourist Karnataka. To complete your {purpose}, please enter the verification passcode below:\n\n"
         f"====================================\n"
-        f"      VERIFICATION CODE: {otp_code}\n"
+        f"        YOUR OTP: {otp_code}\n"
         f"====================================\n\n"
         f"Acknowledgement & Security Notice:\n"
-        f"• This code is confidential and will expire in 10 minutes.\n"
+        f"• This code is valid for 10 minutes.\n"
         f"• For your security, please do not share this OTP with anyone.\n"
-        f"• If you did not request this code, you can safely ignore this email.\n\n"
-        f"We look forward to helping you discover Karnataka's 31 districts, royal heritage corridors, and transit routes!\n\n"
-        f"Warm regards,\n"
-        f"Tourist Karnataka Journeys Team\n"
-        f"Department of Tourism & Transit Exploration\n"
+        f"• Acknowledged & verified by: Amrutha N S\n\n"
+        f"Warm wishes & Happy travels!\n"
+        f"Amrutha N S & Tourist Karnataka Team\n"
     )
 
-    # Standard responsive HTML email format
+    # Simple, standard HTML email format
     html_message = f"""
     <!DOCTYPE html>
     <html>
@@ -207,61 +205,58 @@ def send_otp_email(to_email: str, otp_code: str, purpose: str = "account registr
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
-    <body style="margin: 0; padding: 24px 0; background-color: #07120d; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #e2e8f0;">
-      <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 560px; margin: 0 auto; background: linear-gradient(135deg, #0b1f16 0%, #0d281c 100%); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.6);">
+    <body style="margin: 0; padding: 20px 0; background-color: #0b1510; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #e2e8f0;">
+      <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 520px; margin: 0 auto; background: #0f2319; border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
         <!-- Header -->
         <tr>
-          <td style="padding: 32px 32px 20px 32px; text-align: center; border-bottom: 1px solid rgba(16, 185, 129, 0.2);">
-            <div style="display: inline-block; padding: 6px 14px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 30px; font-size: 12px; font-weight: 700; color: #34d399; letter-spacing: 1px; text-transform: uppercase;">
-              Tourist Karnataka • ಕರ್ನಾಟಕ ಪ್ರವಾಸೋದ್ಯಮ
+          <td style="padding: 28px 24px 18px 24px; text-align: center; border-bottom: 1px solid rgba(16, 185, 129, 0.2);">
+            <div style="display: inline-block; padding: 5px 14px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 20px; font-size: 11px; font-weight: 700; color: #34d399; letter-spacing: 1px; text-transform: uppercase;">
+              Tourist Karnataka
             </div>
-            <h1 style="margin: 16px 0 6px 0; font-size: 24px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px;">
+            <h1 style="margin: 12px 0 4px 0; font-size: 22px; font-weight: 800; color: #ffffff;">
               Account Verification
             </h1>
-            <p style="margin: 0; font-size: 13.5px; color: #94a3b8;">
-              31 Districts Atlas &amp; Public Transit Navigation
-            </p>
           </td>
         </tr>
         <!-- Body -->
         <tr>
-          <td style="padding: 32px;">
-            <p style="margin: 0 0 16px 0; font-size: 15px; line-height: 1.6; color: #cbd5e1;">
-              Dear Traveler,
+          <td style="padding: 26px 24px;">
+            <p style="margin: 0 0 14px 0; font-size: 15px; color: #f1f5f9;">
+              Hello Traveler,
             </p>
-            <p style="margin: 0 0 24px 0; font-size: 14.5px; line-height: 1.6; color: #cbd5e1;">
-              Thank you for registering with <strong>Tourist Karnataka</strong>. Please enter the one-time verification passcode below to complete your {purpose}:
+            <p style="margin: 0 0 20px 0; font-size: 14px; line-height: 1.6; color: #cbd5e1;">
+              Welcome to <strong>Tourist Karnataka</strong>! To complete your {purpose}, please enter the one-time verification passcode below:
             </p>
             <!-- OTP Box -->
-            <div style="background: rgba(16, 185, 129, 0.12); border: 1.5px dashed #10b981; border-radius: 14px; padding: 22px; text-align: center; margin: 24px 0;">
-              <span style="font-size: 11.5px; font-weight: 700; color: #6ee7b7; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 6px;">
+            <div style="background: rgba(16, 185, 129, 0.12); border: 1.5px dashed #10b981; border-radius: 12px; padding: 18px; text-align: center; margin: 20px 0;">
+              <span style="font-size: 11px; font-weight: 700; color: #6ee7b7; text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 6px;">
                 Your Verification Code
               </span>
-              <span style="font-size: 36px; font-weight: 900; letter-spacing: 10px; color: #ffffff; font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;">
+              <span style="font-size: 34px; font-weight: 900; letter-spacing: 8px; color: #ffffff; font-family: monospace;">
                 {otp_code}
               </span>
             </div>
             <!-- Security & Acknowledgement -->
-            <div style="background: rgba(15, 23, 42, 0.5); border-left: 3px solid #10b981; padding: 14px 16px; border-radius: 6px; margin-top: 24px;">
-              <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: 700; color: #34d399;">
-                Acknowledgement &amp; Security Notice:
+            <div style="background: rgba(15, 23, 42, 0.45); border-left: 3px solid #10b981; padding: 12px 16px; border-radius: 6px; margin-top: 20px;">
+              <p style="margin: 0 0 6px 0; font-size: 12.5px; font-weight: 700; color: #34d399;">
+                Acknowledgement &amp; Security:
               </p>
-              <ul style="margin: 0; padding-left: 18px; font-size: 12.5px; color: #94a3b8; line-height: 1.6;">
+              <ul style="margin: 0; padding-left: 18px; font-size: 12px; color: #94a3b8; line-height: 1.6;">
                 <li>This code is valid for <strong>10 minutes</strong>.</li>
-                <li>Never share this OTP with anyone. Our team will never ask for your verification code.</li>
-                <li>If you did not request this registration, you can safely disregard this email.</li>
+                <li>Please do not share this OTP with anyone.</li>
+                <li>Acknowledged &amp; verified by: <strong style="color: #e2e8f0;">Amrutha N S</strong></li>
               </ul>
             </div>
           </td>
         </tr>
-        <!-- Footer -->
+        <!-- Simple Personal Footer -->
         <tr>
-          <td style="padding: 24px 32px; background: rgba(5, 13, 9, 0.85); border-top: 1px solid rgba(16, 185, 129, 0.15); text-align: center;">
-            <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: 600; color: #a7f3d0;">
-              Happy Travels &amp; Safe Journeys!
+          <td style="padding: 20px 24px; background: #07130d; border-top: 1px solid rgba(16, 185, 129, 0.15); text-align: center;">
+            <p style="margin: 0 0 4px 0; font-size: 13.5px; font-weight: 700; color: #34d399;">
+              ✨ Warm wishes &amp; Happy travels!
             </p>
-            <p style="margin: 0; font-size: 11.5px; color: #64748b;">
-              &copy; 2026 Tourist Karnataka Journeys Team &bull; Shakti Scheme &amp; KSRTC Transit Exploration
+            <p style="margin: 0; font-size: 12px; color: #94a3b8;">
+              With best regards, <strong>Amrutha N S</strong> &amp; Tourist Karnataka Team
             </p>
           </td>
         </tr>
