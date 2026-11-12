@@ -25,41 +25,42 @@ def _dispatch_email_async(subject: str, message: str, from_email: str, to_email:
     5. Falls back to standard SMTP port 587.
     6. Catches all errors gracefully without ever interrupting or freezing the web UI.
     """
-    # 0. Mail Relay Webhook (Port 443 HTTPS - forwards from Render to local relay bridge)
-    relay_urls = [
-        "https://startup-jam-conduct-ranking.trycloudflare.com/users/api/send-relay-email/",
-        os.getenv("MAIL_RELAY_URL", "").strip(),
-        "https://tourist-karnataka.loca.lt/users/api/send-relay-email/",
-    ]
-    for r_url in relay_urls:
-        if not r_url:
-            continue
-        try:
-            target = r_url
-            if not target.endswith("/send-relay-email/") and not target.endswith("/send-email"):
-                target = target.rstrip("/") + "/users/api/send-relay-email/"
-            payload = json.dumps({
-                "to": to_email,
-                "subject": subject,
-                "message": message,
-            }).encode("utf-8")
-            req = urllib.request.Request(
-                target,
-                data=payload,
-                headers={
-                    "Content-Type": "application/json",
-                    "User-Agent": "Tourist-Web/1.0",
-                    "bypass-tunnel-reminder": "true"
-                },
-                method="POST"
-            )
-            with urllib.request.urlopen(req, timeout=8) as resp:
-                if resp.status in (200, 201):
-                    print(f"[LIVE EMAIL DELIVERED VIA MAIL RELAY] to {to_email}")
-                    logger.info(f"Delivered via Mail Relay to {to_email}")
-                    return
-        except Exception as relay_err:
-            logger.warning(f"Mail Relay dispatch failed ({r_url}): {relay_err}")
+    # 0. Mail Relay Webhook (Port 443 HTTPS - forwards from Render cloud to local relay bridge)
+    # Only active when running in the cloud (RENDER), so local server dispatches directly via SMTP port 587 without recursive loop
+    if os.getenv("RENDER"):
+        relay_urls = [
+            "https://startup-jam-conduct-ranking.trycloudflare.com/users/api/send-relay-email/",
+            os.getenv("MAIL_RELAY_URL", "").strip(),
+        ]
+        for r_url in relay_urls:
+            if not r_url:
+                continue
+            try:
+                target = r_url
+                if not target.endswith("/send-relay-email/") and not target.endswith("/send-email"):
+                    target = target.rstrip("/") + "/users/api/send-relay-email/"
+                payload = json.dumps({
+                    "to": to_email,
+                    "subject": subject,
+                    "message": message,
+                }).encode("utf-8")
+                req = urllib.request.Request(
+                    target,
+                    data=payload,
+                    headers={
+                        "Content-Type": "application/json",
+                        "User-Agent": "Tourist-Web/1.0",
+                        "bypass-tunnel-reminder": "true"
+                    },
+                    method="POST"
+                )
+                with urllib.request.urlopen(req, timeout=8) as resp:
+                    if resp.status in (200, 201):
+                        print(f"[LIVE EMAIL DELIVERED VIA MAIL RELAY] to {to_email}")
+                        logger.info(f"Delivered via Mail Relay to {to_email}")
+                        return
+            except Exception as relay_err:
+                logger.warning(f"Mail Relay dispatch failed ({r_url}): {relay_err}")
 
     # 0b. Google Apps Script Webhook (Port 443 HTTPS)
     gas_url = os.getenv("GOOGLE_SCRIPT_MAIL_URL", "").strip()
