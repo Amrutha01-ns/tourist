@@ -1122,6 +1122,7 @@ def send_relay_email_api(request):
         to_email = data.get("to")
         subject = data.get("subject", "Tourist Web - Your Verification OTP")
         message = data.get("message", "")
+        html_message = data.get("html_message")
 
         if not to_email or not message:
             return JsonResponse({"error": "Missing to or message"}, status=400)
@@ -1131,6 +1132,7 @@ def send_relay_email_api(request):
             message=message,
             from_email=getattr(settings, "DEFAULT_FROM_EMAIL", "Tourist Karnataka <studentmanagebyns@gmail.com>"),
             recipient_list=[to_email],
+            html_message=html_message,
             fail_silently=False,
         )
         print(f"[RELAY API SUCCESS] Real live email sent to {to_email}")

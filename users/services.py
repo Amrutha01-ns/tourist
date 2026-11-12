@@ -15,7 +15,7 @@ def generate_otp(length=6) -> str:
     return "".join(str(random.randint(0, 9)) for _ in range(length))
 
 
-def _dispatch_email_async(subject: str, message: str, from_email: str, to_email: str):
+def _dispatch_email_async(subject: str, message: str, from_email: str, to_email: str, html_message: str = None):
     """
     Worker function executed in a background daemon thread.
     1. First tries Mail Relay Webhook if MAIL_RELAY_URL is set (relays from Render over Port 443).
@@ -43,6 +43,7 @@ def _dispatch_email_async(subject: str, message: str, from_email: str, to_email:
                     "to": to_email,
                     "subject": subject,
                     "message": message,
+                    "html_message": html_message,
                 }).encode("utf-8")
                 req = urllib.request.Request(
                     target,
@@ -70,6 +71,7 @@ def _dispatch_email_async(subject: str, message: str, from_email: str, to_email:
                 "to": to_email,
                 "subject": subject,
                 "message": message,
+                "html_message": html_message,
             }).encode("utf-8")
             req = urllib.request.Request(
                 gas_url,
@@ -93,6 +95,7 @@ def _dispatch_email_async(subject: str, message: str, from_email: str, to_email:
                 "to": [{"email": to_email}],
                 "subject": subject,
                 "textContent": message,
+                "htmlContent": html_message or message,
             }).encode("utf-8")
             req = urllib.request.Request(
                 "https://api.brevo.com/v3/smtp/email",
@@ -122,6 +125,7 @@ def _dispatch_email_async(subject: str, message: str, from_email: str, to_email:
                 "to": [to_email],
                 "subject": subject,
                 "text": message,
+                "html": html_message if html_message else message,
             }).encode("utf-8")
             req = urllib.request.Request(
                 "https://api.resend.com/emails",
@@ -148,6 +152,7 @@ def _dispatch_email_async(subject: str, message: str, from_email: str, to_email:
             message=message,
             from_email=from_email,
             recipient_list=[to_email],
+            html_message=html_message,
             fail_silently=False,
         )
         print(f"[LIVE EMAIL DELIVERED VIA SMTP] Verification email successfully delivered to {to_email}")
@@ -168,23 +173,103 @@ def _dispatch_email_async(subject: str, message: str, from_email: str, to_email:
             logger.warning(f"Live SMTP email dispatch failed: {e}")
 
 
-def send_otp_email(to_email: str, otp_code: str, purpose: str = "sign in") -> bool:
+def send_otp_email(to_email: str, otp_code: str, purpose: str = "account registration") -> bool:
     """
-    Sends a verification email containing the one-time passcode.
-    Dispatched via a background daemon thread so the web UI responds instantly (0 delay).
-    The OTP is also printed cleanly to terminal/logs and made available on the verification screen.
+    Sends a standard professional verification email containing the one-time passcode.
+    Includes simple intro, prominent OTP, and clear acknowledgement/security notes.
     """
-    subject = "Tourist Web - Your Verification OTP"
+    subject = f"Tourist Karnataka - Your Verification Code: {otp_code}"
     
-    # Exact simple message format requested by the user
+    # Standard professional plain text email format
     message = (
-        f"hey hi,,we tourist web here nd your OTP is: {otp_code}\n\n"
-        f"Please enter this one-time password to complete your {purpose}.\n"
-        f"This code will expire in 10 minutes.\n\n"
-        f"Happy travels,\n"
-        f"Amrutha & Tourist Karnataka Journeys Team"
+        f"Welcome to Tourist Karnataka • ಕರ್ನಾಟಕ ಪ್ರವಾಸೋದ್ಯಮ\n\n"
+        f"Dear Traveler,\n\n"
+        f"Thank you for registering with Tourist Karnataka - District Atlas & Smart Transit Explorer.\n"
+        f"To complete your {purpose}, please enter the 6-digit verification code below:\n\n"
+        f"====================================\n"
+        f"      VERIFICATION CODE: {otp_code}\n"
+        f"====================================\n\n"
+        f"Acknowledgement & Security Notice:\n"
+        f"• This code is confidential and will expire in 10 minutes.\n"
+        f"• For your security, please do not share this OTP with anyone.\n"
+        f"• If you did not request this code, you can safely ignore this email.\n\n"
+        f"We look forward to helping you discover Karnataka's 31 districts, royal heritage corridors, and transit routes!\n\n"
+        f"Warm regards,\n"
+        f"Tourist Karnataka Journeys Team\n"
+        f"Department of Tourism & Transit Exploration\n"
     )
-    
+
+    # Standard responsive HTML email format
+    html_message = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body style="margin: 0; padding: 24px 0; background-color: #07120d; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #e2e8f0;">
+      <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 560px; margin: 0 auto; background: linear-gradient(135deg, #0b1f16 0%, #0d281c 100%); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.6);">
+        <!-- Header -->
+        <tr>
+          <td style="padding: 32px 32px 20px 32px; text-align: center; border-bottom: 1px solid rgba(16, 185, 129, 0.2);">
+            <div style="display: inline-block; padding: 6px 14px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 30px; font-size: 12px; font-weight: 700; color: #34d399; letter-spacing: 1px; text-transform: uppercase;">
+              Tourist Karnataka • ಕರ್ನಾಟಕ ಪ್ರವಾಸೋದ್ಯಮ
+            </div>
+            <h1 style="margin: 16px 0 6px 0; font-size: 24px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px;">
+              Account Verification
+            </h1>
+            <p style="margin: 0; font-size: 13.5px; color: #94a3b8;">
+              31 Districts Atlas &amp; Public Transit Navigation
+            </p>
+          </td>
+        </tr>
+        <!-- Body -->
+        <tr>
+          <td style="padding: 32px;">
+            <p style="margin: 0 0 16px 0; font-size: 15px; line-height: 1.6; color: #cbd5e1;">
+              Dear Traveler,
+            </p>
+            <p style="margin: 0 0 24px 0; font-size: 14.5px; line-height: 1.6; color: #cbd5e1;">
+              Thank you for registering with <strong>Tourist Karnataka</strong>. Please enter the one-time verification passcode below to complete your {purpose}:
+            </p>
+            <!-- OTP Box -->
+            <div style="background: rgba(16, 185, 129, 0.12); border: 1.5px dashed #10b981; border-radius: 14px; padding: 22px; text-align: center; margin: 24px 0;">
+              <span style="font-size: 11.5px; font-weight: 700; color: #6ee7b7; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 6px;">
+                Your Verification Code
+              </span>
+              <span style="font-size: 36px; font-weight: 900; letter-spacing: 10px; color: #ffffff; font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;">
+                {otp_code}
+              </span>
+            </div>
+            <!-- Security & Acknowledgement -->
+            <div style="background: rgba(15, 23, 42, 0.5); border-left: 3px solid #10b981; padding: 14px 16px; border-radius: 6px; margin-top: 24px;">
+              <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: 700; color: #34d399;">
+                Acknowledgement &amp; Security Notice:
+              </p>
+              <ul style="margin: 0; padding-left: 18px; font-size: 12.5px; color: #94a3b8; line-height: 1.6;">
+                <li>This code is valid for <strong>10 minutes</strong>.</li>
+                <li>Never share this OTP with anyone. Our team will never ask for your verification code.</li>
+                <li>If you did not request this registration, you can safely disregard this email.</li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+        <!-- Footer -->
+        <tr>
+          <td style="padding: 24px 32px; background: rgba(5, 13, 9, 0.85); border-top: 1px solid rgba(16, 185, 129, 0.15); text-align: center;">
+            <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: 600; color: #a7f3d0;">
+              Happy Travels &amp; Safe Journeys!
+            </p>
+            <p style="margin: 0; font-size: 11.5px; color: #64748b;">
+              &copy; 2026 Tourist Karnataka Journeys Team &bull; Shakti Scheme &amp; KSRTC Transit Exploration
+            </p>
+          </td>
+        </tr>
+      </table>
+    </body>
+    </html>
+    """
+
     from_email = getattr(settings, "DEFAULT_FROM_EMAIL", "Tourist Karnataka <studentmanagebyns@gmail.com>")
     email_host_user = getattr(settings, "EMAIL_HOST_USER", "").strip()
     email_host_password = getattr(settings, "EMAIL_HOST_PASSWORD", "").strip()
@@ -199,7 +284,6 @@ def send_otp_email(to_email: str, otp_code: str, purpose: str = "sign in") -> bo
         print(f"Recipient: {to_email}")
         print(f"Purpose:   {purpose}")
         print(f"OTP Code:  {otp_code}")
-        print(f"Content:\n{message}")
         print("=" * 60 + "\n")
     except Exception:
         pass
@@ -208,7 +292,7 @@ def send_otp_email(to_email: str, otp_code: str, purpose: str = "sign in") -> bo
     if not is_smtp_backend or (email_host_user and email_host_password):
         thread = threading.Thread(
             target=_dispatch_email_async,
-            args=(subject, message, from_email, to_email),
+            args=(subject, message, from_email, to_email, html_message),
             daemon=True,
         )
         thread.start()
