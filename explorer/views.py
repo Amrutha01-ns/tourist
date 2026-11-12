@@ -26,15 +26,26 @@ def calculate_expense(budget, travellers, days):
 
 
 NEARBY_TRANSIT_RECOMMENDATIONS = {
-    # Mysore pairings
-    ("mysore", "mysore-zoo"): {"distance": "2 km", "route": "City Bus 10A / 10B from Palace East Gate", "time": "8 mins"},
-    ("mysore", "sri-chmundeshwari-temple"): {"distance": "11 km", "route": "Direct KSRTC / City Bus 201 from CBS", "time": "25 mins"},
+    # Mysore City & KRS Dam pairings (Accurate real-world road distances)
+    ("mysore", "mysore-zoo"): {"distance": "2.2 km", "route": "City Bus 10A / 10B from Palace East Gate", "time": "8 mins"},
+    ("mysore", "sri-chmundeshwari-temple"): {"distance": "12.5 km", "route": "Direct KSRTC / City Bus 201 from CBS", "time": "25 mins"},
     ("mysore", "st-philomenas-church"): {"distance": "3.2 km", "route": "Ashoka Road City Bus 161 / Local Auto", "time": "10 mins"},
     ("mysore", "jaganmohan-palace"): {"distance": "1.2 km", "route": "5 min Walking / Auto via Subbarayanakere", "time": "5 mins"},
     ("mysore", "karanji-lake"): {"distance": "2.8 km", "route": "City Bus 10 / Auto via Zoo Road", "time": "10 mins"},
-    ("mysore", "krs-dam"): {"distance": "19 km", "route": "KSRTC / City Bus 303 from CBS", "time": "40 mins"},
+    ("mysore", "krs-dam"): {"distance": "19.2 km", "route": "KSRTC / City Bus 303 from CBS", "time": "40 mins"},
     ("mysore", "chunchanakatte-falls"): {"distance": "54 km", "route": "K.R. Nagar KSRTC Express Bus", "time": "1h 15m"},
     ("mysore", "somanathapura-chennakesava-temple"): {"distance": "35 km", "route": "Bannur Route KSRTC Bus", "time": "50 mins"},
+
+    # From KRS Dam to other destinations
+    ("krs-dam", "mysore"): {"distance": "19.2 km", "route": "City Bus 301 / 307 from KRS Gate to Mysuru CBS", "time": "40 mins"},
+    ("krs-dam", "mysore-zoo"): {"distance": "21.5 km", "route": "Bus 301 to CBS + City Bus 10A to Zoo Gate", "time": "48 mins"},
+    ("krs-dam", "sri-chmundeshwari-temple"): {"distance": "28.5 km", "route": "Bus 301 to CBS + Chamundi Express Bus 201", "time": "1h 10m"},
+    ("krs-dam", "st-philomenas-church"): {"distance": "17.5 km", "route": "KRS Road Bus via Railway Station & Ashoka Road", "time": "35 mins"},
+    ("krs-dam", "jaganmohan-palace"): {"distance": "18.5 km", "route": "City Bus 301 to CBS / Vani Vilas Circle", "time": "38 mins"},
+    ("krs-dam", "karanji-lake"): {"distance": "21.0 km", "route": "Bus via CBS + 5 min Auto to Karanji Nature Park", "time": "45 mins"},
+    ("krs-dam", "somanathapura-chennakesava-temple"): {"distance": "52 km", "route": "Bus to Mysuru Central + Bannur Route Bus", "time": "1h 25m"},
+    ("krs-dam", "chunchanakatte-falls"): {"distance": "58 km", "route": "Direct SH-86 via K.R. Nagar KSRTC Service", "time": "1h 30m"},
+    ("krs-dam", "namdroling-monastery-golden-temple"): {"distance": "82 km", "route": "KSRTC Kushalnagar Express via Hunsur", "time": "2h 00m"},
 
     # Kodagu (Coorg) pairings
     ("abbey-falls", "rajas-seat"): {"distance": "8 km", "route": "Madikeri Local Mini-Bus / Auto", "time": "20 mins"},
@@ -67,8 +78,10 @@ NEARBY_TRANSIT_RECOMMENDATIONS = {
 def get_nearby_places_with_routes(current_place):
     """
     Fetches up to 6 nearby destinations in the same district/region,
-    calculating realistic distances and connecting transit routes.
+    calculating realistic geodesic road distances and connecting transit routes.
     """
+    from transport_finder.smart_router import resolve_destination_spec, haversine_distance
+
     candidates = list(Place.objects.filter(
         district=current_place.district
     ).exclude(id=current_place.id).select_related("district")[:6])
@@ -84,6 +97,9 @@ def get_nearby_places_with_routes(current_place):
 
     nearby_list = []
     base_slug = current_place.slug or ""
+    cur_spec = resolve_destination_spec(current_place)
+    c_lat = cur_spec.get("lat")
+    c_lng = cur_spec.get("lng")
 
     for idx, near in enumerate(candidates):
         target_slug = near.slug or ""
@@ -92,14 +108,34 @@ def get_nearby_places_with_routes(current_place):
 
         route_info = NEARBY_TRANSIT_RECOMMENDATIONS.get(key1) or NEARBY_TRANSIT_RECOMMENDATIONS.get(key2)
         if not route_info:
-            # Dynamic realistic distance and connecting transit
-            est_dist = round(2.5 + (idx * 3.8), 1)
-            est_time = 8 + (idx * 7)
-            route_info = {
-                "distance": f"~{est_dist} km",
-                "route": f"Local Direct Bus from {current_place.district.name} Stand",
-                "time": f"~{est_time} mins"
-            }
+            near_spec = resolve_destination_spec(near)
+            n_lat = near_spec.get("lat")
+            n_lng = near_spec.get("lng")
+            if c_lat and c_lng and n_lat and n_lng:
+                aerial_km = haversine_distance(c_lat, c_lng, n_lat, n_lng)
+                # Apply realistic road winding tortuosity factor for Karnataka roads (1.22 - 1.28)
+                road_km = round(aerial_km * (1.28 if aerial_km < 15 else 1.22), 1)
+                dist_str = f"{road_km} km" if road_km >= 1.0 else f"{int(road_km * 1000)} m"
+
+                if road_km <= 5:
+                    time_mins = max(8, int(road_km * 3))
+                elif road_km <= 25:
+                    time_mins = int(12 + (road_km * 1.8))
+                else:
+                    time_mins = int(road_km * 1.5)
+
+                time_str = f"{time_mins // 60}h {time_mins % 60}m" if time_mins >= 60 else f"{time_mins} mins"
+                route_info = {
+                    "distance": dist_str,
+                    "route": f"Regional Bus Service via {current_place.district.name.title()} Central Stand",
+                    "time": time_str
+                }
+            else:
+                route_info = {
+                    "distance": "~18 km",
+                    "route": f"Regional Bus Service via {current_place.district.name.title()} Stand",
+                    "time": "~35 mins"
+                }
 
         nearby_list.append({
             "place": near,

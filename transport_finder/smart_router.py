@@ -2195,7 +2195,7 @@ def resolve_destination_spec(place):
 def build_curated_fleet_options(dest_spec, origin=None, corridor=None, total_fare_min=0, total_fare_max=0):
     """
     Builds a strictly sorted fleet of transit options for Karnataka travelers:
-    1st Preference: Government KSRTC (KSRTC, NWKRTC, BMTC, MITRA) with Shakti Scheme & State Tariffs
+    1st Preference: Government KSRTC (KSRTC, NWKRTC, BMTC, MITRA) with Fixed State Tariffs
     Mentioned Option: Verified Private Operators (VRL, SRS, Seabird, Durgamba, Sugama)
     """
     curated_routes = []
@@ -2212,7 +2212,7 @@ def build_curated_fleet_options(dest_spec, origin=None, corridor=None, total_far
         rb["operator_type"] = "government"
         rb["preference_rank"] = 1
         rb["preference_badge"] = "🌟 1st Preference · Government KSRTC"
-        rb["shakti_eligible"] = any(w in rb.get("bus_type", "").lower() for w in ["ordinary", "sarige", "city", "suvarna", "shuttle", "hill"]) or rb.get("provider_code") in ["MITRA", "BMTC", "NWKRTC"]
+        rb["shakti_eligible"] = False
         rb["safety_rating"] = "4.9/5 · Official State Carrier"
         curated_routes.append(rb)
 
@@ -2286,7 +2286,7 @@ def build_curated_fleet_options(dest_spec, origin=None, corridor=None, total_far
         "operator_type": "government",
         "preference_rank": 1,
         "preference_badge": "🌟 1st Preference · Government KSRTC",
-        "shakti_eligible": True,
+        "shakti_eligible": False,
         "safety_rating": "4.9/5 · Official State Carrier",
     }
     curated_routes.insert(0, ksrtc_intercity)

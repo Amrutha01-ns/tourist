@@ -1502,6 +1502,18 @@
     <p class="eyebrow">Your personal trip planner</p>
 
     {% if place %}
+        <!-- Quick Return Navigation to District Places (e.g. Back to Mysore Places) -->
+        <div class="destination-nav-bar" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin: 4px 0 16px;">
+            <a href="/places/{{ place.district.name|lower }}/" class="btn-back-district" style="display: inline-flex; align-items: center; gap: 8px; background: #ffffff; color: var(--forest); border: 1.5px solid #c7d8ce; padding: 9px 18px; border-radius: 999px; font-size: 13.5px; font-weight: 800; text-decoration: none; box-shadow: 0 2px 8px rgba(20,69,47,0.08); transition: all 0.2s;">
+                <i class="fa-solid fa-arrow-left" style="color: var(--leaf);"></i> Back to {{ place.district.name|title }} Places
+            </a>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <a href="{% url 'dashboard' %}" class="btn-all-districts" style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); text-decoration: none; font-weight: 700; padding: 8px 14px; border-radius: 999px; background: #f3f6f4; border: 1px solid #e1e9e3;">
+                    <i class="fa-solid fa-map-location-dot" style="color: var(--leaf);"></i> All Districts &amp; Places
+                </a>
+            </div>
+        </div>
+
         <h1 class="page-title">Plan your trip to {{ place.name }}</h1>
         <p class="subtitle">
             Explore destination details, adjust your group budget, and discover live public transportation options.
@@ -1527,7 +1539,12 @@
             </div>
 
             <div class="place-info">
-                <p class="eyebrow">{{ place.district.name }}</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 6px;">
+                    <p class="eyebrow" style="margin: 0;">{{ place.district.name|title }} District</p>
+                    <a href="/places/{{ place.district.name|lower }}/" style="font-size: 12px; font-weight: 700; color: var(--forest); text-decoration: none; background: #e8f3ec; padding: 4px 10px; border-radius: 6px; display: inline-flex; align-items: center; gap: 5px;">
+                        <i class="fa-solid fa-arrow-left"></i> See All {{ place.district.name|title }} Places
+                    </a>
+                </div>
                 <h2>{{ place.name }}</h2>
                 <p>{{ place.description|default:"Explore this destination and plan your visit." }}</p>
             </div>
@@ -2087,11 +2104,6 @@
                                     <!-- Feature Badges -->
                                     <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px;">
                                         {% if r.is_government or r.operator_type == 'government' %}
-                                            {% if r.shakti_eligible %}
-                                                <span style="font-size: 11px; font-weight: 700; color: #047857; background: #dcfce7; padding: 2px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
-                                                    <i class="fa-solid fa-certificate"></i> Shakti Scheme (Women Free)
-                                                </span>
-                                            {% endif %}
                                             <span style="font-size: 11px; font-weight: 600; color: #1e3a8a; background: #dbeafe; padding: 2px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
                                                 <i class="fa-solid fa-shield-halved"></i> Fixed State Tariff
                                             </span>
@@ -2219,8 +2231,13 @@
                         Pair your trip with these top attractions in {{ place.district.name }} with direct public transit routes & distances.
                     </p>
                 </div>
-                <div class="nearby-count-pill">
-                    <span>{{ nearby_places|length }} Destinations Nearby</span>
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                    <a href="/places/{{ place.district.name|lower }}/" style="display: inline-flex; align-items: center; gap: 6px; background: #14452f; color: #ffffff; padding: 7px 15px; border-radius: 999px; font-size: 12.5px; font-weight: 700; text-decoration: none; box-shadow: 0 2px 6px rgba(20,69,47,0.2);">
+                        <i class="fa-solid fa-arrow-left"></i> All {{ place.district.name|title }} Places
+                    </a>
+                    <div class="nearby-count-pill">
+                        <span>{{ nearby_places|length }} Destinations Nearby</span>
+                    </div>
                 </div>
             </div>
 

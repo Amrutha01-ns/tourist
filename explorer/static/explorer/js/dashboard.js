@@ -1628,10 +1628,6 @@
                             ? `<span class="transit-badge badge-ksrtc" style="display:inline-flex; align-items:center; gap:5px; font-weight:800; font-size:11.5px; background:#14452f; color:#ffffff; padding:4px 10px; border-radius:6px;"><i class="fa-solid fa-building-columns" style="color:#34d399;"></i> KSRTC</span>`
                             : `<span class="transit-badge" style="display:inline-flex; align-items:center; gap:5px; font-weight:800; font-size:11.5px; background:#eef2ff; color:#4338ca; border:1px solid #c7d2fe; padding:4px 10px; border-radius:6px;"><i class="fa-solid fa-bus"></i> ${r.provider || "Private"}</span>`;
 
-                        const shaktiBadge = (isGovt && r.shakti_eligible) 
-                            ? `<span style="font-size: 11px; font-weight: 700; color: #047857; background: #dcfce7; padding: 2px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;"><i class="fa-solid fa-certificate"></i> Shakti Scheme (Women Free)</span>`
-                            : "";
-
                         return `
                             <article class="route-card bus-card-item" data-operator="${isGovt ? "government" : "private"}" style="border-top: 4px solid ${isGovt ? "#14452f" : "#6366f1"}; background: ${isGovt ? "#fdfffe" : "#fbfbfe"}; display: ${isGovt ? "flex" : "none"}; flex-direction: column;">
                                 <div class="route-top" style="align-items: center; margin-bottom: 8px;">
@@ -1651,7 +1647,6 @@
                                 </div>
                                 ${stopsVia}
                                 <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:6px;">
-                                    ${shaktiBadge}
                                     ${isGovt ? '<span style="font-size:11px; font-weight:600; color:#1e3a8a; background:#dbeafe; padding:2px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;"><i class="fa-solid fa-shield-halved"></i> Fixed State Tariff</span>' : ''}
                                     ${(!isGovt && r.amenities) ? `<span style="font-size:11px; font-weight:600; color:#4338ca; background:#e0e7ff; padding:3px 9px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;"><i class="fa-solid fa-couch"></i> ${r.amenities}</span>` : ''}
                                 </div>

@@ -880,7 +880,7 @@ def dashboard(request):
 
     transit_pulse = {
         "status_text": "All Karnataka Intercity Bus Corridors Fully Operational",
-        "ksrtc_guarantee": "🌟 1st Preference: 8,500+ Daily KSRTC Govt Schedules • Fixed State Tariffs • Shakti Scheme Active for Women",
+        "ksrtc_guarantee": "🌟 1st Preference: 8,500+ Daily KSRTC Govt Schedules • Fixed State Tariffs • Verified Timetables",
         "private_advisory": "Alternative Option: Verified Private Luxury Sleepers (VRL, SRS, Seabird, Durgamba, Sugama) on Major Corridors",
         "destinations_weather": [
             {"place": "Madikeri (Coorg)", "temp": "21°C", "condition": "Misty & Pleasant", "icon": "fa-cloud"},
