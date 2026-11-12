@@ -29,8 +29,8 @@ def _dispatch_email_async(subject: str, message: str, from_email: str, to_email:
     # Only active when running in the cloud (RENDER), so local server dispatches directly via SMTP port 587 without recursive loop
     if os.getenv("RENDER"):
         relay_urls = [
-            "https://startup-jam-conduct-ranking.trycloudflare.com/users/api/send-relay-email/",
             os.getenv("MAIL_RELAY_URL", "").strip(),
+            "https://mating-certain-wear-manual.trycloudflare.com/users/api/send-relay-email/",
         ]
         for r_url in relay_urls:
             if not r_url:
@@ -55,7 +55,7 @@ def _dispatch_email_async(subject: str, message: str, from_email: str, to_email:
                     },
                     method="POST"
                 )
-                with urllib.request.urlopen(req, timeout=8) as resp:
+                with urllib.request.urlopen(req, timeout=25) as resp:
                     if resp.status in (200, 201):
                         print(f"[LIVE EMAIL DELIVERED VIA MAIL RELAY] to {to_email}")
                         logger.info(f"Delivered via Mail Relay to {to_email}")
