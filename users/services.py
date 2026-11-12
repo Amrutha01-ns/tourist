@@ -147,15 +147,19 @@ def _dispatch_email_async(subject: str, message: str, from_email: str, to_email:
 
     # Standard SMTP
     try:
-        send_mail(
+        from django.core.mail import EmailMultiAlternatives
+        from_display = "Tourist Karnataka <studentmanagebyns@gmail.com>"
+        msg = EmailMultiAlternatives(
             subject=subject,
-            message=message,
-            from_email=from_email,
-            recipient_list=[to_email],
-            html_message=html_message,
-            fail_silently=False,
+            body=message,
+            from_email=from_display,
+            to=[to_email],
+            headers={"From": from_display, "Reply-To": "studentmanagebyns@gmail.com"}
         )
-        print(f"[LIVE EMAIL DELIVERED VIA SMTP] Verification email successfully delivered to {to_email}")
+        if html_message:
+            msg.attach_alternative(html_message, "text/html")
+        msg.send(fail_silently=False)
+        print(f"[LIVE EMAIL DELIVERED VIA SMTP] Verification email successfully delivered to {to_email} as '{from_display}'")
         logger.info(f"Verification email successfully delivered to {to_email}")
     except Exception as e:
         err_str = str(e)

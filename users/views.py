@@ -1124,22 +1124,26 @@ def send_relay_email_api(request):
     try:
         data = json.loads(request.body.decode("utf-8"))
         to_email = data.get("to")
-        subject = data.get("subject", "Tourist Web - Your Verification OTP")
+        subject = data.get("subject", "Tourist Karnataka - Your Verification OTP")
         message = data.get("message", "")
         html_message = data.get("html_message")
 
         if not to_email or not message:
             return JsonResponse({"error": "Missing to or message"}, status=400)
 
-        send_mail(
+        from django.core.mail import EmailMultiAlternatives
+        from_display = "Tourist Karnataka <studentmanagebyns@gmail.com>"
+        msg = EmailMultiAlternatives(
             subject=subject,
-            message=message,
-            from_email=getattr(settings, "DEFAULT_FROM_EMAIL", "Tourist Karnataka <studentmanagebyns@gmail.com>"),
-            recipient_list=[to_email],
-            html_message=html_message,
-            fail_silently=False,
+            body=message,
+            from_email=from_display,
+            to=[to_email],
+            headers={"From": from_display, "Reply-To": "studentmanagebyns@gmail.com"}
         )
-        print(f"[RELAY API SUCCESS] Real live email sent to {to_email}")
+        if html_message:
+            msg.attach_alternative(html_message, "text/html")
+        msg.send(fail_silently=False)
+        print(f"[RELAY API SUCCESS] Real live email sent to {to_email} as '{from_display}'")
         return JsonResponse({"status": "delivered", "recipient": to_email})
     except Exception as e:
         print(f"[RELAY API ERROR] {e}")
