@@ -899,6 +899,16 @@
             display: flex; gap: 16px; font-size: 12px; color: var(--muted); flex-wrap: wrap; align-items: center;
         }
         .legend-indicator { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; color: var(--ink); }
+
+        /* Leaflet Map Attribution and Mobile Map Footer Cleanup */
+        .leaflet-control-attribution {
+            font-size: 10px !important;
+            background: rgba(255, 255, 255, 0.85) !important;
+            backdrop-filter: blur(4px);
+            padding: 2px 8px !important;
+            border-radius: 6px !important;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.12) !important;
+        }
         .legend-pipeline-preview {
             width: 26px; height: 8px; border-radius: 4px;
             background: linear-gradient(90deg, #0284c7, #06b6d4, #10b981);
@@ -1257,6 +1267,35 @@
             .counter-grid, .guide-grid { grid-template-columns: 1fr; gap: 14px; }
             .guide-icon { display: none; }
             .transit-map-canvas { height: 290px; }
+
+            /* Compact Phone View for Map Division Footer & Attribution */
+            .leaflet-control-attribution {
+                font-size: 8.5px !important;
+                max-width: 170px !important;
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                padding: 1px 6px !important;
+                line-height: 1.1 !important;
+            }
+            .map-legend-bar {
+                padding: 6px 12px !important;
+                gap: 10px !important;
+                font-size: 11px !important;
+                flex-wrap: nowrap !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch !important;
+                scrollbar-width: none !important;
+            }
+            .map-legend-bar::-webkit-scrollbar {
+                display: none !important;
+            }
+            .legend-indicator {
+                flex-shrink: 0 !important;
+                white-space: nowrap !important;
+                font-size: 11px !important;
+                gap: 5px !important;
+            }
         }
         @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
@@ -1961,7 +2000,7 @@
                         </span>
                         <span class="legend-indicator" id="dishankLegendIndicator" style="display:none;">
                             <span style="display:inline-flex; width:16px; height:16px; border-radius:4px; background:#14452f; color:#facc15; font-size:10px; align-items:center; justify-content:center;"><i class="fa-solid fa-layer-group"></i></span>
-                            Dishank &amp; Bhoomi Cadastral (Buildings &amp; Plots)
+                            Dishank Cadastral
                         </span>
                     </div>
                 </div>
@@ -1979,37 +2018,35 @@
                 <!-- Hidden container for JS hook -->
                 <div id="journeyStepperWrap" style="display:none;"><div id="stepperTimeline"></div></div>
 
-                <!-- Direct Available Bus Numbers & Routes (1st Preference KSRTC + Mentioned Private Operators) -->
-                                <!-- Available Bus Routes Section -->
-                                <!-- Available Bus Routes Section -->
-                {% if transit.bus_routes %}
-                    <div id="directBusWrap" style="margin-top: 24px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 18px;">
-                            <div>
-                                <h3 class="routes-group-title" style="margin: 0; font-size: 19px;">
-                                    <i class="fa-solid fa-bus-simple" style="color: var(--leaf);"></i> Available Bus Routes
-                                </h3>
-                                <p style="margin: 3px 0 0; font-size: 13px; color: var(--muted);">
-                                    Scheduled state network &amp; verified private operators.
-                                </p>
-                            </div>
-
-                            <!-- Exactly Two Clean Options: KSRTC & Private -->
-                            <div class="bus-operator-filter-tabs" id="busOperatorTabs" style="display: inline-flex; background: #eef4f0; padding: 4px; border-radius: 999px; gap: 4px; border: 1px solid #d4e3d9;">
-                                <button type="button" class="bus-filter-pill active" data-filter="government" style="padding: 7px 18px; border-radius: 999px; border: none; font-size: 12.5px; font-weight: 800; cursor: pointer; background: #14452f; color: #ffffff; box-shadow: 0 2px 8px rgba(20,69,47,0.25); transition: all 0.2s;">
-                                    <i class="fa-solid fa-building-columns" style="color: #34d399;"></i> KSRTC
-                                </button>
-                                <button type="button" class="bus-filter-pill" data-filter="private" style="padding: 7px 18px; border-radius: 999px; border: none; font-size: 12.5px; font-weight: 800; cursor: pointer; background: transparent; color: #4338ca; transition: all 0.2s;">
-                                    <i class="fa-solid fa-bus"></i> Private
-                                </button>
-                            </div>
+                <!-- Direct Available Bus Numbers & Routes (Two Distinct Options: KSRTC vs Private) -->
+                <div id="directBusWrap" style="margin-top: 24px; {% if not transit.bus_routes %}display: none;{% endif %}">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 18px;">
+                        <div>
+                            <h3 class="routes-group-title" style="margin: 0; font-size: 19px;">
+                                <i class="fa-solid fa-bus-simple" style="color: var(--leaf);"></i> Available Bus Routes
+                            </h3>
+                            <p style="margin: 3px 0 0; font-size: 13px; color: var(--muted);">
+                                Select KSRTC for Government state buses or Private for private fleet services.
+                            </p>
                         </div>
 
-                        <div class="routes-grid" id="busRoutesGrid">
+                        <!-- Exactly Two Clean Options: KSRTC & Private -->
+                        <div class="bus-operator-filter-tabs" id="busOperatorTabs" style="display: inline-flex; background: #eef4f0; padding: 4px; border-radius: 999px; gap: 4px; border: 1px solid #d4e3d9;">
+                            <button type="button" class="bus-filter-pill active" data-filter="government" style="padding: 7px 18px; border-radius: 999px; border: none; font-size: 12.5px; font-weight: 800; cursor: pointer; background: #14452f; color: #ffffff; box-shadow: 0 2px 8px rgba(20,69,47,0.25); transition: all 0.2s;">
+                                <i class="fa-solid fa-building-columns" style="color: #34d399;"></i> KSRTC Buses
+                            </button>
+                            <button type="button" class="bus-filter-pill" data-filter="private" style="padding: 7px 18px; border-radius: 999px; border: none; font-size: 12.5px; font-weight: 800; cursor: pointer; background: transparent; color: #4338ca; transition: all 0.2s;">
+                                <i class="fa-solid fa-bus"></i> Private Buses
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="routes-grid" id="busRoutesGrid">
+                        {% if transit.bus_routes %}
                             {% for r in transit.bus_routes %}
                                 <article class="route-card bus-card-item" 
                                          data-operator="{% if r.is_government or r.operator_type == 'government' %}government{% else %}private{% endif %}"
-                                         style="{% if r.is_government or r.operator_type == 'government' %}border-top: 4px solid #14452f; background: #fdfffe; display: flex;{% else %}border-top: 4px solid #6366f1; background: #fbfbfe; display: none;{% endif %}">
+                                         style="{% if r.is_government or r.operator_type == 'government' %}border-top: 4px solid #14452f; background: #fdfffe; display: flex;{% else %}border-top: 4px solid #6366f1; background: #fbfbfe; display: none;{% endif %} flex-direction: column;">
                                     
                                     <!-- Header -->
                                     <div class="route-top" style="align-items: center; margin-bottom: 8px;">
@@ -2034,7 +2071,7 @@
                                         {{ r.route_name|default:r.route }}
                                     </h4>
 
-                                    <!-- Clean Boarding and Alighting Flow -->
+                                    <!-- Clean Boarding and Alighting Flow (Sequential from Origin to Destination) -->
                                     <div class="route-stops-flow" style="font-size: 12.5px; color: #2a3d31; background: {% if r.is_government or r.operator_type == 'government' %}#f4faf6{% else %}#f5f5ff{% endif %}; padding: 8px 12px; border-radius: 10px; margin: 6px 0;">
                                         <span style="display: flex; align-items: center; gap: 5px;"><i class="fa-solid fa-circle-dot" style="color: #059669; font-size: 11px;"></i> <strong>Board:</strong> {{ r.boarding_point|default:r.from }}</span>
                                         <i class="fa-solid fa-arrow-right" style="color: var(--leaf); font-size: 11px;"></i>
@@ -2056,7 +2093,7 @@
                                                 </span>
                                             {% endif %}
                                             <span style="font-size: 11px; font-weight: 600; color: #1e3a8a; background: #dbeafe; padding: 2px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
-                                                <i class="fa-solid fa-shield-halved"></i> Fixed Tariff
+                                                <i class="fa-solid fa-shield-halved"></i> Fixed State Tariff
                                             </span>
                                         {% elif r.amenities %}
                                             <span style="font-size: 11px; font-weight: 600; color: #4338ca; background: #e0e7ff; padding: 3px 9px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
@@ -2078,53 +2115,63 @@
                                     </div>
                                 </article>
                             {% endfor %}
-                        </div>
-
-                        <!-- 2-Option Tab Switcher Script (KSRTC default, Private on click) -->
-                        <script>
-                            document.addEventListener("DOMContentLoaded", function() {
-                                const filterTabs = document.querySelectorAll("#busOperatorTabs .bus-filter-pill");
-                                const routeCards = document.querySelectorAll("#busRoutesGrid .bus-card-item");
-                                if (filterTabs.length && routeCards.length) {
-                                    filterTabs.forEach(function(tab) {
-                                        tab.addEventListener("click", function() {
-                                            const targetFilter = this.getAttribute("data-filter");
-                                            filterTabs.forEach(function(t) {
-                                                t.classList.remove("active");
-                                                t.style.background = "transparent";
-                                                t.style.boxShadow = "none";
-                                                if (t.dataset.filter === "government") {
-                                                    t.style.color = "#2d5a41";
-                                                } else {
-                                                    t.style.color = "#4338ca";
-                                                }
-                                            });
-                                            this.classList.add("active");
-                                            if (targetFilter === "government") {
-                                                this.style.background = "#14452f";
-                                                this.style.color = "#ffffff";
-                                                this.style.boxShadow = "0 2px 8px rgba(20,69,47,0.25)";
-                                            } else {
-                                                this.style.background = "#4338ca";
-                                                this.style.color = "#ffffff";
-                                                this.style.boxShadow = "0 2px 8px rgba(67,56,202,0.25)";
-                                            }
-
-                                            routeCards.forEach(function(card) {
-                                                const op = card.getAttribute("data-operator");
-                                                if (op === targetFilter) {
-                                                    card.style.display = "flex";
-                                                } else {
-                                                    card.style.display = "none";
-                                                }
-                                            });
-                                        });
-                                    });
-                                }
-                            });
-                        </script>
+                        {% endif %}
+                        <div class="empty-bus-msg" data-operator="government" style="grid-column: 1 / -1; padding: 24px; text-align: center; background: #f4faf6; border: 1px dashed #bbf7d0; border-radius: 12px; color: #166534; display: none;"><i class="fa-solid fa-circle-info"></i> No direct KSRTC state buses listed for this exact segment. Please check Private buses.</div>
+                        <div class="empty-bus-msg" data-operator="private" style="grid-column: 1 / -1; padding: 24px; text-align: center; background: #f5f5ff; border: 1px dashed #c7d2fe; border-radius: 12px; color: #3730a3; display: none;"><i class="fa-solid fa-circle-info"></i> No direct private operators registered on this rural sector. Recommended to use KSRTC Government buses.</div>
                     </div>
-                {% endif %}
+
+                    <!-- 2-Option Tab Switcher Script (KSRTC default, Private on click) -->
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            const filterTabs = document.querySelectorAll("#busOperatorTabs .bus-filter-pill");
+                            const busGrid = document.getElementById("busRoutesGrid");
+                            if (filterTabs.length && busGrid) {
+                                filterTabs.forEach(function(tab) {
+                                    tab.addEventListener("click", function() {
+                                        const targetFilter = this.getAttribute("data-filter");
+                                        filterTabs.forEach(function(t) {
+                                            t.classList.remove("active");
+                                            t.style.background = "transparent";
+                                            t.style.boxShadow = "none";
+                                            if (t.dataset.filter === "government") {
+                                                t.style.color = "#2d5a41";
+                                            } else {
+                                                t.style.color = "#4338ca";
+                                            }
+                                        });
+                                        this.classList.add("active");
+                                        if (targetFilter === "government") {
+                                            this.style.background = "#14452f";
+                                            this.style.color = "#ffffff";
+                                            this.style.boxShadow = "0 2px 8px rgba(20,69,47,0.25)";
+                                        } else {
+                                            this.style.background = "#4338ca";
+                                            this.style.color = "#ffffff";
+                                            this.style.boxShadow = "0 2px 8px rgba(67,56,202,0.25)";
+                                        }
+
+                                        const routeCards = busGrid.querySelectorAll(".bus-card-item");
+                                        let visibleCount = 0;
+                                        routeCards.forEach(function(card) {
+                                            const op = card.getAttribute("data-operator");
+                                            if (op === targetFilter) {
+                                                card.style.display = "flex";
+                                                visibleCount++;
+                                            } else {
+                                                card.style.display = "none";
+                                            }
+                                        });
+
+                                        const govtEmpty = busGrid.querySelector('.empty-bus-msg[data-operator="government"]');
+                                        const privEmpty = busGrid.querySelector('.empty-bus-msg[data-operator="private"]');
+                                        if (govtEmpty) govtEmpty.style.display = (targetFilter === "government" && visibleCount === 0) ? "block" : "none";
+                                        if (privEmpty) privEmpty.style.display = (targetFilter === "private" && visibleCount === 0) ? "block" : "none";
+                                    });
+                                });
+                            }
+                        });
+                    </script>
+                </div>
 
                 {% if not transit.bus_routes and not transit.journey_legs %}
                     <div style="padding: 24px; background: var(--sand); border-radius: 16px; text-align: center; color: var(--muted); margin-top: 14px;">

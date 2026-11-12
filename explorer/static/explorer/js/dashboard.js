@@ -216,7 +216,7 @@
                 options: {
                     maxZoom: 20,
                     subdomains: ["mt0", "mt1", "mt2", "mt3"],
-                    attribution: '&copy; Google Maps &mdash; Streets, Cities &amp; Highway Bus Routes'
+                    attribution: '&copy; Google Maps'
                 }
             },
             satellite_pipeline: {
@@ -226,7 +226,7 @@
                     maxZoom: 22,
                     maxNativeZoom: 20,
                     subdomains: ["mt0", "mt1", "mt2", "mt3"],
-                    attribution: '&copy; Google Satellite Hybrid &bull; Dishank &amp; Bhoomi Cadastral Survey &bull; Buildings &amp; Plots'
+                    attribution: '&copy; Google Satellite &bull; Dishank SSLR'
                 }
             }
         };
@@ -1603,60 +1603,132 @@
                 stepperWrap.style.display = "none";
             }
 
-            // 4. Update Direct Bus Numbers Cards
+            // 4. Update Direct Bus Numbers Cards (Two Distinct Options: KSRTC vs Private)
             const directBusWrap = document.getElementById("directBusWrap");
             const busRoutes = data.bus_routes || data.direct_routes || [];
-            if (directBusWrap && busRoutes.length > 0) {
-                let busHtml = `
-                    <h3 class="routes-group-title"><i class="fa-solid fa-bus"></i> Direct Available Bus Numbers & Routes (${busRoutes.length})</h3>
-                    <div class="routes-grid">`;
-                busRoutes.forEach(r => {
-                    const badgeClass = r.provider_code === "BMTC" ? "badge-bmtc" : (r.provider_code === "MITRA" ? "badge-mitra" : (r.provider_code === "NWKRTC" ? "badge-hub" : "badge-ksrtc"));
-                    const busNumber = r.bus_number || r.route_id || "Bus";
-                    const routeName = r.route_name || r.route || "Bus Route";
-                    const boardPoint = r.boarding_point || r.from || "";
-                    const dropPoint = r.drop_point || r.to || "";
-                    const stopsVia = r.stops_via ? `<p style="font-size: 12px; color: var(--muted); margin: 4px 0 8px;"><i class="fa-solid fa-route" style="color: var(--leaf);"></i> <em>${r.stops_via}</em></p>` : "";
-                    const freq = r.frequency || (r.departure_time ? `Depart: ${r.departure_time}` : "Frequent Schedule");
-                    const hours = r.operating_hours ? ` &bull; ${r.operating_hours}` : "";
-                    const fare = r.fare || "Standard Tariff";
+            if (directBusWrap) {
+                if (busRoutes.length === 0) {
+                    directBusWrap.style.display = "none";
+                } else {
+                    directBusWrap.style.display = "block";
+                    const govtRoutes = busRoutes.filter(r => r.is_government || r.operator_type === "government" || r.provider_code === "KSRTC" || r.provider_code === "NWKRTC" || r.provider_code === "BMTC" || r.provider_code === "MITRA" || r.provider_code === "KKRTC");
+                    const privRoutes = busRoutes.filter(r => !govtRoutes.includes(r));
 
-                    const isGovt = (r.is_government || r.operator_type === "government" || r.provider_code === "KSRTC" || r.provider_code === "NWKRTC");
-                    const operatorBadge = isGovt 
-                        ? `<span class="transit-badge badge-ksrtc"><i class="fa-solid fa-building-columns"></i> KSRTC</span>`
-                        : `<span class="transit-badge" style="background:#eef2ff; color:#4338ca; border:1px solid #c7d2fe;"><i class="fa-solid fa-bus"></i> ${r.provider || "Private"}</span>`;
+                    function renderBusCardHtml(r, isGovt) {
+                        const busNumber = r.bus_number || r.route_id || "Bus";
+                        const routeName = r.route_name || r.route || "Bus Route";
+                        const boardPoint = r.boarding_point || r.from || (data.origin_short || "Source Location");
+                        const dropPoint = r.drop_point || r.to || (data.place_name || "Destination");
+                        const stopsVia = r.stops_via ? `<p style="font-size: 12px; color: var(--muted); margin: 4px 0 8px;"><i class="fa-solid fa-route" style="color: var(--leaf);"></i> <em>${r.stops_via}</em></p>` : "";
+                        const freq = r.frequency || (r.departure_time ? `Depart: ${r.departure_time}` : "Frequent Schedule");
+                        const hours = r.operating_hours ? ` &bull; ${r.operating_hours}` : "";
+                        const fare = r.fare || "Standard Tariff";
 
-                    const shaktiBadge = r.shakti_eligible 
-                        ? `<span style="font-size: 11px; font-weight: 700; color: #047857; background: #dcfce7; padding: 2px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;"><i class="fa-solid fa-certificate"></i> Shakti Scheme (Women Free)</span>`
-                        : "";
+                        const operatorBadge = isGovt 
+                            ? `<span class="transit-badge badge-ksrtc" style="display:inline-flex; align-items:center; gap:5px; font-weight:800; font-size:11.5px; background:#14452f; color:#ffffff; padding:4px 10px; border-radius:6px;"><i class="fa-solid fa-building-columns" style="color:#34d399;"></i> KSRTC</span>`
+                            : `<span class="transit-badge" style="display:inline-flex; align-items:center; gap:5px; font-weight:800; font-size:11.5px; background:#eef2ff; color:#4338ca; border:1px solid #c7d2fe; padding:4px 10px; border-radius:6px;"><i class="fa-solid fa-bus"></i> ${r.provider || "Private"}</span>`;
 
-                    busHtml += `
-                        <article class="route-card bus-card-item" data-operator="${isGovt ? "government" : "private"}" style="border-top: 4px solid ${isGovt ? "#14452f" : "#6366f1"}; background: ${isGovt ? "#fdfffe" : "#fbfbfe"};">
-                            <div class="route-top">
-                                <div>${operatorBadge}</div>
-                                <span style="font-size: 12.5px; font-weight: 800; color: ${isGovt ? "var(--forest)" : "#3730a3"}; background: ${isGovt ? "var(--mint)" : "#e0e7ff"}; padding: 4px 10px; border-radius: 8px;">
-                                    <i class="fa-solid fa-bus-simple"></i> Bus ${busNumber}
-                                </span>
+                        const shaktiBadge = (isGovt && r.shakti_eligible) 
+                            ? `<span style="font-size: 11px; font-weight: 700; color: #047857; background: #dcfce7; padding: 2px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;"><i class="fa-solid fa-certificate"></i> Shakti Scheme (Women Free)</span>`
+                            : "";
+
+                        return `
+                            <article class="route-card bus-card-item" data-operator="${isGovt ? "government" : "private"}" style="border-top: 4px solid ${isGovt ? "#14452f" : "#6366f1"}; background: ${isGovt ? "#fdfffe" : "#fbfbfe"}; display: ${isGovt ? "flex" : "none"}; flex-direction: column;">
+                                <div class="route-top" style="align-items: center; margin-bottom: 8px;">
+                                    <div>${operatorBadge}</div>
+                                    <span style="font-size: 12.5px; font-weight: 800; color: ${isGovt ? "var(--forest)" : "#3730a3"}; background: ${isGovt ? "var(--mint)" : "#e0e7ff"}; padding: 4px 10px; border-radius: 8px;">
+                                        <i class="fa-solid fa-bus-simple"></i> Bus ${busNumber}
+                                    </span>
+                                </div>
+                                <h4 class="route-name" style="margin: 6px 0 4px; font-size: 15.5px; color: ${isGovt ? "var(--forest)" : "#312e81"}; font-weight: 800;">${routeName}</h4>
+                                <p style="font-size: 12px; color: #526659; margin: 0 0 6px;">
+                                    <strong>Operator:</strong> ${r.provider || (isGovt ? "KSRTC Official State Carrier" : "Verified Private Operator")}
+                                </p>
+                                <div class="route-stops-flow" style="font-size: 12.5px; color: #2a3d31; background: ${isGovt ? "#f4faf6" : "#f5f5ff"}; padding: 8px 12px; border-radius: 10px; margin: 6px 0;">
+                                    <span style="display: flex; align-items: center; gap: 5px;"><i class="fa-solid fa-circle-dot" style="color: #059669; font-size: 11px;"></i> <strong>Board:</strong> ${boardPoint}</span>
+                                    <i class="fa-solid fa-arrow-right" style="color: var(--leaf); font-size: 11px;"></i>
+                                    <span style="display: flex; align-items: center; gap: 5px;"><i class="fa-solid fa-location-dot" style="color: #d97706; font-size: 11px;"></i> <strong>Alight:</strong> ${dropPoint}</span>
+                                </div>
+                                ${stopsVia}
+                                <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:6px;">
+                                    ${shaktiBadge}
+                                    ${isGovt ? '<span style="font-size:11px; font-weight:600; color:#1e3a8a; background:#dbeafe; padding:2px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;"><i class="fa-solid fa-shield-halved"></i> Fixed State Tariff</span>' : ''}
+                                    ${(!isGovt && r.amenities) ? `<span style="font-size:11px; font-weight:600; color:#4338ca; background:#e0e7ff; padding:3px 9px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;"><i class="fa-solid fa-couch"></i> ${r.amenities}</span>` : ''}
+                                </div>
+                                <div class="route-meta" style="margin-top: auto; padding-top: 10px; border-top: 1px dashed #d5ded8;">
+                                    <span><i class="fa-regular fa-clock"></i> ${freq}${hours}</span>
+                                    <span style="font-size: 13.5px; font-weight: 800; color: ${isGovt ? "var(--forest)" : "#312e81"}; background: #fdfaf2; padding: 3px 10px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.06);">${fare}</span>
+                                </div>
+                            </article>`;
+                    }
+
+                    let busHtml = `
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 18px;">
+                            <div>
+                                <h3 class="routes-group-title" style="margin: 0; font-size: 19px;">
+                                    <i class="fa-solid fa-bus-simple" style="color: var(--leaf);"></i> Available Bus Routes
+                                </h3>
+                                <p style="margin: 3px 0 0; font-size: 13px; color: var(--muted);">
+                                    Select KSRTC for Government state buses or Private for private fleet services.
+                                </p>
                             </div>
-                            <h4 class="route-name" style="margin: 8px 0 4px; font-size: 15.5px; color: ${isGovt ? "var(--forest)" : "#312e81"}; font-weight: 800;">${routeName}</h4>
-                            <p style="font-size: 12px; color: #526659; margin: 0 0 6px;">
-                                <strong>Operator:</strong> ${r.provider || (isGovt ? "KSRTC" : "Private Operator")}
-                            </p>
-                            <div class="route-stops-flow" style="font-size: 12.5px; color: #2a3d31; background: ${isGovt ? "#f4faf6" : "#f5f5ff"}; padding: 8px 12px; border-radius: 10px; margin: 6px 0;">
-                                <span style="display: flex; align-items: center; gap: 5px;"><i class="fa-solid fa-circle-dot" style="color: #059669; font-size: 11px;"></i> <strong>Board:</strong> ${boardPoint}</span>
-                                <i class="fa-solid fa-arrow-right" style="color: var(--leaf); font-size: 11px;"></i>
-                                <span style="display: flex; align-items: center; gap: 5px;"><i class="fa-solid fa-location-dot" style="color: #d97706; font-size: 11px;"></i> <strong>Alight:</strong> ${dropPoint}</span>
+
+                            <!-- Exactly Two Clean Options: KSRTC & Private -->
+                            <div class="bus-operator-filter-tabs" id="dynamicBusTabs" style="display: inline-flex; background: #eef4f0; padding: 4px; border-radius: 999px; gap: 4px; border: 1px solid #d4e3d9;">
+                                <button type="button" class="bus-filter-pill active" data-filter="government" style="padding: 7px 18px; border-radius: 999px; border: none; font-size: 12.5px; font-weight: 800; cursor: pointer; background: #14452f; color: #ffffff; box-shadow: 0 2px 8px rgba(20,69,47,0.25); transition: all 0.2s;">
+                                    <i class="fa-solid fa-building-columns" style="color: #34d399;"></i> KSRTC Buses (${govtRoutes.length})
+                                </button>
+                                <button type="button" class="bus-filter-pill" data-filter="private" style="padding: 7px 18px; border-radius: 999px; border: none; font-size: 12.5px; font-weight: 800; cursor: pointer; background: transparent; color: #4338ca; transition: all 0.2s;">
+                                    <i class="fa-solid fa-bus"></i> Private Buses (${privRoutes.length})
+                                </button>
                             </div>
-                            ${stopsVia}
-                            ${shaktiBadge}
-                            <div class="route-meta" style="margin-top: auto; padding-top: 10px; border-top: 1px dashed #d5ded8;">
-                                <span><i class="fa-regular fa-clock"></i> ${freq}${hours}</span>
-                                <span style="font-size: 13.5px; font-weight: 800; color: ${isGovt ? "var(--forest)" : "#312e81"}; background: #fdfaf2; padding: 3px 10px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.06);">${fare}</span>
-                            </div>
-                        </article>`;
-                });
-                busHtml += `</div>`;
-                directBusWrap.innerHTML = busHtml;
+                        </div>
+
+                        <div class="routes-grid" id="busRoutesGrid">`;
+
+                    if (govtRoutes.length > 0) {
+                        govtRoutes.forEach(r => { busHtml += renderBusCardHtml(r, true); });
+                    } else {
+                        busHtml += `<div class="empty-bus-msg" data-operator="government" style="grid-column: 1 / -1; padding: 24px; text-align: center; background: #f4faf6; border: 1px dashed #bbf7d0; border-radius: 12px; color: #166534;"><i class="fa-solid fa-circle-info"></i> No direct KSRTC state buses listed for this exact segment. Please check Private buses.</div>`;
+                    }
+
+                    if (privRoutes.length > 0) {
+                        privRoutes.forEach(r => { busHtml += renderBusCardHtml(r, false); });
+                    } else {
+                        busHtml += `<div class="empty-bus-msg" data-operator="private" style="grid-column: 1 / -1; padding: 24px; text-align: center; background: #f5f5ff; border: 1px dashed #c7d2fe; border-radius: 12px; color: #3730a3; display: none;"><i class="fa-solid fa-circle-info"></i> No direct private operators registered on this rural sector. Recommended to use KSRTC Government buses.</div>`;
+                    }
+
+                    busHtml += `</div>`;
+                    directBusWrap.innerHTML = busHtml;
+
+                    // Bind tab switching events
+                    const filterTabs = directBusWrap.querySelectorAll("#dynamicBusTabs .bus-filter-pill");
+                    const routeCards = directBusWrap.querySelectorAll("#busRoutesGrid .bus-card-item, #busRoutesGrid .empty-bus-msg");
+                    filterTabs.forEach(tab => {
+                        tab.addEventListener("click", function() {
+                            const target = this.getAttribute("data-filter");
+                            filterTabs.forEach(t => {
+                                t.classList.remove("active");
+                                t.style.background = "transparent";
+                                t.style.boxShadow = "none";
+                                t.style.color = (t.dataset.filter === "government") ? "#2d5a41" : "#4338ca";
+                            });
+                            this.classList.add("active");
+                            if (target === "government") {
+                                this.style.background = "#14452f";
+                                this.style.color = "#ffffff";
+                                this.style.boxShadow = "0 2px 8px rgba(20,69,47,0.25)";
+                            } else {
+                                this.style.background = "#4338ca";
+                                this.style.color = "#ffffff";
+                                this.style.boxShadow = "0 2px 8px rgba(67,56,202,0.25)";
+                            }
+                            routeCards.forEach(card => {
+                                card.style.display = (card.getAttribute("data-operator") === target) ? "flex" : "none";
+                            });
+                        });
+                    });
+                }
             }
 
             // 5. Update Google Maps Live Navigation Panel State
