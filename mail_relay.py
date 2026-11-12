@@ -8,9 +8,22 @@ import json
 import smtplib
 from email.mime.text import MIMEText
 
+import os
+from pathlib import Path
+
+# Load .env if present
+env_path = Path(__file__).resolve().parent / ".env"
+if env_path.exists():
+    with open(env_path, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                k, v = line.split("=", 1)
+                os.environ.setdefault(k.strip(), v.strip().strip("'").strip('"'))
+
 PORT = 8089
-GMAIL_USER = "studentmanagebyns@gmail.com"
-GMAIL_PASS = "xecstlgxtwwxkthc"
+GMAIL_USER = os.getenv("EMAIL_HOST_USER", "studentmanagebyns@gmail.com")
+GMAIL_PASS = os.getenv("EMAIL_HOST_PASSWORD", "")
 
 
 class RelayHandler(http.server.BaseHTTPRequestHandler):
