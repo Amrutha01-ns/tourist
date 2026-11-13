@@ -286,13 +286,11 @@ def send_otp_email(to_email: str, otp_code: str, purpose: str = "account registr
     except Exception:
         pass
 
-    # Launch delivery in non-blocking background thread (Resend HTTPS Port 443 / Brevo / SMTP)
-    thread = threading.Thread(
-        target=_dispatch_email_async,
-        args=(subject, message, from_email, to_email, html_message),
-        daemon=True,
-    )
-    thread.start()
+    # Dispatch email directly (synchronous HTTPS over port 443 completes in ~400ms, ensuring Gunicorn never terminates it)
+    try:
+        _dispatch_email_async(subject, message, from_email, to_email, html_message)
+    except Exception as dispatch_err:
+        logger.warning(f"Live email dispatch error: {dispatch_err}")
 
     return True
 
