@@ -286,19 +286,13 @@ def send_otp_email(to_email: str, otp_code: str, purpose: str = "account registr
     except Exception:
         pass
 
-    # If SMTP credentials are configured, launch delivery in non-blocking background thread
-    if not is_smtp_backend or (email_host_user and email_host_password):
-        thread = threading.Thread(
-            target=_dispatch_email_async,
-            args=(subject, message, from_email, to_email, html_message),
-            daemon=True,
-        )
-        thread.start()
-    else:
-        logger.info(
-            "EMAIL_HOST_PASSWORD is not set in environment. "
-            "To deliver live emails via Gmail, configure EMAIL_HOST_PASSWORD with a 16-character App Password."
-        )
+    # Launch delivery in non-blocking background thread (Resend HTTPS Port 443 / Brevo / SMTP)
+    thread = threading.Thread(
+        target=_dispatch_email_async,
+        args=(subject, message, from_email, to_email, html_message),
+        daemon=True,
+    )
+    thread.start()
 
     return True
 
