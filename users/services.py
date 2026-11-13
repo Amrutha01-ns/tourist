@@ -18,105 +18,14 @@ def generate_otp(length=6) -> str:
 def _dispatch_email_async(subject: str, message: str, from_email: str, to_email: str, html_message: str = None):
     """
     Worker function executed in a background daemon thread.
-    1. First tries Mail Relay Webhook if MAIL_RELAY_URL is set (relays from Render over Port 443).
-    2. Tries Google Apps Script Webhook if GOOGLE_SCRIPT_MAIL_URL is set.
-    3. Tries Brevo HTTPS API if BREVO_API_KEY is available (Port 443).
-    4. Tries Resend HTTPS API if RESEND_API_KEY is available (Port 443).
-    5. Falls back to standard SMTP port 587.
-    6. Catches all errors gracefully without ever interrupting or freezing the web UI.
+    1. Resend HTTPS API (Port 443 - Verified & active).
+    2. Brevo HTTPS API if BREVO_API_KEY is available (Port 443).
+    3. Google Apps Script Webhook if GOOGLE_SCRIPT_MAIL_URL is set.
+    4. Optional custom MAIL_RELAY_URL if explicitly set in environment.
+    5. Standard SMTP fallback (Port 587).
+    Catches all errors gracefully without interrupting or freezing the web UI.
     """
-    # 0. Mail Relay Webhook (Port 443 HTTPS - forwards from Render cloud to local relay bridge)
-    # Only active when running in the cloud (RENDER), so local server dispatches directly via SMTP port 587 without recursive loop
-    if os.getenv("RENDER"):
-        relay_urls = [
-            os.getenv("MAIL_RELAY_URL", "").strip(),
-            "https://mating-certain-wear-manual.trycloudflare.com/users/api/send-relay-email/",
-        ]
-        for r_url in relay_urls:
-            if not r_url:
-                continue
-            try:
-                target = r_url
-                if not target.endswith("/send-relay-email/") and not target.endswith("/send-email"):
-                    target = target.rstrip("/") + "/users/api/send-relay-email/"
-                payload = json.dumps({
-                    "to": to_email,
-                    "subject": subject,
-                    "message": message,
-                    "html_message": html_message,
-                }).encode("utf-8")
-                req = urllib.request.Request(
-                    target,
-                    data=payload,
-                    headers={
-                        "Content-Type": "application/json",
-                        "User-Agent": "Tourist-Web/1.0",
-                        "bypass-tunnel-reminder": "true"
-                    },
-                    method="POST"
-                )
-                with urllib.request.urlopen(req, timeout=25) as resp:
-                    if resp.status in (200, 201):
-                        print(f"[LIVE EMAIL DELIVERED VIA MAIL RELAY] to {to_email}")
-                        logger.info(f"Delivered via Mail Relay to {to_email}")
-                        return
-            except Exception as relay_err:
-                logger.warning(f"Mail Relay dispatch failed ({r_url}): {relay_err}")
-
-    # 0b. Google Apps Script Webhook (Port 443 HTTPS)
-    gas_url = os.getenv("GOOGLE_SCRIPT_MAIL_URL", "").strip()
-    if gas_url:
-        try:
-            payload = json.dumps({
-                "to": to_email,
-                "subject": subject,
-                "message": message,
-                "html_message": html_message,
-            }).encode("utf-8")
-            req = urllib.request.Request(
-                gas_url,
-                data=payload,
-                headers={"Content-Type": "application/json", "User-Agent": "Tourist-Web/1.0"},
-                method="POST"
-            )
-            with urllib.request.urlopen(req, timeout=8) as resp:
-                print(f"[LIVE EMAIL DELIVERED VIA GOOGLE APPS SCRIPT WEBHOOK] to {to_email}")
-                logger.info(f"Delivered via Google Apps Script to {to_email}")
-                return
-        except Exception as gas_err:
-            logger.warning(f"Google Apps Script dispatch failed: {gas_err}")
-
-    # 1. Brevo HTTPS API (Port 443 - Can send to ANY email address in the world from Render)
-    brevo_key = os.getenv("BREVO_API_KEY", "").strip()
-    if brevo_key:
-        try:
-            payload = json.dumps({
-                "sender": {"name": "Tourist Karnataka", "email": getattr(settings, "EMAIL_HOST_USER", "studentmanagebyns@gmail.com")},
-                "to": [{"email": to_email}],
-                "subject": subject,
-                "textContent": message,
-                "htmlContent": html_message or message,
-            }).encode("utf-8")
-            req = urllib.request.Request(
-                "https://api.brevo.com/v3/smtp/email",
-                data=payload,
-                headers={
-                    "accept": "application/json",
-                    "api-key": brevo_key,
-                    "content-type": "application/json",
-                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-                },
-                method="POST"
-            )
-            with urllib.request.urlopen(req, timeout=8) as resp:
-                if resp.status in (200, 201):
-                    print(f"[LIVE EMAIL DELIVERED VIA BREVO HTTPS PORT 443] to {to_email}")
-                    logger.info(f"Delivered via Brevo HTTPS to {to_email}")
-                    return
-        except Exception as brevo_err:
-            logger.warning(f"Brevo HTTPS dispatch failed: {brevo_err}")
-
-    # 2. Resend HTTPS API (Port 443 - Verified & active)
+    # 1. Resend HTTPS API (Port 443 - Primary Cloud Email Service)
     resend_key = os.getenv("RESEND_API_KEY", "re_RXnSx4pS_DGVkMV17CkvsA2JnEaYEYL3w").strip()
     if resend_key:
         try:
@@ -144,9 +53,96 @@ def _dispatch_email_async(subject: str, message: str, from_email: str, to_email:
                     return
         except urllib.error.HTTPError as http_err:
             err_body = http_err.read().decode(errors="ignore")
+            print(f"[RESEND API ERROR HTTP {http_err.code}] {err_body}")
             logger.warning(f"Resend HTTPS dispatch HTTP {http_err.code}: {err_body}")
         except Exception as api_err:
+            print(f"[RESEND API EXCEPTION] {api_err}")
             logger.warning(f"Resend HTTPS dispatch failed: {api_err}")
+
+    # 2. Brevo HTTPS API (Port 443 - Can send to ANY email address globally)
+    brevo_key = os.getenv("BREVO_API_KEY", "").strip()
+    if brevo_key:
+        try:
+            payload = json.dumps({
+                "sender": {"name": "Tourist Karnataka", "email": getattr(settings, "EMAIL_HOST_USER", "studentmanagebyns@gmail.com")},
+                "to": [{"email": to_email}],
+                "subject": subject,
+                "textContent": message,
+                "htmlContent": html_message or message,
+            }).encode("utf-8")
+            req = urllib.request.Request(
+                "https://api.brevo.com/v3/smtp/email",
+                data=payload,
+                headers={
+                    "accept": "application/json",
+                    "api-key": brevo_key,
+                    "content-type": "application/json",
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                },
+                method="POST"
+            )
+            with urllib.request.urlopen(req, timeout=8) as resp:
+                if resp.status in (200, 201):
+                    print(f"[LIVE EMAIL DELIVERED VIA BREVO HTTPS PORT 443] to {to_email}")
+                    logger.info(f"Delivered via Brevo HTTPS to {to_email}")
+                    return
+        except Exception as brevo_err:
+            print(f"[BREVO API EXCEPTION] {brevo_err}")
+            logger.warning(f"Brevo HTTPS dispatch failed: {brevo_err}")
+
+    # 3. Google Apps Script Webhook (Port 443 HTTPS)
+    gas_url = os.getenv("GOOGLE_SCRIPT_MAIL_URL", "").strip()
+    if gas_url:
+        try:
+            payload = json.dumps({
+                "to": to_email,
+                "subject": subject,
+                "message": message,
+                "html_message": html_message,
+            }).encode("utf-8")
+            req = urllib.request.Request(
+                gas_url,
+                data=payload,
+                headers={"Content-Type": "application/json", "User-Agent": "Tourist-Web/1.0"},
+                method="POST"
+            )
+            with urllib.request.urlopen(req, timeout=8) as resp:
+                print(f"[LIVE EMAIL DELIVERED VIA GOOGLE APPS SCRIPT WEBHOOK] to {to_email}")
+                logger.info(f"Delivered via Google Apps Script to {to_email}")
+                return
+        except Exception as gas_err:
+            logger.warning(f"Google Apps Script dispatch failed: {gas_err}")
+
+    # 4. Custom Mail Relay URL (Only if explicitly set)
+    custom_relay = os.getenv("MAIL_RELAY_URL", "").strip()
+    if custom_relay:
+        try:
+            target = custom_relay
+            if not target.endswith("/send-relay-email/") and not target.endswith("/send-email"):
+                target = target.rstrip("/") + "/users/api/send-relay-email/"
+            payload = json.dumps({
+                "to": to_email,
+                "subject": subject,
+                "message": message,
+                "html_message": html_message,
+            }).encode("utf-8")
+            req = urllib.request.Request(
+                target,
+                data=payload,
+                headers={
+                    "Content-Type": "application/json",
+                    "User-Agent": "Tourist-Web/1.0",
+                    "bypass-tunnel-reminder": "true"
+                },
+                method="POST"
+            )
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                if resp.status in (200, 201):
+                    print(f"[LIVE EMAIL DELIVERED VIA MAIL RELAY] to {to_email}")
+                    logger.info(f"Delivered via Mail Relay to {to_email}")
+                    return
+        except Exception as relay_err:
+            logger.warning(f"Mail Relay dispatch failed ({custom_relay}): {relay_err}")
 
     # Standard SMTP
     try:
