@@ -1,4 +1,4 @@
-{% load static %}
+{% load static i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -141,17 +141,16 @@
         <!-- HERO SECTION -->
         <section class="hero">
             <div class="hero-content">
-                <p class="entry-tag">YOUR JOURNEY STARTS HERE</p>
+                <p class="entry-tag">{% trans "YOUR JOURNEY STARTS HERE" %}</p>
                 <h1 class="forloc">
-                    Welcome to
+                    {% trans "Welcome to" %}
                     <span class="hero-brand">
                         Tourist
                         <span class="loc-icon"><i class="fa-solid fa-route"></i></span>
                     </span>
                 </h1>
                 <p class="hero-text">
-                    Discover new places, build your journey and let us
-                    plan the experience for you.
+                    {% trans "Discover new places, build your journey and let us plan the experience for you." %}
                 </p>
 
                 <!-- LOCATION SEARCH -->
@@ -163,7 +162,7 @@
                         class="search-select"
                         required
                     >
-                        <option value="" disabled selected>Select District to explore...</option>
+                        <option value="" disabled selected>{% trans "Select District to explore..." %}</option>
                         <option value="mysore">Mysore / Mysuru (Palace, KRS Dam, Zoo, Chamundi)</option>
                         <option value="kodagu">Kodagu / Madikeri (Abbey Falls, Raja's Seat, Talakaveri)</option>
                         <option value="hassan">Hassan (Belur, Halebidu, Shravanabelagola, Gorur)</option>
@@ -177,7 +176,7 @@
                     </select>
 
                     <button type="submit" class="search-btn" id="exploreSearchBtn">
-                        Explore
+                        {% trans "Explore" %}
                     </button>
                 </form>
 

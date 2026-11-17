@@ -15,6 +15,7 @@ urlpatterns = [
     path("explorer/", include("explorer.urls")),
     path("engine/", include("engine.urls")),
     path("expenses/", include("expenses.urls")),
+    path("i18n/", include("universal_i18n.urls")),
     re_path(r"^media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
 ]
 

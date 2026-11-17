@@ -1,4 +1,4 @@
-{% load static %}
+{% load static i18n %}
 
 <header class="navbar">
 
@@ -21,7 +21,7 @@
             <span class="nav-icon">
                 <i class="fa-solid fa-house"></i>
             </span>
-            <span>Home</span>
+            <span>{% trans "Home" %}</span>
         </a>
 
         <!-- EXPLORE DROPDOWN -->
@@ -35,13 +35,13 @@
                 <span class="nav-icon">
                     <i class="fa-solid fa-earth-asia"></i>
                 </span>
-                <span>Explore</span>
+                <span>{% trans "Explore" %}</span>
                 <i class="fa-solid fa-chevron-down" style="font-size: 10px; margin-left: 2px;"></i>
             </button>
 
             <div class="explore-menu" id="exploreMenu" hidden>
                 <div class="explore-menu-title">
-                    <span>Karnataka Districts</span>
+                    <span>{% trans "Karnataka Districts" %}</span>
                     <span style="font-size: 10px; color: #f4b63f; background: #14452f; padding: 2px 7px; border-radius: 999px;">10 Regions</span>
                 </div>
                 <div class="explore-options-list">
@@ -69,6 +69,45 @@
                     <a href="{% url 'places_by_district' 'Shivamogga' %}" class="explore-option">
                         <i class="fa-solid fa-cloud-showers-heavy"></i> Shivamogga (Jog Falls)
                     </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- LANGUAGE SELECTOR DROPDOWN -->
+        <div class="explore-wrapper" id="langWrapper">
+            <button
+                class="nav-item explore-btn"
+                id="langBtn"
+                type="button"
+                aria-expanded="false"
+                title="{% trans 'Select Language' %}"
+            >
+                <span class="nav-icon">
+                    <i class="fa-solid fa-language"></i>
+                </span>
+                <span style="font-weight: 600;">
+                    {% if LANGUAGE_CODE == 'kn' %}ಕನ್ನಡ{% elif LANGUAGE_CODE == 'hi' %}हिन्दी{% else %}English{% endif %}
+                </span>
+                <i class="fa-solid fa-chevron-down" style="font-size: 10px; margin-left: 2px;"></i>
+            </button>
+
+            <div class="explore-menu" id="langMenu" hidden style="width: 175px;">
+                <div class="explore-menu-title">
+                    <span>{% trans "Languages" %}</span>
+                </div>
+                <div class="explore-options-list">
+                    <button type="button" class="explore-option" style="width: 100%; border: none; background: transparent; text-align: left; cursor: pointer; display: flex; align-items: center; justify-content: space-between; font: inherit;" onclick="switchTouristLang('en')">
+                        <span>English</span>
+                        {% if LANGUAGE_CODE == 'en' %}<i class="fa-solid fa-check" style="color: #2f7d4f; font-size: 11px;"></i>{% endif %}
+                    </button>
+                    <button type="button" class="explore-option" style="width: 100%; border: none; background: transparent; text-align: left; cursor: pointer; display: flex; align-items: center; justify-content: space-between; font: inherit;" onclick="switchTouristLang('kn')">
+                        <span>ಕನ್ನಡ (Kannada)</span>
+                        {% if LANGUAGE_CODE == 'kn' %}<i class="fa-solid fa-check" style="color: #2f7d4f; font-size: 11px;"></i>{% endif %}
+                    </button>
+                    <button type="button" class="explore-option" style="width: 100%; border: none; background: transparent; text-align: left; cursor: pointer; display: flex; align-items: center; justify-content: space-between; font: inherit;" onclick="switchTouristLang('hi')">
+                        <span>हिन्दी (Hindi)</span>
+                        {% if LANGUAGE_CODE == 'hi' %}<i class="fa-solid fa-check" style="color: #2f7d4f; font-size: 11px;"></i>{% endif %}
+                    </button>
                 </div>
             </div>
         </div>
@@ -271,3 +310,78 @@
     </button>
 </div>
 {% endif %}
+
+<!-- LANGUAGE SWITCHER JAVASCRIPT -->
+<script>
+    (function () {
+        const langBtn = document.getElementById("langBtn");
+        const langWrapper = document.getElementById("langWrapper");
+        const langMenu = document.getElementById("langMenu");
+
+        if (langBtn && langWrapper && langMenu) {
+            langBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const exploreWrapper = document.getElementById("exploreWrapper");
+                const exploreMenu = document.getElementById("exploreMenu");
+                if (exploreWrapper && exploreMenu) {
+                    exploreWrapper.classList.remove("active");
+                    exploreMenu.setAttribute("hidden", "");
+                }
+
+                const opening = !langWrapper.classList.contains("active");
+                langWrapper.classList.toggle("active", opening);
+                langBtn.setAttribute("aria-expanded", String(opening));
+                if (opening) {
+                    langMenu.removeAttribute("hidden");
+                } else {
+                    langMenu.setAttribute("hidden", "");
+                }
+            });
+
+            document.addEventListener("click", function (e) {
+                if (!langWrapper.contains(e.target)) {
+                    langWrapper.classList.remove("active");
+                    langBtn.setAttribute("aria-expanded", "false");
+                    langMenu.setAttribute("hidden", "");
+                }
+            });
+        }
+
+        window.switchTouristLang = async function (langCode) {
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+
+            try {
+                const res = await fetch('/i18n/api/set/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken') || ''
+                    },
+                    body: JSON.stringify({ language: langCode })
+                });
+                if (res.ok) {
+                    window.location.reload();
+                } else {
+                    console.error('Failed to switch language');
+                }
+            } catch (err) {
+                console.error('Network error switching language:', err);
+            }
+        };
+    })();
+</script>

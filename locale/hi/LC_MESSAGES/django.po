@@ -1,0 +1,54 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Tourist 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-17 23:30+0530\n"
+"PO-Revision-Date: 2026-11-17 23:30+0530\n"
+"Last-Translator: \n"
+"Language-Team: Hindi\n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Home"
+msgstr "होम"
+
+msgid "Explore"
+msgstr "खोजें"
+
+msgid "Karnataka Districts"
+msgstr "कर्नाटक के जिले"
+
+msgid "Languages"
+msgstr "भाषाएं"
+
+msgid "Select Language"
+msgstr "भाषा चुनें"
+
+msgid "Settings"
+msgstr "सेटिंग्स"
+
+msgid "Dark Mode"
+msgstr "डार्क मोड"
+
+msgid "Logout"
+msgstr "लॉग आउट"
+
+msgid "Login"
+msgstr "लॉग इन"
+
+msgid "Register"
+msgstr "पंजीकरण"
+
+msgid "YOUR JOURNEY STARTS HERE"
+msgstr "आपकी यात्रा यहाँ से शुरू होती है"
+
+msgid "Welcome to"
+msgstr "स्वागत है"
+
+msgid "Discover new places, build your journey and let us plan the experience for you."
+msgstr "नए स्थानों की खोज करें, अपनी यात्रा बनाएं और हमें अपने अनुभव की योजना बनाने दें।"
+
+msgid "Select District to explore..."
+msgstr "खोजने के लिए जिला चुनें..."

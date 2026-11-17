@@ -1,0 +1,151 @@
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal i18n Demo</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 0 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+            background: #fafafa;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        button.lang-btn {
+            padding: 8px 16px;
+            border: 1px solid #0070f3;
+            background: #fff;
+            color: #0070f3;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        button.lang-btn.active {
+            background: #0070f3;
+            color: #fff;
+        }
+        pre {
+            background: #222;
+            color: #76ff03;
+            padding: 12px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 13px;
+        }
+        .badge {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>{% trans "Universal i18n Module" %}</h1>
+    <p>{% trans "Welcome to our website." %}</p>
+    <p>{% trans "Choose your preferred language." %}</p>
+    <p>Current active language: <span class="badge">{{ LANGUAGE_CODE }}</span></p>
+
+    <!-- SECTION 1: API-Driven Switching (Modern) -->
+    <div class="card">
+        <h3>🚀 Method 1: Modern API Switcher (No Form Reload)</h3>
+        <p>Switch language instantly via <code>POST /i18n/api/set/</code> using JavaScript:</p>
+        
+        <div class="btn-group" id="api-lang-buttons">
+            <button class="lang-btn {% if LANGUAGE_CODE == 'en' %}active{% endif %}" onclick="switchLanguageApi('en')">English</button>
+            <button class="lang-btn {% if LANGUAGE_CODE == 'kn' %}active{% endif %}" onclick="switchLanguageApi('kn')">ಕನ್ನಡ (Kannada)</button>
+            <button class="lang-btn {% if LANGUAGE_CODE == 'hi' %}active{% endif %}" onclick="switchLanguageApi('hi')">हिन्दी (Hindi)</button>
+        </div>
+        <div id="api-status" style="margin-top: 10px; color: #2e7d32; font-weight: 500;"></div>
+    </div>
+
+    <!-- SECTION 2: Traditional Form (Backwards Compatible) -->
+    <div class="card">
+        <h3>📄 Method 2: Traditional Form Dropdown</h3>
+        {% include "universal_i18n/language_selector.html" %}
+    </div>
+
+    <!-- SECTION 3: Live API Test -->
+    <div class="card">
+        <h3>🔍 Live API Response from <code>GET /i18n/api/languages/</code></h3>
+        <button onclick="fetchAvailableLanguages()" style="padding: 6px 12px; cursor: pointer;">Fetch Languages JSON</button>
+        <pre id="json-output">Click the button above to load live JSON...</pre>
+    </div>
+
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        async function switchLanguageApi(langCode) {
+            const statusDiv = document.getElementById('api-status');
+            statusDiv.textContent = `Switching to ${langCode}...`;
+
+            try {
+                const response = await fetch('/i18n/api/set/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken') || ''
+                    },
+                    body: JSON.stringify({ language: langCode })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    statusDiv.textContent = `Success! Reloading page in ${langCode}...`;
+                    setTimeout(() => window.location.reload(), 300);
+                } else {
+                    statusDiv.textContent = `Error: ${data.message}`;
+                    statusDiv.style.color = '#c62828';
+                }
+            } catch (err) {
+                statusDiv.textContent = `Network error: ${err}`;
+                statusDiv.style.color = '#c62828';
+            }
+        }
+
+        async function fetchAvailableLanguages() {
+            const out = document.getElementById('json-output');
+            out.textContent = "Loading...";
+            try {
+                const res = await fetch('/i18n/api/languages/');
+                const data = await res.json();
+                out.textContent = JSON.stringify(data, null, 2);
+            } catch (err) {
+                out.textContent = "Error loading: " + err;
+            }
+        }
+    </script>
+</body>
+</html>

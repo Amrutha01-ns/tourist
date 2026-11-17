@@ -1,0 +1,54 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Tourist 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-17 23:30+0530\n"
+"PO-Revision-Date: 2026-11-17 23:30+0530\n"
+"Last-Translator: \n"
+"Language-Team: Kannada\n"
+"Language: kn\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Home"
+msgstr "ಮುಖಪುಟ"
+
+msgid "Explore"
+msgstr "ಅನ್ವೇಷಿಸಿ"
+
+msgid "Karnataka Districts"
+msgstr "ಕರ್ನಾಟಕದ ಜಿಲ್ಲೆಗಳು"
+
+msgid "Languages"
+msgstr "ಭಾಷೆಗಳು"
+
+msgid "Select Language"
+msgstr "ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ"
+
+msgid "Settings"
+msgstr "ಸೆಟ್ಟಿಂಗ್‌ಗಳು"
+
+msgid "Dark Mode"
+msgstr "ಡಾರ್ಕ್ ಮೋಡ್"
+
+msgid "Logout"
+msgstr "ಲಾಗ್ ಔಟ್"
+
+msgid "Login"
+msgstr "ಲಾಗಿನ್"
+
+msgid "Register"
+msgstr "ನೋಂದಣಿ"
+
+msgid "YOUR JOURNEY STARTS HERE"
+msgstr "ನಿಮ್ಮ ಪ್ರಯಾಣ ಇಲ್ಲಿಂದ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ"
+
+msgid "Welcome to"
+msgstr "ಸುಸ್ವಾಗತ"
+
+msgid "Discover new places, build your journey and let us plan the experience for you."
+msgstr "ಹೊಸ ಸ್ಥಳಗಳನ್ನು ಅನ್ವೇಷಿಸಿ, ನಿಮ್ಮ ಪ್ರಯಾಣವನ್ನು ರೂಪಿಸಿ ಮತ್ತು ನಿಮ್ಮ ಅನುಭವವನ್ನು ಯೋಜಿಸಲು ನಮಗೆ ಅವಕಾಶ ನೀಡಿ."
+
+msgid "Select District to explore..."
+msgstr "ಅನ್ವೇಷಿಸಲು ಜಿಲ್ಲೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ..."
