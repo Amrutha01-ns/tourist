@@ -133,7 +133,7 @@
                     {% if request.user.is_authenticated %}
                         {{ request.user.username }}
                     {% else %}
-                        Account
+                        {% trans "Account" %}
                     {% endif %}
                 </span>
 
@@ -151,7 +151,7 @@
                         <div>
                             <h3 style="font-size: 15px; font-weight: 700; color: #14452f; margin: 0;">{{ request.user.username }}</h3>
                             <p style="font-size: 12px; color: #2f7d4f; font-weight: 600; margin: 2px 0 0;">
-                                <i class="fa-solid fa-compass" style="color: #f4b63f;"></i> Karnataka Explorer
+                                <i class="fa-solid fa-compass" style="color: #f4b63f;"></i> {% trans "Karnataka Explorer" %}
                             </p>
                         </div>
                     </div>
@@ -165,7 +165,7 @@
                         type="button"
                     >
                         <i class="fa-solid fa-gear" style="color: #2f7d4f;"></i>
-                        <span>Settings</span>
+                        <span>{% trans "Settings" %}</span>
                     </button>
 
                     <!-- DARK MODE -->
@@ -175,7 +175,7 @@
                         type="button"
                     >
                         <i class="fa-solid fa-moon" style="color: #2f7d4f;"></i>
-                        <span>Dark Mode</span>
+                        <span>{% trans "Dark Mode" %}</span>
                         <span class="theme-status" id="themeStatus">OFF</span>
                     </button>
 
@@ -187,17 +187,17 @@
                         class="account-option logout-option"
                     >
                         <i class="fa-solid fa-right-from-bracket"></i>
-                        <span>Logout</span>
+                        <span>{% trans "Logout" %}</span>
                     </a>
 
                 {% else %}
                     <a href="{% url 'login' %}" class="account-option">
                         <i class="fa-solid fa-right-to-bracket" style="color: #2f7d4f;"></i>
-                        <span>Login</span>
+                        <span>{% trans "Login" %}</span>
                     </a>
                     <a href="{% url 'register' %}" class="account-option">
                         <i class="fa-solid fa-user-plus" style="color: #2f7d4f;"></i>
-                        <span>Register</span>
+                        <span>{% trans "Register" %}</span>
                     </a>
                 {% endif %}
 
@@ -214,7 +214,7 @@
     <div class="account-settings-panel">
         <div class="account-settings-top">
             <h2 style="font-size: 20px; color: #14452f; margin: 0; display: flex; align-items: center; gap: 8px;">
-                <i class="fa-solid fa-sliders" style="color: #f4b63f;"></i> App Preferences
+                <i class="fa-solid fa-sliders" style="color: #f4b63f;"></i> {% trans "App Preferences" %}
             </h2>
             <button type="button" id="settingsClose" style="background: transparent; border: none; font-size: 20px; cursor: pointer; color: #66756c;">
                 &times;
@@ -223,8 +223,8 @@
 
         <div class="account-settings-item">
             <div>
-                <strong style="color: #14452f; font-size: 15px;">Dark Mode Theme</strong>
-                <p style="margin: 3px 0 0; font-size: 13px; color: #66756c;">Reduce eye strain during night travel planning.</p>
+                <strong style="color: #14452f; font-size: 15px;">{% trans "Dark Mode Theme" %}</strong>
+                <p style="margin: 3px 0 0; font-size: 13px; color: #66756c;">{% trans "Reduce eye strain during night travel planning." %}</p>
             </div>
             <label style="position: relative; display: inline-block; width: 44px; height: 24px;">
                 <input type="checkbox" id="settingsDarkMode" style="opacity: 0; width: 0; height: 0;">

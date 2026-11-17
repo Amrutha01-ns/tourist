@@ -1,4 +1,4 @@
-{% load static %}
+{% load static i18n %}
 <footer class="tourist-footer" id="touristFooter">
     <div class="footer-container">
         <!-- Brand & About Column -->
@@ -9,22 +9,22 @@
                 </div>
                 <div>
                     <span class="footer-brand-name">Tourist</span>
-                    <span class="footer-brand-sub">Karnataka Travel & Transit Guide</span>
+                    <span class="footer-brand-sub">{% trans "Karnataka Travel & Transit Guide" %}</span>
                 </div>
             </div>
             <p class="footer-desc">
-                Your intelligent companion for exploring Karnataka. Discover 85+ verified destinations, real bus numbers (BMTC, MITRA, KSRTC), trip expense estimation, and multi-day travel budgeting.
+                {% trans "Your intelligent companion for exploring Karnataka. Discover 85+ verified destinations, real bus numbers (BMTC, MITRA, KSRTC), trip expense estimation, and multi-day travel budgeting." %}
             </p>
             <div class="footer-badges">
-                <span class="f-badge"><i class="fa-solid fa-shield-halved"></i> Verified Fares</span>
-                <span class="f-badge"><i class="fa-solid fa-bus"></i> Official Bus Numbers</span>
-                <span class="f-badge"><i class="fa-solid fa-wallet"></i> Smart Tracking</span>
+                <span class="f-badge"><i class="fa-solid fa-shield-halved"></i> {% trans "Verified Fares" %}</span>
+                <span class="f-badge"><i class="fa-solid fa-bus"></i> {% trans "Official Bus Numbers" %}</span>
+                <span class="f-badge"><i class="fa-solid fa-wallet"></i> {% trans "Smart Tracking" %}</span>
             </div>
         </div>
 
         <!-- Top Karnataka Districts -->
         <div class="footer-col">
-            <h4 class="footer-title"><i class="fa-solid fa-map-location-dot"></i> Top Districts</h4>
+            <h4 class="footer-title"><i class="fa-solid fa-map-location-dot"></i> {% trans "Top Districts" %}</h4>
             <ul class="footer-links">
                 <li><a href="{% url 'places_by_district' 'mysore' %}">Mysuru Palace & Heritage</a></li>
                 <li><a href="{% url 'places_by_district' 'kodagu' %}">Kodagu (Coorg) Hills</a></li>
@@ -36,26 +36,26 @@
 
         <!-- Features -->
         <div class="footer-col">
-            <h4 class="footer-title"><i class="fa-solid fa-compass"></i> Trip Planner</h4>
+            <h4 class="footer-title"><i class="fa-solid fa-compass"></i> {% trans "Trip Planner" %}</h4>
             <ul class="footer-links">
-                <li><a href="{% url 'dashboard' %}">All Karnataka Places</a></li>
-                <li><a href="{% url 'places_by_district' 'mysore' %}">Transit Bus Numbers</a></li>
-                <li><a href="{% url 'expenses:hub' %}">Trip Expense Tracker &amp; Budget</a></li>
-                <li><a href="{% url 'dashboard' %}">GPS Nearest District Finder</a></li>
+                <li><a href="{% url 'dashboard' %}">{% trans "All Karnataka Places" %}</a></li>
+                <li><a href="{% url 'places_by_district' 'mysore' %}">{% trans "Transit Bus Numbers" %}</a></li>
+                <li><a href="{% url 'expenses:hub' %}">{% trans "Trip Expense Tracker & Budget" %}</a></li>
+                <li><a href="{% url 'dashboard' %}">{% trans "GPS Nearest District Finder" %}</a></li>
             </ul>
         </div>
 
         <!-- Feedback & Support Column -->
         <div class="footer-col">
-            <h4 class="footer-title"><i class="fa-solid fa-comments"></i> Traveller Voice</h4>
+            <h4 class="footer-title"><i class="fa-solid fa-comments"></i> {% trans "Traveller Voice" %}</h4>
             <p style="font-size: 13px; color: #a3b8aa; margin: 0 0 14px; line-height: 1.5;">
-                Notice a new bus schedule or want to share feedback? We value every suggestion from travellers on the road.
+                {% trans "Notice a new bus schedule or want to share feedback? We value every suggestion from travellers on the road." %}
             </p>
             <button type="button" class="footer-feedback-btn" onclick="openTouristFeedbackModal()" id="feedbackModalTriggerBtn">
-                <i class="fa-solid fa-heart" style="color: #f59e0b;"></i> Give Trip Feedback
+                <i class="fa-solid fa-heart" style="color: #f59e0b;"></i> {% trans "Give Trip Feedback" %}
             </button>
             <div style="margin-top: 14px; font-size: 12px; color: #88a391;">
-                <i class="fa-solid fa-location-dot"></i> Karnataka Tourism Community
+                <i class="fa-solid fa-location-dot"></i> {% trans "Karnataka Tourism Community" %}
             </div>
         </div>
     </div>
@@ -64,12 +64,12 @@
     <div class="footer-bottom-bar">
         <div class="footer-bottom-inner">
             <p style="margin: 0;">
-                &copy; 2026 Tourist Travel Planner &bull; Handcrafted for Karnataka Tourism &bull; Travel Safe
+                &copy; 2026 Tourist Travel Planner &bull; {% trans "Handcrafted for Karnataka Tourism • Travel Safe" %}
             </p>
             <div class="footer-legal-links">
-                <span>Public Transit Data</span> &bull;
-                <span>Privacy Protection</span> &bull;
-                <span>Traveller Guidelines</span>
+                <span>{% trans "Public Transit Data" %}</span> &bull;
+                <span>{% trans "Privacy Protection" %}</span> &bull;
+                <span>{% trans "Traveller Guidelines" %}</span>
             </div>
         </div>
     </div>

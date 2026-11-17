@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tourist 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 23:30+0530\n"
-"PO-Revision-Date: 2026-11-17 23:30+0530\n"
+"POT-Creation-Date: 2026-11-17 23:55+0530\n"
+"PO-Revision-Date: 2026-11-17 23:55+0530\n"
 "Last-Translator: \n"
 "Language-Team: Kannada\n"
 "Language: kn\n"
@@ -41,6 +41,72 @@ msgstr "ಲಾಗಿನ್"
 msgid "Register"
 msgstr "ನೋಂದಣಿ"
 
+msgid "Account"
+msgstr "ಖಾತೆ"
+
+msgid "Karnataka Explorer"
+msgstr "ಕರ್ನಾಟಕ ಅನ್ವೇಷಕ"
+
+msgid "App Preferences"
+msgstr "ಆ್ಯಪ್ ಆದ್ಯತೆಗಳು"
+
+msgid "Dark Mode Theme"
+msgstr "ಡಾರ್ಕ್ ಮೋಡ್ ಥೀಮ್"
+
+msgid "Reduce eye strain during night travel planning."
+msgstr "ರಾತ್ರಿಯ ಪ್ರಯಾಣ ಯೋಜನೆಯ ಸಮಯದಲ್ಲಿ ಕಣ್ಣಿನ ಆಯಾಸವನ್ನು ಕಡಿಮೆ ಮಾಡಿ."
+
+msgid "PREFERENCES"
+msgstr "ಆದ್ಯತೆಗಳು"
+
+msgid "Appearance"
+msgstr "ಗೋಚರತೆ"
+
+msgid "Use a darker appearance across Tourist."
+msgstr "ಟೂರಿಸ್ಟ್‌ನಾದ್ಯಂತ ಡಾರ್ಕ್ ನೋಟವನ್ನು ಬಳಸಿ."
+
+msgid "Your Tourist account"
+msgstr "ನಿಮ್ಮ ಟೂರಿಸ್ಟ್ ಖಾತೆ"
+
+msgid "Welcome"
+msgstr "ಸುಸ್ವಾಗತ"
+
+msgid "Your personal Karnataka journey headquarters. Route certified 1st preference KSRTC government buses & luxury private coaches, and manage live trip expenses across all 31 districts."
+msgstr "ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಕರ್ನಾಟಕ ಪ್ರಯಾಣ ಕೇಂದ್ರ. 31 ಜಿಲ್ಲೆಗಳಲ್ಲಿ ಕೆಎಸ್‌ಆರ್‌ಟಿಸಿ ಸರ್ಕಾರಿ ಬಸ್‌ಗಳು ಮತ್ತು ಖಾಸಗಿ ಕೋಚ್‌ಗಳನ್ನು ರೂಟ್ ಮಾಡಿ, ಮತ್ತು ನೇರ ಪ್ರಯಾಣ ವೆಚ್ಚಗಳನ್ನು ನಿರ್ವಹಿಸಿ."
+
+msgid "Trips Logged"
+msgstr "ದಾಖಲಾದ ಪ್ರವಾಸಗಳು"
+
+msgid "Districts"
+msgstr "ಜಿಲ್ಲೆಗಳು"
+
+msgid "Tracked Budget"
+msgstr "ಟ್ರ್ಯಾಕ್ ಮಾಡಿದ ಬಜೆಟ್"
+
+msgid "Explore 31 Districts"
+msgstr "31 ಜಿಲ್ಲೆಗಳನ್ನು ಅನ್ವೇಷಿಸಿ"
+
+msgid "District maps, temples & waterfalls"
+msgstr "ಜಿಲ್ಲಾ ನಕ್ಷೆಗಳು, ದೇವಾಲಯಗಳು ಮತ್ತು ಜಲಪಾತಗಳು"
+
+msgid "Bus Transit Router"
+msgstr "ಬಸ್ ಸಾರಿಗೆ ರೂಟರ್"
+
+msgid "1st Preference KSRTC + Private"
+msgstr "ಮೊದಲ ಆದ್ಯತೆ ಕೆಎಸ್‌ಆರ್‌ಟಿಸಿ + ಖಾಸಗಿ"
+
+msgid "Trip Expense Tracker"
+msgstr "ಪ್ರವಾಸ ವೆಚ್ಚ ಟ್ರ್ಯಾಕರ್"
+
+msgid "Real budget breakdowns & reports"
+msgstr "ನಿಜವಾದ ಬಜೆಟ್ ವಿವರಗಳು ಮತ್ತು ವರದಿಗಳು"
+
+msgid "Popular Destinations"
+msgstr "ಜನಪ್ರಿಯ ತಾಣಗಳು"
+
+msgid "UNESCO, Coffee Mist & Coastlines"
+msgstr "ಯುನೆಸ್ಕೋ, ಕಾಫಿ ಮಂಜು ಮತ್ತು ಕರಾವಳಿ"
+
 msgid "YOUR JOURNEY STARTS HERE"
 msgstr "ನಿಮ್ಮ ಪ್ರಯಾಣ ಇಲ್ಲಿಂದ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ"
 
@@ -52,3 +118,114 @@ msgstr "ಹೊಸ ಸ್ಥಳಗಳನ್ನು ಅನ್ವೇಷಿಸಿ, �
 
 msgid "Select District to explore..."
 msgstr "ಅನ್ವೇಷಿಸಲು ಜಿಲ್ಲೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ..."
+
+msgid "Detect your real live location"
+msgstr "ನಿಮ್ಮ ನೈಜ ಲೈವ್ ಸ್ಥಳವನ್ನು ಪತ್ತೆಹಚ್ಚಿ"
+
+msgid "Use My Current Location"
+msgstr "ನನ್ನ ಪ್ರಸ್ತುತ ಸ್ಥಳವನ್ನು ಬಳಸಿ"
+
+msgid "Explore Mysore"
+msgstr "ಮೈಸೂರನ್ನು ಅನ್ವೇಷಿಸಿ"
+
+msgid "Royal Circuit"
+msgstr "ರಾಜ ಪಥ"
+
+msgid "Mysore Palace"
+msgstr "ಮೈಸೂರು ಅರಮನೆ"
+
+msgid "Grand Architecture & Chamundi"
+msgstr "ಭವ್ಯ ವಾಸ್ತುಶಿಲ್ಪ ಮತ್ತು ಚಾಮುಂಡಿ"
+
+msgid "Explore Coorg"
+msgstr "ಕೂರ್ಗ್ ಅನ್ವೇಷಿಸಿ"
+
+msgid "21°C Mist"
+msgstr "21°C ಮಂಜು"
+
+msgid "Madikeri (Coorg)"
+msgstr "ಮಡಿಕೇರಿ (ಕೊಡಗು)"
+
+msgid "Western Ghats Rainforest"
+msgstr "ಪಶ್ಚಿಮ ಘಟ್ಟಗಳ ಮಳೆಕಾಡು"
+
+msgid "10 Iconic Districts"
+msgstr "10 ಪ್ರಮುಖ ಜಿಲ್ಲೆಗಳು"
+
+msgid "ready to explore"
+msgstr "ಅನ್ವೇಷಿಸಲು ಸಿದ್ಧವಾಗಿವೆ"
+
+msgid "START EXPLORING · KARNATAKA TOURISM"
+msgstr "ಅನ್ವೇಷಣೆ ಪ್ರಾರಂಭಿಸಿ · ಕರ್ನಾಟಕ ಪ್ರವಾಸೋದ್ಯಮ"
+
+msgid "Popular destinations"
+msgstr "ಜನಪ್ರಿಯ ತಾಣಗಳು"
+
+msgid "View all"
+msgstr "ಎಲ್ಲವನ್ನೂ ವೀಕ್ಷಿಸಿ"
+
+msgid "YOUR JOURNEY HISTORY"
+msgstr "ನಿಮ್ಮ ಪ್ರಯಾಣದ ಇತಿಹಾಸ"
+
+msgid "Recent searches"
+msgstr "ಇತ್ತೀಚಿನ ಹುಡುಕಾಟಗಳು"
+
+msgid "Pick up where you left off."
+msgstr "ನೀವು ಬಿಟ್ಟ ಸ್ಥಳದಿಂದ ಮುಂದುವರಿಯಿರಿ."
+
+msgid "Karnataka Travel & Transit Guide"
+msgstr "ಕರ್ನಾಟಕ ಪ್ರಯಾಣ ಮತ್ತು ಸಾರಿಗೆ ಮಾರ್ಗದರ್ಶಿ"
+
+msgid "Your intelligent companion for exploring Karnataka. Discover 85+ verified destinations, real bus numbers (BMTC, MITRA, KSRTC), trip expense estimation, and multi-day travel budgeting."
+msgstr "ಕರ್ನಾಟಕವನ್ನು ಅನ್ವೇಷಿಸಲು ನಿಮ್ಮ ಬುದ್ಧಿವಂತ ಸಂಗಾತಿ. 85+ ದೃಢೀಕೃತ ತಾಣಗಳು, ನೈಜ ಬಸ್ ಸಂಖ್ಯೆಗಳು ಮತ್ತು ಪ್ರವಾಸದ ಬಜೆಟ್ ಅನ್ನು ಅನ್ವೇಷಿಸಿ."
+
+msgid "Verified Fares"
+msgstr "ದೃಢೀಕೃತ ದರಗಳು"
+
+msgid "Official Bus Numbers"
+msgstr "ಅಧಿಕೃತ ಬಸ್ ಸಂಖ್ಯೆಗಳು"
+
+msgid "Smart Tracking"
+msgstr "ಸ್ಮಾರ್ಟ್ ಟ್ರ್ಯಾಕಿಂಗ್"
+
+msgid "Top Districts"
+msgstr "ಪ್ರಮುಖ ಜಿಲ್ಲೆಗಳು"
+
+msgid "Trip Planner"
+msgstr "ಪ್ರವಾಸ ಯೋಜಕ"
+
+msgid "All Karnataka Places"
+msgstr "ಕರ್ನಾಟಕದ ಎಲ್ಲಾ ಸ್ಥಳಗಳು"
+
+msgid "Transit Bus Numbers"
+msgstr "ಸಾರಿಗೆ ಬಸ್ ಸಂಖ್ಯೆಗಳು"
+
+msgid "Trip Expense Tracker & Budget"
+msgstr "ಪ್ರವಾಸ ವೆಚ್ಚ ಟ್ರ್ಯಾಕರ್ ಮತ್ತು ಬಜೆಟ್"
+
+msgid "GPS Nearest District Finder"
+msgstr "ಜಿಪಿಎಸ್ ಹತ್ತಿರದ ಜಿಲ್ಲಾ ಶೋಧಕ"
+
+msgid "Traveller Voice"
+msgstr "ಪ್ರಯಾಣಿಕರ ಧ್ವನಿ"
+
+msgid "Notice a new bus schedule or want to share feedback? We value every suggestion from travellers on the road."
+msgstr "ಹೊಸ ಬಸ್ ವೇಳಾಪಟ್ಟಿಯನ್ನು ಗಮನಿಸಿದ್ದೀರಾ ಅಥವಾ ಪ್ರತಿಕ್ರಿಯೆಯನ್ನು ಹಂಚಿಕೊಳ್ಳಲು ಬಯಸುವಿರಾ? ನಾವು ಪ್ರತಿ ಸಲಹೆಯನ್ನು ಗೌರವಿಸುತ್ತೇವೆ."
+
+msgid "Give Trip Feedback"
+msgstr "ಪ್ರವಾಸದ ಪ್ರತಿಕ್ರಿಯೆ ನೀಡಿ"
+
+msgid "Karnataka Tourism Community"
+msgstr "ಕರ್ನಾಟಕ ಪ್ರವಾಸೋದ್ಯಮ ಸಮುದಾಯ"
+
+msgid "Handcrafted for Karnataka Tourism • Travel Safe"
+msgstr "ಕರ್ನಾಟಕ ಪ್ರವಾಸೋದ್ಯಮಕ್ಕಾಗಿ ರೂಪಿಸಲಾಗಿದೆ • ಸುರಕ್ಷಿತವಾಗಿ ಪ್ರಯಾಣಿಸಿ"
+
+msgid "Public Transit Data"
+msgstr "ಸಾರ್ವಜನಿಕ ಸಾರಿಗೆ ಮಾಹಿತಿ"
+
+msgid "Privacy Protection"
+msgstr "ಗೌಪ್ಯತೆ ರಕ್ಷಣೆ"
+
+msgid "Traveller Guidelines"
+msgstr "ಪ್ರಯಾಣಿಕರ ಮಾರ್ಗಸೂಚಿಗಳು"

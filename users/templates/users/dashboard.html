@@ -27,8 +27,8 @@
             <div class="settings-panel">
                 <div class="settings-top">
                     <div>
-                        <p class="section-label">PREFERENCES</p>
-                        <h2>Settings</h2>
+                        <p class="section-label">{% trans "PREFERENCES" %}</p>
+                        <h2>{% trans "Settings" %}</h2>
                     </div>
                     <button class="settings-close" id="settingsClose">
                         <i class="fa-solid fa-xmark"></i>
@@ -37,15 +37,15 @@
 
                 <!-- APPEARANCE -->
                 <div class="settings-section">
-                    <h3>Appearance</h3>
+                    <h3>{% trans "Appearance" %}</h3>
                     <div class="setting-item">
                         <div class="setting-info">
                             <div class="setting-icon">
                                 <i class="fa-solid fa-moon"></i>
                             </div>
                             <div>
-                                <h4>Dark Mode</h4>
-                                <p>Use a darker appearance across Tourist.</p>
+                                <h4>{% trans "Dark Mode" %}</h4>
+                                <p>{% trans "Use a darker appearance across Tourist." %}</p>
                             </div>
                         </div>
                         <label class="switch">
@@ -57,7 +57,7 @@
 
                 <!-- ACCOUNT INFORMATION -->
                 <div class="settings-section">
-                    <h3>Account</h3>
+                    <h3>{% trans "Account" %}</h3>
                     <div class="setting-item">
                         <div class="setting-info">
                             <div class="setting-icon">
@@ -65,7 +65,7 @@
                             </div>
                             <div>
                                 <h4>{{ request.user.username }}</h4>
-                                <p>Your Tourist account</p>
+                                <p>{% trans "Your Tourist account" %}</p>
                             </div>
                         </div>
                     </div>
@@ -83,23 +83,23 @@
                 </div>
                 <div class="user-welcome-info">
                     <span class="user-tier-pill"><i class="fa-solid fa-crown" style="color:#fce79a;"></i> {{ user_stats.explorer_level }}</span>
-                    <h2>Welcome, {{ request.user.username }}! ✨</h2>
+                    <h2>{% trans "Welcome" %}, {{ request.user.username }}! ✨</h2>
                     <p>
-                        Your personal Karnataka journey headquarters. Route certified <strong>1st preference KSRTC government buses</strong> &amp; luxury private coaches, and manage live trip expenses across all 31 districts.
+                        {% trans "Your personal Karnataka journey headquarters. Route certified 1st preference KSRTC government buses & luxury private coaches, and manage live trip expenses across all 31 districts." %}
                     </p>
                 </div>
                 <div class="user-quick-metrics">
                     <div class="metric-pill">
                         <strong>{{ user_stats.trips_count }}</strong>
-                        <span>Trips Logged</span>
+                        <span>{% trans "Trips Logged" %}</span>
                     </div>
                     <div class="metric-pill">
                         <strong>{{ user_stats.districts_count }} / 31</strong>
-                        <span>Districts</span>
+                        <span>{% trans "Districts" %}</span>
                     </div>
                     <div class="metric-pill">
                         <strong>₹{{ user_stats.total_budget|floatformat:0 }}</strong>
-                        <span>Tracked Budget</span>
+                        <span>{% trans "Tracked Budget" %}</span>
                     </div>
                 </div>
             </div>
@@ -109,29 +109,29 @@
                 <a href="#exploreDistrictsSection" class="launch-card">
                     <div class="launch-icon" style="background:#e3f1e7; color:#14452f;"><i class="fa-solid fa-map-location-dot"></i></div>
                     <div>
-                        <strong>Explore 31 Districts</strong>
-                        <span>District maps, temples &amp; waterfalls</span>
+                        <strong>{% trans "Explore 31 Districts" %}</strong>
+                        <span>{% trans "District maps, temples & waterfalls" %}</span>
                     </div>
                 </a>
                 <a href="{% url 'places_by_district' 'mysore' %}" class="launch-card">
                     <div class="launch-icon" style="background:#fef3c7; color:#b45309;"><i class="fa-solid fa-bus"></i></div>
                     <div>
-                        <strong>Bus Transit Router</strong>
-                        <span>1st Preference KSRTC + Private</span>
+                        <strong>{% trans "Bus Transit Router" %}</strong>
+                        <span>{% trans "1st Preference KSRTC + Private" %}</span>
                     </div>
                 </a>
                 <a href="{% url 'expenses:hub' %}" class="launch-card">
                     <div class="launch-icon" style="background:#fee2e2; color:#b91c1c;"><i class="fa-solid fa-wallet"></i></div>
                     <div>
-                        <strong>Trip Expense Tracker</strong>
-                        <span>Real budget breakdowns &amp; reports</span>
+                        <strong>{% trans "Trip Expense Tracker" %}</strong>
+                        <span>{% trans "Real budget breakdowns & reports" %}</span>
                     </div>
                 </a>
                 <a href="#exploreDistrictsSection" class="launch-card">
                     <div class="launch-icon" style="background:#ede9fe; color:#6b21a8;"><i class="fa-solid fa-compass"></i></div>
                     <div>
-                        <strong>Popular Destinations</strong>
-                        <span>UNESCO, Coffee Mist &amp; Coastlines</span>
+                        <strong>{% trans "Popular Destinations" %}</strong>
+                        <span>{% trans "UNESCO, Coffee Mist & Coastlines" %}</span>
                     </div>
                 </a>
             </div>
@@ -182,36 +182,36 @@
 
                 <!-- LIVE LOCATION CONTROLS (Clean, minimal action bar) -->
                 <div class="live-location-action-bar">
-                    <button type="button" class="current-location-btn" id="currentLocationBtn" title="Detect your real live location">
+                    <button type="button" class="current-location-btn" id="currentLocationBtn" title="{% trans 'Detect your real live location' %}">
                         <i class="fa-solid fa-location-crosshairs"></i>
-                        <span id="currentLocationBtnText">Use My Current Location</span>
+                        <span id="currentLocationBtnText">{% trans "Use My Current Location" %}</span>
                     </button>
                     <span class="live-location-hint" id="liveLocationHint"></span>
                 </div>
                 <div id="gpsStatusMessage" class="gps-status-msg" style="display: none;"></div>
             </div>
 
-                        <!-- SCENIC TRAVEL SHOWCASE (Natural Karnataka imagery, no generic shapes) -->
+            <!-- SCENIC TRAVEL SHOWCASE (Natural Karnataka imagery, no generic shapes) -->
             <div class="hero-travel-showcase">
-                <a href="{% url 'places_by_district' 'mysore' %}" class="scenic-card scenic-card-main" title="Explore Mysore">
+                <a href="{% url 'places_by_district' 'mysore' %}" class="scenic-card scenic-card-main" title="{% trans 'Explore Mysore' %}">
                     <img src="{% static 'users/images/mysore.jpg' %}" alt="Mysore Palace">
                     <div class="scenic-card-overlay">
-                        <span class="scenic-badge"><i class="fa-solid fa-crown"></i> Royal Circuit</span>
-                        <h4>Mysore Palace</h4>
-                        <p>Grand Architecture &amp; Chamundi</p>
+                        <span class="scenic-badge"><i class="fa-solid fa-crown"></i> {% trans "Royal Circuit" %}</span>
+                        <h4>{% trans "Mysore Palace" %}</h4>
+                        <p>{% trans "Grand Architecture & Chamundi" %}</p>
                     </div>
                 </a>
-                <a href="{% url 'places_by_district' 'kodagu' %}" class="scenic-card scenic-card-secondary" title="Explore Coorg">
+                <a href="{% url 'places_by_district' 'kodagu' %}" class="scenic-card scenic-card-secondary" title="{% trans 'Explore Coorg' %}">
                     <img src="{% static 'users/images/madikeri.jpg' %}" alt="Madikeri Coorg">
                     <div class="scenic-card-overlay">
-                        <span class="scenic-badge"><i class="fa-solid fa-cloud-sun"></i> 21°C Mist</span>
-                        <h4>Madikeri (Coorg)</h4>
-                        <p>Western Ghats Rainforest</p>
+                        <span class="scenic-badge"><i class="fa-solid fa-cloud-sun"></i> {% trans "21°C Mist" %}</span>
+                        <h4>{% trans "Madikeri (Coorg)" %}</h4>
+                        <p>{% trans "Western Ghats Rainforest" %}</p>
                     </div>
                 </a>
                 <div class="scenic-pill-stat">
                     <i class="fa-solid fa-compass" style="color: #f4b63f;"></i>
-                    <span><strong>10 Iconic Districts</strong> ready to explore</span>
+                    <span><strong>{% trans "10 Iconic Districts" %}</strong> {% trans "ready to explore" %}</span>
                 </div>
             </div>
 
@@ -228,11 +228,11 @@
         <section class="popular-section" id="exploreDistrictsSection">
             <div class="section-top">
                 <div>
-                    <p class="section-label">START EXPLORING · KARNATAKA TOURISM</p>
-                    <h2>Popular destinations</h2>
+                    <p class="section-label">{% trans "START EXPLORING · KARNATAKA TOURISM" %}</p>
+                    <h2>{% trans "Popular destinations" %}</h2>
                 </div>
                 <a href="{% url 'places_by_district' 'mysore' %}" class="view-all">
-                    View all →
+                    {% trans "View all" %} →
                 </a>
             </div>
 
@@ -256,7 +256,9 @@
                     
                     <!-- Top Category & Karnataka Mini Locator Indicator -->
                     <div class="card-top-indicator">
-                        <span class="place-tag">{{ card.tag_english }}</span>
+                        <span class="place-tag">
+                            {% if LANGUAGE_CODE == 'kn' %}{{ card.tag_kannada }}{% else %}{{ card.tag_english }}{% endif %}
+                        </span>
                         
                         <div class="karnataka-mini-locator" title="{{ card.english_name }} - Karnataka">
                             <svg class="mini-karnataka-svg" viewBox="0 0 100 130" aria-hidden="true">
@@ -268,9 +270,13 @@
                     
                     <!-- Bottom Content: Kannada First, English Subtitle -->
                     <div class="destination-content">
-                        <h3 class="dest-english-title">{{ card.english_name }}</h3>
-                        <p class="dest-english-subtitle">{{ card.english_subtitle }}</p>
-                        <span class="explore-place">Explore →</span>
+                        <h3 class="dest-english-title">
+                            {% if LANGUAGE_CODE == 'kn' %}{{ card.kannada_name }}{% else %}{{ card.english_name }}{% endif %}
+                        </h3>
+                        <p class="dest-english-subtitle">
+                            {% if LANGUAGE_CODE == 'kn' %}{{ card.kannada_subtitle }}{% else %}{{ card.english_subtitle }}{% endif %}
+                        </p>
+                        <span class="explore-place">{% trans "Explore" %} →</span>
                     </div>
                 </a>
                 {% endfor %}
@@ -280,9 +286,9 @@
         <!-- RECENT SEARCHES: AUTHENTIC REAL KARNATAKA DISTRICT MAP SHAPES -->
         <section class="recent-section">
             <div class="recent-heading">
-                <p class="section-label">YOUR JOURNEY HISTORY</p>
-                <h2>Recent searches</h2>
-                <p>Pick up where you left off.</p>
+                <p class="section-label">{% trans "YOUR JOURNEY HISTORY" %}</p>
+                <h2>{% trans "Recent searches" %}</h2>
+                <p>{% trans "Pick up where you left off." %}</p>
             </div>
             <div class="thread-wrapper">
                 <div class="thread-rail"></div>
@@ -332,8 +338,8 @@
                                 <!-- Crisp, Elegant Distinct Colored Border along official boundary outline -->
                                 <path class="real-map-border" d="{{ item.district_shape_path }}" fill="none" stroke="{{ item.border_color }}" stroke-width="2.4" />
 
-                                <!-- ONLY THE PLACE NAME INSIDE MAP (English Only) -->
-                                <text x="{{ item.center_x|default:160 }}" y="118" text-anchor="middle" class="real-map-english-centered">{{ item.english }}</text>
+                                <!-- ONLY THE PLACE NAME INSIDE MAP -->
+                                <text x="{{ item.center_x|default:160 }}" y="118" text-anchor="middle" class="real-map-english-centered">{% if LANGUAGE_CODE == 'kn' %}{{ item.kannada }}{% else %}{{ item.english }}{% endif %}</text>
                             </svg>
                         </div>
 
