@@ -1,4 +1,4 @@
-{% load static %}
+{% load static i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -932,8 +932,8 @@
 
             <!-- Form Content Header -->
             <div class="form-header">
-                <h1 class="form-title">Sign In to Tourist</h1>
-                <p class="form-sub">Access your travel passport, multi-leg budget, and public routes</p>
+                <h1 class="form-title">{% trans "Sign In to Tourist" %}</h1>
+                <p class="form-sub">{% trans "Access your travel passport, multi-leg budget, and public routes" %}</p>
             </div>
 
             <!-- Notifications -->
@@ -958,7 +958,7 @@
                     <input type="hidden" name="next" value="{{ next_url }}">
 
                     <div class="form-group">
-                        <label class="form-label" for="loginUsername">Username or Email</label>
+                        <label class="form-label" for="loginUsername">{% trans "Username or Email" %}</label>
                         <div class="input-wrap">
                             <i class="fa-solid fa-user input-icon"></i>
                             <input
@@ -966,7 +966,7 @@
                                 id="loginUsername"
                                 name="username"
                                 class="form-input"
-                                placeholder="Enter your username or email"
+                                placeholder="{% trans 'Enter your username or email' %}"
                                 required
                                 autofocus
                             >
@@ -974,7 +974,7 @@
                     </div>
 
                     <div class="form-group" id="passwordGroup">
-                        <label class="form-label" for="loginPassword">Password</label>
+                        <label class="form-label" for="loginPassword">{% trans "Password" %}</label>
                         <div class="input-wrap">
                             <i class="fa-solid fa-lock input-icon"></i>
                             <input
@@ -982,20 +982,20 @@
                                 id="loginPassword"
                                 name="password"
                                 class="form-input"
-                                placeholder="Enter your password"
+                                placeholder="{% trans 'Enter your password' %}"
                                 required
                             >
                         </div>
                     </div>
 
                     <button type="submit" class="btn-submit-main" id="submitBtn">
-                        <span>Sign In &amp; Open Dashboard</span>
+                        <span>{% trans "Sign In & Open Dashboard" %}</span>
                         <i class="fa-solid fa-arrow-right"></i>
                     </button>
 
                     <div class="otp-fallback-row">
                         <button type="button" class="btn-link-otp" onclick="requestEmailOtpLogin()">
-                            <i class="fa-solid fa-envelope"></i> Forgot password or prefer Email OTP? Sign In via OTP
+                            <i class="fa-solid fa-envelope"></i> {% trans "Forgot password or prefer Email OTP? Sign In via OTP" %}
                         </button>
                     </div>
                 </form>

@@ -1,4 +1,4 @@
-{% load static %}
+{% load static i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -500,14 +500,14 @@
         <div class="trip-title-area">
             <div>
                 {% if session.status == "completed" %}
-                    <span class="badge-status badge-completed"><i class="fa-solid fa-flag-checkered"></i> Trip Completed</span>
+                    <span class="badge-status badge-completed"><i class="fa-solid fa-flag-checkered"></i> {% trans "Trip Completed" %}</span>
                 {% elif session.status == "upcoming" %}
-                    <span class="badge-status badge-upcoming"><i class="fa-regular fa-clock"></i> Upcoming Journey</span>
+                    <span class="badge-status badge-upcoming"><i class="fa-regular fa-clock"></i> {% trans "Upcoming Journey" %}</span>
                 {% else %}
-                    <span class="badge-status badge-active"><i class="fa-solid fa-circle-dot fa-fade"></i> Active Trip Tracking</span>
+                    <span class="badge-status badge-active"><i class="fa-solid fa-circle-dot fa-fade"></i> {% trans "Active Trip Tracking" %}</span>
                 {% endif %}
             </div>
-            <h1>{{ place.name }} Travel Expenses</h1>
+            <h1>{{ place.name }} {% trans "Travel Expenses" %}</h1>
             <p style="margin: 0; color: rgba(255,255,255,0.85); font-size: 15px;">
                 {{ place.district.name }} District &bull; {{ session.total_days }}-Day Journey ({{ session.start_date|date:"d M Y" }} to {{ session.end_date|date:"d M Y" }})
             </p>

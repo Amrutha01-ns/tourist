@@ -229,3 +229,111 @@ msgstr "ಗೌಪ್ಯತೆ ರಕ್ಷಣೆ"
 
 msgid "Traveller Guidelines"
 msgstr "ಪ್ರಯಾಣಿಕರ ಮಾರ್ಗಸೂಚಿಗಳು"
+
+msgid "Explore Karnataka"
+msgstr "ಕರ್ನಾಟಕವನ್ನು ಅನ್ವೇಷಿಸಿ"
+
+msgid "Find Your Perfect Place"
+msgstr "ನಿಮ್ಮ ಪರಿಪೂರ್ಣ ಸ್ಥಳವನ್ನು ಹುಡುಕಿ"
+
+msgid "Choose a category and explore"
+msgstr "ಒಂದು ವರ್ಗವನ್ನು ಆಯ್ಕೆಮಾಡಿ ಮತ್ತು ಅನ್ವೇಷಿಸಿ"
+
+msgid "All Categories"
+msgstr "ಎಲ್ಲಾ ವರ್ಗಗಳು"
+
+msgid "Watery"
+msgstr "ಜಲಪಾತ / ನದಿ ತಾಣಗಳು"
+
+msgid "Historical"
+msgstr "ಐತಿಹಾಸಿಕ"
+
+msgid "Religious / Temples"
+msgstr "ಧಾರ್ಮಿಕ / ದೇವಾಲಯಗಳು"
+
+msgid "Nature"
+msgstr "ಪ್ರಕೃತಿ"
+
+msgid "HANDPICKED DESTINATIONS"
+msgstr "ಆಯ್ದ ತಾಣಗಳು"
+
+msgid "Top Places in"
+msgstr "ಪ್ರಮುಖ ಸ್ಥಳಗಳು"
+
+msgid "Explore Destination"
+msgstr "ತಾಣವನ್ನು ಅನ್ವೇಷಿಸಿ"
+
+msgid "See More"
+msgstr "ಇನ್ನಷ್ಟು ನೋಡಿ"
+
+msgid "No places found"
+msgstr "ಯಾವುದೇ ಸ್ಥಳಗಳು ಕಂಡುಬಂದಿಲ್ಲ"
+
+msgid "No places are currently available in this category."
+msgstr "ಈ ವರ್ಗದಲ್ಲಿ ಪ್ರಸ್ತುತ ಯಾವುದೇ ಸ್ಥಳಗಳು ಲಭ್ಯವಿಲ್ಲ."
+
+msgid "Sign In to Tourist"
+msgstr "ಟೂರಿಸ್ಟ್‌ಗೆ ಸೈನ್ ಇನ್ ಮಾಡಿ"
+
+msgid "Access your travel passport, multi-leg budget, and public routes"
+msgstr "ನಿಮ್ಮ ಪ್ರಯಾಣ ಪಾಸ್‌ಪೋರ್ಟ್, ಬಜೆಟ್ ಮತ್ತು ಸಾರ್ವಜನಿಕ ಮಾರ್ಗಗಳನ್ನು ಪ್ರವೇಶಿಸಿ"
+
+msgid "Username or Email"
+msgstr "ಬಳಕೆದಾರ ಹೆಸರು ಅಥವಾ ಇಮೇಲ್"
+
+msgid "Enter your username or email"
+msgstr "ನಿಮ್ಮ ಬಳಕೆದಾರ ಹೆಸರು ಅಥವಾ ಇಮೇಲ್ ನಮೂದಿಸಿ"
+
+msgid "Password"
+msgstr "ಗುಪ್ತಪದ (ಪಾಸ್‌ವರ್ಡ್)"
+
+msgid "Enter your password"
+msgstr "ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ನಮೂದಿಸಿ"
+
+msgid "Sign In & Open Dashboard"
+msgstr "ಸೈನ್ ಇನ್ ಮಾಡಿ ಮತ್ತು ಡ್ಯಾಶ್‌ಬೋರ್ಡ್ ತೆರೆಯಿರಿ"
+
+msgid "Forgot password or prefer Email OTP? Sign In via OTP"
+msgstr "ಪಾಸ್‌ವರ್ಡ್ ಮರೆತಿರುವಿರಾ? ಇಮೇಲ್ ಒಟಿಪಿ ಮೂಲಕ ಸೈನ್ ಇನ್ ಮಾಡಿ"
+
+msgid "Create Your Account"
+msgstr "ನಿಮ್ಮ ಖಾತೆಯನ್ನು ರಚಿಸಿ"
+
+msgid "Unlock Karnataka's royal corridors, waterfalls, and public transit navigation"
+msgstr "ಕರ್ನಾಟಕದ ರಾಜಮಾರ್ಗಗಳು, ಜಲಪಾತಗಳು ಮತ್ತು ಸಾರಿಗೆ ಸಂಚರಣೆಯನ್ನು ಅನ್ಲಾಕ್ ಮಾಡಿ"
+
+msgid "Username"
+msgstr "ಬಳಕೆದಾರ ಹೆಸರು"
+
+msgid "Choose a username"
+msgstr "ಬಳಕೆದಾರ ಹೆಸರನ್ನು ಆರಿಸಿ"
+
+msgid "Email Address"
+msgstr "ಇಮೇಲ್ ವಿಳಾಸ"
+
+msgid "Enter your valid email"
+msgstr "ನಿಮ್ಮ ಮಾನ್ಯ ಇಮೇಲ್ ನಮೂದಿಸಿ"
+
+msgid "Create a secure password"
+msgstr "ಸುರಕ್ಷಿತ ಪಾಸ್‌ವರ್ಡ್ ರಚಿಸಿ"
+
+msgid "Confirm Password"
+msgstr "ಪಾಸ್‌ವರ್ಡ್ ಖಚಿತಪಡಿಸಿ"
+
+msgid "Re-enter password"
+msgstr "ಪಾಸ್‌ವರ್ಡ್ ಅನ್ನು ಮರು-ನಮೂದಿಸಿ"
+
+msgid "Send Email Verification OTP"
+msgstr "ಇಮೇಲ್ ಪರಿಶೀಲನೆ ಒಟಿಪಿ ಕಳುಹಿಸಿ"
+
+msgid "Trip Completed"
+msgstr "ಪ್ರವಾಸ ಪೂರ್ಣಗೊಂಡಿದೆ"
+
+msgid "Upcoming Journey"
+msgstr "ಮುಂಬರುವ ಪ್ರಯಾಣ"
+
+msgid "Active Trip Tracking"
+msgstr "ಸಕ್ರಿಯ ಪ್ರವಾಸ ಟ್ರ್ಯಾಕಿಂಗ್"
+
+msgid "Travel Expenses"
+msgstr "ಪ್ರಯಾಣ ವೆಚ್ಚಗಳು"

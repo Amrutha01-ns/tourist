@@ -1,4 +1,4 @@
-{% load static %}
+{% load static i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -932,8 +932,8 @@
 
             <!-- Form Content Header -->
             <div class="form-header">
-                <h1 class="form-title">Create Your Account</h1>
-                <p class="form-sub">Unlock Karnataka's royal corridors, waterfalls, and public transit navigation</p>
+                <h1 class="form-title">{% trans "Create Your Account" %}</h1>
+                <p class="form-sub">{% trans "Unlock Karnataka's royal corridors, waterfalls, and public transit navigation" %}</p>
             </div>
 
             <!-- Notifications -->
@@ -957,7 +957,7 @@
                     {% csrf_token %}
 
                     <div class="form-group">
-                        <label class="form-label" for="regUsername">Username</label>
+                        <label class="form-label" for="regUsername">{% trans "Username" %}</label>
                         <div class="input-wrap">
                             <i class="fa-solid fa-user input-icon"></i>
                             <input
@@ -965,7 +965,7 @@
                                 id="regUsername"
                                 name="username"
                                 class="form-input"
-                                placeholder="Choose a username"
+                                placeholder="{% trans 'Choose a username' %}"
                                 value="{{ pending_username|default:'' }}"
                                 required
                                 autofocus
@@ -974,7 +974,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="regEmail">Email Address</label>
+                        <label class="form-label" for="regEmail">{% trans "Email Address" %}</label>
                         <div class="input-wrap">
                             <i class="fa-solid fa-envelope input-icon"></i>
                             <input
@@ -982,7 +982,7 @@
                                 id="regEmail"
                                 name="email"
                                 class="form-input"
-                                placeholder="Enter your valid email"
+                                placeholder="{% trans 'Enter your valid email' %}"
                                 value="{{ pending_email|default:'' }}"
                                 required
                             >
@@ -990,7 +990,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="regPassword">Password</label>
+                        <label class="form-label" for="regPassword">{% trans "Password" %}</label>
                         <div class="input-wrap">
                             <i class="fa-solid fa-lock input-icon"></i>
                             <input
@@ -998,14 +998,14 @@
                                 id="regPassword"
                                 name="password"
                                 class="form-input"
-                                placeholder="Create a secure password"
+                                placeholder="{% trans 'Create a secure password' %}"
                                 required
                             >
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="regConfirmPassword">Confirm Password</label>
+                        <label class="form-label" for="regConfirmPassword">{% trans "Confirm Password" %}</label>
                         <div class="input-wrap">
                             <i class="fa-solid fa-lock-open input-icon"></i>
                             <input
@@ -1013,14 +1013,14 @@
                                 id="regConfirmPassword"
                                 name="confirm_password"
                                 class="form-input"
-                                placeholder="Re-enter password"
+                                placeholder="{% trans 'Re-enter password' %}"
                                 required
                             >
                         </div>
                     </div>
 
                     <button type="submit" class="btn-submit-main">
-                        <span>Send Email Verification OTP</span>
+                        <span>{% trans "Send Email Verification OTP" %}</span>
                         <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </form>

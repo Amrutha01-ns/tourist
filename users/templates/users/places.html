@@ -1,4 +1,4 @@
-{% load static %}
+{% load static i18n %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -56,18 +56,16 @@
         <section class="hero-section">
 
             <p class="district-label">
-                Explore Karnataka
+                {% trans "Explore Karnataka" %}
             </p>
 
             <h1>
-                Welcome to
+                {% trans "Welcome to" %}
                 <span>{{ district.name }}</span>
             </h1>
 
             <p class="hero-description">
-                Discover beautiful destinations, rich history,
-                peaceful nature, spiritual places and unforgettable
-                experiences.
+                {% trans "Discover beautiful destinations, rich history, peaceful nature, spiritual places and unforgettable experiences." %}
             </p>
 
         </section>
@@ -77,10 +75,10 @@
 
             <div class="filter-heading">
 
-                <h2>Find Your Perfect Place</h2>
+                <h2>{% trans "Find Your Perfect Place" %}</h2>
 
                 <p>
-                    Choose a category and explore {{ district.name }}
+                    {% trans "Choose a category and explore" %} {{ district.name }}
                 </p>
 
             </div>
@@ -96,33 +94,33 @@
 
                     <option value=""
                         {% if not selected_category %}selected{% endif %}>
-                        All Categories
+                        {% trans "All Categories" %}
                     </option>
 
                     <option value="watery"
                         {% if selected_category == "watery" %}selected{% endif %}>
-                        Watery
+                        {% trans "Watery" %}
                     </option>
 
                     <option value="historical"
                         {% if selected_category == "historical" %}selected{% endif %}>
-                        Historical
+                        {% trans "Historical" %}
                     </option>
 
                     <option value="religious"
                         {% if selected_category == "religious" %}selected{% endif %}>
-                        Religious / Temples
+                        {% trans "Religious / Temples" %}
                     </option>
 
                     <option value="nature"
                         {% if selected_category == "nature" %}selected{% endif %}>
-                        Nature
+                        {% trans "Nature" %}
                     </option>
 
                 </select>
 
                 <button type="submit">
-                    Explore
+                    {% trans "Explore" %}
                 </button>
 
             </form>
@@ -137,25 +135,11 @@
                 <div>
 
                     <p class="small-title">
-                        HANDPICKED DESTINATIONS
+                        {% trans "HANDPICKED DESTINATIONS" %}
                     </p>
 
                     <h2>
-                        {% if selected_category == "watery" %}
-                            Top Watery Places in {{ district.name }}
-
-                        {% elif selected_category == "historical" %}
-                            Top Historical Places in {{ district.name }}
-
-                        {% elif selected_category == "religious" %}
-                            Top Religious Places in {{ district.name }}
-
-                        {% elif selected_category == "nature" %}
-                            Top Nature Places in {{ district.name }}
-
-                        {% else %}
-                            Top Places in {{ district.name }}
-                        {% endif %}
+                        {% trans "Top Places in" %} {{ district.name }}
                     </h2>
 
                 </div>
@@ -186,7 +170,7 @@
                                 <div class="no-image">
                                     <a href="{% url 'explorer:place_detail' place.slug %}" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; text-decoration:none; color:#f3b84f; gap:6px;">
                                         <i class="fa-solid fa-mountain-sun" style="font-size: 26px;"></i>
-                                        <span style="font-size: 14px; font-weight: 600; color: #fff;">Explore Destination</span>
+                                        <span style="font-size: 14px; font-weight: 600; color: #fff;">{% trans "Explore Destination" %}</span>
                                     </a>
                                 </div>
 
@@ -219,7 +203,7 @@
                                     type="button"
                                     onclick="window.location.href='{% url 'explorer:place_detail' place.slug %}'">
 
-                                See More
+                                {% trans "See More" %}
 
                                 <span>→</span>
 
@@ -233,11 +217,10 @@
 
                     <div class="no-places">
 
-                        <h3>No places found</h3>
+                        <h3>{% trans "No places found" %}</h3>
 
                         <p>
-                            No places are currently available
-                            in this category.
+                            {% trans "No places are currently available in this category." %}
                         </p>
 
                     </div>
