@@ -337,3 +337,120 @@ msgstr "सक्रिय यात्रा ट्रैकिंग"
 
 msgid "Travel Expenses"
 msgstr "यात्रा व्यय"
+
+msgid "Your destination guide"
+msgstr "आपका गंतव्य गाइड"
+
+msgid "Before you visit"
+msgstr "यात्रा से पहले जान लें"
+
+msgid "Useful information to help you plan your visit to"
+msgstr "यात्रा की योजना बनाने के लिए उपयोगी जानकारी:"
+
+msgid "Opening hours"
+msgstr "खुलने का समय"
+
+msgid "Weekly holidays"
+msgstr "साप्ताहिक अवकाश"
+
+msgid "Ticket price"
+msgstr "टिकट शुल्क"
+
+msgid "What makes it special"
+msgstr "इसकी विशेषता क्या है"
+
+msgid "Special days"
+msgstr "विशेष दिन"
+
+msgid "Visitor tips"
+msgstr "यात्री सुझाव"
+
+msgid "Facilities and access"
+msgstr "सुविधाएं और पहुंच"
+
+msgid "Timings, prices and access conditions may change. Confirm important details before your visit."
+msgstr "समय, शुल्क और प्रवेश शर्तें बदल सकती हैं। यात्रा से पहले पुष्टि करें।"
+
+msgid "Open 7 days a week"
+msgstr "सप्ताह के सातों दिन खुला"
+
+msgid "per visitor"
+msgstr "प्रति व्यक्ति"
+
+msgid "₹30 - ₹100 per visitor"
+msgstr "₹30 - ₹100 प्रति व्यक्ति"
+
+msgid "Quiet lake with coracle rides"
+msgstr "कोराकल नौका विहार के साथ शांत झील"
+
+msgid "Timings may vary on major state festivals and public holidays."
+msgstr "प्रमुख राज्य त्योहारों और सार्वजनिक छुट्टियों पर समय बदल सकता है।"
+
+msgid "Moderate footfall. Visiting early morning or late afternoon is recommended."
+msgstr "मध्यम भीड़। सुबह या देर दोपहर में यात्रा करने की सलाह दी जाती है।"
+
+msgid "Restrooms, drinking water, parking area, and local guidance available."
+msgstr "शौचालय, पीने का पानी, पार्किंग क्षेत्र और स्थानीय मार्गदर्शन उपलब्ध है।"
+
+msgid "Group expense estimator"
+msgstr "समूह व्यय अनुमानक"
+
+msgid "Calculate trip expenses"
+msgstr "यात्रा व्यय की गणना करें"
+
+msgid "Sign In / Join"
+msgstr "साइन इन / शामिल हों"
+
+msgid "Sign In or Create Account"
+msgstr "साइन इन करें या खाता बनाएं"
+
+msgid "Your personal trip planner"
+msgstr "आपका व्यक्तिगत यात्रा योजनाकार"
+
+msgid "Total trip budget"
+msgstr "कुल यात्रा बजट"
+
+msgid "Number of travellers"
+msgstr "यात्रियों की संख्या"
+
+msgid "Trip duration (days)"
+msgstr "यात्रा की अवधि (दिन)"
+
+msgid "Update Expense Breakdown"
+msgstr "व्यय विवरण अपडेट करें"
+
+msgid "Your estimated trip budget"
+msgstr "आपका अनुमानित यात्रा बजट"
+
+msgid "Expense prediction for"
+msgstr "के लिए व्यय अनुमान:"
+
+msgid "Food"
+msgstr "भोजन"
+
+msgid "Stay"
+msgstr "आवास / होटल"
+
+msgid "Back to"
+msgstr "वापस जाएं:"
+
+msgid "Places"
+msgstr "स्थान"
+
+msgid "All Districts & Places"
+msgstr "सभी जिले और स्थान"
+
+msgid "Plan your trip to"
+msgstr "अपनी यात्रा की योजना बनाएं:"
+
+msgid "Explore destination details, adjust your group budget, and discover live public transportation options."
+msgstr "गंतव्य विवरण देखें, अपना बजट समायोजित करें और सार्वजनिक परिवहन विकल्प खोजें।"
+
+msgid "Verified Destination Visual"
+msgstr "सत्यापित गंतव्य दृश्य"
+
+msgid "District"
+msgstr "जिला"
+
+msgid "See All"
+msgstr "सभी देखें"

@@ -337,3 +337,120 @@ msgstr "ಸಕ್ರಿಯ ಪ್ರವಾಸ ಟ್ರ್ಯಾಕಿಂಗ್"
 
 msgid "Travel Expenses"
 msgstr "ಪ್ರಯಾಣ ವೆಚ್ಚಗಳು"
+
+msgid "Your destination guide"
+msgstr "ನಿಮ್ಮ ತಾಣದ ಮಾರ್ಗದರ್ಶಿ"
+
+msgid "Before you visit"
+msgstr "ಭೇಟಿ ನೀಡುವ ಮುನ್ನ ತಿಳಿಯಿರಿ"
+
+msgid "Useful information to help you plan your visit to"
+msgstr "ಭೇಟಿ ನೀಡಲು ಯೋಜಿಸಲು ಉಪಯುಕ್ತ ಮಾಹಿತಿ:"
+
+msgid "Opening hours"
+msgstr "ತೆರೆಯುವ ಸಮಯ"
+
+msgid "Weekly holidays"
+msgstr "ವಾರದ ರಜಾದಿನಗಳು"
+
+msgid "Ticket price"
+msgstr "ಪ್ರವೇಶ ದರ"
+
+msgid "What makes it special"
+msgstr "ಇದರ ವಿಶೇಷತೆ ಏನು"
+
+msgid "Special days"
+msgstr "ವಿಶೇಷ ದಿನಗಳು"
+
+msgid "Visitor tips"
+msgstr "ಸಂದರ್ಶಕರ ಸಲಹೆಗಳು"
+
+msgid "Facilities and access"
+msgstr "ಸೌಲಭ್ಯಗಳು ಮತ್ತು ಪ್ರವೇಶ"
+
+msgid "Timings, prices and access conditions may change. Confirm important details before your visit."
+msgstr "ಸಮಯ, ಬೆಲೆಗಳು ಮತ್ತು ಪ್ರವೇಶ ಷರತ್ತುಗಳು ಬದಲಾಗಬಹುದು. ನಿಮ್ಮ ಭೇಟಿಗೆ ಮುನ್ನ ದೃಢೀಕರಿಸಿ."
+
+msgid "Open 7 days a week"
+msgstr "ವಾರದ 7 ದಿನಗಳೂ ತೆರೆದಿರುತ್ತದೆ"
+
+msgid "per visitor"
+msgstr "ಪ್ರತಿ ಸಂದರ್ಶಕರಿಗೆ"
+
+msgid "₹30 - ₹100 per visitor"
+msgstr "₹30 - ₹100 ಪ್ರತಿ ಸಂದರ್ಶಕರಿಗೆ"
+
+msgid "Quiet lake with coracle rides"
+msgstr "ಹರಿಗೋಲು ವಿಹಾರದೊಂದಿಗೆ ಪ್ರಶಾಂತ ಸರೋವರ"
+
+msgid "Timings may vary on major state festivals and public holidays."
+msgstr "ಪ್ರಮುಖ ರಾಜ್ಯ ಹಬ್ಬಗಳು ಮತ್ತು ಸಾರ್ವಜನಿಕ ರಜಾದಿನಗಳಲ್ಲಿ ಸಮಯ ಬದಲಾಗಬಹುದು."
+
+msgid "Moderate footfall. Visiting early morning or late afternoon is recommended."
+msgstr "ಮಧ್ಯಮ ಜನಸಂದಣಿ. ಮುಂಜಾನೆ ಅಥವಾ ಸಂಜೆ ಭೇಟಿ ನೀಡುವುದು ಸೂಕ್ತ."
+
+msgid "Restrooms, drinking water, parking area, and local guidance available."
+msgstr "ಶೌಚಾಲಯಗಳು, ಕುಡಿಯುವ ನೀರು, ಪಾರ್ಕಿಂಗ್ ಪ್ರದೇಶ ಮತ್ತು ಸ್ಥಳೀಯ ಮಾರ್ಗದರ್ಶನ ಲಭ್ಯವಿದೆ."
+
+msgid "Group expense estimator"
+msgstr "ಗುಂಪು ವೆಚ್ಚ ಅಂದಾಜು ಸಾಧನ"
+
+msgid "Calculate trip expenses"
+msgstr "ಪ್ರವಾಸದ ವೆಚ್ಚವನ್ನು ಲೆಕ್ಕಹಾಕಿ"
+
+msgid "Sign In / Join"
+msgstr "ಸೈನ್ ಇನ್ / ಸೇರಿಕೊಳ್ಳಿ"
+
+msgid "Sign In or Create Account"
+msgstr "ಸೈನ್ ಇನ್ ಮಾಡಿ ಅಥವಾ ಖಾತೆ ರಚಿಸಿ"
+
+msgid "Your personal trip planner"
+msgstr "ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಪ್ರವಾಸ ಯೋಜಕ"
+
+msgid "Total trip budget"
+msgstr "ಒಟ್ಟು ಪ್ರವಾಸ ಬಜೆಟ್"
+
+msgid "Number of travellers"
+msgstr "ಪ್ರಯಾಣಿಕರ ಸಂಖ್ಯೆ"
+
+msgid "Trip duration (days)"
+msgstr "ಪ್ರವಾಸದ ಅವಧಿ (ದಿನಗಳು)"
+
+msgid "Update Expense Breakdown"
+msgstr "ವೆಚ್ಚದ ವಿವರಗಳನ್ನು ನವೀಕರಿಸಿ"
+
+msgid "Your estimated trip budget"
+msgstr "ನಿಮ್ಮ ಅಂದಾಜು ಪ್ರವಾಸ ಬಜೆಟ್"
+
+msgid "Expense prediction for"
+msgstr "ವೆಚ್ಚದ ಅಂದಾಜು:"
+
+msgid "Food"
+msgstr "ಆಹಾರ"
+
+msgid "Stay"
+msgstr "ವಸತಿ"
+
+msgid "Back to"
+msgstr "ಹಿಂದಕ್ಕೆ:"
+
+msgid "Places"
+msgstr "ಸ್ಥಳಗಳು"
+
+msgid "All Districts & Places"
+msgstr "ಎಲ್ಲಾ ಜಿಲ್ಲೆಗಳು ಮತ್ತು ಸ್ಥಳಗಳು"
+
+msgid "Plan your trip to"
+msgstr "ನಿಮ್ಮ ಪ್ರವಾಸವನ್ನು ಯೋಜಿಸಿ:"
+
+msgid "Explore destination details, adjust your group budget, and discover live public transportation options."
+msgstr "ತಾಣದ ವಿವರಗಳನ್ನು ಅನ್ವೇಷಿಸಿ, ಬಜೆಟ್ ಹೊಂದಿಸಿ ಮತ್ತು ಸಾರ್ವಜನಿಕ ಸಾರಿಗೆ ಆಯ್ಕೆಗಳನ್ನು ಕಂಡುಕೊಳ್ಳಿ."
+
+msgid "Verified Destination Visual"
+msgstr "ದೃಢೀಕೃತ ತಾಣದ ದೃಶ್ಯ"
+
+msgid "District"
+msgstr "ಜಿಲ್ಲೆ"
+
+msgid "See All"
+msgstr "ಎಲ್ಲವನ್ನೂ ವೀಕ್ಷಿಸಿ"

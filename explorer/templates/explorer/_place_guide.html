@@ -1,11 +1,12 @@
+{% load i18n %}
 {% if place %}
 <section class="planner destination-guide" id="destination-guide">
     <div class="guide-header">
         <div>
-            <p class="eyebrow">Your destination guide</p>
-            <h2>Before you visit</h2>
+            <p class="eyebrow">{% trans "Your destination guide" %}</p>
+            <h2>{% trans "Before you visit" %}</h2>
             <p class="guide-intro">
-                Useful information to help you plan your visit to
+                {% trans "Useful information to help you plan your visit to" %}
                 <strong>{{ place.name }}</strong>.
             </p>
         </div>
@@ -20,13 +21,13 @@
             <article class="guide-item">
                 <div class="guide-item-heading">
                     <i class="fa-regular fa-clock"></i>
-                    <h3>Opening hours</h3>
+                    <h3>{% trans "Opening hours" %}</h3>
                 </div>
                 <p>
                     {% if place_details.opening_hours %}
-                        {{ place_details.opening_hours }}
+                        {% trans place_details.opening_hours %}
                     {% else %}
-                        Not confirmed yet. Check locally before visiting.
+                        {% trans "Not confirmed yet. Check locally before visiting." %}
                     {% endif %}
                 </p>
             </article>
@@ -34,13 +35,13 @@
             <article class="guide-item">
                 <div class="guide-item-heading">
                     <i class="fa-regular fa-calendar"></i>
-                    <h3>Weekly holidays</h3>
+                    <h3>{% trans "Weekly holidays" %}</h3>
                 </div>
                 <p>
                     {% if place_details.weekly_holidays %}
-                        {{ place_details.weekly_holidays }}
+                        {% trans place_details.weekly_holidays %}
                     {% else %}
-                        Holiday schedule not confirmed.
+                        {% trans "Holiday schedule not confirmed." %}
                     {% endif %}
                 </p>
             </article>
@@ -48,13 +49,13 @@
             <article class="guide-item">
                 <div class="guide-item-heading">
                     <i class="fa-solid fa-ticket"></i>
-                    <h3>Ticket price</h3>
+                    <h3>{% trans "Ticket price" %}</h3>
                 </div>
                 <p>
                     {% if place_details.ticket_price %}
-                        {{ place_details.ticket_price }}
+                        {% trans place_details.ticket_price %}
                     {% else %}
-                        Price not confirmed. Check before travelling.
+                        {% trans "Price not confirmed. Check before travelling." %}
                     {% endif %}
                 </p>
             </article>
@@ -62,10 +63,14 @@
             <article class="guide-item">
                 <div class="guide-item-heading">
                     <i class="fa-solid fa-star"></i>
-                    <h3>What makes it special</h3>
+                    <h3>{% trans "What makes it special" %}</h3>
                 </div>
                 <p>
-                    {{ place.speciality|default:"Explore this destination and its surroundings." }}
+                    {% if place.speciality %}
+                        {% trans place.speciality %}
+                    {% else %}
+                        {% trans "Explore this destination and its surroundings." %}
+                    {% endif %}
                 </p>
             </article>
 
@@ -73,9 +78,9 @@
                 <article class="guide-item">
                     <div class="guide-item-heading">
                         <i class="fa-solid fa-calendar-check"></i>
-                        <h3>Special days</h3>
+                        <h3>{% trans "Special days" %}</h3>
                     </div>
-                    <p>{{ place_details.holiday_notes }}</p>
+                    <p>{% trans place_details.holiday_notes %}</p>
                 </article>
             {% endif %}
 
@@ -83,9 +88,9 @@
                 <article class="guide-item">
                     <div class="guide-item-heading">
                         <i class="fa-solid fa-people-group"></i>
-                        <h3>Visitor tips</h3>
+                        <h3>{% trans "Visitor tips" %}</h3>
                     </div>
-                    <p>{{ place_details.crowd_guidance }}</p>
+                    <p>{% trans place_details.crowd_guidance %}</p>
                 </article>
             {% endif %}
 
@@ -93,9 +98,9 @@
                 <article class="guide-item guide-item-wide">
                     <div class="guide-item-heading">
                         <i class="fa-solid fa-compass"></i>
-                        <h3>Facilities and access</h3>
+                        <h3>{% trans "Facilities and access" %}</h3>
                     </div>
-                    <p>{{ place_details.facilities }}</p>
+                    <p>{% trans place_details.facilities %}</p>
                 </article>
             {% endif %}
 
@@ -103,16 +108,14 @@
 
         <p class="guide-disclaimer">
             <i class="fa-solid fa-circle-info"></i>
-            Timings, prices and access conditions may change. Confirm
-            important details before your visit.
+            {% trans "Timings, prices and access conditions may change. Confirm important details before your visit." %}
         </p>
     {% else %}
         <div class="guide-empty">
             <i class="fa-solid fa-book-open"></i>
-            <h3>Visitor information coming soon</h3>
+            <h3>{% trans "Visitor information coming soon" %}</h3>
             <p>
-                Destination-specific timings, prices and facilities
-                have not been added yet.
+                {% trans "Destination-specific timings, prices and facilities have not been added yet." %}
             </p>
         </div>
     {% endif %}
